@@ -1,0 +1,127 @@
+.modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+    @include align-justify;
+    display: none;
+    &.show {
+        display: flex;
+    }
+    &:after {
+        display: block;
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 21;
+    }
+    .modal-wrap {
+        width: px2rem(616);
+        min-height: px2rem(566);
+        margin-top: px2rem(-200);
+        background: url('../images/lottery/modal-bg.jpg') #ffffff no-repeat center center;
+        background-size: cover;
+        position: relative;
+        z-index: 22;
+        .modal-close {
+            position: absolute;
+            right: px2rem(20);
+            top: px2rem(20);
+            width: px2rem(70);
+            height: px2rem(70);
+            z-index: 21;
+            transform: rotate(45deg);
+            &:before {
+                display: block;
+                content: '';
+                width: px2rem(70);
+                height: px2rem(4);
+                background: #c3001e;
+                transform: rotate(90deg) translateX(px2rem(35));
+            }
+            &:after {
+                display: block;
+                content: '';
+                width: px2rem(4);
+                height: px2rem(70);
+                background: #c3001e;
+                transform: rotate(90deg) translateY(px2rem(-33));
+            }
+        }
+    }
+    &.act-busy {
+        .modal-busy {
+            display: flex;
+        }
+    }
+    &.act-over {
+        .modal-over {
+            display: flex;
+        }
+    }
+    &.act-get {
+        .modal-get {
+            display: flex;
+        }
+    }
+    &.act-focus {
+        .modal-focus {
+            display: flex;
+            flex-direction: column;
+            min-height: px2rem(565);
+            .modal-qrcode-wrap {
+                width: px2rem(342);
+                height: px2rem(274);
+                margin-top:  (65);
+                .modal-qrcode {
+                    display: block;
+                    width: 100%;
+                }
+            }
+            .modal-text {
+                margin-top: px2rem(25);
+            }
+        }
+    }
+}
+
+
+
+.modal-content {
+    .modal-text-wrap {
+        min-height: px2rem(416);
+        @include align-justify;
+        text-align: center;
+        .modal-text {
+            font-size: px2rem(40);
+            font-weight: bold;
+            color: #fc3252;
+            line-height: 1.5;
+        }
+        .text-gray {
+            margin-top: px2rem(5);
+            font-size: px2rem(28);
+            color: #999999;
+        }
+        display: none;
+    }
+    .modal-btn-wrap {
+        min-height: px2rem(150);
+        display: flex;
+        justify-content: center;
+        .modal-btn {
+            width: px2rem(490);
+            height: px2rem(80);
+            @include align-justify;
+            font-size: px2rem(40);
+            color: #fff;
+            background: #fc3252;
+        }
+    }
+}
