@@ -31,6 +31,7 @@
         <button id="btn-get">已领取</button>
         <button id="btn-focus">关注</button>
         <button id="btn-download">中奖下载</button>
+        <button id="btn-money">中奖拿钱</button>
     </div>
     <div class="lottery-wrap">
 
@@ -52,7 +53,7 @@
                 <input class="phone phone-plac" placeholder="请输入已注册手机号验证" type="text" name="" id="">
             </div>
             <div class="submit-wrap">
-                <button class="submit" disabled="false">提交</button>
+                <button class="submit">提交</button>
             </div>
         </div>
 
@@ -242,11 +243,25 @@
                         </div>
                     </div>
 
+                    <!-- 已抽中 -->
+                    <div class="modal-text-wrap modal-money">
+                        <div class="modal-price" id="modal-price">
+                            5元
+                        </div>
+                        <div class="modal-text">
+                            <p class="text">恭喜您抽中5元现金红包</p>
+                            <p class="text-gray">已存入您的个人微信钱包，请查收</p>
+                        </div>
+                        <div class="modal-btn-wrap money-btn-wrap">
+                            <div class="modal-close-btn  modal-btn" id="modal-btn-money">确定</div>
+                        </div>
+                    </div>
+
                     <div class="modal-btn-wrap">
-                        <div class="modal-btn" id="modal-btn-iknow">知道了</div>
+                        <div class="modal-close-btn modal-btn">知道了</div>
                     </div>
                 </div>
-                <div class="modal-close" id="modal-close"></div>
+                <div class="modal-close-btn modal-close"></div>
             </div>
         </div>
 

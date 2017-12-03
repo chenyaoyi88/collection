@@ -1,4 +1,5 @@
-function json2url(json) {
+
+function json2url(json: { t: number}): string {
     json.t = Math.random();
     var arr = [];
     for (var name in json) {
@@ -18,7 +19,7 @@ function json2url(json) {
  * success 请求成功回调
  * error 请求失败回调
  */
-function ajax(options) {
+function ajax(options): Promise<any> {
     options = options || {};
     if (!options.url) {
         return;
@@ -77,35 +78,44 @@ function ajax(options) {
 
 }
 
-/**
- * toast 显示
- * @param {*String} text 要显示的文本内容
- */
-const toast = function (text) {
-    if (document.getElementById('toast')) {
-        return false;
-    }
+const devTool = {
+    domReady: function (callback: Function): void {
+        document.addEventListener('DOMContentLoaded', function () {
+            callback && callback();
+        });
+    },
+    /**
+     * toast 显示
+     * @param {*String} text 要显示的文本内容
+     */
+    toast: function (text: string) {
 
-    const doc = document.body;
-    const toastText = text;
+        if (document.getElementById('toast')) {
+            return false;
+        }
 
-    doc.insertAdjacentHTML(
-        'beforeend',
-        `<div class='toast' id='toast'>
+        const doc = document.body;
+        const toastText = text;
+
+        doc.insertAdjacentHTML(
+            'beforeend',
+            `<div class='toast' id='toast'>
                 <div class='toast-wrap'>
                     <div class='toast-content'>${toastText}</div>
                 </div>
             </div>`
-    );
+        );
 
-    var oToast = document.getElementById('toast');
-    var oToastText = oToast.querySelector('.toast-content');
+        var oToast = document.getElementById('toast');
+        var oToastText = oToast.querySelector('.toast-content');
 
-    oToastText.classList.add('slideInUp', 'animated');
+        oToastText.classList.add('slideInUp', 'animated');
 
-    oToastText.addEventListener('webkitAnimationEnd', function () {
-        doc.removeChild(oToast);
-    });
-}
+        oToastText.addEventListener('webkitAnimationEnd', function () {
+            doc.removeChild(oToast);
+        });
+    }
+};
 
-export { ajax, toast };
+
+export { ajax, devTool };

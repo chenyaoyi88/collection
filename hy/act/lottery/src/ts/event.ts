@@ -3,11 +3,10 @@ function clickEvent(): void {
     var oBtnGet = document.getElementById('btn-get');
     var oBtnFocus = document.getElementById('btn-focus');
     var oBtnbtnDownload = document.getElementById('btn-download');
+    var oBtnbtnMoney = document.getElementById('btn-money');
 
     var oModal = document.getElementById('modal');
-    var oModalClose = document.getElementById('modal-close');
     var oModalContent = document.getElementById('modal-content');
-    var oModalIknow = document.getElementById('modal-btn-iknow');
 
     oBtnShowOver.addEventListener('click', function () {
         oModal.className = 'modal';
@@ -29,13 +28,16 @@ function clickEvent(): void {
         oModal.classList.add('act-download', 'show');
     });
 
-    oModalClose.addEventListener('click', function () {
+    oBtnbtnMoney.addEventListener('click', function () {
         oModal.className = 'modal';
-        oModal.classList.remove('show');
+        oModal.classList.add('act-money', 'show');
     });
-    oModalIknow.addEventListener('click', function () {
-        oModal.className = 'modal';
-        oModal.classList.remove('show');
+
+    // 关闭弹窗
+    document.addEventListener('click', function (event) {
+        if (event.srcElement.className.includes('modal-close-btn')) {
+            oModal.classList.remove('show');
+        }
     });
 }
 

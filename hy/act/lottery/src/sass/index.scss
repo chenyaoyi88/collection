@@ -1,5 +1,5 @@
-@import './component/minxins';
 @import './component/reset';
+@import './component/minxins';
 @import './component/toast';
 @import './component/modal';
 body {
@@ -78,9 +78,13 @@ body {
             color: #fff;
             background-color: #fc3251;
             border-radius: 5px;
+            &:active {
+                background-color: #da2a47;
+            }
         }
     }
 }
+
 
 input.phone-plac::-webkit-input-placeholder {
     color: #fc3251;
