@@ -37,8 +37,7 @@ module.exports = {
                 use: ExtractTextPlugin.extract({
                     use: [
                         'css-loader?minimize&sourceMap',
-                        'sass-loader?sourceMap',
-                        'postcss-loader',
+                        'sass-loader?sourceMap'
                     ],
                     // 当SCSS未被提取时使用
                     fallback: 'style-loader'

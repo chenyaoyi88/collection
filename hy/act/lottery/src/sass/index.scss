@@ -248,10 +248,11 @@ input.phone-plac:-ms-input-placeholder {
     .f-qrcode-wrap {
         margin-top: px2rem(25);
         margin-bottom: px2rem(25);
+        margin: px2rem(25) px2rem(25) px2rem(25) 0;
         text-align: center;
         .f-qrcode {
             width: px2rem(213);
-            width: px2rem(214);
+            height: px2rem(214);
         }
     }
 }

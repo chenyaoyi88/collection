@@ -2,6 +2,7 @@ function clickEvent(): void {
     var oBtnShowOver = document.getElementById('btn-over');
     var oBtnGet = document.getElementById('btn-get');
     var oBtnFocus = document.getElementById('btn-focus');
+    var oBtnbtnDownload = document.getElementById('btn-download');
 
     var oModal = document.getElementById('modal');
     var oModalClose = document.getElementById('modal-close');
@@ -21,6 +22,11 @@ function clickEvent(): void {
     oBtnFocus.addEventListener('click', function () {
         oModal.className = 'modal';
         oModal.classList.add('act-focus', 'show');
+    });
+
+    oBtnbtnDownload.addEventListener('click', function () {
+        oModal.className = 'modal';
+        oModal.classList.add('act-download', 'show');
     });
 
     oModalClose.addEventListener('click', function () {

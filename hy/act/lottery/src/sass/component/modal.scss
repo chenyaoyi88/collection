@@ -78,7 +78,7 @@
             .modal-qrcode-wrap {
                 width: px2rem(342);
                 height: px2rem(274);
-                margin-top:  (65);
+                margin-top: px2rem(65);
                 .modal-qrcode {
                     display: block;
                     width: 100%;
@@ -89,9 +89,68 @@
             }
         }
     }
+    &.act-download {
+        .modal-download {
+            display: flex;
+            flex-direction: column;
+            .modal-price {
+                width: px2rem(342);
+                height: px2rem(214);
+                font-size: px2rem(65);
+                margin-top: px2rem(124);
+                color: #ffda58;
+                @include align-justify;
+                background: linear-gradient(#fb6e23, #fa2923);
+                border-radius: 10px;
+                position: relative;
+                &::before {
+                    display: block;
+                    content: ' ';
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    z-index: 6;
+                    width: px2rem(306);
+                    height: px2rem(178);
+                    margin: px2rem(18);
+                    border-radius: 10px;
+                    box-sizing: border-box;
+                    border: px2rem(3) solid #ffda58;
+                }
+            }
+            .modal-text {
+                margin-top: px2rem(60);
+                .text-gray {
+                    font-size: px2rem(24);
+                    padding: 0 px2rem(40);
+                }
+            }
+            .download-btn-wrap {
+                padding: px2rem(40) 0;
+                display: flex;
+                .download-btn {
+                    width: px2rem(272);
+                    height: px2rem(81);
+                    flex: 1;
+                    font-size: px2rem(30);
+                    color: #fff;
+                    text-decoration: none;
+                    @include align-justify;
+                    margin: 0 px2rem(7);
+                    &.c-user {
+                        background-color: #ff5700;
+                    }
+                    &.c-driver {
+                        background-color: #fd3352;
+                    }
+                }
+            }
+        }
+        .modal-btn-wrap {
+            display: none;
+        }
+    }
 }
-
-
 
 .modal-content {
     .modal-text-wrap {

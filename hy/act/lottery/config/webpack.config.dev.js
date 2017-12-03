@@ -68,7 +68,7 @@ module.exports = {
                 ]
             }, {
                 // 处理所有资源内url指向的文件，打包输出到原来的相对路径
-                test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/, 
+                test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
                 use: {
                     loader: "file-loader",
                     options: {
@@ -80,7 +80,7 @@ module.exports = {
                 test: /\.html$/,
                 loader: "html-loader"
             }
-        ],
+        ]
     },
     plugins: [
         new FriendlyErrorsPlugin(),
