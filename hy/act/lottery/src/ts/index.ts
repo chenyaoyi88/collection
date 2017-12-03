@@ -81,7 +81,7 @@ function roll() {
 
     // 如果是抽奖完成，重置
     // 如果切奖次数 > 转动基本次数 多 20 次（超出基本次数之后延迟到达奖品的次数）
-    if (lottery.times > lottery.cycle + 20 && lottery.prize == lottery.index) {
+    if (lottery.times > lottery.cycle + 15 && lottery.prize == lottery.index) {
         clearTimeout(lottery.timer);
         lottery.prize = -1;
         lottery.times = 0;
@@ -118,7 +118,7 @@ function roll() {
             // }
 
             // speed 的值加大，定时器调用间隔越慢，速度就越来越慢
-            lottery.speed += 15;
+            lottery.speed += 10;
         }
         // 控制最快速度
         // speed 的值越小，定时器调用间隔越快，速度就越快

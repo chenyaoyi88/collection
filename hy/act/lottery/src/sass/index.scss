@@ -2,12 +2,45 @@
 @import './component/minxins.scss';
 @import './component/toast.scss';
 @import './component/modal.scss';
+body {
+    background-color: #ffb200;
+}
 
 .header {
     background-color: #ffb200;
     .img {
         width: 100%;
         display: block;
+    }
+    .h-text {
+        padding-top: px2rem(10); 
+        background: linear-gradient(#feb428, #feb227);
+        text-align: center;
+        .h-text-1 {
+            font-size: px2rem(38);
+        }
+        .h-text-2 {
+            width: px2rem(370);
+            height: px2rem(70);
+            margin: px2rem(25) auto px2rem(10);
+            color: #fff;
+            background-color: #5a002b;
+            @include align-justify;
+            span {
+                margin-bottom: px2rem(5);
+                font-size: px2rem(46);
+            }
+        }
+        .h-text-3 {
+            font-size: px2rem(37);
+        }
+        .h-text-4 {
+            margin-top: px2rem(30);
+            font-size: px2rem(26);
+        }
+        p {
+            color: #5a002b;
+        }
     }
 }
 
@@ -72,14 +105,6 @@ input.phone-plac:-ms-input-placeholder {
     height: px2rem(712);
 }
 
-.footer-wrap {
-    background-color: #ffb200;
-    .img {
-        width: 100%;
-        display: block;
-    }
-}
-
 // 抽奖
 .lottery-table {
     border-spacing: 0;
@@ -105,16 +130,28 @@ input.phone-plac:-ms-input-placeholder {
     padding: px2rem(20);
     background: url('../images/lottery/bg.jpg') #ffb200 no-repeat center center;
     background-size: cover;
-
     .item {
         display: inline-block;
         width: px2rem(183);
-        height: px2rem(181);
-        background: url('../images/lottery/bg1.png') no-repeat center center;
+        height: px2rem(181); // background: url('../images/lottery/bg1.png') no-repeat center center;
+        background: #febdbe;
         background-size: cover;
         position: relative;
         border-radius: 6px;
         overflow: hidden;
+        &:before {
+            display: block;
+            content: ' ';
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 5;
+            width: 100%;
+            height: px2rem(164);
+            background: #fff;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
         &.active {
             .redbag-cover {
                 display: block;
@@ -149,15 +186,12 @@ input.phone-plac:-ms-input-placeholder {
             display: none;
         }
     }
-    
     .gap {
         width: px2rem(5);
     }
-    
     .gap-2 {
         height: px2rem(5);
     }
-    
     .lottery-btn {
         display: block;
         width: px2rem(183);
@@ -168,13 +202,11 @@ input.phone-plac:-ms-input-placeholder {
         background: url('../images/lottery/btn.jpg') no-repeat center center;
         background-size: cover;
     }
-    
     .lottery-btn {
         &:hover {
             background-color: #fe8d85;
         }
     }
-    
     .img-wrap {
         width: 100%;
         height: 100%;
@@ -183,11 +215,75 @@ input.phone-plac:-ms-input-placeholder {
         justify-content: center;
         border-radius: 6px;
         overflow: hidden;
+        position: relative;
+        z-index: 6;
         .redbag {
             width: px2rem(104);
             height: px2rem(138);
             margin-bottom: px2rem(10);
         }
     }
-    
+}
+
+.footer-wrap {
+    background-color: #ffb200;
+    .img {
+        width: 100%;
+        display: block;
+    }
+}
+
+.f-wrap {
+    padding-left: px2rem(40);
+    padding-bottom: px2rem(135);
+    background: #ffb200 url('../images/lottery/f-bg.png') no-repeat center bottom;
+    background-size: contain;
+    .f-title {
+        font-size: px2rem(30);
+        font-weight: bold;
+    }
+    p {
+        color: #63002f;
+    }
+    .f-qrcode-wrap {
+        margin-top: px2rem(25);
+        margin-bottom: px2rem(25);
+        text-align: center;
+        .f-qrcode {
+            width: px2rem(213);
+            width: px2rem(214);
+        }
+    }
+}
+
+.f-list {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin-top: px2rem(8);
+    .f-list-no {
+        width: px2rem(50);
+        margin-top: px2rem(3);
+        .f-list-no-text {
+            font-size: px2rem(24);
+            font-weight: lighter;
+            color: #fff;
+            width: px2rem(34);
+            height: px2rem(34);
+            background-color: #63002f;
+            border-radius: 50%;
+            @include align-justify;
+        }
+    }
+    .f-list-text {
+        flex: 1;
+        font-size: px2rem(28);
+        color: #63002f;
+        line-height: 1.5;
+    }
+}
+
+.m-t-10 {
+    margin-top: px2rem(15);
 }
