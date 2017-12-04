@@ -2,7 +2,9 @@
 import '../sass/index.scss';
 import { ajax, devTool, api } from './tool';
 import { lottery } from './lottery';
+import { fnOther } from './other';
 import { clickEvent } from './event';
+import { setTimeout } from 'timers';
 
 function roll(): boolean {
 
@@ -27,6 +29,7 @@ function roll(): boolean {
             lottery.speed -= 10;
         } else if (lottery.times == lottery.cycle) {
             // 2.如果达到了基本的次数，出奖品，但是继续跑（要多跑 20 次）
+
             const arr = [50, 8, 100, 10, 30, 3, 20, 5];
             // 静态演示，随机产生一个奖品序号，实际需请求接口产生
             let index = Math.random() * (lottery.count) | 0;
@@ -63,7 +66,65 @@ function roll(): boolean {
 }
 
 devTool.domReady(() => {
+    
     clickEvent();
+
+    // 弹窗
+    const oModal = document.getElementById('modal');
+    // 手机号码
+    const oPhone = document.getElementById('phone');
+    // 错误提示
+    const sErrorText = document.getElementById('modal-busy-text');
+    // 抽奖九宫格
+    const oLotterywrap = document.getElementById('lottery-wrap');
+
+    // 集体事件
+    document.addEventListener('click', function (event: any) {
+        console.dir(event.srcElement['dataset']);
+        const targetID = event.srcElement['dataset'].id;
+
+        if (targetID) {
+            switch (targetID) {
+                case 'download-buyer':
+                    // 下载叫车端
+                    devTool.appDownload('buyer');
+                    break;
+                case 'download-driver':
+                    // 下载司机端
+                    devTool.appDownload('driver');
+                    break;
+                case 'modal-close-btn':
+                    // 关闭弹窗
+                    oModal.classList.remove('show');
+                    break;
+                case 'submit':
+                    if (!(/^\d{11}$/.test(oPhone['value']))) {
+                        devTool.toast('您输入的手机号码格式有误');
+                        // fnOther.showModal(oModal, 'act-busy', () => {
+                        //     sErrorText.innerHTML = '您输入的手机号码格式有误';
+                        // });
+                        return;
+                    }
+                    // todo-1：输入手机号请求接口绑定 openid 后显示抽奖模块
+                    // mock
+                    let isActOver: boolean = true;
+                    devTool.loading.show();
+                    setTimeout(() => {
+                        if (isActOver) {
+                            // 活动已结束
+                            devTool.loading.hide();
+                            fnOther.showModal(oModal, 'act-over');
+                        }
+                        // isActOver = false;
+                        // oLotterywrap.classList.add('show');
+                    }, 2000);
+
+                    break;
+            }
+        }
+    });
+
+    // 初始化抽奖
     lottery.init('lottery');
     // 点击抽奖
     document.getElementById('lottery-btn').onclick = function () {

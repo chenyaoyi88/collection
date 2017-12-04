@@ -1,5 +1,5 @@
 
-function json2url(json: { t: number}): string {
+function json2url(json: { t: number }): string {
     json.t = Math.random();
     var arr = [];
     for (var name in json) {
@@ -78,6 +78,20 @@ function ajax(options): Promise<any> {
 
 }
 
+/**
+ * 判断是否微信
+ * 
+ * @returns {boolean} true 是微信，false 不是
+ */
+function isWeixin(): boolean {
+    var ua = navigator.userAgent.toLowerCase();
+    if (ua.match(/MicroMessenger/i) && ua.match(/MicroMessenger/i).length > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 const devTool = {
     domReady: function (callback: Function): void {
         document.addEventListener('DOMContentLoaded', function () {
@@ -114,6 +128,51 @@ const devTool = {
         oToastText.addEventListener('webkitAnimationEnd', function () {
             doc.removeChild(oToast);
         });
+    },
+    loading: {
+        show: function () {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                `<div class="loading" id="loading">
+                    <div class="timer"></div>
+                </div>`
+            );
+        },
+        hide: function () { 
+            const oLoading = document.getElementById('loading');
+            if (!oLoading) {
+                return false;
+            }
+            document.body.removeChild(oLoading);
+        }
+    },
+    /**
+     * 下载对应的 app
+     * 
+     */
+    appDownload: function (type: string = 'other'): void {
+        var ua = navigator.userAgent;
+        if (ua.match(/iPad/i) || ua.match(/iPhone/i) || ua.match(/iPod/i)) {
+            // 如果是 ios 设备
+            if (type === 'buyer') {
+                // ios 买家
+                window.location.href = '//a.app.qq.com/o/simple.jsp?pkgname=com.highsunbuy';
+            } else {
+                // ios 司机
+                window.location.href = '//a.app.qq.com/o/simple.jsp?pkgname=com.highsun.driver';
+            }
+        } else if (ua.match(/Android/i) && isWeixin()) {
+            // 如果是 Android 设备
+            if (type === 'driver') {
+                // Android 买家
+                window.location.href = '//a.app.qq.com/o/simple.jsp?pkgname=com.highsunbuy';
+            } else {
+                // Android 司机
+                window.location.href = '//a.app.qq.com/o/simple.jsp?pkgname=com.highsun.driver';
+            }
+        } else {
+            window.location.href = '//www.guanghuobao.com/android/ghb-seller.apk';
+        }
     }
 };
 

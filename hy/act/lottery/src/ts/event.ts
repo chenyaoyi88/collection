@@ -6,7 +6,6 @@ function clickEvent(): void {
     var oBtnbtnMoney = document.getElementById('btn-money');
 
     var oModal = document.getElementById('modal');
-    var oModalContent = document.getElementById('modal-content');
 
     oBtnShowOver.addEventListener('click', function () {
         oModal.className = 'modal';
@@ -31,13 +30,6 @@ function clickEvent(): void {
     oBtnbtnMoney.addEventListener('click', function () {
         oModal.className = 'modal';
         oModal.classList.add('act-money', 'show');
-    });
-
-    // 关闭弹窗
-    document.addEventListener('click', function (event) {
-        if (event.srcElement.className.includes('modal-close-btn')) {
-            oModal.classList.remove('show');
-        }
     });
 }
 

@@ -33,7 +33,8 @@
         <button id="btn-download">中奖下载</button>
         <button id="btn-money">中奖拿钱</button>
     </div>
-    <div class="lottery-wrap">
+
+    <div class="lottery-container">
 
         <div class="header">
             <img class="img banner" src="images/lottery/banner.jpg" alt="双12 送点钱给你买买买">
@@ -50,14 +51,14 @@
 
         <div class="phone-submit">
             <div class="phone-wrap">
-                <input class="phone phone-plac" placeholder="请输入已注册手机号验证" type="text" name="" id="">
+                <input class="phone phone-plac" placeholder="请输入已注册手机号验证" type="tel" maxlength="11" id="phone">
             </div>
             <div class="submit-wrap">
-                <button class="submit">提交</button>
+                <button data-id="submit" class="submit">提交</button>
             </div>
         </div>
 
-        <div class="lottery-wrap">
+        <div class="lottery-wrap" id="lottery-wrap">
             <div class="lottery" id="lottery">
                 <table class="lottery-table">
                     <tbody class="lottery-tbody">
@@ -197,7 +198,7 @@
                     <!-- 网络繁忙，请稍后再试 -->
                     <div class="modal-text-wrap modal-busy">
                         <div class="modal-text">
-                            <p class="text">网络繁忙，请稍后再试</p>
+                            <p class="text" id="modal-busy-text">网络繁忙，请稍后再试</p>
                         </div>
                     </div>
 
@@ -230,7 +231,7 @@
 
                     <!-- 中奖，需要下载 -->
                     <div class="modal-text-wrap modal-download">
-                        <div class="modal-price" id="modal-price">
+                        <div class="modal-price">
                             5元
                         </div>
                         <div class="modal-text">
@@ -238,14 +239,14 @@
                             <p class="text-gray">请下载广货宝叫车端或广货宝司机端注册成为会员在个人微信钱包中查收</p>
                         </div>
                         <div class="download-btn-wrap">
-                            <a class="download-btn c-user" href="javascript:;">下载广货宝叫车端</a>
-                            <a class="download-btn c-driver" href="javascript:;">下载广货宝司机端</a>
+                            <a data-id="download-buyer" id="download-buyer" class="download-btn c-user" href="javascript:;">下载广货宝叫车端</a>
+                            <a data-id="download-driver" id="download-driver" class="download-btn c-driver" href="javascript:;">下载广货宝司机端</a>
                         </div>
                     </div>
 
                     <!-- 已抽中 -->
                     <div class="modal-text-wrap modal-money">
-                        <div class="modal-price" id="modal-price">
+                        <div class="modal-price">
                             5元
                         </div>
                         <div class="modal-text">
@@ -253,15 +254,15 @@
                             <p class="text-gray">已存入您的个人微信钱包，请查收</p>
                         </div>
                         <div class="modal-btn-wrap money-btn-wrap">
-                            <div class="modal-close-btn  modal-btn" id="modal-btn-money">确定</div>
+                            <div data-id="modal-close-btn" class="modal-btn" id="modal-btn-money">确定</div>
                         </div>
                     </div>
 
                     <div class="modal-btn-wrap">
-                        <div class="modal-close-btn modal-btn">知道了</div>
+                        <div data-id="modal-close-btn" class="modal-btn">知道了</div>
                     </div>
                 </div>
-                <div class="modal-close-btn modal-close"></div>
+                <div data-id="modal-close-btn" class="modal-close"></div>
             </div>
         </div>
 

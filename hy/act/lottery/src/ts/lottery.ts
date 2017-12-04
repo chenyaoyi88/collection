@@ -31,13 +31,6 @@ const lottery = {
                 oDefaultActiveLotteryUnit.classList.add('active');
             }
         }
-
-        // 关闭弹窗
-        document.addEventListener('click', function (event) {
-            if (event.srcElement.className.includes('modal-close-btn')) {
-                document.getElementById('modal').classList.remove('show');
-            }
-        });
     },
     roll: function () {
         // 设置起始位置

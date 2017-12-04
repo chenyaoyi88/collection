@@ -5,5 +5,4 @@ declare module '*.svg';
 declare module '*.gif';
 
 interface Window {
-    isClick: boolean;
 }
