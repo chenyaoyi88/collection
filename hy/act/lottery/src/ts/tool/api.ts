@@ -5,6 +5,7 @@ if (APP_ENV !== 'production') {
     require('../../index.html');
 } else {
     console.log = function () { };
+    console.dir = function () { };
 }
 console.log('当前环境：' + APP_ENV);
 
