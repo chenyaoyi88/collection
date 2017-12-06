@@ -2,7 +2,7 @@
 import '../sass/index.scss';
 import { ajax, devTool, api } from './tool';
 import { lottery } from './lottery';
-import { clickEvent } from './event';
+import { modalConfigMap } from './tool/modal_config';
 
 function roll(): boolean {
 
@@ -26,13 +26,13 @@ function roll(): boolean {
             // 速度由初始的 100，慢慢由减速开始 90 80 70...
             lottery.speed -= 10;
         } else if (lottery.times == lottery.cycle) {
-            // 2.如果达到了基本的次数，出奖品，但是继续跑（要多跑 20 次）
-            const arr = [50, 8, 100, 10, 30, 3, 20, 5];
-            // 静态演示，随机产生一个奖品序号，实际需请求接口产生
-            let index = Math.random() * (lottery.count) | 0;
-            console.log(arr[index] + '元');
+            // // 2.如果达到了基本的次数，出奖品，但是继续跑（要多跑 20 次）
+            // const arr = [50, 8, 100, 10, 30, 3, 20, 5];
+            // // 静态演示，随机产生一个奖品序号，实际需请求接口产生
+            // let index = Math.random() * (lottery.count) | 0;
+            // console.log(arr[index] + '元');
             // 抽奖方式二：先显示抽奖动画，然后再请求抽奖接口
-            lottery.prize = index;
+            lottery.prize = window.result;
 
         } else {
             // 3.已经知道奖品了，开始减速
@@ -62,8 +62,18 @@ function roll(): boolean {
     return false;
 }
 
+let num = -1;
+let arr = ['busy', 'get', 'over', 'focus', 'download', 'money'];
+window.result = -1;
 devTool.domReady(() => {
-    clickEvent();
+
+    var oBtnbtnMoney = document.getElementById('btn-money');
+    oBtnbtnMoney.addEventListener('click', function () {
+        num++;
+        devTool.modal.show(modalConfigMap(arr[num], 10));
+        // devTool.modal.show();
+    });
+
     lottery.init('lottery');
     // 点击抽奖
     document.getElementById('lottery-btn').onclick = function () {
@@ -76,18 +86,18 @@ devTool.domReady(() => {
                 return false;
             } else {
                 // 抽奖方式一：先请求抽奖接口得到结果再开始显示抽奖动画
-                // setTimeout(() => {
-                // result = 6;
+                setTimeout(() => {
+                    window.result = 0;
 
-                // 初始速度
-                lottery.speed = 200;
-                // 转圈过程不响应click事件，会将click置为false
-                roll();
-                // 一次抽奖完成后，设置click为true，可继续抽奖
-                lottery.isClick = true;
-                return false;
+                    // 初始速度
+                    lottery.speed = 200;
+                    // 转圈过程不响应click事件，会将click置为false
+                    roll();
+                    // 一次抽奖完成后，设置click为true，可继续抽奖
+                    lottery.isClick = true;
+                    return false;
 
-                // }, 1000);
+                }, 200);
             }
         }
     }

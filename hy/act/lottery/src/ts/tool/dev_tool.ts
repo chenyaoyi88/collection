@@ -1,5 +1,5 @@
 
-function json2url(json: { t: number}): string {
+function json2url(json: { t: number }): string {
     json.t = Math.random();
     var arr = [];
     for (var name in json) {
@@ -114,8 +114,144 @@ const devTool = {
         oToastText.addEventListener('webkitAnimationEnd', function () {
             doc.removeChild(oToast);
         });
+    },
+    modal: {
+        show: function (options?) {
+            options = options || {};
+            if (document.getElementById('modal')) {
+                return false;
+            }
+
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                `
+                <div class="modal show ${options.modalClass || 'act-busy'}" id="modal">
+                    <div class="modal-wrap">
+                        <div class="modal-content" id="modal-content">
+        
+                            <div class="modal-text-wrap ${options.textWrapClass || 'modal-busy'}" id="modal-text-wrap">
+                                <div class="modal-text">
+                                    <p class="text">网络繁忙，请稍后再试</p>
+                                </div>
+                            </div>
+        
+                            <div class="modal-btn-wrap" id="modal-btn-wrap">
+                                <div data-id="modal-close" class="modal-close-btn modal-btn">知道了</div>
+                            </div>
+
+                        </div>
+                        <div data-id="modal-close" class="modal-close-btn modal-close"></div>
+                    </div>
+                </div>
+                `
+            );
+
+            const oModal = document.getElementById('modal');
+            const oModalContent = document.getElementById('modal-content');
+            const oModalTextWrap = document.getElementById('modal-text-wrap');
+            const oModalBtnWrap = document.getElementById('modal-btn-wrap');
+            if (options.contentHtml) {
+                oModalContent.innerHTML = options.contentHtml;
+            }
+            if (options.textWrapHtml) {
+                oModalTextWrap.innerHTML = options.textWrapHtml;
+            }
+            if (options.btnWrapHtml) {
+                oModalBtnWrap.innerHTML = options.btnWrapHtml;
+            }
+            const fnModalClose = function (event: any) {
+                const target = event.srcElement;
+                const targetID = target['dataset'].id;
+                if (targetID === 'modal-close') {
+                    document.body.removeChild(oModal);
+                    document.removeEventListener('click', fnModalClose, false);
+                }
+            };
+
+            document.addEventListener('click', fnModalClose, false);
+
+
+        }
+    },
+    appDownload: function (type: string) {
+        alert(type);
     }
 };
 
 
 export { ajax, devTool };
+
+// <div class="modal" id="modal">
+//     <div class="modal-wrap">
+//         <div class="modal-content" id="modal-content">
+
+//             <!-- 网络繁忙，请稍后再试 -->
+//             <div class="modal-text-wrap modal-busy">
+//                 <div class="modal-text">
+//                     <p class="text">网络繁忙，请稍后再试</p>
+//                 </div>
+//             </div>
+
+//             <!-- 活动已结束 -->
+//             <div class="modal-text-wrap modal-over">
+//                 <div class="modal-text">
+//                     <p class="text">活动已结束</p>
+//                     <p class="text">感谢参与</p>
+//                 </div>
+//             </div>
+            
+//             <!-- 已领奖 -->
+//             <div class="modal-text-wrap modal-get">
+//                 <div class="modal-text">
+//                     <p class="text">您已领取过本次奖励</p>
+//                     <p class="text">感谢参与</p>
+//                 </div>
+//             </div>
+            
+//             <!-- 先关注 -->
+//             <div class="modal-text-wrap modal-focus">
+//                 <div class="modal-qrcode-wrap">
+//                     <img class="modal-qrcode" src="images/lottery/modal-qrcode.png" alt="">
+//                 </div>
+//                 <div class="modal-text">
+//                     <p class="text">请先关注“广货宝”公众号</p>
+//                     <p class="text-gray">奖励会通过广货宝公众号发送给您</p>
+//                 </div>
+//             </div>
+
+//             <!-- 中奖，需要下载 -->
+//             <div class="modal-text-wrap modal-download">
+//                 <div class="modal-price" id="modal-price">
+//                     5元
+//                 </div>
+//                 <div class="modal-text">
+//                     <p class="text">恭喜您抽中5元现金红包</p>
+//                     <p class="text-gray">请下载广货宝叫车端或广货宝司机端注册成为会员在个人微信钱包中查收</p>
+//                 </div>
+//                 <div class="download-btn-wrap">
+//                     <a class="download-btn c-user" href="javascript:;">下载广货宝叫车端</a>
+//                     <a class="download-btn c-driver" href="javascript:;">下载广货宝司机端</a>
+//                 </div>
+//             </div>
+
+//             <!-- 已抽中 -->
+//             <div class="modal-text-wrap modal-money">
+//                 <div class="modal-price" id="modal-price">
+//                     5元
+//                 </div>
+//                 <div class="modal-text">
+//                     <p class="text">恭喜您抽中5元现金红包</p>
+//                     <p class="text-gray">已存入您的个人微信钱包，请查收</p>
+//                 </div>
+//                 <div class="modal-btn-wrap money-btn-wrap">
+//                     <div class="modal-close-btn  modal-btn" id="modal-btn-money">确定</div>
+//                 </div>
+//             </div>
+
+//             <div class="modal-btn-wrap">
+//                 <div class="modal-close-btn modal-btn">知道了</div>
+//             </div>
+//         </div>
+//         <div class="modal-close-btn modal-close"></div>
+//     </div>
+// </div>
