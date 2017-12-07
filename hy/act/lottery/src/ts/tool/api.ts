@@ -14,11 +14,12 @@ let requestHost = '';
 switch (APP_ENV) {
     case 'development':
         // 开发环境
-        requestHost = '';
+        requestHost = '//127.0.0.1:4000';   // 本机模拟的后端接口 host 
+        // requestHost = '//sit.guanghuobao.com';
         break;
     case 'test':
         // 测试环境
-        requestHost = '';
+        requestHost = '//sit.guanghuobao.com';
         break;
     case 'ready':
         // 仿真/预生产
@@ -26,13 +27,19 @@ switch (APP_ENV) {
         break;
     case 'production':
         // 正式/生产
-        requestHost = '';
+        requestHost = '//www.guanghuobao.com';
         break;
 }
 
 const api = {
-    url1: '',
-    url2: ''
+    // 获取微信 js-sdk 参数
+    wechatjs: requestHost + '/shop/common/wechat/jssdk_params',
+    // 提交接口
+    submit: requestHost + '/api/v1/decLotteryActivity/submit',
+    // 抽奖接口
+    lottery: requestHost + '/api/v1/decLotteryActivity/lottery',
+    // 红包领取接口
+    draw: requestHost + '/api/v1/decLotteryActivity/draw'
 };
 
 export { api };

@@ -15,11 +15,11 @@ module.exports = {
         'vendor': './src/vendor/vendor.ts'
     },
     output: {
-        filename: './js/[name].[hash].bundle.js',
+        filename: './js/[name].[hash:8].bundle.js',
         // 最后打包输出的文件夹位置
         path: path.resolve(__dirname, PROJECT.PATH.DIST),
         // sourcemap文件的名字，必须和devtool一起来使用
-        sourceMapFilename: './js/[name].[hash].bundle.map',
+        sourceMapFilename: './js/[name].[hash:8].bundle.map',
     },
     devtool: 'cheap-module-source-map',
     resolve: {
@@ -63,37 +63,39 @@ module.exports = {
                 // 处理图片
                 test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
                 use: [{
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name].[hash].[ext]',
-                        // 抽取出来放在 images 文件夹里面
-                        outputPath: 'images/',
-                        // scss 文件背景图路径要以根目录作为参考起点
-                        publicPath: '/'
-                    }
-                }, {
-                    // 压缩图片
-                    loader: 'image-webpack-loader',
-                    options: {
-                        mozjpeg: {
-                            progressive: true,
-                            quality: 75
-                        },
-                        optipng: {
-                            enabled: false,
-                        },
-                        pngquant: {
-                            quality: '65-90',
-                            speed: 4
-                        },
-                        gifsicle: {
-                            interlaced: false,
-                        },
-                        webp: {
-                            quality: 75
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[hash:8].[ext]',
+                            // 抽取出来放在 images 文件夹里面
+                            outputPath: 'images/',
+                            // scss 文件背景图路径要以根目录作为参考起点
+                            publicPath: '/'
                         }
                     }
-                }],
+                    // , {
+                    //     // 压缩图片
+                    //     loader: 'image-webpack-loader',
+                    //     options: {
+                    //         mozjpeg: {
+                    //             progressive: true,
+                    //             quality: 90
+                    //         },
+                    //         optipng: {
+                    //             enabled: false,
+                    //         },
+                    //         pngquant: {
+                    //             quality: '65-90',
+                    //             speed: 4
+                    //         },
+                    //         gifsicle: {
+                    //             interlaced: false,
+                    //         },
+                    //         webp: {
+                    //             quality: 75
+                    //         }
+                    //     }
+                    // }
+                ],
                 exclude: /node_modules/
             }, {
                 // 处理 html 里面用 img 标签的图片，不然打包的时候不会处理 
@@ -112,7 +114,7 @@ module.exports = {
         new FriendlyErrorsPlugin(),
         // 通过 ExtractTextPlugin 把 css 抽离出来，生成一个独立的 css 文件再页面上引入
         new ExtractTextPlugin({
-            filename: 'css/index.[contenthash] .css'
+            filename: 'css/index.[contenthash].css'
         }),
         new HtmlWebpackPlugin({
             favicon: path.resolve(__dirname, PROJECT.PATH.SRC, 'favicon.ico'),

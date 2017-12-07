@@ -19,7 +19,7 @@ function json2url(json: { t: number }): string {
  * success 请求成功回调
  * error 请求失败回调
  */
-function ajax(options): Promise<any> {
+function ajax(options: any): Promise<any> {
     options = options || {};
     if (!options.url) {
         return;
@@ -28,7 +28,7 @@ function ajax(options): Promise<any> {
     options.data = options.data || {};
     options.type = options.type || 'GET';
     options.timeout = options.timeout || 0;
-    options.header = options.header || {};
+    options.headers = options.headers || {};
 
     let xhr = null;
     let timer = null;
@@ -43,8 +43,8 @@ function ajax(options): Promise<any> {
     } else {
         xhr.open('POST', options.url, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        for (let pro in options.header) {
-            xhr.setRequestHeader(pro, options.header[pro]);
+        for (let pro in options.headers) {
+            xhr.setRequestHeader(pro, options.headers[pro]);
         }
         xhr.send(str);
     }
@@ -99,6 +99,18 @@ const devTool = {
         });
     },
     /**
+     * url 上面获取参数对应的值
+     * @param {*String} text 要显示的文本内容
+     */
+    getQueryString: function (name: string) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return window['unescape'](r[2]);
+        };
+        return null;
+    },
+    /**
      * toast 显示
      * @param {*String} text 要显示的文本内容
      */
@@ -129,6 +141,23 @@ const devTool = {
             doc.removeChild(oToast);
         });
     },
+    loading: {
+        show: function () {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                `<div class="loading" id="loading">
+                    <div class="timer"></div>
+                </div>`
+            );
+        },
+        hide: function () {
+            const oLoading = document.getElementById('loading');
+            if (!oLoading) {
+                return false;
+            }
+            document.body.removeChild(oLoading);
+        }
+    },
     modal: {
         show: function (options?) {
             options = options || {};
@@ -149,12 +178,12 @@ const devTool = {
                                 </div>
                             </div>
         
-                            <div class="modal-btn-wrap" id="modal-btn-wrap">
+                            <div class="modal-btn-wrap" id="modal-confirm">
                                 <div data-id="modal-close" class="modal-close-btn modal-btn">知道了</div>
                             </div>
 
                         </div>
-                        <div data-id="modal-close" class="modal-close-btn modal-close"></div>
+                        <div data-id="modal-close" id="modal-close" class="modal-close-btn modal-close"></div>
                     </div>
                 </div>
                 `
@@ -173,35 +202,28 @@ const devTool = {
             if (options.btnWrapHtml) {
                 oModalBtnWrap.innerHTML = options.btnWrapHtml;
             }
-            const fnModalClose = function (event: any) {
-                const target = event.srcElement;
-                const targetID = target['dataset'].id;
+            const removeModal = function (event: any) {
+                const oTarget = event.srcElement;
+                const targetID = oTarget['dataset'].id;
                 if (targetID === 'modal-close') {
+
+                    if (oTarget.id === 'modal-confirm') {
+                        // 点击确定回调
+                        options.confirmCallback && options.confirmCallback();
+                    }
+
+                    if (oTarget.id === 'modal-close') {
+                        // 点击关闭回调
+                        options.closeCallback && options.closeCallback();
+                    }
                     document.body.removeChild(oModal);
-                    document.removeEventListener('click', fnModalClose, false);
+                    document.removeEventListener('click', removeModal, false);
                 }
             };
 
-            document.addEventListener('click', fnModalClose, false);
+            document.addEventListener('click', removeModal, false);
 
 
-        }
-    },
-    loading: {
-        show: function () {
-            document.body.insertAdjacentHTML(
-                'beforeend',
-                `<div class="loading" id="loading">
-                    <div class="timer"></div>
-                </div>`
-            );
-        },
-        hide: function () { 
-            const oLoading = document.getElementById('loading');
-            if (!oLoading) {
-                return false;
-            }
-            document.body.removeChild(oLoading);
         }
     },
     /**
@@ -236,78 +258,3 @@ const devTool = {
 
 
 export { ajax, devTool };
-
-// <div class="modal" id="modal">
-//     <div class="modal-wrap">
-//         <div class="modal-content" id="modal-content">
-
-//             <!-- 网络繁忙，请稍后再试 -->
-//             <div class="modal-text-wrap modal-busy">
-//                 <div class="modal-text">
-//                     <p class="text">网络繁忙，请稍后再试</p>
-//                 </div>
-//             </div>
-
-//             <!-- 活动已结束 -->
-//             <div class="modal-text-wrap modal-over">
-//                 <div class="modal-text">
-//                     <p class="text">活动已结束</p>
-//                     <p class="text">感谢参与</p>
-//                 </div>
-//             </div>
-            
-//             <!-- 已领奖 -->
-//             <div class="modal-text-wrap modal-get">
-//                 <div class="modal-text">
-//                     <p class="text">您已领取过本次奖励</p>
-//                     <p class="text">感谢参与</p>
-//                 </div>
-//             </div>
-            
-//             <!-- 先关注 -->
-//             <div class="modal-text-wrap modal-focus">
-//                 <div class="modal-qrcode-wrap">
-//                     <img class="modal-qrcode" src="images/lottery/modal-qrcode.png" alt="">
-//                 </div>
-//                 <div class="modal-text">
-//                     <p class="text">请先关注“广货宝”公众号</p>
-//                     <p class="text-gray">奖励会通过广货宝公众号发送给您</p>
-//                 </div>
-//             </div>
-
-//             <!-- 中奖，需要下载 -->
-//             <div class="modal-text-wrap modal-download">
-//                 <div class="modal-price" id="modal-price">
-//                     5元
-//                 </div>
-//                 <div class="modal-text">
-//                     <p class="text">恭喜您抽中5元现金红包</p>
-//                     <p class="text-gray">请下载广货宝叫车端或广货宝司机端注册成为会员在个人微信钱包中查收</p>
-//                 </div>
-//                 <div class="download-btn-wrap">
-//                     <a class="download-btn c-user" href="javascript:;">下载广货宝叫车端</a>
-//                     <a class="download-btn c-driver" href="javascript:;">下载广货宝司机端</a>
-//                 </div>
-//             </div>
-
-//             <!-- 已抽中 -->
-//             <div class="modal-text-wrap modal-money">
-//                 <div class="modal-price" id="modal-price">
-//                     5元
-//                 </div>
-//                 <div class="modal-text">
-//                     <p class="text">恭喜您抽中5元现金红包</p>
-//                     <p class="text-gray">已存入您的个人微信钱包，请查收</p>
-//                 </div>
-//                 <div class="modal-btn-wrap money-btn-wrap">
-//                     <div class="modal-close-btn  modal-btn" id="modal-btn-money">确定</div>
-//                 </div>
-//             </div>
-
-//             <div class="modal-btn-wrap">
-//                 <div class="modal-close-btn modal-btn">知道了</div>
-//             </div>
-//         </div>
-//         <div class="modal-close-btn modal-close"></div>
-//     </div>
-// </div>
