@@ -41,7 +41,6 @@ function roll(): boolean {
                         // 用户未关注公众号
                         devTool.modal.show(modalConfigMap('focus'));
                         break;
-
                     default:
                         devTool.modal.show();
 
@@ -111,7 +110,50 @@ devTool.domReady(() => {
                         return;
                     }
                     // 提交手机号码逻辑
-                    submitCheck(oPhone, oLotterywrap);
+                    submitCheck(oPhone, oLotterywrap, function (data: Draw) {
+                        switch (data.lotteryStatus) {
+                            case 1: // 2-1
+                                oLotterywrap.classList.add('show', 'chou');
+                                break;
+                            case 2: // 2-2 2-3 2-9
+                                switch (data.status) {
+                                    case 2:
+                                        devTool.modal.show(modalConfigMap('download', data.amount));
+                                        break;
+                                    case 3:
+                                        devTool.modal.show(modalConfigMap('focus'));
+                                        break;
+                                    case 9:
+                                        devTool.modal.show(modalConfigMap('over'));
+                                        break;
+                                }
+                                break;
+                            case 3: // 3
+                                switch (data.status) {
+                                    case 1:
+                                        devTool.modal.show(modalConfigMap('money', data.amount));
+                                        break;
+                                    case 2:
+                                        devTool.modal.show(modalConfigMap('download', data.amount));
+                                        break;
+                                    case 3:
+                                        devTool.modal.show(modalConfigMap('focus'));
+                                        break;
+                                    case 9:
+                                        devTool.modal.show(modalConfigMap('over'));
+                                        break;
+                                }
+                                break;
+                            case 4:
+                                // 红包已发送-弹窗显示-显示金额
+                                devTool.modal.show(modalConfigMap('money', data.amount));
+                                break;
+                            default:
+                                console.log('抽奖成功，但是找不到状态');
+                                // 失败-显示网络错误
+                                devTool.modal.show(modalConfigMap('busy'));
+                        }
+                    });
                     break;
             }
         }

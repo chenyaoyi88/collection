@@ -4,7 +4,6 @@
 @import './component/modal';
 @import './component/loading';
 @import './lottery';
-
 body {
     background-color: #ffb200;
 }
@@ -82,6 +81,7 @@ body {
             color: #fff;
             background-color: #fc3251;
             border-radius: 5px;
+            word-break: keep-all;
             &:active {
                 background-color: #da2a47;
             }
@@ -104,7 +104,6 @@ input.phone-plac::-moz-placeholder {
 input.phone-plac:-ms-input-placeholder {
     color: #fc3251;
 }
-
 
 .footer-wrap {
     background-color: #ffb200;

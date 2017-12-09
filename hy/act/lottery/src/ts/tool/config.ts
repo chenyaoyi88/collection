@@ -1,3 +1,5 @@
+import * as qrcodeIMG from '../../images/lottery/modal-qrcode.png';
+
 // 不同弹窗显示的内容
 const modalConfigMap = function (type: string, price?: number) {
     let modalConfig = {};
@@ -31,7 +33,9 @@ const modalConfigMap = function (type: string, price?: number) {
                 modalClass: `act-${type}`,
                 textWrapClass: `modal-${type}`,
                 textWrapHtml: `
-                        <div class="modal-qrcode-wrap"></div>
+                        <div class="modal-qrcode-wrap">
+                            <img src=${qrcodeIMG} alt="广货宝公众号" />
+                        </div>
                         <div class="modal-text">
                             <p class="text">请先关注“广货宝”公众号</p>
                             <p class="text-gray">奖励会通过广货宝公众号发送给您</p>

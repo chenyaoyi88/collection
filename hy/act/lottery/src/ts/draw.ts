@@ -1,5 +1,5 @@
 import { devTool, ajax, api, modalConfigMap } from './tool';
-import { $ } from '../vendor'; 
+import { $ } from '../vendor';
 
 /**
  * 领奖逻辑
@@ -25,11 +25,11 @@ const draw = function (oPhone: any) {
                         switch (Number(data.lotteryStatus)) {
                             case 3:
                                 // 红包已领取
-                                devTool.modal.show(modalConfigMap('get', data.amount));
+                                devTool.modal.show(modalConfigMap('money', data.amount));
                                 break;
                             case 4:
                                 // 红包已发送
-                                devTool.modal.show(modalConfigMap('money', data.amount));
+                                devTool.modal.show(modalConfigMap('get', data.amount));
                                 break;
                             default:
                                 // lotteryStatus 状态不明

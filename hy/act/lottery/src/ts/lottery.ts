@@ -1,15 +1,15 @@
 
-import { 
-    ajax, 
-    devTool, 
-    api, 
-    modalConfigMap, 
-    priceMap, 
+import {
+    ajax,
+    devTool,
+    api,
+    modalConfigMap,
+    priceMap,
     chouChangeToLing,
-    setMockPrice 
+    setMockPrice
 } from './tool';
 
-import { $ } from '../vendor'; 
+import { $ } from '../vendor';
 
 const lottery = {
     // 当前转动到哪个位置（-1 为起点位置，不在界面上显示）
@@ -91,72 +91,118 @@ function lotteryChou(oPhone, oLotterywrap, callback) {
         },
         success: function (data: Lottery) {
             if (data.result === 'success') {
-                switch (Number(data.status)) {
-                    case 1:
-                        // 成功
-                        switch (Number(data.lotteryStatus)) {
-                            case 1:
-                                // 可抽奖
-                                console.log('中奖：' + data.amount);
-                                if (data.amount) {
-                                    // 有金额返回才去执行抽奖
-                                    callback && callback(data);
-                                } else {
-                                    // 如果金额为 null，显示网络错误
-                                    devTool.modal.show();
-                                }
-                                break;
-                            case 2:
-                                // 红包已获得，可以领取-显示抽奖，抽奖按钮改为领取
-                                chouChangeToLing(oLotterywrap, data, lottery);
-                                break;
-                            case 3:
-                                // 红包已领取
-                                devTool.modal.show(modalConfigMap('get'));
-                                break;
-                            case 4:
-                                // 红包已发送
-                                devTool.modal.show(modalConfigMap('money', data.amount));
-                                break;
-                            default:
-                                // 未知错误
-                                console.log('lotteryStatus 未知错误');
+                if (Number(data.status) === 9) {
+                    // 抽奖活动已经结束
+                    devTool.modal.show(modalConfigMap('over'));
+                } else {
+                    // 成功
+                    switch (Number(data.lotteryStatus)) {
+                        case 1:
+                            // 可抽奖
+                            console.log('中奖：' + data.amount);
+                            if (data.amount) {
+                                // 有金额返回才去执行抽奖
+                                callback && callback(data);
+                            } else {
+                                // 如果金额为 null，显示网络错误
                                 devTool.modal.show();
-                        }
-                        break;
-
-                    case 2:
-                        // 用户未注册-跑完抽奖动画后弹窗提示
-                        if (data.amount) {
-                            // 有金额返回才去执行抽奖
-                            callback && callback(data);
-                        } else {
-                            // 如果金额为 null，显示网络错误
+                            }
+                            break;
+                        case 2:
+                            // 红包已获得，可以领取-显示抽奖，抽奖按钮改为领取
+                            // chouChangeToLing(oLotterywrap, data, lottery);
+                            switch (data.status) {
+                                case 1:
+                                    // 成功
+                                    chouChangeToLing(oLotterywrap, data, lottery);
+                                    break;
+                                case 2:
+                                    // 用户未注册
+                                    // devTool.modal.show(modalConfigMap('download', data.amount));
+                                    callback && callback(data);
+                                    break;
+                                case 3:
+                                    // 用户未关注公众号
+                                    // devTool.modal.show(modalConfigMap('focus'));
+                                    callback && callback(data);
+                                    break;
+                                default:
+                                    devTool.modal.show();
+                            }
+                            break;
+                        case 3:
+                            // 红包已领取
+                            switch (data.status) {
+                                case 1:
+                                    // 成功
+                                    callback && callback(data);
+                                    break;
+                                case 2:
+                                    // 用户未注册
+                                    devTool.modal.show(modalConfigMap('download', data.amount));
+                                    break;
+                                case 3:
+                                    // 用户未关注公众号
+                                    devTool.modal.show(modalConfigMap('focus'));
+                                    break;
+                                default:
+                                    devTool.modal.show();
+                            }
+                            break;
+                        case 4:
+                            // 红包已发送
+                            devTool.modal.show(modalConfigMap('get'));
+                            break;
+                        default:
+                            // 未知错误
+                            console.log('lotteryStatus 未知错误');
                             devTool.modal.show();
-                        }
-                        // devTool.modal.show(modalConfigMap('download', data.amount));
-                        break;
-                    case 3:
-                        // 用户未关注公众号-跑完抽奖动画后弹窗提示
-                        if (data.amount) {
-                            // 有金额返回才去执行抽奖
-                            callback && callback(data);
-                        } else {
-                            // 如果金额为 null，显示网络错误
-                            devTool.modal.show();
-                        }
-                        // devTool.modal.show(modalConfigMap('focus'));
-                        break;
-
-                    case 9:
-                        // 抽奖活动已经结束
-                        devTool.modal.show(modalConfigMap('over'));
-                        break;
-                    default:
-                        // status 状态不明
-                        console.log('status 状态不明');
-                        devTool.modal.show();
+                    }
                 }
+
+                // switch (Number(data.status)) {
+                //     case 1:
+                //         // 成功
+                //         switch (Number(data.lotteryStatus)) {
+                //             case 1:
+                //                 // 可抽奖
+                //                 console.log('中奖：' + data.amount);
+                //                 if (data.amount) {
+                //                     // 有金额返回才去执行抽奖
+                //                     callback && callback(data);
+                //                 } else {
+                //                     // 如果金额为 null，显示网络错误
+                //                     devTool.modal.show();
+                //                 }
+                //                 break;
+                //             case 2:
+                //                 // 红包已获得，可以领取-显示抽奖，抽奖按钮改为领取
+                //                 chouChangeToLing(oLotterywrap, data, lottery);
+                //                 break;
+                //             case 3:
+                //                 // 红包已领取
+                //                 devTool.modal.show(modalConfigMap('get'));
+                //                 break;
+                //             case 4:
+                //                 // 红包已发送
+                //                 devTool.modal.show(modalConfigMap('money', data.amount));
+                //                 break;
+                //             default:
+                //                 // 未知错误
+                //                 console.log('lotteryStatus 未知错误');
+                //                 devTool.modal.show();
+                //         }
+                //         break;
+                //     case 9:
+                //         // 抽奖活动已经结束
+                //         devTool.modal.show(modalConfigMap('over'));
+                //         break;
+                //     default:
+                //         // status 状态不明
+                //         console.log('status 状态不明');
+                //         devTool.modal.show();
+                // }
+
             } else {
                 // 失败-显示网络错误
                 devTool.modal.show();

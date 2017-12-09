@@ -14,8 +14,8 @@ let requestHost = '';
 switch (APP_ENV) {
     case 'development':
         // 开发环境
-        requestHost = '//127.0.0.1:4000';   // 本机模拟的后端接口 host 
-        // requestHost = '//sit.guanghuobao.com';
+        // requestHost = '//127.0.0.1:4000';   // 本机模拟的后端接口 host 
+        requestHost = '//sit.guanghuobao.com';
         break;
     case 'test':
         // 测试环境

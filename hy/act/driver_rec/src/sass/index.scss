@@ -1,0 +1,195 @@
+@import './component/reset.scss';
+@import './component/minxins.scss';
+@import './component/toast.scss';
+@import './component/modal.scss';
+@import './component/loading.scss';
+@import './component/animate.scss';
+
+body {
+    background-color: #fffef2;
+    &.unscroll {
+        overflow: hidden;
+    }
+}
+.text-center {
+    text-align: center;
+}
+
+.drec-type {
+    &.show-rec-main {
+        .rec-main {
+            display: block;
+            .driver.show {
+                @include align-justify(column);
+            }
+        }
+    }
+    &.show-rec-list {
+        .rec-list {
+            display: block;
+            .driver {
+                @include align-justify(column);
+            }
+        }
+    }
+}
+
+.drec-bg {
+    width: 100%;
+    position: relative;
+    z-index: 10;
+    display: none;
+    .drec-bg-img {
+        width: 100%;
+        display: block;
+    }
+    .driver {
+        display: none;
+        width: px2rem(670);
+        position: absolute;
+        left: px2rem(40);
+        z-index: 11;
+        top: px2rem(540);
+        .phone-wrap {
+            width: 100%;
+            height: px2rem(90);
+            @include align-justify();
+            background: #fff;
+            border-radius: 5px;
+            .phone {
+                width: 100%;
+                height: 100%;
+                font-size: px2rem(42);
+                text-align: center;
+                border: none;
+                outline: none;
+                box-shadow: 0 0 0px 1000px white inset !important;
+                border-radius: 10px;
+            }
+        }
+    }
+}
+
+.driver {
+    @include align-justify(column);
+    .btn-wrap {
+        .list-btn {
+            width: 100%;
+            @include align-justify();
+        }
+        .drec_btn {
+            width: 100%;
+            @include align-justify();
+            button {
+                display: block;
+                width: px2rem(527);
+                height: px2rem(92);
+                font-size: px2rem(34);
+                color: #ed2f43;
+                background: #ffcc00;
+                border: none;
+                outline: none;
+                border-radius: px2rem(50);
+                &:active {
+                    color: rgb(250, 33, 33);
+                    background-color: #FFBF06;
+                }
+            }
+        }
+    }
+}
+
+.rec-list-wrap {
+    background-color: #fffef2;
+    padding: px2rem(40) 0;
+    .rec-list-table {
+        margin: 0 auto;
+        width: px2rem(600);
+        font-size: px2rem(30);
+        border: 1px solid #cdcdcd;
+        thead {}
+        tbody {}
+        tr {
+            th,
+            td {
+                text-align: center;
+                padding: px2rem(25) 0;
+                border-bottom: 1px solid #cdcdcd;
+                border-left: 1px solid #cdcdcd;
+                &:first {
+                    border-left: none;
+                }
+            }
+            th {
+                font-weight: 500;
+                color: #cccccc;
+            }
+            td {
+                color: #999999;
+            }
+        }
+    }
+    .driver {
+        width: 100%;
+        position: initial;
+    }
+}
+
+.drec_desc {
+    >img {
+        display: block;
+        width: 100%;
+    }
+}
+
+.m-t-36 {
+    margin-top: px2rem(36);
+}
+
+.m-t-55 {
+    margin-top: px2rem(55);
+}
+
+.m-t-32 {
+    margin-top: px2rem(32);
+}
+
+input.phone-plac::-webkit-input-placeholder {
+    font-size: px2rem(30);
+    color: rgba(219, 219, 219, 1);
+}
+
+.notice-wrap {
+    display: none;
+    &.show {
+        display: block;
+    }
+}
+
+.notice-mask {
+    @include mask(12);
+    @include align-justify();
+    background: rgba($color: #000000, $alpha: 0.4);
+    .notice {
+        width: 80%;
+        background: #fff;
+        border-radius: 5px;
+        .text-wrap {
+            padding: 10px;
+            .text {
+                font-size: px2rem(40);
+            }
+        }
+        .iknow-wrap {
+            @include align-justify(); // background: red;
+            .iknow {
+                margin: 10px auto;
+                padding: 10px 15px;
+                text-align: center;
+                font-size: px2rem(40);
+                background: green;
+                border-radius: 5px;
+            }
+        }
+    }
+}

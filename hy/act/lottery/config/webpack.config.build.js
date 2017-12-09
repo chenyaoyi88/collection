@@ -65,11 +65,9 @@ module.exports = {
                 use: [{
                         loader: 'file-loader',
                         options: {
-                            name: '[name].[hash:8].[ext]',
-                            // 抽取出来放在 images 文件夹里面
-                            outputPath: 'images/',
-                            // scss 文件背景图路径要以根目录作为参考起点
-                            publicPath: '/'
+                            name: 'images/[name].[hash:8].[ext]',
+                            outputPath: '',
+                            publicPath: process.env.NODE_ENV === 'production' ? '//www.guanghuobao.com/ghb-web/' + PROJECT.NAME : '//sit.guanghuobao.com/ghb-web/' + PROJECT.NAME,
                         }
                     }
                     // , {

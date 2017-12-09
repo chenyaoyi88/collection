@@ -1,12 +1,13 @@
 
-import { 
+import {
     ajax,
-    devTool, api, modalConfigMap, priceMap, chouChangeToLing } from './tool';
+    devTool, api, modalConfigMap, priceMap, chouChangeToLing
+} from './tool';
 import { lottery } from './lottery';
-import { $ } from '../vendor'; 
+import { $ } from '../vendor';
 
 // 提交手机号码逻辑
-function submitCheck(oPhone, oLotterywrap) {
+function submitCheck(oPhone, oLotterywrap, callback?) {
     devTool.loading.show();
     $.ajax({
         type: 'POST',
@@ -35,24 +36,28 @@ function submitCheck(oPhone, oLotterywrap) {
                                 break;
                             case 3:
                                 // 红包已领取
-                                devTool.modal.show(modalConfigMap('get'));
+                                devTool.modal.show(modalConfigMap('money', data.amount));
                                 break;
                             case 4:
                                 // 红包已发送-弹窗显示-显示金额
-                                devTool.modal.show(modalConfigMap('money', data.amount));
+                                devTool.modal.show(modalConfigMap('get'));
                                 break;
                             default:
                                 devTool.modal.show();
                         }
                         break;
+
                     case 2:
                         // 弹窗-用户未注册-下载
-                        devTool.modal.show(modalConfigMap('download', data.amount));
+                        // devTool.modal.show(modalConfigMap('download', data.amount));
+                        callback && callback(data);
                         break;
                     case 3:
                         // 弹窗-用户未关注公众号
-                        devTool.modal.show(modalConfigMap('focus'));
+                        // devTool.modal.show(modalConfigMap('focus'));
+                        callback && callback(data);
                         break;
+
                     case 9:
                         // 弹窗-活动已结束
                         devTool.modal.show(modalConfigMap('over'));
@@ -60,11 +65,11 @@ function submitCheck(oPhone, oLotterywrap) {
                     default:
                         console.log('抽奖成功，但是找不到状态');
                         // 失败-显示网络错误
-                        devTool.modal.show(modalConfigMap('busy'));
+                        devTool.modal.show();
                 }
             } else {
                 // 失败-显示网络错误
-                devTool.modal.show(modalConfigMap('busy'));
+                devTool.modal.show();
             }
             devTool.loading.hide();
             console.log(data);

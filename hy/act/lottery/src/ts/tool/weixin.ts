@@ -8,13 +8,13 @@ const Env: string = process.env.NODE_ENV;
 const weixin = {
     config: <WxConfig>{
         // 分享标题
-        title: '双12送点钱给你买买买',
+        title: '双12现金抽奖 送钱给你买买买',
         // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
         link: `https://www.guanghuobao.com/${Env === 'production' ? '' : 'sit/'}api/v1/wechat/auth/lotteryActivity/request`,
         // 分享描述
-        desc: '双12送点钱给你买买买，奖金高达100元',
+        desc: '邀您参加双12现金抽奖，高达100元，保底3元！只须关注广货宝微信公众号(限广货宝注册会员)',
         // 分享图标
-        imgUrl: window.location.href + (shareIMG.substring(1)),
+        imgUrl: 'https:' + shareIMG,
         // 分享类型,music、video或link，不填默认为link
         type: '',
         // 如果type是music或video，则要提供数据链接，默认为空
@@ -46,10 +46,15 @@ const weixin = {
                     ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
                 });
 
+                console.log(wx);
+
                 // config 配置成功
                 wx.ready(function () {
                     console.log('wx-ready config 配置成功');
                     // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+
+                    // alert(weixin.config.imgUrl);
+                    // alert(weixin.config.desc);
 
                     // 分享到朋朋友圈
                     wx.onMenuShareTimeline({

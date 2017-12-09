@@ -1,4 +1,5 @@
 module.exports = {
+    NAME: 'lottery/',
     PATH: {
         DIST: '../dist/',
         SRC: '../src/'

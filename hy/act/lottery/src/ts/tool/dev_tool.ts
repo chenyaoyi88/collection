@@ -1,3 +1,4 @@
+import { $ } from '../../vendor';
 
 function json2url(json: { t: number }): string {
     json.t = Math.random();
@@ -202,7 +203,9 @@ const devTool = {
             if (options.btnWrapHtml) {
                 oModalBtnWrap.innerHTML = options.btnWrapHtml;
             }
+
             const removeModal = function (event: any) {
+                event.preventDefault();
                 const oTarget = event.srcElement;
                 const targetID = oTarget['dataset'].id;
                 if (targetID === 'modal-close') {
@@ -217,11 +220,11 @@ const devTool = {
                         options.closeCallback && options.closeCallback();
                     }
                     document.body.removeChild(oModal);
-                    document.removeEventListener('click', removeModal, false);
+                    document.removeEventListener('touchend', removeModal, false);
                 }
             };
 
-            document.addEventListener('click', removeModal, false);
+            document.addEventListener('touchend', removeModal, false);
 
 
         }
@@ -244,11 +247,11 @@ const devTool = {
         } else if (ua.match(/Android/i) && isWeixin()) {
             // 如果是 Android 设备
             if (type === 'driver') {
-                // Android 买家
-                window.location.href = '//a.app.qq.com/o/simple.jsp?pkgname=com.highsunbuy';
-            } else {
                 // Android 司机
                 window.location.href = '//a.app.qq.com/o/simple.jsp?pkgname=com.highsun.driver';
+            } else {
+                // Android 买家
+                window.location.href = '//a.app.qq.com/o/simple.jsp?pkgname=com.highsunbuy';
             }
         } else {
             window.location.href = '//www.guanghuobao.com/android/ghb-seller.apk';
