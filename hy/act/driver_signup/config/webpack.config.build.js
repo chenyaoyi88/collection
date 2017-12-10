@@ -89,11 +89,13 @@ module.exports = {
                 use: [{
                     loader: 'file-loader',
                     options: {
-                        name: 'images/[name].[hash:8].[ext]',
+                        name: '[name].[hash:8].[ext]',
                         // 抽取出来放在 images 文件夹里面
-                        outputPath: '',
+                        outputPath: 'images/',
                         // scss 文件背景图路径要以根目录作为参考起点
-                        publicPath: PROJECT.PUBLIC_PATH
+                        publicPath: PROJECT.PUBLIC_PATH,
+                        // 图片在非开发模式下使用相对路径
+                        // useRelativePath: ENV === 'development' ? false : true
                     }
                 }
                 // , {

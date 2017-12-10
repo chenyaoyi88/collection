@@ -14,6 +14,7 @@ var testPost = require('./routes/test_post');
 var submit = require('./routes/submit');
 var lottery = require('./routes/lottery');
 var draw = require('./routes/draw');
+var receiveRedpack = require('./routes/receiveRedpack');
 
 var app = express();
 
@@ -55,6 +56,7 @@ app.use('/test_post', testPost);
 app.use('/api/v1/decLotteryActivity/submit', submit);
 app.use('/api/v1/decLotteryActivity/lottery', lottery);
 app.use('/api/v1/decLotteryActivity/draw', draw);
+app.use('/api/v1/receiveRedpack', receiveRedpack);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

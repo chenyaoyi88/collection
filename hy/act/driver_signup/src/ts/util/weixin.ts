@@ -1,4 +1,4 @@
-import { ajax, api } from '../tool';
+import { ajax, api } from '../util';
 import * as shareIMG from '../../images/share.jpg';
 import { $ } from '../../vendor'; 
 
