@@ -1,6 +1,5 @@
 import { ajax, api } from '../util';
 import * as shareIMG from '../../images/share.jpg';
-import { $ } from '../../vendor'; 
 
 // 环境变量
 const Env: string = process.env.NODE_ENV;
@@ -23,7 +22,7 @@ const weixin = {
     init: function () {
 
         // 请求拿微信 js-sdk 配置参数
-        $.ajax({
+        ajax({
             url: api.wechatjs,
             type: 'GET',
             data: {

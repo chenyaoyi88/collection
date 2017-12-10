@@ -97,31 +97,27 @@ module.exports = {
                         // 图片在非开发模式下使用相对路径
                         // useRelativePath: ENV === 'development' ? false : true
                     }
-                }
-                // , {
-                //     // 压缩图片
-                //     loader: 'image-webpack-loader',
-                //     options: {
-                //         mozjpeg: {
-                //             progressive: true,
-                //             quality: 90
-                //         },
-                //         optipng: {
-                //             enabled: false,
-                //         },
-                //         pngquant: {
-                //             quality: '65-90',
-                //             speed: 4
-                //         },
-                //         gifsicle: {
-                //             interlaced: false,
-                //         },
-                //         webp: {
-                //             quality: 75
-                //         }
-                //     }
-                // }
-            ],
+                }, {
+                    // 压缩图片
+                    loader: 'image-webpack-loader',
+                    options: {
+                        mozjpeg: {
+                            quality: 100
+                        },
+                        optipng: {
+                            optimizationLevel: 7
+                        },
+                        pngquant: {
+                            quality: 100
+                        },
+                        gifsicle: {
+                            interlaced: false,
+                        },
+                        webp: {
+                            quality: 75
+                        }
+                    }
+                }],
                 exclude: /node_modules/
             }, {
                 // 处理 html 里面用 img 标签的图片，不然打包的时候不会处理 
