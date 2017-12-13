@@ -42,19 +42,19 @@ const Tool = {
             // 如果是 ios 设备
             if (type === 'buyer') {
                 // ios 买家
-                window.location.href = '//a.app.qq.com/o/simple.jsp?pkgname=com.highsunbuy';
+                window.location.href = '//www.baidu.com';
             } else {
                 // ios 司机
-                window.location.href = '//a.app.qq.com/o/simple.jsp?pkgname=com.highsun.driver';
+                window.location.href = 'www.google.com';
             }
         } else if (ua.match(/Android/i) && isWeixin()) {
             // 如果是 Android 设备
             if (type === 'driver') {
                 // Android 司机
-                window.location.href = '//a.app.qq.com/o/simple.jsp?pkgname=com.highsun.driver';
+                window.location.href = 'www.google.com';
             } else {
                 // Android 买家
-                window.location.href = '//a.app.qq.com/o/simple.jsp?pkgname=com.highsunbuy';
+                window.location.href = '//www.baidu.com';
             }
         } else {
             window.location.href = '//www.guanghuobao.com/android/ghb-seller.apk';

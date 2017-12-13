@@ -9,7 +9,7 @@ const weixin = {
         // 分享标题
         title: '注册即可领50元现金',
         // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        link: `https://www.guanghuobao.com/${Env === 'production' ? '' : 'sit/'}api/v1/wechat/auth/receiveRedpack/request`,
+        link: `https://www.xxx.com/${Env === 'production' ? '' : 'sit/'}api/v1/wechat/auth/receiveRedpack/request`,
         // 分享描述
         desc: '注册即可领50元现金',
         // 分享图标

@@ -35,13 +35,13 @@ const modalConfig = function (code: string) {
         case '000':
             type = 'success';
             imgSrc = IMG_success;
-            text1 = '50元奖金即将通过广货宝公众号发送给您，请勿解除关注！';
+            text1 = '50元奖金即将通过xxx公众号发送给您，请勿解除关注！';
             text2 = '';
             break;
         case '001':
             type = 'nofound';
             imgSrc = IMG_nofound;
-            text1 = '您还没注册广货宝司机，请注册后再来领奖吧！';
+            text1 = '您还没注册xxx司机，请注册后再来领奖吧！';
             text2 = '';
             break;
         case '002':
@@ -60,8 +60,8 @@ const modalConfig = function (code: string) {
         case '004':
             type = 'subscribe';
             imgSrc = IMG_subscribe;
-            text1 = '请先关注“广货宝”公众号';
-            text2 = '奖励会通过广货宝公众号发送给您！';
+            text1 = '请先关注“xxx”公众号';
+            text2 = '奖励会通过xxx公众号发送给您！';
             break;
         case '005':
             type = 'get';

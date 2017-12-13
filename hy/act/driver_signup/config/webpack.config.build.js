@@ -17,12 +17,12 @@ switch (ENV) {
         break;
     case 'test':
         envText = '测试环境';
-        PROJECT.PUBLIC_PATH = '//sit.guanghuobao.com/ghb-web/' + PROJECT.NAME;
+        PROJECT.PUBLIC_PATH = '//sit.xxx.com/ghb-web/' + PROJECT.NAME;
         PROJECT.OUTPUT = PROJECT.PATH.TEST;
         break;
     case 'production':
         envText = '生产环境';
-        PROJECT.PUBLIC_PATH = '//www.guanghuobao.com/ghb-web/' + PROJECT.NAME;
+        PROJECT.PUBLIC_PATH = '//www.xxx.com/ghb-web/' + PROJECT.NAME;
         PROJECT.OUTPUT = PROJECT.PATH.PROD;
         break;
 };
