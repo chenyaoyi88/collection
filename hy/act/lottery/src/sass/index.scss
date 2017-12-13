@@ -1,9 +1,7 @@
-@import './component/reset';
-@import './component/minxins';
-@import './component/toast';
-@import './component/modal';
-@import './component/loading';
+@import './util/index.scss';
 @import './lottery';
+@import './modal_config';
+
 body {
     background-color: #ffb200;
 }

@@ -1,10 +1,17 @@
 import * as qrcodeIMG from '../../images/lottery/modal-qrcode.png';
 
-// 不同弹窗显示的内容
-const modalConfigMap = function (type: string, price?: number) {
+/**
+ * 不同弹窗显示的内容
+ * 
+ * @param {string} type 弹窗的类型
+ * @param {number} [price] 中奖的金额
+ * @returns {Object} 
+ */
+function modalConfigMap(type: string, price?: number): Object {
     let modalConfig = {};
     switch (type) {
         case 'over':
+            // 活动结束
             modalConfig = {
                 modalClass: `act-${type}`,
                 textWrapClass: `modal-${type}`,
@@ -17,6 +24,7 @@ const modalConfigMap = function (type: string, price?: number) {
             }
             break;
         case 'get':
+            // 已领取过奖励
             modalConfig = {
                 modalClass: `act-${type}`,
                 textWrapClass: `modal-${type}`,
@@ -29,21 +37,23 @@ const modalConfigMap = function (type: string, price?: number) {
             }
             break;
         case 'focus':
+            // 要关注
             modalConfig = {
                 modalClass: `act-${type}`,
                 textWrapClass: `modal-${type}`,
                 textWrapHtml: `
                         <div class="modal-qrcode-wrap">
-                            <img src=${qrcodeIMG} alt="广货宝公众号" />
+                            <img src=${qrcodeIMG} alt="xxx公众号" />
                         </div>
                         <div class="modal-text">
-                            <p class="text">请先关注“广货宝”公众号</p>
-                            <p class="text-gray">奖励会通过广货宝公众号发送给您</p>
+                            <p class="text">请先关注“xxx”公众号</p>
+                            <p class="text-gray">奖励会通过xxx公众号发送给您</p>
                         </div>
                     `
             }
             break;
         case 'download':
+            // 下载 app 
             modalConfig = {
                 modalClass: `act-${type}`,
                 textWrapClass: `modal-${type}`,
@@ -51,16 +61,17 @@ const modalConfigMap = function (type: string, price?: number) {
                     <div class="modal-price">${price || '--'}元</div>
                     <div class="modal-text">
                         <p class="text">恭喜您抽中${price || '--'}元现金红包</p>
-                        <p class="text-gray">请下载广货宝叫车端或广货宝司机端注册成为会员在个人微信钱包中查收</p>
+                        <p class="text-gray">请下载xxx叫车端或xxx司机端注册成为会员在个人微信钱包中查收</p>
                     </div>
                     <div class="download-btn-wrap">
-                        <a data-id="download-buyer" class="download-btn c-user" href="javascript:;">下载广货宝叫车端</a>
-                        <a data-id="download-driver" class="download-btn c-driver" href="javascript:;">下载广货宝司机端</a>
+                        <a data-id="download-buyer" class="download-btn c-user" href="javascript:;">下载xxx叫车端</a>
+                        <a data-id="download-driver" class="download-btn c-driver" href="javascript:;">下载xxx司机端</a>
                     </div>
                     `
             }
             break;
         case 'money':
+            // 显示中间金额
             modalConfig = {
                 modalClass: `act-${type}`,
                 textWrapClass: `modal-${type}`,
@@ -69,9 +80,6 @@ const modalConfigMap = function (type: string, price?: number) {
                 <div class="modal-text">
                     <p class="text">恭喜您抽中${price || '--'}元现金红包</p>
                     <p class="text-gray">已存入您的个人微信钱包，请查收</p>
-                </div>
-                <div class="modal-btn-wrap money-btn-wrap">
-                    <div data-id="modal-close" class="modal-close-btn  modal-btn">确定</div>
                 </div>
                 `
             };
@@ -97,25 +105,26 @@ const proPriceMap = {
 // 测试环境：（！！！！NOTE：测试环境的金额为：真实金额/100 + 1）
 // 正式环境：proPriceMap
 const priceMap = function () {
-    const env = process.env.NODE_ENV;
-    if (env === 'development' || env === 'test') {
-        // 开发||测试
-        let mockPriceMap: any = {};
-        for (let pro in proPriceMap) {
-            mockPriceMap[(Number(pro) / 100 + 1)] = proPriceMap[pro];
-        }
-        return mockPriceMap;
-    } else {
-        // 生产
-        return proPriceMap;
-    }
+    // const env = process.env.NODE_ENV;
+    // if (env === 'development' || env === 'test') {
+    //     // 开发||测试
+    //     let mockPriceMap: any = {};
+    //     for (let pro in proPriceMap) {
+    //         mockPriceMap[(Number(pro) / 100 + 1)] = proPriceMap[pro];
+    //     }
+    //     return mockPriceMap;
+    // } else {
+    //     // 生产
+    //     return proPriceMap;
+    // }
+    return proPriceMap;
 }
 
 /**
  * 测试环境设置假的金额
- * @param aLotteryUnits 
+ * 
  */
-const setMockPrice = function (): void {
+function setMockPrice(): void {
     const env = process.env.NODE_ENV;
     if (env === 'development' || env === 'test') {
         let oLottery = document.querySelector('#lottery');
@@ -132,23 +141,4 @@ const setMockPrice = function (): void {
     }
 }
 
-/**
- * 显示抽奖，抽奖按钮改为领取
- * @param oLotterywrap 抽奖界面
- * @param data 请求回来的数据
- * @param lottery 抽奖对象
- */
-const chouChangeToLing = function (oLotterywrap: any, data, lottery: any): void {
-    // 移除抽奖按钮的图片
-    oLotterywrap.classList.remove('chou');
-    // 变成领取按钮的图片
-    oLotterywrap.classList.add('show', 'ling');
-    // 如果 data.amount 为 null 的话，不在界面上显示
-    let pricePos = data.amount === null ? -1 : data.amount;
-    // 设置奖品位置
-    lottery.index = priceMap()[pricePos];
-    // 初始化抽奖
-    lottery.init('lottery');
-}
-
-export { modalConfigMap, priceMap, chouChangeToLing, setMockPrice }; 
+export { modalConfigMap, priceMap, setMockPrice }; 

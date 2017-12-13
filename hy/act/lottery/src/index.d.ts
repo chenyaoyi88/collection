@@ -18,7 +18,7 @@ interface Ajax<T> {
     //  请求超时时间
     timeout?: number;
     //  需要设置的请求头
-    header?: any;
+    headers?: any;
     //  请求成功回调
     success?: Function;
     //   请求失败回调
