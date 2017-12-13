@@ -6,8 +6,14 @@ import { modalConfigMap, priceMap } from './config';
 import { toast, loading, modal } from '../components';
 import { lottery } from './lottery';
 
-// 提交手机号码逻辑
-function submitCheck(oPhone, oLotterywrap, callback?) {
+/**
+ * 提交手机号码逻辑
+ * 
+ * @param {HTMLInputElement} oPhone 手机号码 input
+ * @param {HTMLElement} oLotterywrap 抽奖DIV
+ * @param {Function} [callback] 回调函数
+ */
+function submitCheck(oPhone: HTMLInputElement, oLotterywrap: HTMLElement, callback?: Function): void {
     loading.show();
     ajax({
         type: 'POST',

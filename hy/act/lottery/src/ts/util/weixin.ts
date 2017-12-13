@@ -7,11 +7,11 @@ const Env: string = process.env.NODE_ENV;
 const weixin = {
     config: <WxConfig>{
         // 分享标题
-        title: '注册即可领50元现金',
+        title: '分享标题',
         // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
         link: `https://www.xxx.com/${Env === 'production' ? '' : 'sit/'}api/v1/wechat/auth/receiveRedpack/request`,
-        // 分享描述
-        desc: '注册即可领50元现金',
+        // 分享描述（NOTE：注意不能太长，否则会影响分享图标显示不了）
+        desc: '分享描述',
         // 分享图标
         imgUrl: 'https:' + shareIMG,
         // 分享类型,music、video或link，不填默认为link

@@ -1,7 +1,7 @@
 
 import '../sass/index.scss';
 import { modalConfigMap, priceMap } from './config';
-import { ajax, Tool, api, weixin } from './util';
+import { ajax, Tool, weixin } from './util';
 import { toast, loading, modal } from '../components';
 import { lottery, lotteryChou, roll } from './lottery';
 import { submitCheck } from './submit';
@@ -69,7 +69,7 @@ Tool.domReady(() => {
             if (lottery.isClick) {
                 return false;
             } else {
-                // 抽奖逻辑
+                // 抽奖逻辑（note：请求完抽奖接口拿到数据之后再去跑中奖动画）
                 lotteryChou(oPhone, oLotterywrap, function (data: Draw) {
                     // 返回抽奖所需数据
                     lotteryResData = data;

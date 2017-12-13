@@ -4,9 +4,10 @@ import { ajax, Tool, api, weixin } from './util';
 
 /**
  * 领奖逻辑
- * @param oPhone 手机号码
+ * 
+ * @param {HTMLInputElement} oPhone 手机号码 input 
  */
-const draw = function (oPhone: HTMLInputElement) {
+function draw(oPhone: HTMLInputElement) {
     loading.show();
     ajax({
         type: 'POST',
