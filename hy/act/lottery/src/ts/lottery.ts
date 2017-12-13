@@ -1,15 +1,6 @@
-
-import {
-    ajax,
-    devTool,
-    api,
-    modalConfigMap,
-    priceMap,
-    chouChangeToLing,
-    setMockPrice
-} from './tool';
-
-import { $ } from '../vendor';
+import { modalConfigMap, priceMap } from './config';
+import { ajax, Tool, api, weixin } from './util';
+import { toast, loading, modal } from '../components';
 
 const lottery = {
     // 当前转动到哪个位置（-1 为起点位置，不在界面上显示）
@@ -77,142 +68,114 @@ const lottery = {
     }
 };
 
-// 请求抽奖接口拿奖品结果
-function lotteryChou(oPhone, oLotterywrap, callback) {
-    $.ajax({
-        type: 'POST',
-        url: api.lottery,
-        data: JSON.stringify({
-            phone: oPhone.value,
-            openId: devTool.getQueryString('openId')
-        }),
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        success: function (data: Lottery) {
-            if (data.result === 'success') {
-                if (Number(data.status) === 9) {
-                    // 抽奖活动已经结束
-                    devTool.modal.show(modalConfigMap('over'));
-                } else {
-                    // 成功
-                    switch (Number(data.lotteryStatus)) {
-                        case 1:
-                            // 可抽奖
-                            console.log('中奖：' + data.amount);
-                            if (data.amount) {
-                                // 有金额返回才去执行抽奖
-                                callback && callback(data);
-                            } else {
-                                // 如果金额为 null，显示网络错误
-                                devTool.modal.show();
-                            }
-                            break;
-                        case 2:
-                            // 红包已获得，可以领取-显示抽奖，抽奖按钮改为领取
-                            // chouChangeToLing(oLotterywrap, data, lottery);
-                            switch (data.status) {
-                                case 1:
-                                    // 成功
-                                    chouChangeToLing(oLotterywrap, data, lottery);
-                                    break;
-                                case 2:
-                                    // 用户未注册
-                                    // devTool.modal.show(modalConfigMap('download', data.amount));
-                                    callback && callback(data);
-                                    break;
-                                case 3:
-                                    // 用户未关注公众号
-                                    // devTool.modal.show(modalConfigMap('focus'));
-                                    callback && callback(data);
-                                    break;
-                                default:
-                                    devTool.modal.show();
-                            }
-                            break;
-                        case 3:
-                            // 红包已领取
-                            switch (data.status) {
-                                case 1:
-                                    // 成功
-                                    callback && callback(data);
-                                    break;
-                                case 2:
-                                    // 用户未注册
-                                    devTool.modal.show(modalConfigMap('download', data.amount));
-                                    break;
-                                case 3:
-                                    // 用户未关注公众号
-                                    devTool.modal.show(modalConfigMap('focus'));
-                                    break;
-                                default:
-                                    devTool.modal.show();
-                            }
-                            break;
-                        case 4:
-                            // 红包已发送
-                            devTool.modal.show(modalConfigMap('get'));
-                            break;
-                        default:
-                            // 未知错误
-                            console.log('lotteryStatus 未知错误');
-                            devTool.modal.show();
-                    }
+/**
+ * 
+ * 
+ * @param {*} lotteryResData 
+ * @param {number} getPrice 
+ * @param {number} getPricePos 
+ * @returns {boolean} 
+ */
+function roll(lotteryResData: any, getPrice: number, getPricePos: number): boolean {
+
+    lottery.times += 1;
+    // 转动过程调用的是 lottery 的 roll 方法，这里是第一次调用初始化
+    lottery.roll();
+
+    // 如果是抽奖完成，重置
+    // 如果切奖次数 > 转动基本次数 多 15 次（超出基本次数之后延迟到达奖品的次数）
+    if (lottery.times > lottery.cycle + 15 && lottery.prize == lottery.index) {
+
+        clearTimeout(lottery.timer);
+        lottery.prize = -1;
+        lottery.times = 0;
+        lottery.isClick = false;
+
+        setTimeout(() => {
+            if (lotteryResData.result === 'success') {
+                switch (lotteryResData.status) {
+                    case 1:
+                        // 成功
+                        modal.show(modalConfigMap('money', getPrice));
+                        break;
+                    case 2:
+                        // 用户未注册
+                        modal.show(modalConfigMap('download', lotteryResData.amount));
+                        break;
+                    case 3:
+                        // 用户未关注公众号
+                        modal.show(modalConfigMap('focus'));
+                        break;
+                    default:
+                        modal.show();
                 }
-
-                // switch (Number(data.status)) {
-                //     case 1:
-                //         // 成功
-                //         switch (Number(data.lotteryStatus)) {
-                //             case 1:
-                //                 // 可抽奖
-                //                 console.log('中奖：' + data.amount);
-                //                 if (data.amount) {
-                //                     // 有金额返回才去执行抽奖
-                //                     callback && callback(data);
-                //                 } else {
-                //                     // 如果金额为 null，显示网络错误
-                //                     devTool.modal.show();
-                //                 }
-                //                 break;
-                //             case 2:
-                //                 // 红包已获得，可以领取-显示抽奖，抽奖按钮改为领取
-                //                 chouChangeToLing(oLotterywrap, data, lottery);
-                //                 break;
-                //             case 3:
-                //                 // 红包已领取
-                //                 devTool.modal.show(modalConfigMap('get'));
-                //                 break;
-                //             case 4:
-                //                 // 红包已发送
-                //                 devTool.modal.show(modalConfigMap('money', data.amount));
-                //                 break;
-                //             default:
-                //                 // 未知错误
-                //                 console.log('lotteryStatus 未知错误');
-                //                 devTool.modal.show();
-                //         }
-                //         break;
-                //     case 9:
-                //         // 抽奖活动已经结束
-                //         devTool.modal.show(modalConfigMap('over'));
-                //         break;
-                //     default:
-                //         // status 状态不明
-                //         console.log('status 状态不明');
-                //         devTool.modal.show();
-                // }
-
-            } else {
-                // 失败-显示网络错误
-                devTool.modal.show();
             }
-        },
-        error: function () {
-            // 失败-显示网络错误
-            devTool.modal.show();
+        }, 200);
+
+    } else {
+        if (lottery.times < lottery.cycle) {
+            // 1.如果没有到达基本次数，继续跑，速度由初始的 100，慢慢由减速开始 90 80 70...
+            lottery.speed -= 10;
+        } else if (lottery.times == lottery.cycle) {
+            // 2.如果达到了基本的次数，出奖品，但是继续跑（要多跑 20 次）
+            lottery.prize = getPricePos;
+        } else {
+            // speed 的值加大，定时器调用间隔越慢，速度就越来越慢
+            lottery.speed += 10;
         }
-    });
+        // 控制最快速度
+        // speed 的值越小，定时器调用间隔越快，速度就越快
+        if (lottery.speed < 50) {
+            lottery.speed = 50;
+        };
+        // 循环调用
+        lottery.timer = setTimeout(function () {
+            roll(lotteryResData, getPrice, getPricePos);
+        }, lottery.speed);
+    }
+    return false;
 }
 
-export { lottery, lotteryChou };
+/**
+ * 请求抽奖接口拿奖品结果
+ * 
+ * @param {HTMLInputElement} oPhone 手机号码
+ * @param {HTMLElement} oLotterywrap 抽奖DIV
+ * @param {Function} fuSuccess 抽奖接口请求成功之后的回调
+ */
+function lotteryChou(oPhone: HTMLInputElement, oLotterywrap: HTMLElement, fuSuccess: Function) {
+
+    // 模拟抽奖结果
+    loading.show();
+    setTimeout(() => {
+        let res = {
+            result: 'success',
+            status: 1,
+            amount: 8
+        };
+        loading.hide();
+        fuSuccess(res);
+    }, 300);
+
+    // // 请求抽奖接口
+    // ajax({
+    //     type: 'POST',
+    //     url: api.lottery,
+    //     data: JSON.stringify({
+    //         phone: oPhone.value,
+    //         openId: Tool.getQueryString('openId')
+    //     }),
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     success: function (data: Lottery) {
+    //         // 获取奖品接口，拿到数据之后去展示
+    //     },
+    //     error: function () {
+    //         // 失败-显示网络错误
+    //         modal.show();
+    //     }
+    // });
+}
+
+export { lottery, roll, lotteryChou };

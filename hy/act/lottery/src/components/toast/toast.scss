@@ -1,4 +1,5 @@
-@import './minxins.scss';
+@import '../index.scss';
+
 .toast {
     position: fixed;
     left: 0;
@@ -33,13 +34,13 @@
             font-size: px2rem(35);
             color: #fff;
             background: rgba(10, 8, 8, 0.75);
-            border-radius: 10px;
+            border-radius: 5px;
         }
     }
 }
 
 .animated {
-    animation-duration: 1.2s;
+    animation-duration: 1s;
     animation-fill-mode: both;
     animation-timing-function: ease;
 }
