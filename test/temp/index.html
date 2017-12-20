@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>Document</title>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="br1"></div>
+
+	<img style="margin-left: 100px; margin-top: 150px;" width="300" data-id="scale" src="./img/test.png" alt="">
+
+	<!-- <span data-id="point">
+		<img style="margin-left: 100px; margin-top: 150px;" width="300" data-id="scale" src="./img/test.png" alt="">
+		<span></span>
+	</span> -->
+
+	<div id="br2"></div>
+
+	<!-- <div id="img-scale-wrap" class="img-scale-wrap">
+		<div class="img-scale" id="img-scale">
+			<img src="./img/test.png" width="900" height="900" />
+		</div>
+		<span id="mask"></span>
+	</div> -->
+
+	<br>
+
+	<script>
+		function setBr(obj, count) {
+			let sBr = '';
+			for (let i = 0; i < count; i++) {
+				sBr += '<br>';
+			}
+			obj.innerHTML = sBr;
+		}
+
+		const oDivBr1 = document.querySelector('#br1');
+		const oDivBr2 = document.querySelector('#br2');
+		const nBr1 = 100;
+		const nBr2 = 50;
+
+		setBr(oDivBr1, nBr1);
+		setBr(oDivBr2, nBr2);
+
+		setImgScale();
+
+		function setImgScale() {
+
+			// document.addEventListener('mouseover', function (ev) {
+			// 	const oEvent = ev || window.event;
+			// 	const oTarget = oEvent.srcElement || oEvent.target;
+			// 	const oTargetID = oTarget.dataset['id'];
+			// 	if (!oTargetID) return;
+			// 	if (oTargetID !== 'scale') return;
+			// 	const oParent = oTarget.parentNode || oTarget.parentElement;
+			// 	if (oParent.dataset['id'] === 'point') {
+			// 		// 已有遮罩
+			// 		console.log(oParent.id);
+			// 	} else {
+			// 		// 没有遮罩 -> 创建遮罩
+			// 		const oPointID = `ponit-${new Date().getTime()}`;
+			// 		oTarget.outerHTML = `
+			// 		<span id="${oPointID}" data-id="point">
+			// 			${oTarget.outerHTML}
+			// 			<div id="img-mask"></div>
+			// 		</span>`;
+
+			// 		const oPointWrap = document.querySelector(`#${oPointID}`);
+			// 		const oImgMask = document.querySelector(`#img-mask`);
+			// 		const oImg = oImgMask.previousElementSibling;
+
+			// 		oPointWrap.style.cssText = `
+			// 			position: relative;
+			// 		`;
+
+			// 		console.dir(oImg);
+
+			// 		oImgMask.style.cssText = `
+			// 			position: absolute;
+			// 			left: ${oImg.offsetLeft}px;
+			// 			top: ${oImg.offsetTop}px;
+			// 			z-index: 101;
+			// 			width: ${oImg.offsetWidth}px;
+			// 			height: ${oImg.offsetHeight}px;
+			// 			background: red;
+			// 		`;
+			// 	}
+
+			// }, false);
+
+			const aImgScale = document.querySelectorAll('[data-id=scale]');
+
+			if (!(aImgScale && aImgScale.length)) {
+				return;
+			}
+
+			for (let i = 0; i < aImgScale.length; i++) {
+
+				aImgScale[i].addEventListener('mouseover', function (ev) {
+					var oEvent = ev || event;
+					console.log(oEvent);
+					console.log('进来了');
+
+					const imgSrc = this.getAttribute('src');
+					const imgWidth = this.offsetWidth;
+					const imgHeight = this.offsetHeight;
+					const imgLeft = this.offsetLeft;
+					const imgTop = this.offsetTop;
+					const oTmpImg = this;
+
+					document.body.insertAdjacentHTML('beforeend',
+						`
+						<div id="img-scale-wrap">
+							<div id="img-scale">
+								<img src="${imgSrc}" />
+							</div>
+							<span id="img-mask"></span>
+						</div>`
+					);
+
+					const oScaleWrap = document.querySelector('#img-scale-wrap');
+					const oScaleImgWrap = oScaleWrap.querySelector('#img-scale');
+					const oScaleMask = oScaleWrap.querySelector('#img-mask');
+
+					oScaleWrap.style.cssText =
+						`
+							position: absolute;
+							width: ${imgWidth}px; 
+							height: ${imgHeight}px;
+							left: ${imgWidth + imgLeft + 20}px; 
+							top: ${imgTop}px;
+							z-index: 100;
+						`;
+
+					oScaleImgWrap.style.cssText =
+						`
+						position: absolute;
+						left: 0;
+						top: 0;
+						width: 100%;
+						height: 100%;
+						z-index: 101;
+						overflow: hidden;
+					`;
+
+					oScaleMask.style.cssText =
+						`
+						position: absolute;
+						left: 0;
+						top: 0;
+						width: 100px;
+						height: 100px;
+						z-index: 102;
+						line-height: 100px;
+						text-align: center;
+						color: #fff;
+						font-size: 50px;
+						background: url(http://gtms01.alicdn.com/tps/i4/T12pdtXaldXXXXXXXX-2-2.png);
+					`;
+
+					setImgScalePosition(this, oScaleImgWrap, oScaleMask);
+
+				}, false);
+
+				aImgScale[i].addEventListener('mouseout', function () {
+					console.log('出来了');
+					const oScaleWrap = document.getElementById("img-scale-wrap");
+					document.body.removeChild(oScaleWrap);
+				}, false);
+
+			}
+		}
+
+		function setImgScalePosition(oImgTarget, oScaleImgWrap, oScaleMask) {
+
+			const oImgScale = oScaleImgWrap.children[0];
+
+			//鼠标移动
+			oImgTarget.onmousemove = function (ev) {
+				var oEvent = ev || event;
+				var l = oEvent.clientX - oImgTarget.offsetLeft - oScaleMask.offsetWidth / 2;
+				var t = (oEvent.clientY + document.documentElement.scrollTop) - oImgTarget.offsetTop - oScaleMask.offsetHeight / 2;
+
+				var maxWidth = oImgTarget.offsetWidth - oScaleMask.offsetWidth;
+				var maxHeight = (oImgTarget.offsetHeight) - oScaleMask.offsetHeight;
+
+				if (l < 0) {
+					l = 0;
+				} else if (l > maxWidth) {
+					l = maxWidth;
+				}
+
+				if (t < 0) {
+					t = 0;
+				} else if (t > maxHeight) {
+					t = maxHeight;
+				}
+
+				var scaleX = l / maxWidth;
+				var scaleY = t / maxHeight;
+
+				oImgScale.style.position = 'absolute';
+				oImgScale.style.left = -scaleX * (oImgScale.offsetWidth - oScaleImgWrap.offsetWidth) + "px";
+				oImgScale.style.top = -scaleY * (oImgScale.offsetHeight - oScaleImgWrap.offsetHeight) + "px";
+
+				oScaleMask.style.left = (l - oImgTarget.offsetWidth - 20) + "px";
+				oScaleMask.style.top = t + "px";
+
+			};
+		}
+	</script>
+</body>
+
+</html>

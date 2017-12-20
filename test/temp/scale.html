@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+*{margin:0;padding:0;}
+#div1{ position:relative;width:310px; height:310px; margin:40px;}
+#div2 {  display:none;position:absolute;left:320px; top:0;width:310px; height:310px;overflow:hidden;}
+#div2 img { position:absolute;left:0; top:0; }
+#mask{ display:none; position:absolute;left:0;top:0; width:100px; height:100px; line-height:100px; text-align:center; color:#fff; font-size:50px; background:url(http://gtms01.alicdn.com/tps/i4/T12pdtXaldXXXXXXXX-2-2.png);
+cursor: move;}
+
+</style>
+<script>
+window.onload = function(){
+	 
+	var oDiv1 = document.getElementById("div1");
+	var oDiv2 = document.getElementById("div2");
+	var oImg2 = oDiv2.children[0];
+	var oSpan = document.getElementById("mask");
+	
+	//鼠标移动
+	oDiv1.onmousemove = function(ev){
+		var oEvent = ev || event;
+		
+		var l = oEvent.clientX - oDiv1.offsetLeft - oSpan.offsetWidth/2;
+		var t = oEvent.clientY - oDiv1.offsetTop  - oSpan.offsetHeight/2;
+		
+		var maxWidth = oDiv1.offsetWidth - oSpan.offsetWidth;
+		var maxHeight = oDiv1.offsetHeight - oSpan.offsetHeight;
+		if(l < 0){
+			l = 0;
+		} else if(l > maxWidth){
+			l = maxWidth;
+		}
+		
+		if(t < 0){
+			t = 0;
+		} else if(t > maxHeight){
+			t = maxHeight;
+		}
+		
+		var scaleX = l/maxWidth;
+		var scaleY = t/maxHeight;
+		
+		//oSpan.innerHTML = scaleX.toFixed(2) +  "|" + scaleY.toFixed(2);
+		
+		oImg2.style.left = -scaleX*(oImg2.offsetWidth - oDiv2.offsetWidth) + "px";
+		oImg2.style.top = -scaleY*(oImg2.offsetHeight - oDiv2.offsetHeight) + "px";
+		
+		oSpan.style.left = l + "px";
+		oSpan.style.top  = t + "px";
+			
+	};
+	
+	
+	oDiv1.onmouseover = function(ev){
+		var oEvent = ev || event;
+		
+		var oFrom = oEvent.formElement || oEvent.relatedTarget;
+		
+		if(oDiv1.contains(oFrom)){
+			return;
+		}
+		
+		
+		//小图
+		oSpan.style.display = "block";
+		//大图
+		oDiv2.style.display = "block";
+	};
+	
+	oDiv1.onmouseout = function(ev){
+		
+		var oEvent = ev || event;
+		
+		var oTo = oEvent.toElement || oEvent.relatedTarget;
+		
+		if(oDiv1.contains(oTo)){
+			return;
+		}
+		//小图
+		oSpan.style.display = "none";
+		//大图
+		oDiv2.style.display = "none";
+	};
+	
+};
+
+
+</script>
+</head>
+
+<body>
+
+<div id="div1">
+  <img src="img/test.png" width="310" height="310"/> 
+  <div id="div2">
+  	<img src="img/test.png" width="900" height="900" />
+  </div>
+  <span id="mask"></span>
+</div>
+</body>
+</html>
