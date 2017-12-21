@@ -1,0 +1,83 @@
+@import './component/reset';
+@import './component/minxins';
+@import './component/toast';
+@import './component/modal';
+@import './component/loading';
+@import './component/variables';
+@import './lottery';
+body {
+    background-color: $color-brand;
+}
+
+.phone-submit {
+    background-color: $color-brand;
+    // display: flex;
+    width: 100%;
+    // height: px2rem(167);
+    .phone-wrap {
+        // flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: px2rem(40);
+        .phone {
+            width: px2rem(600);
+            height: px2rem(100);
+            font-size: px2rem(30);
+            // padding-left: px2rem(25);
+            // border: 2px solid #fc3251;
+            border: none;
+            border-radius: 8px;
+            box-sizing: border-box;
+            background-color: #fff;
+            text-align: center;
+        }
+    }
+    .submit-wrap {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: px2rem(40) px2rem(40) px2rem(50);
+        .submit {
+            width: px2rem(480);
+            height: px2rem(80);
+            border: none;
+            outline: none;
+            font-size: px2rem(36);
+            color: #FF4F4F;
+            background-color: #FFBF06;
+            border-radius: px2rem(40);
+            word-break: keep-all;
+            &:active {
+                background-color: #eeb404;
+            }
+        }
+    }
+}
+
+input.phone-plac::-webkit-input-placeholder {
+    color: $color-placeholder;
+}
+
+input.phone-plac:-moz-placeholder {
+    color: $color-placeholder;
+}
+
+input.phone-plac::-moz-placeholder {
+    color: $color-placeholder;
+}
+
+input.phone-plac:-ms-input-placeholder {
+    color: $color-placeholder;
+}
+
+.m-t-10 {
+    margin-top: px2rem(15);
+}
+
+.img-wrap {
+    >img {
+        display: block;
+    }
+}
