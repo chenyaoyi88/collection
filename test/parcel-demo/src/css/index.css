@@ -1,0 +1,11 @@
+@import './import-css-test.css';
+@import './import-sass-test.scss';
+
+body {
+    background-color: #ccc;
+}
+
+.js-img-test {
+    width: 200px;
+    height: 200px;
+}

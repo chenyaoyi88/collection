@@ -1,0 +1,14 @@
+.css-style-test {
+    color: yellow;
+}
+.css-bgimg-test {
+    width: 200px;
+    height: 200px;
+    background: url('../images/test.jpg') no-repeat;
+    background-size: cover;
+}
+
+.css-img-test {
+    width: 200px;
+    height: 200px;
+}
