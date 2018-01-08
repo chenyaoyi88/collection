@@ -2,12 +2,11 @@
   "name": "parcel-demo",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "start": "npm run clean && parcel ./src/index.html CUR_ENV=development",
+    "start": "npm run clean && parcel ./src/index.html",
     "clean": "rimraf build test dist",
-    "build:test": "npm run clean && parcel build ./src/index.html CUR_ENV=test -d test --public-url ./ --no-minify",
-    "build:prod": "npm run clean && parcel build ./src/index.html CUR_ENV=production -d build --public-url ./ --no-minify",
+    "build:test": "npm run clean && parcel build ./src/index.html -d test --public-url ./",
+    "build:prod": "npm run clean && parcel build ./src/index.html -d build --public-url ./",
     "build": "npm run build:prod"
   },
   "keywords": [
@@ -21,9 +20,11 @@
     "autoprefixer": "^7.2.4",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "cyy-tool": "^1.0.8",
     "node-sass": "^4.7.2",
     "parcel-bundler": "^1.4.1",
     "postcss-modules": "^1.1.0",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "typescript": "^2.6.2"
   }
 }
