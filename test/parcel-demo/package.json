@@ -4,16 +4,26 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "parcel ./src/index.html",
-    "build": "parcel build ./src/index.html --no-minify"
+    "start": "npm run clean && parcel ./src/index.html CUR_ENV=development",
+    "clean": "rimraf build test dist",
+    "build:test": "npm run clean && parcel build ./src/index.html CUR_ENV=test -d test --public-url ./ --no-minify",
+    "build:prod": "npm run clean && parcel build ./src/index.html CUR_ENV=production -d build --public-url ./ --no-minify",
+    "build": "npm run build:prod"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "parcel",
+    "es6",
+    "sass"
+  ],
+  "author": "CYY",
   "license": "ISC",
   "devDependencies": {
     "autoprefixer": "^7.2.4",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "node-sass": "^4.7.2",
-    "postcss-modules": "^1.1.0"
+    "parcel-bundler": "^1.4.1",
+    "postcss-modules": "^1.1.0",
+    "rimraf": "^2.6.2"
   }
 }
