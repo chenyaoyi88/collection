@@ -42,6 +42,6 @@ npm run clean
 2018.01.09
 
 - 暂未测试是否满足大型项目带框架的的开发需求（react vue angular）
-- 暂时不支持自定义变量设置环境变量，官方开发人员称相关代码已推送到 master 分支，但是还没发布到 npm （https://github.com/parcel-bundler/parcel/pull/258）
+- 暂时不支持自定义变量设置环境变量，官方开发人员称相关代码已推送到 master 分支，但是还没发布到 npm https://github.com/parcel-bundler/parcel/pull/258
 - 暂未发现可以自定义静态资源输出格式相关设置文档，目前所有静态资源只能打包到同一个文件夹里面（css js html img 文件全部在同一层，没有文件夹区分开来）
 - 有时候修改了页面没有几时热替换或者热更新，需要手动
