@@ -1,6 +1,6 @@
 # parcel 打包 DEMO
 
-官方地址：(https://parceljs.org/)[https://parceljs.org/]
+官方地址：https://parceljs.org/
 
 ### 此工具的作用和意义
 
