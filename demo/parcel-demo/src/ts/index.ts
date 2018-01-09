@@ -42,7 +42,9 @@ function testPromise(isTrue): Promise<any> {
     });
 }
 
-testPromise(true).then((data) => {
+let isTrue: boolean = true;
+
+testPromise(isTrue).then((data) => {
     console.log(data);
 }).catch((err) => {
     console.log(err);
