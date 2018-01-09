@@ -13,10 +13,10 @@ node_modules
 # 编译 #
 /dll
 /dev
+/dist
 /test
 /prod
 /build
-/dist
 
 # Mac #
 .DS_Store

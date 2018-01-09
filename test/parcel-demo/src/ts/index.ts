@@ -11,11 +11,16 @@ import {
     showMsg
 } from './module.1';
 
+import {
+    showMsgJs
+} from './module.2';
+
 // 导入图片测试（图片的相对路径）--OK
 import * as imageURL from '../images/test.jpg';
 
 console.log("hello world!");
 console.log(showMsg('fuck cyy '));
+console.log(showMsgJs('this is showMsgJs '));
 
 console.warn(getRandomNum(1,5));
 
