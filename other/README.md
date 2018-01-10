@@ -26,6 +26,8 @@ overall     总体的
 
 texture     纹理
 
+trivial     琐碎的
+
 ### 词语
 
 profound implications   意义深远的影响
