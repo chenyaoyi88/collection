@@ -20,7 +20,7 @@ export default ({ children }) => (
         display={`inline-block`}
         fontStyle={`normal`}
       >
-        Pandas Eating Lots
+        网站公共头部
       </g.H3>
     </Link>
     <Link className={linkStyle} to={`/about/`}>

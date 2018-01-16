@@ -8,10 +8,13 @@
     "serve": "gatsby serve"
   },
   "dependencies": {
+    "eslint": "^4.15.0",
     "gatsby": "^1.9.153",
     "gatsby-link": "^1.6.34",
     "gatsby-plugin-glamor": "^1.6.10",
     "gatsby-plugin-typography": "^1.7.10",
+    "gatsby-source-filesystem": "^1.5.11",
+    "gatsby-transformer-remark": "^1.7.28",
     "glamorous": "^4.11.2",
     "typography-theme-kirkham": "^0.16.3"
   }
