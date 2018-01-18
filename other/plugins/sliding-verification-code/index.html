@@ -12,15 +12,25 @@
 <body>
 
 	<div id="vertification"></div>
+	<div id="success"></div>
+	<div id="failed"></div>
+
 	<script src="./index.js"></script>
 	<script>
+		var oSuccessText = document.getElementById('success');
+		var oFailedText = document.getElementById('failed');
+
 		new VerDrag('vertification', {
 			height: 50,
 			success: function () {
 				console.log('success');
+				oSuccessText.innerText = '通过验证';
+				oFailedText.innerText = '';
 			},
 			failed: function () {
 				console.log('failed');
+				oSuccessText.innerText = '';
+				oFailedText.innerText = '验证失败';
 			}
 		});
 	</script>
