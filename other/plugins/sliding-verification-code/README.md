@@ -15,6 +15,7 @@
 ```javascript
 new VerDrag('vertification', {
     height: 50,
+    class: 'ver-class',
     success: function () {
         console.log('成功回调');
     },
@@ -29,6 +30,7 @@ new VerDrag('vertification', {
 | Name                | Type     | Default         | Description                                                     |
 | ------------------- | -------- | --------------- | --------------------------------------------------------------- |
 | height                | _Number_ | `50`      | 验证码包裹框的高度和拖地小滑块的宽度 |
+| class                | _String_ | `ver-wrap-custom`      | 验证码包裹框的样式 |
 | success               | _Function_ | none             | 成功回调函数                                                 |
 | failed               | _Function_ | none           | 失败回调函数                                        |
 
