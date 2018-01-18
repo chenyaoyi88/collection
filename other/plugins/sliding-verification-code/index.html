@@ -4,27 +4,26 @@
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>test</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>滑动验证码</title>
 	<link rel="stylesheet" href="index.css">
 </head>
 
 <body>
 
-<div id="vertification"></div>
-<script src="./index.js"></script>
-<script>
-
-	new VerDrag('vertification', {
-		success: function () {
-			console.log('success');
-		},
-		failed: function () {
-			console.log('failed');
-		}
-	});
-
-</script>
+	<div id="vertification"></div>
+	<script src="./index.js"></script>
+	<script>
+		new VerDrag('vertification', {
+			height: 50,
+			success: function () {
+				console.log('success');
+			},
+			failed: function () {
+				console.log('failed');
+			}
+		});
+	</script>
 </body>
 
 </html>

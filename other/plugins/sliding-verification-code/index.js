@@ -20,25 +20,27 @@ function VerDrag(id, options) {
   this.init = function(id) {
     this.oVerWrap = document.getElementById(id);
     if (!this.oVerWrap) return;
-    
+
     this.options = options || {};
+    var h = this.options.height || 50;
+    this.oVerWrap.style.cssText = `height:${h}px;line-height:${h}px`;
     this.oVerWrap.classList.add('ver-wrap');
     this.oVerWrap.insertAdjacentHTML(
       'beforeend',
       `
 				<div class="ver-bg" data-id="bg"></div>
 				<div class="ver-cover" data-id="cover">拖动滑块验证</div>
-				<div class="ver-drag" data-id="drag"></div>
+				<div class="ver-drag" data-id="drag" style="width:${h}px"></div>
 				`
     );
     this.oVerBg = this.oVerWrap.querySelector('[data-id=bg]');
     this.oVerCover = this.oVerWrap.querySelector('[data-id=cover]');
     this.oVerDrag = this.oVerWrap.querySelector('[data-id=drag]');
 
-    this.run();
+    this.verificate();
   };
 
-  this.run = function() {
+  this.verificate = function() {
     var _this = this;
     // 鼠标/手指点击的时候
     this.oVerDrag.onmousedown = this.oVerDrag.ontouchstart = function(ev) {
@@ -63,12 +65,17 @@ function VerDrag(id, options) {
           _this.l = _this.maxL;
         }
 
-        _this.oVerDrag.style.left = _this.l + 'px';
+        _this.oVerDrag.style['webkitTransform'] =
+          'translate3d(' + _this.l + 'px, 0px, 0px)';
+          _this.oVerDrag.style['webkitTransform'] = `translate3d(${_this.l}px, 0px, 0px)`;
         _this.oVerBg.style.width = _this.l + 'px';
+        return false;
       };
 
       document.onmouseup = document.ontouchend = function() {
         if (_this.l === _this.maxL) {
+          // 验证通过
+
           // 添加完成样式
           _this.oVerDrag.classList.add('ver-over');
           _this.oVerCover.classList.add('ver-over');
@@ -77,14 +84,17 @@ function VerDrag(id, options) {
           _this.options.success && _this.options.success();
           _this.oVerDrag.onmousedown = _this.oVerDrag.ontouchstart = null;
         } else {
-          _this.oVerDrag.style.left = _this.nStart + 'px';
+          // 验证失败
+
+          _this.oVerDrag.style['webkitTransform'] =
+            `translate3d(${_this.nStart}px, 0px, 0px)`;
           _this.oVerBg.style.width = '0px';
           // 验证失败回调
           _this.options.failed && _this.options.failed();
+          // 添加返回动画
+          _this.oVerDrag.classList.add('ver-draging');
+          _this.oVerBg.classList.add('ver-draging');
         }
-        // 添加返回动画
-        _this.oVerDrag.classList.add('ver-draging');
-        _this.oVerBg.classList.add('ver-draging');
 
         document.onmousemove = document.ontouchmove = null;
         document.onmouseup = document.ontouchend = null;
