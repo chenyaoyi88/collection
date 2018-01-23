@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>短信验证码</title>
+	<link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+	<input id="phone" type="tel" maxlength="11">
+	<br>
+	<br>
+	<div class="ver-wrap" id="vertification">
+		<button data-ver="btn" class="ver-btn">获取验证码</button>
+	</div>
+	<br>
+	<input id="vcode" type="tel" maxlength="6">
+	<br>
+	<br>
+	<button id="submit" class="ver-btn">提交绑定</button>
+
+	<br>
+	<br>
+
+	<div id="v-code"></div>
+
+	<script src="./index.js"></script>
+	<script src="./ajax.js"></script>
+	<script>
+		function Vcode(id, options) {
+			this.options = {};
+			this.options = options || {};
+			this.options.vcodeClass = this.options.vcodeClass || 'ver-wrap';
+			this.options.vcodeText = this.options.vcodeText || '获取验证码';
+
+			this.oVcode = null;
+			
+			this.start = function () {
+				this.init();
+			};
+			this.init = function () {
+				this.create();
+			};
+			this.create = function () {
+				if (!id) return;
+				this.oVcode = document.getElementById(id);
+				if (!this.oVcode) return;
+				this.oVcode.classList.add(this.options.vcodeClass);
+				this.oVcode.innerHTML = `<button data-ver="btn" class="ver-btn">${this.options.vcodeText}</button>`;
+			};
+			this.start();
+		}
+
+		new Vcode('v-code');
+
+		const api = 'https://www.easy-mock.com/mock/5a3c68910df23b51b36151d0';
+		const checkphoneUrl = api + '/api/v1/activity/checkphone';
+		const submitUrl = api + '/api/v1/activity/submit';
+
+		const oPhone = document.getElementById('phone');
+		const oSubmitBtn = document.getElementById('submit');
+
+		const oVcode = document.getElementById('vcode');
+		const oVer = document.getElementById('vertification');
+		const oVerBtn = oVer.querySelector('[data-ver=btn]');
+		const sVerBtnText = '获取验证码';
+		const nTime = 4;
+		let nCountdownTime = nTime;
+		let isCountdown = false;
+
+		oVerBtn.addEventListener('click', function () {
+
+			// if (!(/^1[3-9][0-9]{9}$|^[0-9]{8}$/g.test(oPhone.value))) {
+			// 	alert('验证不通过');
+			// 	return;
+			// }
+
+			if (isCountdown) return;
+			isCountdown = true;
+
+			// 检测手机号
+			ajax.get(checkphoneUrl, {
+				phone: oPhone.value
+			}).then((res) => {
+				console.log(res);
+				if (res.code === '000') {
+					if (res.data.isRegister) {
+						// 已注册，发送验证码（倒数）
+						oVerBtn.setAttribute('disabled', true);
+
+						let timer = setInterval(function () {
+							nCountdownTime--;
+							if (!nCountdownTime) {
+								clearInterval(timer);
+								oVerBtn.innerText = sVerBtnText;
+								oVerBtn.removeAttribute('disabled');
+								nCountdownTime = nTime;
+								return;
+							}
+							oVerBtn.innerText = nCountdownTime;
+						}, 1000);
+
+					} else {
+						// 未注册，弹窗提示去注册和下载
+					}
+				} else {}
+
+				isCountdown = false;
+			}).catch((err) => {
+				console.log(err);
+				isCountdown = false;
+			});
+
+		}, false);
+
+		oSubmitBtn.addEventListener('click', function () {
+
+			// if (!(/\d/.test(oVcode.value))) {
+			// 	alert('验证码输入错误，请重新输入');
+			// 	return;
+			// }
+
+			ajax.get(submitUrl, {
+				vcode: oVcode.value
+			}).then((res) => {
+				console.log(res);
+				if (res.code === '0000') {
+					// 绑定成功，弹窗【13800138000绑定成功】
+				} else {
+					// 绑定失败，弹窗【验证码输入错误，请重新输入】
+
+				}
+			}).catch((err) => {
+				console.log(err);
+			});
+
+		}, false);
+	</script>
+</body>
+
+</html>
