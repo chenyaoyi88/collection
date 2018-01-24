@@ -1,3 +1,17 @@
 .ver-wrap {
+}
 
+.vcode {
+    display: inline-block;
+    margin: 10px;
+}
+
+.vcode .vcode-btn {
+    outline: none;
+    /* border: none; */
+}
+
+.active {
+  background: red;
+  color: #fff;
 }

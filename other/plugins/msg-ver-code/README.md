@@ -1,36 +1,63 @@
-# 一个简单的滑动验证码
+# 一个简单的短信验证码
 
-一个简单的滑动验证码，手指拖动到终点松开之后才做判断是否到达了终点，到达了则通过，没有到达则滑动返回。
+一个简单的短信验证码，请求完成之后调用执行，即可开始倒计时，倒计时完成之后恢复到原始状态，有基本的 倒计时停止、继续和重置方法调用。
 
 ### 适用平台
 
-移动端、PC端
+移动端、PC 端
 
 ### 例子
 
 ```html
-<div id="vertification"></div>
+<div id="msg-vcode"></div>
 ```
 
 ```javascript
-new VerDrag('vertification', {
-    height: 50,
-    class: 'ver-class',
-    success: function () {
-        console.log('成功回调');
-    },
-    failed: function () {
-        console.log('失败回调');
-    }
+var msgVcode = new MsgVcode({
+  id: 'msg-vcode',
+  class: 'msg-vcode',
+  activeClass: 'active',
+  btnText: '我的验证码',
+  time: 10,
+  control: function(oVcode) {
+    console.log(oVcode);
+
+    window
+      .fetch(
+        'https://www.easy-mock.com/mock/5a682d3d3d63972d717dc4bd/plugins/test/success'
+      )
+      .then(res => {
+        return res.json();
+      })
+      .then(res => {
+        if (res.code === '0000') {
+          oVcode.run();
+        }
+      });
+  }
 });
 ```
 
+==注：详细例子可参考同目录下的 index.html==
+
 ### 参数说明
 
-| Name                | Type     | Default         | Description                                                     |
-| ------------------- | -------- | --------------- | --------------------------------------------------------------- |
-| height                | _Number_ | `50`      | 验证码包裹框的高度和拖地小滑块的宽度 |
-| class                | _String_ | `ver-wrap-custom`      | 验证码包裹框的样式 |
-| success               | _Function_ | none             | 成功回调函数                                                 |
-| failed               | _Function_ | none           | 失败回调函数                                        |
+| Name        | Type     | Default    | Description        |
+| ----------- | -------- | ---------- | ------------------ |
+| id          | _String_ | none       | 元素 ID            |
+| class       | _String_ | msg-vcode  | 验证码包裹框的样式 |
+| activeClass | _String_ | active     | 验证码按钮的样式   |
+| btnText     | _String_ | 获取验证码 | 验证码按钮文字     |
+| time        | _Number_ | 60         | 倒计时的秒数       |
 
+### 方法说明
+
+```
+var msgVcode = new MsgVcode(参数);
+```
+
+| Name                | Description |
+| ------------------- | ----------- |
+| msgVcode.stop()     | 暂停        |
+| msgVcode.continue() | 继续        |
+| msgVcode.reset()    | 重置        |
