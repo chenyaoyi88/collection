@@ -1,7 +1,7 @@
 /**
  * 短信验证码功能
- * 
- * @param {any} options 
+ *
+ * @param {any} options
  */
 function MsgVcode(options) {
   this.oVcode = null;
@@ -26,6 +26,7 @@ function MsgVcode(options) {
     this.options.class = this.options.class || 'msg-vcode';
     this.options.btnText = this.options.btnText || '获取验证码';
     this.options.time = this.options.time || 60;
+    this.options.countdownText = this.options.countdownText || '秒后重发';
     this.nCountdownTime = this.options.time;
     this.options.activeClass = this.options.activeClass || 'active';
 
@@ -46,8 +47,9 @@ function MsgVcode(options) {
   };
 
   this.run = () => {
+    this.isCountdown = false;
     this.oVcodeBtn.setAttribute('disabled', true);
-    this.countdown(this);
+    this.countdown();
     this.oTimer = setInterval(() => {
       this.countdown();
     }, 1000);
@@ -65,7 +67,7 @@ function MsgVcode(options) {
 
   // 重置
   this.reset = () => {
-    this.oVcodeBtn.innerText = this.options.vcodeBtnText;
+    this.oVcodeBtn.innerText = this.options.btnText;
     this.oVcodeBtn.removeAttribute('disabled');
     this.nCountdownTime = this.options.time;
     this.oVcodeBtn.classList.remove(this.options.activeClass);
@@ -79,22 +81,22 @@ function MsgVcode(options) {
     this.nCountdownTime--;
     if (!this.nCountdownTime) {
       clearInterval(this.oTimer);
-      this.oVcodeBtn.innerText = this.vcodeBtnText;
+      this.oVcodeBtn.innerText = this.options.btnText;
       this.oVcodeBtn.removeAttribute('disabled');
       this.nCountdownTime = this.options.time;
       this.oVcodeBtn.classList.remove(this.options.activeClass);
       return;
     }
-    this.oVcodeBtn.innerText = this.nCountdownTime + '秒后重发';
+    this.oVcodeBtn.innerText = this.nCountdownTime + this.options.countdownText;
   };
 
   // 开始执行
   this.start = () => {
-    if (this.isCountdown) return;
-    this.isCountdown = true;
     this.oVcodeBtn.addEventListener(
       'click',
       () => {
+        if (this.isCountdown) return;
+        this.isCountdown = true;
         this.options.control && this.options.control(this);
       },
       false

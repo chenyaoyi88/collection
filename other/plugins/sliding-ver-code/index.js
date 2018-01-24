@@ -17,7 +17,7 @@ function VerDrag(id, options) {
   this.options = null;
 
   // 初始化
-  this.init = function (id) {
+  this.init = function(id) {
     this.oVerWrap = document.getElementById(id);
     if (!this.oVerWrap) return;
 
@@ -39,16 +39,15 @@ function VerDrag(id, options) {
     this.oVerBg = this.oVerWrap.querySelector('[data-id=bg]');
     this.oVerCover = this.oVerWrap.querySelector('[data-id=cover]');
     this.oVerDrag = this.oVerWrap.querySelector('[data-id=drag]');
-    this.maxL =
-      this.oVerWrap.offsetWidth - this.oVerDrag.offsetWidth + 1;
+    this.maxL = this.oVerWrap.offsetWidth - this.oVerDrag.offsetWidth + 1;
 
     this.verificate();
   };
 
-  this.verificate = function () {
+  this.verificate = function() {
     const _this = this;
     // 鼠标/手指点击的时候
-    this.oVerDrag.onmousedown = this.oVerDrag.ontouchstart = function (ev) {
+    this.oVerDrag.onmousedown = this.oVerDrag.ontouchstart = function(ev) {
       const oEvent = ev || event;
       const disX =
         (oEvent.clientX || oEvent.touches[0].clientX) -
@@ -58,7 +57,7 @@ function VerDrag(id, options) {
       _this.oVerBg.classList.remove('ver-draging');
 
       // 鼠标/手指点击且正则移动
-      document.onmousemove = document.ontouchmove = function (ev) {
+      document.onmousemove = document.ontouchmove = function(ev) {
         const oEvent = ev || event;
         _this.l = (oEvent.clientX || oEvent.touches[0].clientX) - disX;
 
@@ -70,12 +69,14 @@ function VerDrag(id, options) {
 
         _this.oVerDrag.style['webkitTransform'] =
           'translate3d(' + _this.l + 'px, 0px, 0px)';
-        _this.oVerDrag.style['webkitTransform'] = `translate3d(${_this.l}px, 0px, 0px)`;
+        _this.oVerDrag.style['webkitTransform'] = `translate3d(${
+          _this.l
+        }px, 0px, 0px)`;
         _this.oVerBg.style.width = _this.l + 'px';
         return false;
       };
 
-      document.onmouseup = document.ontouchend = function () {
+      document.onmouseup = document.ontouchend = function() {
         if (!_this.l) {
           // 点击松开，但是没动，返回
         } else if (_this.l === _this.maxL) {
@@ -93,7 +94,7 @@ function VerDrag(id, options) {
   };
 
   // 验证通过
-  this.pass = function () {
+  this.pass = function() {
     // 添加完成样式
     this.oVerDrag.classList.add('ver-over');
     this.oVerCover.classList.add('ver-over');
@@ -101,19 +102,20 @@ function VerDrag(id, options) {
     // 验证通过回调
     this.options.success && this.options.success();
     this.oVerDrag.onmousedown = this.oVerDrag.ontouchstart = null;
-  }
+  };
 
   // 验证不通过
-  this.notPass = function () {
-    this.oVerDrag.style['webkitTransform'] =
-      `translate3d(${this.nStart}px, 0px, 0px)`;
+  this.notPass = function() {
+    this.oVerDrag.style['webkitTransform'] = `translate3d(${
+      this.nStart
+    }px, 0px, 0px)`;
     this.oVerBg.style.width = '0px';
     // 验证失败回调
     this.options.failed && this.options.failed();
     // 添加返回动画
     this.oVerDrag.classList.add('ver-draging');
     this.oVerBg.classList.add('ver-draging');
-  }
+  };
 
   this.init(id);
 }
