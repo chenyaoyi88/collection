@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>test</title>
+</head>
+
+<body>
+	<script src="./repo.js"></script>
+	<script>
+		const aRepo = repo;
+		console.log(aRepo);
+
+		// console.log('第一层选项：', aRepo.length);
+
+		function repoLoop(arr) {
+			let level, maxLevel = 1;
+			for (let i = 0; i < arr.length; i++) {
+				arr[i].parentCode = 'root';
+			}
+			const findMaxLevel = function (arr) {
+				for (let i = 0; i < arr.length; i++) {
+					if (arr[i].child && arr[i].child.length) {
+						if (arr[i].parentCode) {
+							// 如果是第一层
+							level = 1;
+						} else {
+							level++;
+						}
+						if (maxLevel < level) {
+							maxLevel = level;
+						}
+						findMaxLevel(arr[i].child);
+					}
+				}
+			}
+			findMaxLevel(arr);
+			return maxLevel;
+		}
+
+
+		function findValue(arr, code) {
+			let target = null;
+			const findInArr = function (arr, code) {
+				for (let i = 0; i < arr.length; i++) {
+					if (arr[i].code === code) {
+						target = arr[i];
+						break;
+					} else {
+						arr[i].child && arr[i].child.length && findInArr(arr[i].child, code);
+					}
+				}
+			}
+			findInArr(arr, code);
+			return target;
+		}
+		console.log('最大层数：', repoLoop(aRepo));
+
+		console.log(findValue(aRepo, 'spa'));
+	</script>
+</body>
+
+</html>
