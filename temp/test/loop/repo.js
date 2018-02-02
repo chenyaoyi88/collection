@@ -1,88 +1,105 @@
 const repo = [{
-        "name": "移动端",
-        "code": "m",
+        "type": "list",
+        "message": "请选择平台类型",
+        "name": "plaform",
+        "text": "平台",
         "child": [{
-            "name": "SPA前端",
-            "code": "spa",
-            "child": [{
-                "name": "react框架",
-                "code": "react",
-                "url": "m.spa.react.git",
-            }, {
-                "name": "angular框架",
-                "code": "angular",
-                "url": "m.spa.angular.git",
-            }, {
-                "name": "vue框架",
-                "code": "vue",
-                "url": "m.spa.vue.git",
+                "name": "mobile",
+                "text": "移动端",
                 "child": [{
-                    "name": "cli",
-                    "code": "vue-cli",
-                    "url": "m.spa.vue.cli.git",
-                    "child": []
+                    "name": "spa",
+                    "text": "单页应用框架",
+                    "child": [{
+                        "name": "react",
+                        "text": "react框架",
+                        "url": "m.spa.react.git"
+                    }, {
+                        "name": "angular",
+                        "text": "angular框架",
+                        "url": "m.spa.angular.git"
+                    }, {
+                        "name": "vue",
+                        "text": "vue框架",
+                        "url": "m.spa.vue.git",
+                        "child": [{
+                            "name": "cli",
+                            "text": "vue-cli",
+                            "url": "m.spa.vue.cli.git",
+                            "child": []
+                        }]
+                    }]
+                }, {
+                    "name": "act",
+                    "text": "活动",
+                    "child": [{
+                        "name": "normal",
+                        "text": "普通",
+                        "url": "m.act.normal.git"
+                    }, {
+                        "name": "lottery",
+                        "text": "抽奖",
+                        "url": "m.act.lottery.git"
+                    }]
                 }]
-            }]
-        }, {
-            "name": "单页活动",
-            "code": "act",
-            "child": [{
-                "name": "抽奖",
-                "code": "lottery",
-                "url": "m.act.lottery.git",
-            }, {
-                "name": "普通",
-                "code": "normal",
-                "url": "m.act.normal.git",
-            }]
-        }]
+            },
+            {
+                "name": "pc",
+                "text": "PC端",
+                "child": [{
+                    "name": "spa",
+                    "text": "单页应用框架",
+                    "url": "pc.spa.git",
+                    "child": [{
+                        "name": "react",
+                        "text": "react框架",
+                        "url": "pc.spa.react.git"
+                    }, {
+                        "name": "angular",
+                        "text": "angular框架",
+                        "url": "pc.spa.angular.git"
+                    }, {
+                        "name": "vue",
+                        "text": "vue框架",
+                        "url": "pc.spa.vue.git"
+                    }]
+                }, {
+                    "name": "act",
+                    "text": "活动",
+                    "url": "pc.act.git",
+                    "child": [{
+                        "name": "lottery",
+                        "text": "抽奖",
+                        "url": "pc.act.lottery.git"
+                    }]
+                }]
+            },
+            {
+                "name": "app",
+                "text": "APP端",
+                "child": [{
+                    "name": "RN",
+                    "text": "RN框架",
+                    "url": "app.rn.git"
+                }, {
+                    "name": "weex",
+                    "text": "weex框架",
+                    "url": "app.weex.git"
+                }, {
+                    "name": "mui",
+                    "text": "mui框架",
+                    "url": "app.mui.git"
+                }]
+            }
+        ]
     },
     {
-        "name": "PC端",
-        "code": "pc",
-        "child": [{
-            "name": "SPA前端",
-            "code": "spa",
-            "url": "pc.spa.git",
-            "child": [{
-                "name": "react框架",
-                "code": "react",
-                "url": "pc.spa.react.git",
-            }, {
-                "name": "angular框架",
-                "code": "angular",
-                "url": "pc.spa.angular.git",
-            }, {
-                "name": "vue框架",
-                "code": "vue",
-                "url": "pc.spa.vue.git",
-            }]
-        }, {
-            "name": "单页活动",
-            "code": "act",
-            "url": "pc.act.git",
-            "child": [{
-                "name": "抽奖",
-                "code": "lottery",
-                "url": "pc.act.lottery.git",
-            }]
-        }]
+        "type": "input",
+        "name": "appName",
+        "message": "请输入项目名"
     },
     {
-        "name": "APP端",
-        "code": "app",
-        "child": [{
-            "name": "rn",
-            "code": "rn",
-            "url": "app.rn.git",
-        }, {
-            "name": "weex",
-            "code": "weex",
-            "url": "app.weex.git",
-        }, {
-            "name": "mui",
-            "code": "mui",
-            "url": "app.mui.git",
-        }]
+        "type": "input",
+        "name": "author",
+        "message": "请输入作者名"
     }
 ];
