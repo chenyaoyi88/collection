@@ -151,30 +151,46 @@
 
 		var result = {
 			plaform: '移动端',
-			mobile: '单页应用框架',
-			spa: 'angular框架',
+			mobile: '活动',
+			act: '普通',
 			appName: 'abc',
 			author: 'cyy'
 		};
 
 		function findResult(arr, result) {
 			let url = '';
-			const aChilds = arr.child;
-			if (aChilds.length) {
-				for (let item of aChilds) {
-					// if ()
-					if (item.child && item.child.length) {
-						findResult(arr, result);
+
+			const findInList = function (list, result) {
+				const aChildList = list;
+				for (let i = 0; i < aChildList.length; i++) {
+					for (let name in result) {
+						if (result[name] === aChildList[i].text) {
+							if (aChildList[i].url) {
+								url = aChildList[i].url;
+							}
+							if (aChildList[i].child && aChildList[i].child.length) {
+								findInList(aChildList[i].child, result);
+							}
+						}
 					}
 				}
 			}
+
+			for (let item of arr) {
+				if (item.child || item.type === 'list') {
+					findInList(item.child, result);
+				}
+			}
+
 			return url;
 		}
+
+		console.log(findResult(aRepo, result));
 
 		// console.log(resetUserData(aRepo).userData);
 
 		// oDiv.innerHTML = JSON.stringify(userDataToinquirerData(resetUserData(aRepo)), null, 4);
-		console.log(getInquirerData(aRepo));
+		// console.log(getInquirerData(aRepo));
 
 		// console.log('最大层数：', repoLoop(aRepo));
 		// var newArr = resetUserData(aRepo);
