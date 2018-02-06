@@ -57,7 +57,7 @@ testPromise(true).then((data) => {
 //     console.log(data + new Date());
 // })();
 
-console.log('当前环境：',process);
+console.log('当前环境：', process);
 
 // // 以字符串形式读取内容 
 

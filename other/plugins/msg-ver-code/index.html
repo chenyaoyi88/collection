@@ -11,6 +11,9 @@
 
 <body>
 
+	<input type="text" id="input">
+	<br>
+	<br>
 	<div id="msg-vcode"></div>
 	<br>
 	<button id="stop">停止</button>
@@ -19,6 +22,7 @@
 
 	<script src="./index.js"></script>
 	<script>
+		const oInput = document.getElementById('input');
 		const oBtnStop = document.getElementById('stop');
 		const oBtnContinue = document.getElementById('continue');
 		const oBtnReset = document.getElementById('reset');
@@ -33,12 +37,17 @@
 			countdownText: '秒后重新发送',
 			time: 10,
 			control: function (oVcode) {
-				console.log(oVcode);
+
+				if (!oInput.value) {
+					console.log('不能为空');
+					return;
+				}
 
 				window.fetch(url_success).then((res) => {
 					return res.json()
 				}).then((res) => {
 					if (res.code === '0000') {
+						console.log('请求成功');
 						oVcode.run();
 					}
 				});

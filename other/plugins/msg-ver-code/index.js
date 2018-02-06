@@ -12,6 +12,7 @@ function MsgVcode(options) {
   this.btnText = '获取验证码';
   this.nCountdownTime = -1;
   this.isCountdown = false;
+  this.isCanRun = false;
 
   // 初始化
   this.init = () => {
@@ -47,12 +48,29 @@ function MsgVcode(options) {
   };
 
   this.run = () => {
-    this.isCountdown = false;
+    if (this.isCountdown) return;
+    this.isCountdown = true;
     this.oVcodeBtn.setAttribute('disabled', true);
     this.countdown();
     this.oTimer = setInterval(() => {
       this.countdown();
     }, 1000);
+  };
+
+  // 倒计时
+  this.countdown = () => {
+    this.oVcodeBtn.classList.add(this.options.activeClass);
+    this.nCountdownTime--;
+    if (!this.nCountdownTime) {
+      clearInterval(this.oTimer);
+      this.oVcodeBtn.innerText = this.options.btnText;
+      this.oVcodeBtn.removeAttribute('disabled');
+      this.nCountdownTime = this.options.time;
+      this.isCountdown = false;
+      this.oVcodeBtn.classList.remove(this.options.activeClass);
+      return;
+    }
+    this.oVcodeBtn.innerText = this.nCountdownTime + this.options.countdownText;
   };
 
   // 停止
@@ -75,28 +93,11 @@ function MsgVcode(options) {
     this.start();
   };
 
-  // 倒计时
-  this.countdown = () => {
-    this.oVcodeBtn.classList.add(this.options.activeClass);
-    this.nCountdownTime--;
-    if (!this.nCountdownTime) {
-      clearInterval(this.oTimer);
-      this.oVcodeBtn.innerText = this.options.btnText;
-      this.oVcodeBtn.removeAttribute('disabled');
-      this.nCountdownTime = this.options.time;
-      this.oVcodeBtn.classList.remove(this.options.activeClass);
-      return;
-    }
-    this.oVcodeBtn.innerText = this.nCountdownTime + this.options.countdownText;
-  };
-
   // 开始执行
   this.start = () => {
     this.oVcodeBtn.addEventListener(
       'click',
       () => {
-        if (this.isCountdown) return;
-        this.isCountdown = true;
         this.options.control && this.options.control(this);
       },
       false

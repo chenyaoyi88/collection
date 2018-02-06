@@ -4,7 +4,7 @@
 // 测试导入css（里面包括sass混导，加了autoprefixer补充前缀）--OK
 import '../css/index.css';
 
-import { getRandomNum } from 'cyy-tool';
+// import { getRandomNum } from 'cyy-tool';
 
 // es6模块化导入导出测试--OK
 import {
@@ -22,7 +22,7 @@ console.log("hello world!");
 console.log(showMsg('fuck cyy '));
 console.log(showMsgJs('this is showMsgJs '));
 
-console.warn(getRandomNum(1,5));
+// console.warn(getRandomNum(1,5));
 
 // 动态插入图片测试--OK
 const oImage: HTMLImageElement = document.createElement('img');
@@ -49,6 +49,9 @@ testPromise(isTrue).then((data) => {
 }).catch((err) => {
     console.log(err);
 });
+
+console.log('当前环境：', process.env.NODE_ENV);
+
 
 // // sync await测试--OK（不用babel-polyfill会报错）
 // function sleep(timeout) {
