@@ -1,0 +1,232 @@
+// input 框
+input {
+  &.act-input {
+    width: 100%;
+    height: px2vw(100); // font-size: px2vw(28);
+    font-size: 18px;
+    line-height: normal;
+    border: none;
+    outline: none;
+    padding-left: 4.8%;
+    background-color: #E1BD71;
+  } // placeholder 样式
+  &::-webkit-input-placeholder {
+    font-size: px2vw(28);
+    color: #805D00;
+  }
+}
+
+a {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+// 按钮
+button {
+  &.act-btn {
+    display: block;
+    width: 100%;
+    height: px2vw(80);
+    font-size: px2vw(32);
+    color: #fff;
+    background: #B90F27;
+    border: none;
+    outline: none; // border-radius: px2vw(40);
+    &:disabled {
+      color: #fdfdfd;
+      background-color: #c4c4c4;
+    }
+    &:active {
+      background: rgb(161, 14, 33);
+    }
+  }
+}
+
+.ele-wrap {
+  width: 100%;
+}
+
+.submit-wrap {
+  .act-btn {
+    height: px2vw(100);
+  }
+}
+
+.act-red {
+  color: #b90f27;
+}
+
+.act-green {
+  color: #5eb202;
+}
+
+.act-wrap {
+  &:before {
+    display: block;
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  .act-content-wrap {
+    position: relative;
+    z-index: 11;
+    padding: px2vw(20) 0 0;
+    background-color: #cc0f2f;
+    .act-content-bg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 12;
+      width: 100%;
+      height: 100%;
+      >img {
+        height: 100%;
+      }
+    }
+    .act-content {
+      width: 100%;
+      padding: 0 px2vw(78) px2vw(30);
+      @include align-justify(column);
+      position: relative;
+      z-index: 13;
+      .act-unbind {
+        display: none;
+      }
+      .act-bound {
+        display: none;
+        width: 100%;
+        .act-bound-img {
+          position: relative;
+          z-index: 14;
+          width: px2vw(522);
+        }
+        .act-bound-img-phone {
+          position: absolute;
+          left: 0;
+          top: px2vw(140);
+          z-index: 15;
+          width: 100%;
+          text-align: center;
+          color: #BB0921;
+          font-size: px2vw(40);
+        }
+        .act-bound-detail {
+          font-size: px2vw(28);
+          color: #B90F27;
+          &:active {
+            color: rgb(156, 13, 32);
+          }
+        }
+      }
+    }
+    &.show-act-unbind {
+      .act-unbind {
+        display: block;
+      }
+    }
+    &.show-act-bound {
+      .act-bound {
+        display: block;
+      }
+    }
+  }
+  .list-table {
+    margin: px2vw(40) 0;
+  }
+  .download-wrap {
+    background-color: #ac0a21;
+    padding: px2vw(40) px2vw(75) 0;
+    .act-btn {
+      height: px2vw(100);
+      font-size: px2vw(28);
+      background-color: #E1BD71;
+      &:active {
+        background-color: rgb(214, 178, 101);
+      }
+    }
+  }
+  .bottom-text {
+    color: #E1BD71;
+    font-size: px2vw(24);
+    text-align: center;
+    padding: px2vw(40) 0;
+    background-color: #ac0a21;
+  }
+}
+
+.list-table {
+  width: 100%;
+  font-size: px2vw(28);
+  color: #805D00;
+  border: 1px solid #E1BD71;
+  thead {
+    background-color: #E1BD71;
+    tr {
+      height: px2vw(100);
+      th {
+        width: 50%;
+      }
+    }
+  }
+  tbody {
+    background-color: #fff;
+    tr {
+      height: px2vw(80);
+    }
+  }
+  tr {
+    th,
+    td {
+      text-align: center;
+      padding: px2vw(25) 0;
+      border-bottom: 1px solid #E1BD71;
+      border-left: 1px solid #E1BD71;
+      &:first {
+        border-left: none;
+      }
+    }
+    th {
+      font-weight: 500;
+    }
+  }
+}
+
+.vcode-wrap {
+  width: 100%;
+  margin-top: px2vw(20);
+  display: flex;
+  .vcode {
+    flex: 1;
+  }
+  .vcode-btn-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: px2vw(183);
+    height: px2vw(100);
+    margin-left: px2vw(30);
+    .msg-vcode-btn {
+      font-size: px2vw(28);
+      color: #F7F2E8;
+      background-color: #B90F27;
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      user-select: none;
+      &:active {
+        color: #F7F2E8;
+        background-color: rgb(158, 14, 33);
+      }
+      &.active {
+        color: #fdfdfd;
+        background-color: #c4c4c4;
+      }
+    }
+  }
+}

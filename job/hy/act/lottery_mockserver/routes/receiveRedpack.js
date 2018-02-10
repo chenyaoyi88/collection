@@ -1,46 +1,27 @@
 var express = require('express');
 var router = express.Router();
 
+/* GET users listing. */
 router.post('/', function (req, res, next) {
-    // console.log(req.body);
+    console.log(req.body);
 
-    // const result = {
-    //     code: '000',
-    //     message: 'success'
-    // };
+    // 000 成功
+    // 500 失败系统内部异常
+    // 001 失败1-未查询到手机号
+    // 002 失败2-审核状态<已提交 
+    // 003 失败3-GPS坐标不符或司机状态=审核不通过
+    // 004 失败4-没有关注公众号
+    // 005 失败5-已领 
+    // 006 失败6-成功抽奖人数>100 
+    // 007 失败7-审核状态=已申请 
+    // 008 失败8-老司机不能参与
 
-    // res.send(result);
+    const result = {
+        code: '008',
+        message: '非常抱歉您的资料不符合本次活动要求'
+    };
 
-
-    if (req.body.data) {
-        //能正确解析 json 格式的post参数
-        res.send({
-            code: '001',
-            message: 'req.body.data 直接拿到'
-        });
-    } else {
-        //不能正确解析json 格式的post参数
-        var body = '',
-            jsonStr;
-        req.on('data', function (chunk) {
-            body += chunk; //读取参数流转化为字符串
-        });
-        req.on('end', function () {
-            //读取参数流结束后将转化的body字符串解析成 JSON 格式
-            try {
-                jsonStr = JSON.parse(body);
-            } catch (err) {
-                jsonStr = null;
-            }
-            jsonStr ? res.send({
-                code: '000',
-                message: 'JSON.parse 解析'
-            }) : res.send({
-                code: '500',
-                message: 'error'
-            });
-        });
-    }
+    res.send(result);
 });
 
 module.exports = router;

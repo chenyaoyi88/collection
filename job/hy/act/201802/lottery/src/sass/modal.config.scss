@@ -1,0 +1,60 @@
+.act-other {
+  .modal-btn-wrap {
+    // 按钮样式
+    .modal-btn {
+      font-size: px2vw(36);
+      background-color: #E1BD71;
+      border-radius: 0;
+      &:active {
+        background-color: rgb(199, 167, 99);
+      }
+    }
+    margin-bottom: px2vw(40);
+  }
+  .modal-img-wrap {
+    margin-top: px2vw(50);
+    width: px2vw(380);
+    position: relative;
+    z-index: 24;
+    .img-text {
+      position: absolute;
+      left: 0;
+      top: px2vw(235);
+      z-index: 25;
+      width: 100%;
+      text-align: center;
+      color: #BB0921;
+      font-size: px2vw(20);
+    }
+  }
+  .modal-text {
+    margin-top: px2vw(40);
+    .text {
+      font-size: px2vw(30);
+      font-weight: 500;
+      color: #909090;
+      text-align: center;
+    }
+  }
+  &.success {
+    .modal-img-wrap {
+      width: px2vw(450);
+      .img-text {
+        font-size: px2vw(55);
+        top: px2vw(140);
+        .img-text-symbol {
+          font-size: px2vw(30);
+        }
+      }
+    }
+  }
+  &.error {
+    .modal-img-wrap {
+      width: px2vw(380);
+    }
+  }
+}
+
+.color-red {
+  color: #BB0921;
+}

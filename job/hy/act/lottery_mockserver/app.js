@@ -8,13 +8,21 @@ var compression = require('compression');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-var testGet = require('./routes/test_get');
-var testPost = require('./routes/test_post');
 
 var submit = require('./routes/submit');
 var lottery = require('./routes/lottery');
 var draw = require('./routes/draw');
 var receiveRedpack = require('./routes/receiveRedpack');
+var findDecInviterRedpackList = require('./routes/findDecInviterRedpackList');
+var bind = require('./routes/bind');
+var receiveDecInviterRedpack = require('./routes/receiveDecInviterRedpack');
+
+var getvalidcode = require('./routes/2018januaryact/getvalidcode');
+var submitJanuaryact = require('./routes/2018januaryact/submit');
+
+var marchLotteryGet = require('./routes/201803/get');
+var marchLottery = require('./routes/201803/lottery');
+var marchBind = require('./routes/201803/bind');
 
 var app = express();
 
@@ -24,7 +32,7 @@ var app = express();
 app.all('*', function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'X-Requested-With, Content-type,Accept,token');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With, Content-type,Accept,token,authorization');
   res.header("Content-Type", "application/json;charset=utf-8");
   if (req.method === 'OPTIONS') {
     res.sendStatus(200).end();
@@ -51,12 +59,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/test_get', testGet);
-app.use('/test_post', testPost);
 app.use('/api/v1/decLotteryActivity/submit', submit);
 app.use('/api/v1/decLotteryActivity/lottery', lottery);
 app.use('/api/v1/decLotteryActivity/draw', draw);
 app.use('/api/v1/receiveRedpack', receiveRedpack);
+app.use('/api/v1/findDecInviterRedpackList', findDecInviterRedpackList);
+app.use('/api/v1/decInviter/bind', bind);
+app.use('/api/v1/receiveDecInviterRedpack', receiveDecInviterRedpack);
+
+app.use('/api/v1/activity/2018/january/getvalidcode', getvalidcode);
+app.use('/api/v1/activity/2018/january/submit', submitJanuaryact);
+
+app.use('/api/v1/activity/2018/march/get', marchLotteryGet);
+app.use('/api/v1/activity/2018/march/lottery', marchLottery);
+app.use('/api/v1/wechatUser/bind/H5', marchBind);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

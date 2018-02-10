@@ -19,7 +19,7 @@ router.post('/', function (req, res, next) {
     const result = {
         result: 'success',
         status: 1,
-        lotteryStatus: 1,
+        lotteryStatus: 4,
         amount: aPrice[0].fake
     };
 
