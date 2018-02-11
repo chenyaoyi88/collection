@@ -12,6 +12,33 @@ function isWeixin(): boolean {
     }
 }
 
+interface formatDate_date {
+    year?: number;
+    month?: number;
+    date?: number;
+    hour?: number;
+    min?: number;
+    sec?: number;
+}
+
+function formatDate(time: any): formatDate_date {
+    if (time) {
+        const newTime = typeof time === 'number' ? time : parseInt(time);
+        const date = new Date(newTime);
+        const oRetDate: formatDate_date = {};
+        oRetDate.year = date.getFullYear();
+        oRetDate.month = date.getMonth() + 1;
+        oRetDate.date = date.getDate();
+        oRetDate.hour = date.getHours();
+        oRetDate.min = date.getMinutes();
+        oRetDate.sec = date.getSeconds();
+        return oRetDate;
+    } else {
+        return time || '';
+    }
+}
+
+
 const Tool = {
 
     domReady: function (callback: Function): void {
@@ -62,4 +89,4 @@ const Tool = {
     }
 };
 
-export { isWeixin, Tool };
+export { isWeixin, formatDate, Tool };

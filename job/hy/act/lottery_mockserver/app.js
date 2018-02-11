@@ -21,6 +21,8 @@ var getvalidcode = require('./routes/2018januaryact/getvalidcode');
 var submitJanuaryact = require('./routes/2018januaryact/submit');
 
 var marchLotteryGet = require('./routes/201803/get');
+var marchLotteryGetH5 = require('./routes/201803/get.h5');
+var marchLotteryVcode = require('./routes/201803/vcode');
 var marchLottery = require('./routes/201803/lottery');
 var marchBind = require('./routes/201803/bind');
 
@@ -71,6 +73,8 @@ app.use('/api/v1/activity/2018/january/getvalidcode', getvalidcode);
 app.use('/api/v1/activity/2018/january/submit', submitJanuaryact);
 
 app.use('/api/v1/activity/2018/march/get', marchLotteryGet);
+app.use('/api/v1/activity/2018/march/get/H5', marchLotteryGetH5);
+app.use('/api/v1/verificationCode', marchLotteryVcode);
 app.use('/api/v1/activity/2018/march/lottery', marchLottery);
 app.use('/api/v1/wechatUser/bind/H5', marchBind);
 

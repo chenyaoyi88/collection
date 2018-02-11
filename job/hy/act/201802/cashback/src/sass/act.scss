@@ -103,6 +103,7 @@ button {
           position: relative;
           z-index: 14;
           width: px2vw(522);
+          margin: 0 auto;
         }
         .act-bound-img-phone {
           position: absolute;
@@ -135,7 +136,7 @@ button {
     }
   }
   .list-table {
-    margin: px2vw(40) 0;
+    margin: px2vw(50) 0 px2vw(40);
   }
   .download-wrap {
     background-color: #ac0a21;

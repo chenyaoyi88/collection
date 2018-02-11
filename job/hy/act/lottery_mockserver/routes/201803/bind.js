@@ -5,10 +5,11 @@ var router = express.Router();
 router.post('/', function (req, res, next) {
     console.log(req.body);
     const result = {
-        code: 'VALID_CODE_ERROR',
+        code: 'SUCCESS',
         msg: '验证码错误',
         data: null
     };
+
     // FAIL     失败
     // SUCCESS  成功
     // VALID_CODE_ERROR 验证码错误

@@ -9,13 +9,11 @@ const weixin = {
     // 分享标题
     title: '广货宝新春返现188%',
     // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-    link: `https://www.guanghuobao.com/${
-      Env === 'production' ? '' : 'sit/'
-    }api/v1/wechat/auth/receiveRedpack/request`,
+    link: `https://${Env === 'production' ? 'www' : 'sit'}.guanghuobao.com/api/v1/wechat/auth/2018marchact/request`,
     // 分享描述（分享描述不能过长，否则会影响分享图标分享给好友时无法正常显示）
     desc: '开年3月发财月，广货宝新春返现188%，祝您新年发发发！须先关注广货宝微信公众号',
     // 分享图标
-    imgUrl: 'https:' + shareIMG,
+    imgUrl: `https://${Env === 'production' ? 'www' : 'sit'}.guanghuobao.com/ghb-web/act/2018/03/cashback/${shareIMG}`,
     // 分享类型,music、video或link，不填默认为link
     type: '',
     // 如果type是music或video，则要提供数据链接，默认为空
