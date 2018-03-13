@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>websocket客户端1</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <div class="ws-wrap">
+        <div class="ws-content-wrap" id="ws-content-wrap">
+        </div>
+        <div class="ws-input-wrap">
+            <input type="text" class="ws-input" placeholder="输入" id="ws-input">
+            <button class="ws-submit" id="ws-submit">提交</button>
+        </div>
+    </div>
+    <script src="./ws-tool.js"></script>
+    <script>
+        window.onload = function () {
+            const oContentWrap = document.getElementById('ws-content-wrap');
+            const oInput = document.getElementById('ws-input');
+            const oSubmit = document.getElementById('ws-submit');
+
+            const wsUri = "ws://localhost:8000/";
+            const websocket = new WebSocket(wsUri);
+
+            websocket.onopen = function (ev) {
+                console.log('456连接成功');
+            };
+
+            websocket.onmessage = function (ev) {
+                const data = JSON.parse(ev.data);
+                console.log(data);
+                oContentWrap.innerHTML += saySomething(data);
+            };
+
+            document.addEventListener('keydown', function (ev) {
+                if (ev.keyCode === 13) {
+                    sendMsg(websocket, oInput, oContentWrap, {
+                        id: '123',
+                        name: 'fuck1'
+                    });
+                }
+            }, false);
+
+            oSubmit.addEventListener('click', function () {
+                sendMsg(websocket, oInput, oContentWrap, {
+                    id: '123',
+                    name: 'fuck1'
+                });
+            }, false);
+        };
+    </script>
+</body>
+
+</html>

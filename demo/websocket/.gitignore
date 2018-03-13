@@ -1,0 +1,36 @@
+# 日志 #
+logs
+*.log
+
+# 依赖包 #
+node_modules
+
+# 开发工具 #
+.idea
+.vscode
+*.swp
+
+# 编译 #
+/dll
+/dev
+/dist_test
+/dist_prod
+
+# Mac #
+.DS_Store
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# SVN #
+/.svn
+
+# Coverage 测试覆盖率 #
+/.coverage
+
+# 文档 #
+/.docs
+
+# 保密文件不上传 #
+config.ftp.json
+config.ftp.*.json

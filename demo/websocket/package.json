@@ -1,0 +1,20 @@
+{
+  "name": "websocket",
+  "version": "1.0.0",
+  "description": "websocket",
+  "main": "index.js",
+  "dependencies": {
+    "ws": "^5.0.0"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.23.6"
+  },
+  "scripts": {
+    "start": "browser-sync start --server --no-notify --no-open --directory --files '**/*.css,**/*.js,**/*.html'"
+  },
+  "keywords": [
+    "test"
+  ],
+  "author": "cyy",
+  "license": "ISC"
+}
