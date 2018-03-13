@@ -1,0 +1,140 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+img {
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.ws-wrap {
+  width: 100%;
+  height: 100%;
+  background: #ccc;
+  display: flex;
+  flex-direction: column;
+}
+
+.ws-wrap .ws-content-wrap {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.ws-wrap .ws-input-wrap {
+  width: 100%;
+  height: 50px;
+  display: flex;
+}
+
+.ws-wrap .ws-input-wrap .ws-input {
+  flex: 1;
+  font-size: 20px;
+  padding: 0 10px;
+  border: none;
+  outline: none;
+}
+
+.ws-wrap .ws-input-wrap .ws-submit {
+  width: 100px;
+  border: none;
+  outline: none;
+  color: #fff;
+  background: rgb(67, 140, 250);
+}
+
+.ws-wrap .ws-input-wrap .ws-submit:active {
+  background: rgb(57, 133, 247);
+}
+
+.ws-content-wrap .ws-content-list {
+  display: flex;
+  margin: 10px 0;
+}
+
+.ws-content-wrap .ws-content-list .ws-content-avatar {
+  width: 30px;
+  height: 30px;
+}
+
+.ws-content-wrap .ws-content-list .ws-content-main {
+  position: relative;
+  z-index: 1;
+  padding: 10px;
+  background: rgb(67, 140, 250);
+  color: #fff;
+}
+
+.ws-content-wrap .ws-content-list .ws-content-main:before {
+  display: block;
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: rgb(67, 140, 250);
+}
+
+.ws-content-wrap .ws-content-list-left .ws-content-main:before {
+  top: 0;
+  left: 0;
+}
+
+.ws-content-wrap .ws-content-list-right .ws-content-main:before {
+  transform: rotate(45deg);
+  top: 10px;
+  right: -6px;
+}
+
+.ws-content-wrap .ws-content-list .ws-content {
+  flex: 1;
+}
+
+.ws-content-list .ws-content .ws-content-name {
+  font-size: 14px;
+  padding-bottom: 5px;
+}
+
+.ws-content-wrap .ws-content-list-left .ws-content-avatar {
+  background: red;
+}
+
+.ws-content-wrap .ws-content-list-right .ws-content-avatar {
+  background: green;
+}
+
+.ws-content-wrap .ws-content-list-left .ws-content-avatar {
+  margin-right: 15px;
+}
+
+.ws-content-wrap .ws-content-list-right .ws-content-avatar {
+  margin-left: 15px;
+}
+
+.ws-content-wrap .ws-content-list-left .ws-content-main {
+  margin-right: 30px;
+}
+
+.ws-content-wrap .ws-content-list-right .ws-content-main {
+  margin-left: 30px;
+}
+
+.ws-content-wrap .ws-content-list .ws-content-main {
+  flex: 1;
+}
