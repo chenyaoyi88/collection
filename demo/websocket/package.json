@@ -7,13 +7,16 @@
     "ws": "^5.0.0"
   },
   "devDependencies": {
-    "browser-sync": "^2.23.6"
+    "browser-sync": "^2.23.6",
+    "http-server": "^0.11.1"
   },
   "scripts": {
-    "start": "browser-sync start --server --no-notify --no-open --directory --files '**/*.css,**/*.js,**/*.html'"
+    "start": "browser-sync start --server --no-notify --no-open --directory --files '**/*.css,**/*.js,**/*.html'",
+    "test:server": "node ws-server.js",
+    "test": "http-server ./ -c-1 --cors -p 8001"
   },
   "keywords": [
-    "test"
+    "websocket"
   ],
   "author": "cyy",
   "license": "ISC"

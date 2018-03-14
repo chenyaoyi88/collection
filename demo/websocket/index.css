@@ -69,6 +69,10 @@ img {
   margin: 10px 0;
 }
 
+.ws-content-wrap .ws-content-list.ws-content-list-right {
+  flex-direction: row-reverse;
+}
+
 .ws-content-wrap .ws-content-list .ws-content-avatar {
   width: 30px;
   height: 30px;

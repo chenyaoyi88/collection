@@ -8,7 +8,7 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <title>客户端2</title>
+    <title>客户端</title>
     <link rel="stylesheet" href="./index.css">
 </head>
 
@@ -23,13 +23,8 @@
     </div>
     <script src="./ws-tool.js"></script>
     <script>
-        const clientID = +new Date();
-        const clientName = '游客-' + clientID;
         window.onload = function () {
-            chatStart({
-                id: clientID,
-                name: clientName
-            });
+            chatStart();
         };
     </script>
 </body>
