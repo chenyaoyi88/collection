@@ -1,0 +1,44 @@
+.idx-box {
+  display: flex;
+  flex-direction: column;
+  .idx-hd-box {
+    height: 50px;
+    background-color: red;
+  }
+  .idx-main-box {
+    flex: 1;
+    background-color: green;
+  }
+  .idx-ft-box {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: yellow;
+  }
+}
+
+.idx-ft-box {
+  .idx-ft-price {
+      position: relative;
+    .price-text {
+        text-align: center;
+        font-size: 20px;
+        padding: 10px;
+    }
+    .price-text-detail-box {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        margin-right: 15px;
+        .price-text-detail {
+            border: 1px solid #ccc;
+            font-size: 14px;
+            padding: 0 5px;
+        }
+    }
+  }
+}
