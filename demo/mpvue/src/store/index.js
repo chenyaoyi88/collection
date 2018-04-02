@@ -11,11 +11,10 @@ const store = new Vuex.Store({
     msgChange: (state, newState) => {
       state.msg = newState.msg
       return state.msg
-    }
-  },
-  actions: {
-    msgChange (context) {
-      context.commit('msgChange')
+    },
+    goBackSendParams: (state, newState) => {
+      state.text = newState.text
+      return state.text
     }
   }
 })

@@ -4,6 +4,10 @@
     <div class="idx-main-box">
       <p>{{ msg }}</p>
       <p @click="carTypeSelect">车型</p>
+      <div>
+        <p>{{ text }}</p>
+        <p @click="goBacksendParams">导航回来带参数</p>
+      </div>
     </div>
     <div class="idx-ft-box">
       <div class="idx-ft-price">
@@ -20,7 +24,14 @@
 </template>
 
 <script>
+import { goBackGetData } from '../../../utils'
+
 export default {
+  data () {
+    return {
+      text: ''
+    }
+  },
   computed: {
     msg () {
       return this.$store.state.msg
@@ -29,6 +40,10 @@ export default {
   methods: {
     carTypeSelect () {
       const url = '../../cartype/main'
+      wx.navigateTo({ url })
+    },
+    goBacksendParams () {
+      const url = '../../goback/main'
       wx.navigateTo({ url })
     },
     nextStep () {
@@ -68,6 +83,13 @@ export default {
   },
   onLoad () {
     console.log('onLoad')
+  },
+  onShow () {
+    // const pages = getCurrentPages() // eslint-disable-line
+    // const currPage = pages[ pages.length - 1 ]
+    // this.text = currPage.data.text
+    this.text = goBackGetData().text
+    console.log('text', this.text)
   }
 }
 </script>

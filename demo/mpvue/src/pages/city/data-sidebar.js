@@ -1,0 +1,78 @@
+const sideBar = [{
+  name: '定位',
+  value: 'loc'
+}, {
+  name: '最近',
+  value: 'rec'
+}, {
+  name: '热门',
+  value: 'hot'
+}, {
+  name: 'A',
+  value: 'a'
+}, {
+  name: 'B',
+  value: 'b'
+}, {
+  name: 'C',
+  value: 'c'
+}, {
+  name: 'D',
+  value: 'd'
+}, {
+  name: 'E',
+  value: 'e'
+}, {
+  name: 'F',
+  value: 'f'
+}, {
+  name: 'G',
+  value: 'g'
+}, {
+  name: 'H',
+  value: 'h'
+}, {
+  name: 'J',
+  value: 'j'
+}, {
+  name: 'K',
+  value: 'k'
+}, {
+  name: 'L',
+  value: 'l'
+}, {
+  name: 'M',
+  value: 'm'
+}, {
+  name: 'N',
+  value: 'n'
+}, {
+  name: 'P',
+  value: 'p'
+}, {
+  name: 'Q',
+  value: 'q'
+}, {
+  name: 'R',
+  value: 'r'
+}, {
+  name: 'S',
+  value: 's'
+}, {
+  name: 'T',
+  value: 't'
+}, {
+  name: 'W',
+  value: 'w'
+}, {
+  name: 'X',
+  value: 'x'
+}, {
+  name: 'Y',
+  value: 'y'
+}, {
+  name: 'Z',
+  value: 'z'
+}]
+
+export default sideBar

@@ -3,7 +3,7 @@ function formatNumber (n) {
   return str[1] ? str : `0${str}`
 }
 
-export function formatTime (date) {
+function formatTime (date) {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
   const day = date.getDate()
@@ -18,3 +18,21 @@ export function formatTime (date) {
   return `${t1} ${t2}`
 }
 
+function goBackSetData (opts) {
+  const options = opts || {}
+  const pages = getCurrentPages() // eslint-disable-line
+  const prevPage = pages[ pages.length - 2 ]
+  prevPage.setData(options)
+}
+
+function goBackGetData () {
+  const pages = getCurrentPages() // eslint-disable-line
+  const currPage = pages[ pages.length - 1 ]
+  return currPage.data
+}
+
+export {
+  formatTime,
+  goBackSetData,
+  goBackGetData
+}
