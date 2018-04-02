@@ -45,7 +45,7 @@
     "mpvue-loader": "^1.0.8",
     "mpvue-template-compiler": "^1.0.6",
     "mpvue-webpack-target": "^1.0.0",
-    "node-sass": "^4.8.3",
+    "node-sass": "4.7.2",
     "optimize-css-assets-webpack-plugin": "^2.0.0",
     "ora": "^1.2.0",
     "postcss-loader": "^2.0.6",

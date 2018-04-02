@@ -1,5 +1,6 @@
 <template>
-  <div class="city-container" v-bind:class="{selecting: isSelecting ? true : false}">
+  <!-- <div class="city-container" v-bind:class="{selecting: isSelecting ? true : false}"> -->
+  <scroll-view>
 
     <div class="city-show-box">
       <div class="city-box curcity">
@@ -56,6 +57,36 @@
         </ul>
       </div>
 
+      <div class="city-select">
+        <p class="city-title">B</p>
+        <ul class="city-select-list">
+          <li class="city-select-item">啊啊啊啊</li>
+          <li class="city-select-item">啊啊啊啊</li>
+          <li class="city-select-item">啊啊啊啊</li>
+          <li class="city-select-item">啊啊啊啊</li>
+        </ul>
+      </div>
+
+      <div class="city-select">
+        <p class="city-title">B</p>
+        <ul class="city-select-list">
+          <li class="city-select-item">啊啊啊啊</li>
+          <li class="city-select-item">啊啊啊啊</li>
+          <li class="city-select-item">啊啊啊啊</li>
+          <li class="city-select-item">啊啊啊啊</li>
+        </ul>
+      </div>
+
+      <div class="city-select">
+        <p class="city-title">B</p>
+        <ul class="city-select-list">
+          <li class="city-select-item">啊啊啊啊</li>
+          <li class="city-select-item">啊啊啊啊</li>
+          <li class="city-select-item">啊啊啊啊</li>
+          <li class="city-select-item">啊啊啊啊</li>
+        </ul>
+      </div>
+
     </div>
 
     <div class="city-sidebar-box">
@@ -64,7 +95,7 @@
       </ul>
     </div>
 
-  </div>
+  </scroll-view>
 </template>
 
 <script>
@@ -79,16 +110,18 @@ export default {
   },
 
   methods: {
-    chStart () {
+    chStart (e) {
       this.isSelecting = true
+      console.log('target', e)
     },
     chMove (e) {
       // console.log(e.target.dataset.flag)
-      console.log('target', e.mp.detail)
+      this.isSelecting = false
+      console.log('target', e)
     },
     chEnd (e) {
       this.isSelecting = false
-      console.log(e.mp)
+      // console.log(e)
     }
   },
 
