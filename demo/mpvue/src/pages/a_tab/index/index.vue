@@ -11,9 +11,8 @@
     </div>
     <div class="idx-ft-box">
       <div class="idx-ft-price">
-        <p class="price-text">￥---</p>
+        <p class="price-text">￥400.00</p>
         <div class="price-text-detail-box">
-        <span class="price-text-detail">价格明细</span>
         </div>
       </div>
       <div class="idx-ft-nextbtn">
@@ -24,76 +23,76 @@
 </template>
 
 <script>
-import { goBackGetData } from '../../../utils'
+import { goBackGetData } from '../../../utils';
 
 export default {
-  data () {
+  data() {
     return {
-      text: ''
-    }
+      text: '',
+    };
   },
   computed: {
-    msg () {
-      return this.$store.state.msg
-    }
+    msg() {
+      return this.$store.state.msg;
+    },
   },
   methods: {
-    carTypeSelect () {
-      const url = '../../cartype/main'
-      wx.navigateTo({ url })
+    carTypeSelect() {
+      const url = '../../cartype/main';
+      wx.navigateTo({ url });
     },
-    goBacksendParams () {
-      const url = '../../goback/main'
-      wx.navigateTo({ url })
+    goBacksendParams() {
+      const url = '../../goback/main';
+      wx.navigateTo({ url });
     },
-    nextStep () {
-      console.log(this.msg)
-    }
+    nextStep() {
+      console.log(this.msg);
+    },
   },
 
-  beforeCreate () {
-    console.log('beforeCreate')
+  beforeCreate() {
+    console.log('beforeCreate');
   },
-  created () {
-    console.log('created')
+  created() {
+    console.log('created');
   },
-  beforeMount () {
-    console.log('beforeMount')
+  beforeMount() {
+    console.log('beforeMount');
   },
-  mounted () {
-    console.log('mounted')
+  mounted() {
+    console.log('mounted');
   },
-  beforeUpdate () {
-    console.log('beforeUpdate')
+  beforeUpdate() {
+    console.log('beforeUpdate');
   },
-  updated () {
-    console.log('updated')
+  updated() {
+    console.log('updated');
   },
-  activated () {
-    console.log('activated')
+  activated() {
+    console.log('activated');
   },
-  deactivated () {
-    console.log('deactivated')
+  deactivated() {
+    console.log('deactivated');
   },
-  beforeDestroy () {
-    console.log('beforeDestroy')
+  beforeDestroy() {
+    console.log('beforeDestroy');
   },
-  destroyed () {
-    console.log('destroyed')
+  destroyed() {
+    console.log('destroyed');
   },
-  onLoad () {
-    console.log('onLoad')
+  onLoad() {
+    console.log('onLoad');
   },
-  onShow () {
+  onShow() {
     // const pages = getCurrentPages() // eslint-disable-line
     // const currPage = pages[ pages.length - 1 ]
     // this.text = currPage.data.text
-    this.text = goBackGetData().text
-    console.log('text', this.text)
-  }
-}
+    this.text = goBackGetData().text;
+    console.log('text', this.text);
+  },
+};
 </script>
 
 <style lang="scss">
-@import './index.scss'
+@import './index.scss';
 </style>

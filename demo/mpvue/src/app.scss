@@ -1,0 +1,18 @@
+.color-notice {
+  color: red;
+}
+
+.ghb-btn {
+  background-color: #f13744;
+  color: #fff;
+  &:active {
+    background-color: #db343f;
+  }
+  &::after {
+    border: none;
+  }
+}
+
+.ghb-input {
+  border: 0;
+}

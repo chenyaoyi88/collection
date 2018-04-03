@@ -90,7 +90,7 @@
     </div>
 
     <div class="city-sidebar-box">
-      <ul class="city-sidebar-list" @touchstart="chStart" @touchmove="chMove" @touchend="chEnd">
+      <ul class="city-sidebar-list" @click="cityFlagSelect">
         <li class="city-sidebar-item" v-for="(item, index) in sideBarList" :key="item.value" :data-flag="item.value" :data-index="index">{{ item.name }}</li>
       </ul>
     </div>
@@ -105,23 +105,14 @@ export default {
     return {
       sideBarList: sideBar,
       curCity: null,
-      isSelecting: false
+      isSelecting: false,
+      aTouchMoveEles: []
     }
   },
 
   methods: {
-    chStart (e) {
-      this.isSelecting = true
-      console.log('target', e)
-    },
-    chMove (e) {
-      // console.log(e.target.dataset.flag)
-      this.isSelecting = false
-      console.log('target', e)
-    },
-    chEnd (e) {
-      this.isSelecting = false
-      // console.log(e)
+    cityFlagSelect (e) {
+      console.log(e.target.dataset.flag)
     }
   },
 

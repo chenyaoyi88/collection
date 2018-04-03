@@ -6,23 +6,22 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
-      msg: ''
-    }
+      msg: '',
+    };
   },
 
-  created () {
-    this.msg = '我页面'
+  created() {
+    this.msg = '我页面';
   },
 
-  mounted () {
-  },
+  mounted() {},
 
-  onShow () {
-    console.log('onshow')
-  }
-}
+  onShow() {
+    console.log('onshow');
+  },
+};
 </script>
 
 <style>

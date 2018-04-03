@@ -9,10 +9,7 @@
 <script>
 export default {
   props: ['text'],
-  mounted () {
-    console.log('card')
-  }
-}
+};
 </script>
 
 <style>

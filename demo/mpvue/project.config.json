@@ -10,7 +10,7 @@
 	"miniprogramRoot": "./dist/",
 	"compileType": "miniprogram",
 	"appid": "touristappid",
-	"projectname": "my-project",
+	"projectname": "ghb-min",
 	"condition": {
 		"search": {
 			"current": -1,

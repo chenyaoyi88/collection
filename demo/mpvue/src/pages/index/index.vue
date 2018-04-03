@@ -5,7 +5,6 @@
       <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
       <div class="userinfo-nickname">
         <card :text="userInfo.nickName"></card>
-        <test :text="'爱爱爱'"></test>
       </div>
     </div>
 
@@ -24,54 +23,47 @@
 </template>
 
 <script>
-import card from '@/components/card'
-import test from '@/components/test'
+import card from '@/components/card';
 
 export default {
-  data () {
+  data() {
     return {
       motto: 'Hello World',
-      userInfo: {}
-    }
+      userInfo: {},
+    };
   },
 
   components: {
     card,
-    test
   },
 
   methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      wx.navigateTo({ url })
+    bindViewTap() {
+      const url = '../logs/main';
+      wx.navigateTo({ url });
     },
-    getUserInfo () {
+    getUserInfo() {
       // 调用登录接口
       wx.login({
         success: () => {
           wx.getUserInfo({
             success: (res) => {
-              this.userInfo = res.userInfo
-            }
-          })
-        }
-      })
+              this.userInfo = res.userInfo;
+            },
+          });
+        },
+      });
     },
-    clickHandle (msg, ev) {
-      console.log('clickHandle:', msg, ev)
-    }
+    clickHandle(msg, ev) {
+      console.log('clickHandle:', msg, ev);
+    },
   },
 
-  created () {
+  created() {
     // 调用应用实例的方法获取全局数据
-    this.getUserInfo()
-
-    console.log(process.env.NODE_ENV)
+    this.getUserInfo();
   },
-  onShow () {
-    console.log('index')
-  }
-}
+};
 </script>
 
 <style scoped>

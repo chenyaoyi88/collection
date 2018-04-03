@@ -9,43 +9,43 @@ const sideBar = [{
   value: 'hot'
 }, {
   name: 'A',
-  value: 'a'
+  value: 'A'
 }, {
   name: 'B',
-  value: 'b'
+  value: 'B'
 }, {
   name: 'C',
-  value: 'c'
+  value: 'C'
 }, {
   name: 'D',
-  value: 'd'
+  value: 'D'
 }, {
   name: 'E',
-  value: 'e'
+  value: 'E'
 }, {
   name: 'F',
-  value: 'f'
+  value: 'F'
 }, {
   name: 'G',
-  value: 'g'
+  value: 'G'
 }, {
   name: 'H',
-  value: 'h'
+  value: 'H'
 }, {
   name: 'J',
-  value: 'j'
+  value: 'J'
 }, {
   name: 'K',
-  value: 'k'
+  value: 'K'
 }, {
   name: 'L',
-  value: 'l'
+  value: 'L'
 }, {
   name: 'M',
-  value: 'm'
+  value: 'M'
 }, {
   name: 'N',
-  value: 'n'
+  value: 'N'
 }, {
   name: 'P',
   value: 'p'
