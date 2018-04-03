@@ -30,7 +30,7 @@
     </div>
 
     <div class="login-btn-box">
-      <button class="ghb-btn login-btn" @click="login">登录广货宝</button>
+      <button class="ghb-btn login-btn" @click="login" disabled>登录广货宝</button>
     </div>
 
   </div>

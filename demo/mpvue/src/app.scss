@@ -5,11 +5,16 @@
 .ghb-btn {
   background-color: #f13744;
   color: #fff;
+  border-radius: 0px;
   &:active {
     background-color: #db343f;
   }
   &::after {
     border: none;
+  }
+  &[disabled] {
+    color: #fdfdfd;
+    background-color: #dbdbdb !important;
   }
 }
 
