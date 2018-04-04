@@ -1,12 +1,6 @@
-<script>
-export default {
-  created() {
-    // 调用API从本地缓存中获取数据
-  },
-};
-</script>
-
+<script></script>
 
 <style lang="scss">
+// app.scss 未全局样式
 @import './app.scss';
 </style>

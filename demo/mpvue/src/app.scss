@@ -2,14 +2,27 @@
   color: red;
 }
 
+.no-boder-top {
+  border-top: none !important;
+}
+
+.ghb-container {
+  padding: 20px;
+}
+
 .ghb-btn {
   background-color: #f13744;
   color: #fff;
+  border-radius: 0px;
   &:active {
     background-color: #db343f;
   }
   &::after {
     border: none;
+  }
+  &[disabled] {
+    color: #fdfdfd !important;
+    background-color: #dfdfdf !important;
   }
 }
 

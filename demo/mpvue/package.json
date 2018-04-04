@@ -1,5 +1,5 @@
 {
-  "name": "ghb-min",
+  "name": "mpvue-ts",
   "version": "1.0.0",
   "description": "A Mpvue project",
   "author": "chenyaoyi88 <152296058@qq.com>",
@@ -12,9 +12,13 @@
   },
   "dependencies": {
     "mpvue": "^1.0.6",
+    "vue": "^2.5.16",
+    "vue-property-decorator": "^6.0.0",
     "vuex": "^2.3.1"
   },
   "devDependencies": {
+    "@types/node": "^9.6.2",
+    "awesome-typescript-loader": "^4.0.1",
     "babel-core": "^6.22.1",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^7.1.1",
@@ -55,6 +59,8 @@
     "sass-loader": "^6.0.7",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",
+    "tencent-wx-app": "^1.1.201712221707",
+    "typescript": "^2.8.1",
     "url-loader": "^0.5.8",
     "vue-style-loader": "^3.0.1",
     "webpack": "^2.6.1",

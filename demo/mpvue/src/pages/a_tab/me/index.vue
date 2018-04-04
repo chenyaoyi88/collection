@@ -1,33 +1,12 @@
 <template>
   <div class="container">
     <p>{{ msg }}</p>
+    <a href="../../login/main">login</a>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      msg: '',
-    };
-  },
+<script lang="ts" src="./index.ts"></script>
 
-  created() {
-    this.msg = '我页面';
-  },
-
-  mounted() {},
-
-  onShow() {
-    console.log('onshow');
-  },
-};
-</script>
-
-<style>
-.container {
-  display: flex;
-  flex-direction: column;
-  padding: 40rpx;
-}
+<style lang="scss">
+@import './index.scss';
 </style>

@@ -10,7 +10,7 @@
 	"miniprogramRoot": "./dist/",
 	"compileType": "miniprogram",
 	"appid": "touristappid",
-	"projectname": "ghb-min",
+	"projectname": "mpvue-ts",
 	"condition": {
 		"search": {
 			"current": -1,

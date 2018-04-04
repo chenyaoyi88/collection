@@ -19,7 +19,7 @@ export default {
   mounted() {},
 
   onShow() {
-    console.log('onshow');
+    // console.log('onshow');
   },
 };
 </script>
