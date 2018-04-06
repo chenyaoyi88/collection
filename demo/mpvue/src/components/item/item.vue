@@ -1,14 +1,17 @@
 <template>
-  <div class="item">
+  <div class="item" @click="itemClick">
     <div class="item-l">
-        <img class="item-icon" :src="icon">
+        <div v-if="!icon" class="item-point" :class="point"></div>
+        <img v-if="icon" class="item-icon" :src="icon">
     </div>
     <div class="item-r" :class="{'no-boder-top': noBorderTop ? true : false}">
       <div class="item-r-title">
-          <span class="title">{{ title }}</span>
+        <p v-if="textTop" class="item-info-t">{{ textTop }}</p>
+        <p v-if="textCenter" class="item-info-c">{{ textCenter }}</p>
+        <p v-if="textBottom" class="item-info-b">{{ textBottom }}</p>
       </div>
       <div class="item-r-value">
-          <span :class="{light: valueColor ? valueColor : false}">{{ value }}</span>
+          <p :class="{light: valueColor ? valueColor : false}">{{ value }}</p>
       </div>
       <div class="item-r-arrow">
           <img class="img-item-arrow" :src="arrow">
@@ -24,19 +27,34 @@ import time from './icon/time.svg';
 import extra from './icon/extra.svg';
 
 export default {
-  props: ['iconName', 'title', 'value', 'valueColor'],
+  props: [
+    'iconType',
+    'pointType',
+    'textTop',
+    'textCenter',
+    'textBottom',
+    'value',
+    'valueColor',
+    'noBorderTop'
+  ],
   data() {
     return {
       arrow,
       cartype,
       time,
       extra,
-      icon: ''
+      icon: '',
+      point: ''
     };
+  },
+  methods: {
+    itemClick() {
+      this.$emit('itemClick', this);
+    }
   },
 
   created() {
-    switch (this.iconName) {
+    switch (this.iconType) {
       case 'cartype':
         this.icon = cartype;
         break;
@@ -46,10 +64,22 @@ export default {
       case 'extra':
         this.icon = extra;
         break;
+      case 'point':
+        this.icon = '';
+        switch (this.pointType) {
+          case 'start':
+            this.point = 'start';
+            break;
+          case 'end':
+            this.point = 'end';
+            break;
+          default:
+            this.point = 'start';
+        }
+        break;
       default:
-        this.icon = cartype;
+        this.icon = '';
     }
-    console.log('item', 'created');
   }
 };
 </script>
@@ -72,6 +102,17 @@ export default {
       width: 30px;
       height: 30px;
     }
+    .item-point {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      &.start {
+        background-color: #15c145;
+      }
+      &.end {
+        background-color: #f13744;
+      }
+    }
   }
   .item-r {
     position: relative;
@@ -84,8 +125,17 @@ export default {
     font-size: 14px;
     padding: 15px 35px 15px 0;
     border-top: 1px solid #ededed;
+    line-height: 1.6;
     .item-r-title {
-      color: #333333;
+      .item-info-t {
+        color: #aaaaaa;
+      }
+      .item-info-c {
+        color: #333333;
+      }
+      .item-info-b {
+        font-size: 12px;
+      }
     }
     .item-r-value {
       color: #4a4a4a;

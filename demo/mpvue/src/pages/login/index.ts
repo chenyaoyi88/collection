@@ -1,5 +1,5 @@
 import { Vue, Component, Provide } from 'vue-property-decorator';
-import { btnVcode } from '../../components'; // mpvue目前只支持的单文件组件
+import btnVcode from '@/components/button/vcode.vue'; // mpvue目前只支持的单文件组件
 import API from '../../api';
 import { isInputEmpty } from '../../utils';
 

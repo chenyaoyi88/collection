@@ -1,6 +1,6 @@
 import { Vue, Component, Provide } from 'vue-property-decorator';
 import { goBackGetData } from '../../../utils';
-import { item } from '../../../components';
+import item from '@/components/item/item.vue';
 
 // 必须使用装饰器的方式来指定components
 @Component({
@@ -12,6 +12,14 @@ class Index extends Vue {
   // computed
   get msg() {
     return this.$store.state.msg;
+  }
+
+  getStartPoint() {
+    console.log('getStartPoint');
+  }
+
+  getEndPoint() {
+    console.log('getEndPoint');
   }
 
   carTypeSelect() {
@@ -28,15 +36,6 @@ class Index extends Vue {
     console.log('nextStep');
   }
 
-  onShow() {
-    // 小程序 hook
-    console.log('onShow');
-  }
-
-  mounted() {
-    // vue hook
-    console.log('mounted');
-  }
 }
 
 export default Index;
