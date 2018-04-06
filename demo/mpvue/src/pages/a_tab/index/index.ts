@@ -1,11 +1,11 @@
 import { Vue, Component, Provide } from 'vue-property-decorator';
 import { goBackGetData } from '../../../utils';
-import { Item } from '../../../components';
+import { item } from '../../../components';
 
 // 必须使用装饰器的方式来指定components
 @Component({
   components: {
-    Item,
+    item
   }
 })
 class Index extends Vue {

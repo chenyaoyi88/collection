@@ -41,9 +41,9 @@
 
       <div class="idx-cartype-box">
 
-        <Item :iconName="'cartype'" :title="'车型'" :value="'小型面包'"></Item>
-        <Item :iconName="'time'" :title="'时间'" :value="'立即叫车'"></Item>
-        <Item :iconName="'extra'" :title="'额外服务'" :value="'装卸搬运等额外服务'" :valueColor="'light'"></Item>
+        <item :iconName="'cartype'" :title="'车型'" :value="'小型面包'"></item>
+        <item :iconName="'time'" :title="'时间'" :value="'立即叫车'"></item>
+        <item :iconName="'extra'" :title="'额外服务'" :value="'装卸搬运等额外服务'" :valueColor="'light'"></item>
       
       </div>
 

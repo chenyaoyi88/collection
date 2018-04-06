@@ -1,5 +1,5 @@
-import Item from './item/item.vue';
-import btnVcode from './btn-vcode.vue';
+import item from './item/item.vue';
+import btnVcode from './button/btn-vcode.vue';
 import card from './card.vue';
-export { Item, btnVcode, card };
+export { item, btnVcode, card };
 

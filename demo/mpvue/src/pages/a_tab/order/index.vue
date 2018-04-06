@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <p>{{ msg }}</p>
+        <item :iconName="'cartype'" :title="'车型'" :value="'小型面包'"></item>
   </div>
 </template>
 

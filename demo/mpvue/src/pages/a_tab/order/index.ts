@@ -1,18 +1,23 @@
 import { Vue, Component } from 'vue-property-decorator';
+import { item } from '../../../components';
 
-@Component
+@Component({
+  components:{
+    item
+  }
+})
 class Order extends Vue {
-    msg: string = ''
+  msg: string = '';
 
-    created() {
-        this.msg = '订单页面';
-    }
+  created() {
+    this.msg = '订单页面';
+  }
 
-    mounted() { }
+  mounted() {}
 
-    onShow() {
-        // console.log('onshow');
-    }
+  onShow() {
+    // console.log('onshow');
+  }
 }
 
 export default Order;
