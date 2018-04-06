@@ -4,7 +4,7 @@
  * "off"    或者 0：关闭规则。
  * "warn"   或者 1：打开规则，并且作为一个警告（不影响exit code）。
  * "error"  或者 2：打开规则，并且作为一个错误（exit code将会是1）。
-*/
+ */
 
 module.exports = {
   root: true,

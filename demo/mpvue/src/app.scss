@@ -2,6 +2,14 @@
   color: red;
 }
 
+.no-boder-top {
+  border-top: none !important;
+}
+
+.ghb-container {
+  padding: 20px;
+}
+
 .ghb-btn {
   background-color: #f13744;
   color: #fff;
@@ -13,8 +21,8 @@
     border: none;
   }
   &[disabled] {
-    color: #fdfdfd;
-    background-color: #dbdbdb !important;
+    color: #fdfdfd !important;
+    background-color: #dfdfdf !important;
   }
 }
 

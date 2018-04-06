@@ -1,4 +1,10 @@
 .idx-box {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background-color: #f5f5f5;
@@ -8,7 +14,9 @@
   }
   .idx-main-box {
     flex: 1;
-    background-color: green;
+    .idx-route-box {
+      margin: 10px 0;
+    }
   }
   .idx-ft-box {
     position: fixed;
@@ -21,25 +29,151 @@
 
 .idx-ft-box {
   .idx-ft-price {
-      position: relative;
+    position: relative;
+    z-index: 1;
     .price-text {
-        text-align: center;
-        font-size: 20px;
-        padding: 10px;
+      text-align: center;
+      font-size: 20px;
+      padding: 10px;
     }
     .price-text-detail-box {
-        position: absolute;
-        right: 0;
-        top: 0;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        margin-right: 15px;
-        .price-text-detail {
-            border: 1px solid #ccc;
-            font-size: 14px;
-            padding: 0 5px;
-        }
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      margin-right: 15px;
+      .price-text-detail {
+        border: 1px solid #ccc;
+        font-size: 14px;
+        padding: 0 5px;
+      }
+    }
+  }
+}
+
+.idx-route {
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  .route-l {
+    width: 32px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 18px;
+    .route-point {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      &.start {
+        background-color: #15c145;
+      }
+      &.end {
+        background-color: #F13744;
+      }
+    }
+  }
+  .route-r {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    z-index: 2;
+    padding: 12px 15px 12px 0;
+    border-top: 1px solid #EDEDED;
+  }
+}
+
+.route-r-text {
+  flex: 1;
+  padding-right: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.6;
+  .route-info-t {
+    color: #AAAAAA;
+  }
+  .route-info-c {
+    color: #333333;
+  }
+  .route-info-b {
+    font-size: 12px;
+  }
+}
+
+.route-r-arrow {
+  position: absolute;
+  right: 15px;
+  top: 0px;
+  z-index: 3;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .img-route-arrow {
+    width: 8px;
+    height: 13px;
+  }
+}
+
+.idx-cartype-box {
+  display: flex;
+  flex-direction: column;
+  .cartype-l {
+    width: 50px;
+  }
+  .cartype-r {
+    flex: 1;
+    background-color: #fff;
+  }
+}
+
+.item {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  .item-l {
+    width: 50px;
+  }
+  .item-r {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    padding: 15px 35px 15px 0;
+    border-top: 1px solid #EDEDED;
+    .item-r-title {
+      color: #333333;
+    }
+    .item-r-value {
+      color: #4A4A4A;
+      .light {
+        color: #C2C2C2;
+      }
+    }
+    .item-r-arrow {
+      position: absolute;
+      right: 15px;
+      top: 0px;
+      z-index: 3;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      .img-item-arrow {
+        width: 8px;
+        height: 13px;
+      }
     }
   }
 }
