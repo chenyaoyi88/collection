@@ -1,54 +1,54 @@
-.idx-box {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background-color: #f5f5f5;
-  .idx-main-box {
-    flex: 1;
-    .idx-site-box {
-      margin: 10px 0;
+<template>
+  <div class="idx-site">
+    <div class="site-l">
+      <div class="site-point" :class="iconType"></div>
+    </div>
+    <div class="site-r no-boder-top">
+      <div class="site-r-text">
+        <p class="site-info-t">{{ topText }}</p>
+        <p class="site-info-c">{{ centerText }}</p>
+        <p class="site-info-b">{{ buttonText }}</p>
+      </div>
+      <div class="site-r-arrow">
+        <img class="img-site-arrow" :src="arrow" alt="">
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import arrow from './icon/arrow.png';
+
+export default {
+  props: {
+    iconType: {
+      type: String,
+      default: 'start'
+    },
+    topText: {
+      type: String,
+      default: ''
+    },
+    centerText: {
+      type: String,
+      default: '选择发货地点'
+    },
+    buttonText: {
+      type: String,
+      default: ''
     }
+  },
+  data() {
+    return {
+      arrow
+    };
   }
-  .idx-ft-box {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    z-index: 1;
-    width: 100%;
-  }
-}
+};
+</script>
 
-.idx-ft-box {
-  .idx-ft-price {
-    position: relative;
-    z-index: 2;
-    .price-text {
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      background-color: #fff;
-    }
-  }
-}
-
-.idx-ft-nextbtn {
-  .next-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 50px;
-    font-size: 18px;
-  }
-}
-
+<style lang="scss">
 .idx-site {
+  width: 100%;
   display: flex;
   flex-direction: row;
   background-color: #fff;
@@ -66,7 +66,7 @@
         background-color: #15c145;
       }
       &.end {
-        background-color: #F13744;
+        background-color: #f13744;
       }
     }
   }
@@ -77,7 +77,7 @@
     position: relative;
     z-index: 2;
     padding: 12px 15px 12px 0;
-    border-top: 1px solid #EDEDED;
+    border-top: 1px solid #ededed;
   }
 }
 
@@ -91,7 +91,7 @@
   font-size: 14px;
   line-height: 1.6;
   .site-info-t {
-    color: #AAAAAA;
+    color: #aaaaaa;
   }
   .site-info-c {
     color: #333333;
@@ -115,16 +115,4 @@
     height: 13px;
   }
 }
-
-.idx-cartype-box {
-  display: flex;
-  flex-direction: column;
-  .cartype-l {
-    width: 50px;
-  }
-  .cartype-r {
-    flex: 1;
-    background-color: #fff;
-  }
-}
-
+</style>

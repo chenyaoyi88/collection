@@ -24,6 +24,8 @@
         </div>
       </div>
     </div>
+    
+    <card :text="'哈哈哈'"></card>
 
     <div class="login-tips-box">
       <p>啊啊啊啊<span class="color-notice">撒打算打</span></p>
