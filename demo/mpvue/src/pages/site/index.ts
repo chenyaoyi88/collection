@@ -3,7 +3,6 @@ import { Vue, Component, Provide } from 'vue-property-decorator';
 // 必须使用装饰器的方式来指定components
 @Component
 class Index extends Vue {
-  @Provide() count: Number = 0;
   @Provide() listHeight: Number = 0;
   @Provide() inputValue: String = '';
   @Provide() results: Array<string> = [];
@@ -38,9 +37,7 @@ class Index extends Vue {
   }
 
   mounted() {
-    // vue hook
     const _this = this;
-    console.log('mounted');
     wx.getSystemInfo({
       success: function(res) {
         _this.listHeight = res.windowHeight - res.windowWidth / 750 * 100;

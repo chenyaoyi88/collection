@@ -4,19 +4,26 @@
         <div v-if="!icon" class="item-point" :class="point"></div>
         <img v-if="icon" class="item-icon" :src="icon">
     </div>
-    <div class="item-r" :class="{'no-boder-top': noBorderTop ? true : false}">
-      <div class="item-r-title">
-        <p v-if="textTop" class="item-info-t">{{ textTop }}</p>
-        <p v-if="textCenter" class="item-info-c">{{ textCenter }}</p>
-        <p v-if="textBottom" class="item-info-b">{{ textBottom }}</p>
+    <template v-if="!itemType">
+      <div class="item-r" :class="{'no-boder-top': noBorderTop ? true : false}">
+        <div class="item-r-title">
+          <p v-if="textTop" class="item-info-t">{{ textTop }}</p>
+          <p v-if="textCenter" class="item-info-c">{{ textCenter }}</p>
+          <p v-if="textBottom" class="item-info-b">{{ textBottom }}</p>
+        </div>
+        <div class="item-r-value">
+            <p :class="{light: valueColor ? valueColor : false}">{{ value }}</p>
+        </div>
+        <div class="item-r-arrow">
+            <img class="img-item-arrow" :src="arrow">
+        </div>
       </div>
-      <div class="item-r-value">
-          <p :class="{light: valueColor ? valueColor : false}">{{ value }}</p>
+    </template>
+    <template v-if="itemType === 'input'">
+      <div class="item-r" :class="{'no-boder-top': noBorderTop ? true : false}">
+        <input type="text" :placeholder="inputPlc" :value="value">
       </div>
-      <div class="item-r-arrow">
-          <img class="img-item-arrow" :src="arrow">
-      </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -28,6 +35,8 @@ import extra from './icon/extra.svg';
 
 export default {
   props: [
+    'itemType',
+    'inputPlc',
     'iconType',
     'pointType',
     'textTop',
@@ -54,6 +63,7 @@ export default {
   },
 
   created() {
+    console.log(this);
     switch (this.iconType) {
       case 'cartype':
         this.icon = cartype;
