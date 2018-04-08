@@ -63,7 +63,6 @@ export default {
   },
 
   created() {
-    console.log(this);
     switch (this.iconType) {
       case 'cartype':
         this.icon = cartype;
