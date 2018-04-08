@@ -2,7 +2,7 @@
   <div class="contact-box">
     <div class="contact-info-box">
       <p class="contact-info-title">标题</p>
-      <p class="contact-info-content">内容内容内容内容</p>
+      <p class="contact-info-content">{{ sitePoint }}</p>
     </div>
     <div class="contact-item-box">
       <item 
@@ -20,7 +20,7 @@
       ></item>
     </div>
     <div class="contact-btn-box">
-      <button class="ghb-btn">确认</button>
+      <button class="ghb-btn" @click="confirmGoback">确认</button>
     </div>
   </div>
 </template>

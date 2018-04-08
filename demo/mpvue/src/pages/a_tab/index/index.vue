@@ -6,9 +6,9 @@
         <item 
           iconType="point" 
           textTop="" 
-          textCenter="选择发货地点" 
+          :textCenter="startPoint" 
           textBottom=""  
-          v-on:itemClick="getStartPoint"
+          v-on:itemClick="getPonit"
           noBorderTop="true"
         ></item>
         <item 
@@ -17,7 +17,7 @@
           textTop="" 
           textCenter="选择收货地点" 
           textBottom=""  
-          v-on:itemClick="getEndPoint"
+          v-on:itemClick="getPonit"
         ></item>
       </div>
 

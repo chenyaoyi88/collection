@@ -14,12 +14,13 @@ class Index extends Vue {
     return this.$store.state.msg;
   }
 
-  getStartPoint() {
-    console.log('getStartPoint');
-  }
+  @Provide() startPoint: string = '选择发货地点';
+  @Provide() endPoint: string = '选择收货地点';
 
-  getEndPoint() {
-    console.log('getEndPoint');
+  getPonit() {
+    wx.navigateTo({
+      url: '../../site/main'
+    });
   }
 
   carTypeSelect() {
@@ -34,6 +35,16 @@ class Index extends Vue {
 
   nextStep() {
     console.log('nextStep');
+  }
+
+  onShow() {
+    // if (goBackGetData().startPoint) {
+    //   this.startPoint = goBackGetData().startPoint;
+    // }
+    // if (goBackGetData().endPoint) {
+    //   this.endPoint = goBackGetData().endPoint;
+    // }
+    console.log(goBackGetData());
   }
 
 }
