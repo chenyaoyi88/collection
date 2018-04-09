@@ -1,34 +1,35 @@
 import { Vue, Component, Provide } from 'vue-property-decorator';
+import Tab from '@/components/tab/index.vue';
 
-@Component
+@Component({
+  components: {
+    Tab
+  }
+})
 class Order extends Vue {
   @Provide() msg: string = '';
   @Provide() isLogin: boolean = false;
+  @Provide() tabList: Array<string> = ['进行中', '已完成', '已取消'];
+  @Provide() tab1List: Array<any> = [];
+  @Provide() tab1ListLen: number = 30;
+  @Provide() tabText: string = 'bitch';
 
   created() {
     this.msg = '订单页面';
-
-    // wx.login({
-    //   success: function (res) {
-    //     console.log(res);
-    //     if (res.code) {
-    //       //发起网络请求
-    //       // wx.request({
-    //       //   url: 'https://test.com/onLogin',
-    //       //   data: {
-    //       //     code: res.code
-    //       //   }
-    //       // })
-    //     } else {
-    //       console.log('登录失败！' + res.errMsg)
-    //     }
-    //   }
-    // });
   }
 
   onShow() {
     const token = wx.getStorageSync('token');
     this.isLogin = token ? true : false;
+  }
+
+  tabChange(index: number) {
+    console.log(index);
+  }
+
+  sayFuck() {
+    console.log(123);
+    this.tabText = 'fuck you!';
   }
   
   gotoLogin() {

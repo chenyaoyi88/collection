@@ -1,28 +1,16 @@
 <template>
   <div class="tabswitch-box">
-    <div class="tabswitch-title-box" v-if="tabList.length">
+    <div class="tabswitch-title-box" v-if="tabList.length" :style="{height: headerHeight + 'px'}">
       <ul class="title-list">
         <li v-for="(item, index) in tabList" class="title-list-item" :key="index" :class="{active: currentIndex === index}" @click="tabClick(index)">{{ item }}</li>
       </ul>
     </div>
-    <div class="tabswitch-content-box">
-      <swiper @change="tabChange" :current="currentIndex">
+    <div class="tabswitch-content-box" :style="{height: contentHeight + 'px'}">
+      <swiper 
+        class="tabswitch-content" @change="tabChange" :current="currentIndex"
+        :duration="duration"
+      >
         <slot></slot>
-          <!-- <swiper-item>
-            <div class="order-box">
-              <p>123阿斯达斯</p>
-            </div>
-          </swiper-item>
-          <swiper-item>
-            <div class="order-box">
-              <p>哇哇哇哇</p>
-            </div>
-          </swiper-item>
-          <swiper-item>
-            <div class="order-box">
-              <p>丫丫丫啊</p>
-            </div>
-          </swiper-item> -->
       </swiper>
     </div>
   </div>
@@ -35,11 +23,20 @@ export default {
     tabList: {
       type: Array,
       default: []
+    },
+    headerHeight: {
+      type: Number,
+      default: 30
+    },
+    duration: {
+      type: Number,
+      default: 200
     }
   },
   data() {
     return {
-      currentIndex: 0
+      currentIndex: 0,
+      contentHeight: 0
     };
   },
   methods: {
@@ -48,37 +45,20 @@ export default {
     },
     tabChange(e) {
       this.currentIndex = e.target.current;
-    }
+    },
+  },
+  mounted() {
+    const oTab = this;
+    wx.getSystemInfo({
+      success(res) {
+        oTab.contentHeight = res.windowHeight - oTab.headerHeight;
+      }
+    });
+    // this.$emit('tabChange', this.currentIndex);
   }
 };
 </script>
 
 <style lang="scss">
-.tabswitch-box {
-  .tabswitch-title-box {
-    .title-list {
-      text-align: center;
-      .title-list-item {
-        display: inline-block;
-        margin: 0 5px;
-        background: yellow;
-        &.active {
-          background: green;
-        }
-      }
-    }
-  }
-  .tabswitch-content-box {
-  }
-}
-.order-box {
-  width: 100%;
-  height: 100%;
-  background: red;
-  p {
-    width: 100%;
-    height: 100%;
-    background: red;
-  }
-}
+@import './index.scss';
 </style>

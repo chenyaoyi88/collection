@@ -10,19 +10,7 @@ import Tab from '@/components/tab/index.vue';
   }
 })
 class Index extends Vue {
-  @Provide() tabList: Array<string> = ['进行中', '已完成', '已取消'];
-  
-  // @Provide() currentIndex: number = 0;
-
-  // tabClick(index: number) {
-  //   this.currentIndex = index;
-  // }
-
-  // tabChange(e: any) {
-  //   console.log(e);
-  //   this.currentIndex = e.target.current;
-  // }
- 
+  @Provide() tabList: Array<string> = ['进行中1', '已完成', '已取消'];
 }
 
 export default Index;
