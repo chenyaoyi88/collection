@@ -18,10 +18,10 @@ function formatTime(date: Date) {
   return `${t1} ${t2}`;
 }
 
-function goBackSetData(opts: any) {
+function goBackSetData(opts: any, pageLevel: number) {
   const options = opts || {};
   const pages = getCurrentPages(); // eslint-disable-line
-  const prevPage = pages[pages.length - 2];
+  const prevPage = pages[pages.length - pageLevel];
   prevPage.setData(options);
 }
 

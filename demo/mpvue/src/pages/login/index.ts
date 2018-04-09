@@ -40,15 +40,20 @@ class Login extends Vue {
   }
   // 登录
   login() {
-    if (isInputEmpty(this.phone, '手机号码不能为空')) return;
-    if (isInputEmpty(this.imgCode, '图形验证码不能为空')) return;
-    if (isInputEmpty(this.msgCode, '短信验证码不能为空')) return;
+    // if (isInputEmpty(this.phone, '手机号码不能为空')) return;
+    // if (isInputEmpty(this.imgCode, '图形验证码不能为空')) return;
+    // if (isInputEmpty(this.msgCode, '短信验证码不能为空')) return;
 
     wx.showLoading({
-      title: '加载中'
+      title: '登陆中'
     });
 
-    setTimeout(() => {}, 1000);
+    setTimeout(() => { 
+      wx.hideLoading();
+      wx.setStorageSync('token', 'cyy');
+      wx.navigateBack();
+    }, 1000);
+
   }
   // 请求数据
   created() {

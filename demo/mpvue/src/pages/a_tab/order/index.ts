@@ -1,22 +1,40 @@
-import { Vue, Component } from 'vue-property-decorator';
-import item from '@/components/item/item.vue';
+import { Vue, Component, Provide } from 'vue-property-decorator';
 
-@Component({
-  components:{
-    item
-  }
-})
+@Component
 class Order extends Vue {
-  msg: string = '';
+  @Provide() msg: string = '';
+  @Provide() isLogin: boolean = false;
 
   created() {
     this.msg = '订单页面';
+
+    // wx.login({
+    //   success: function (res) {
+    //     console.log(res);
+    //     if (res.code) {
+    //       //发起网络请求
+    //       // wx.request({
+    //       //   url: 'https://test.com/onLogin',
+    //       //   data: {
+    //       //     code: res.code
+    //       //   }
+    //       // })
+    //     } else {
+    //       console.log('登录失败！' + res.errMsg)
+    //     }
+    //   }
+    // });
   }
 
-  mounted() {}
-
   onShow() {
-    // console.log('onshow');
+    const token = wx.getStorageSync('token');
+    this.isLogin = token ? true : false;
+  }
+  
+  gotoLogin() {
+    wx.navigateTo({
+      url: '../../login/main'
+    });
   }
 }
 

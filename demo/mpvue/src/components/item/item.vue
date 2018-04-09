@@ -21,7 +21,7 @@
     </template>
     <template v-if="itemType === 'input'">
       <div class="item-r" :class="{'no-boder-top': noBorderTop ? true : false}">
-        <input type="text" :placeholder="inputPlc" :value="value">
+        <input class="item-input" :type="inputType || 'text'" :placeholder="inputPlc" :value="value" @input="itemInput($event)" :maxlength="maxlength || 140">
       </div>
     </template>
   </div>
@@ -37,6 +37,8 @@ export default {
   props: [
     'itemType',
     'inputPlc',
+    'inputType',
+    'maxlength',
     'iconType',
     'pointType',
     'textTop',
@@ -59,6 +61,9 @@ export default {
   methods: {
     itemClick() {
       this.$emit('itemClick', this);
+    },
+    itemInput(e) {
+      this.$emit('itemInput', e);
     }
   },
 
@@ -165,6 +170,9 @@ export default {
         width: 8px;
         height: 13px;
       }
+    }
+    .item-input {
+      width: 100%;
     }
   }
 }

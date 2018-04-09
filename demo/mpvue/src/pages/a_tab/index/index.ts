@@ -14,22 +14,20 @@ class Index extends Vue {
     return this.$store.state.msg;
   }
 
+  @Provide() startInfo: any = {
+    
+  };
   @Provide() startPoint: string = '选择发货地点';
   @Provide() endPoint: string = '选择收货地点';
 
-  getPonit() {
+  getPonit(type: string) {
     wx.navigateTo({
-      url: '../../site/main'
+      url: '../../site/main?type=' + type
     });
   }
 
   carTypeSelect() {
-    const url = '../../login/main';
-    wx.navigateTo({ url });
-  }
-
-  goBacksendParams() {
-    const url = '../../login/main';
+    const url = '../../cartype/main';
     wx.navigateTo({ url });
   }
 

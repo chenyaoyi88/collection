@@ -1,50 +1,48 @@
 import { Vue, Component, Provide } from 'vue-property-decorator';
 import { goBackSetData } from '../../utils';
+import bmap from '../../libs/bmap-wx.min.js'; 
 
 // 必须使用装饰器的方式来指定components
 @Component
 class Index extends Vue {
+  @Provide() type: String = '';
   @Provide() listHeight: Number = 0;
   @Provide() inputValue: String = '';
   @Provide() results: Array<string> = [];
 
-  onShow() {
-    // 小程序 hook
-    console.log('onShow');
-  }
-
   search(e: any) {
-    const _this = this;
+    const __this = this;
+    if (e.target.value === '') {
+      this.results = [];
+      return;
+    }
+    
+    // 参考：http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-placeapi
     wx.request({
-      url: 'https://sug.so.360.cn/suggest?callback=getData&encodein=utf-8&encodeout=utf-8',
+      url: 'http://api.map.baidu.com/place/v2/search?',
       data: {
-        word: encodeURI(e.target.value)
+        query: e.target.value,
+        region: '广州',
+        city_limit: true,
+        output: 'json',
+        ak: 'qLnjq14R4oIEEwtqHM3hcuRMsn1q61Hq'
       },
       success: function (res) {
-        const str = res.data;
-        const str1 = str.substring(str.indexOf('[') + 1, str.lastIndexOf(']'));
-        if (!str1.length) {
-          _this.results = [];
-          return;
-        }
-        const arr = str1.replace(/\"/g, '').split(',');
-        _this.results = arr;
+        __this.results = res.data.results;
       }
-    })
+    });
   }
 
-  selected(point: string) {
-    console.log(point);
-
+  selected(pointInfo: any) {
+    pointInfo.type = this.type;
     wx.navigateTo({
-      url: '../contact/main?sitePoint=' + point
+      url: '../contact/main?pointInfo=' + JSON.stringify(pointInfo)
     });
-
-    // goBackSetData({
-    //   startPoint: item
-    // });
-    // wx.navigateBack();
     this.results = [];
+  }
+
+  onLoad(options: { type: string}) {
+    this.type = options.type;
   }
 
   mounted() {

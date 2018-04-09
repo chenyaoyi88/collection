@@ -12,15 +12,15 @@ class Index extends Vue {
   }
 
   onShow() {
-    console.log('onShow');
+    // console.log('onShow');
   }
 
   created() {
-    console.log('created');
+    // console.log('created');
   }
 
   mounted() {
-    console.log('mounted');
+    // console.log('mounted');
   }
 }
 

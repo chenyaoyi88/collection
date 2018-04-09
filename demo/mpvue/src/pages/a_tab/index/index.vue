@@ -8,7 +8,7 @@
           textTop="" 
           :textCenter="startPoint" 
           textBottom=""  
-          v-on:itemClick="getPonit"
+          v-on:itemClick="getPonit('start')"
           noBorderTop="true"
         ></item>
         <item 
@@ -17,7 +17,7 @@
           textTop="" 
           textCenter="选择收货地点" 
           textBottom=""  
-          v-on:itemClick="getPonit"
+          v-on:itemClick="getPonit('end')"
         ></item>
       </div>
 
@@ -27,6 +27,7 @@
           textCenter="车型" 
           value="小型面包" 
           noBorderTop="true"
+          v-on:itemClick="carTypeSelect"
         ></item>
         <item 
           iconType="time" 
@@ -38,6 +39,12 @@
           textCenter="额外服务" 
           value="装卸搬运等额外服务" 
           valueColor="light"
+        ></item>
+        <item 
+          itemType="input"
+          inputType="text"
+          inputPlc="货物信息、备注"
+          iconType="cartype" 
         ></item>
       </div>
 

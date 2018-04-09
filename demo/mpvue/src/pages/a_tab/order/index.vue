@@ -1,34 +1,18 @@
 <template>
-  <div class="container">
-    <p>{{ msg }}</p>
-        <item :iconName="'cartype'" :title="'车型'" :value="'小型面包'"></item>
+  <div class="ghb-order-box">
+    <div v-if="!isLogin" class="login-box">
+      <div class="login-page-box">
+        <button class="login-page-btn" @click="gotoLogin">请登录</button>
+      </div>
+    </div>
+    <div v-if="isLogin" class="order-box">
+      <p>{{ msg }}</p>
+    </div>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      msg: '',
-    };
-  },
+<script lang="ts" src="./index.ts"></script>
 
-  created() {
-    this.msg = '订单页面';
-  },
-
-  mounted() {},
-
-  onShow() {
-    // console.log('onshow');
-  },
-};
-</script>
-
-<style>
-.container {
-  display: flex;
-  flex-direction: column;
-  padding: 40rpx;
-}
+<style lang="scss">
+@import './index.scss';
 </style>

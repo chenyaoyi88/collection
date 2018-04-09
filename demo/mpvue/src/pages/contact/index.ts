@@ -9,37 +9,32 @@ import { goBackSetData } from '../../utils';
   }
 })
 class Index extends Vue {
-  @Provide() sitePoint: string = '';
+  @Provide() sitePoint: any = {};
   @Provide() name: string = '';
   @Provide() mobile: string = '';
 
   onLoad(option: any) {
-    this.sitePoint = option.sitePoint;
-    // 小程序 hook
-    console.log('option', option);
+    this.sitePoint = JSON.parse(option.pointInfo);
+    console.log('option', this.sitePoint);
   }
 
-  getValue(value: string, type: string) {
+  getValue(value: any, type: string) {
     this[type] = value;
   }
 
   confirmGoback() {
-    const options = {
+    const options: Index_goBackData = {
       name: this.name,
       mobile: this.mobile,
       sitePoint: this.sitePoint
     };
-    console.log(options);
-    goBackSetData(options);
+
+    goBackSetData(options, 3);
     wx.navigateBack({
       delta: 2
     });
   }
 
-  mounted() {
-    // vue hook
-    console.log('mounted');
-  }
 }
 
 export default Index;
