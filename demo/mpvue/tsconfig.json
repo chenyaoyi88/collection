@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     // 与 Vue 的浏览器支持保持一致
-    "target": "es5",
+    // 2018/04/10 原本是 es5，为了使用 promise 编译不抱错改为 es6
+    "target": "es6",
     // 这可以对 `this` 上的数据属性进行更严格的推断
     "strict": true,
     // 如果使用 webpack 2+ 或 rollup，可以利用 tree-shake:
@@ -29,7 +30,8 @@
     // 启用实验性的ES装饰器。
     "experimentalDecorators": true,
     // 使用 xx[xx] 这种访问对象的方式不会报错
-    "suppressImplicitAnyIndexErrors":true
+    "suppressImplicitAnyIndexErrors":true,
+    "emitDecoratorMetadata": true
   },
   "include": [
     "./src/**/*"

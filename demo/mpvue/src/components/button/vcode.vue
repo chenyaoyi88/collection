@@ -15,7 +15,7 @@ export default {
     },
     time: {
       type: Number,
-      default: 10
+      default: 60
     }
   },
   data() {
@@ -77,6 +77,7 @@ export default {
 .btn-vcode {
   font-size: 14px;
   height: 100%;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;

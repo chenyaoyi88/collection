@@ -23,7 +23,7 @@ class Index extends Vue {
   }
 
   confirmGoback() {
-    const options: Index_goBackData = {
+    const options: any = {
       name: this.name,
       mobile: this.mobile,
       sitePoint: this.sitePoint

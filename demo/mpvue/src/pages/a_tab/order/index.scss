@@ -12,9 +12,46 @@ page {
   display: flex;
   align-items: center;
   justify-content: center;
-  .login-page-box {}
-  .login-page-btn {}
 }
+
+.tabswitch-box {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  .tabswitch-title-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    .title-list {
+      .title-list-item {
+        display: inline-block;
+        height: 100%;
+        margin: 0 5px;
+        &.active {
+          color: #c00;
+        }
+      }
+    }
+  }
+  .tabswitch-content-box {
+    flex: 1;
+    .tabswitch-content {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      background-color: #fff;
+    }
+  }
+}
+
+
 
 .tab1-swiper-item {
   width: 100%;

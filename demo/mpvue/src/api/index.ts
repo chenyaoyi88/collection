@@ -3,7 +3,8 @@ const APP_ENV = process.env.NODE_ENV || 'production';
 
 // 开发环境
 const DEV_URL = {
-  MAIN: 'http://10.2.10.227:4000'
+  // MAIN: 'http://10.2.10.227:4000'
+  MAIN: 'https://sit.guanghuobao.com'
 };
 
 // 测试环境
@@ -37,5 +38,7 @@ export default {
   // 测试请求
   TEST: `${APP_REQUEST_HOST}/test`,
   // 登录
-  LOGIN: `${APP_REQUEST_HOST}/login`
+  LOGIN: `${APP_REQUEST_HOST}/api/v1/auth`,
+  // 获取验证码
+  VCODE: `${APP_REQUEST_HOST}/api/v1/verificationCode`,
 };
