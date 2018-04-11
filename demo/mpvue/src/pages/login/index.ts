@@ -16,18 +16,25 @@ class Login extends Vue {
   // 短信验证码
   @Provide() msgCode: string = '';
 
-  getValue(value: string, type: string) {
+  /**
+   * 获取输入框的值
+   * 
+   * @param {string} value 输入的值
+   * @param {string} type 类型
+   * @memberof Login
+   */
+  getValue(value: string, type: string): void {
     this[type] = value;
   }
 
-  created() {
-    // ghbRequest().then((res: any) => {
-    //   console.log(res);
-    // });
-  }
-
-  // 获取短信验证码 + 短信验证码按钮倒计时
-  getMsgCode(oMsgCode: any) {
+  /**
+   * 获取短信验证码 + 短信验证码按钮倒计时
+   * 
+   * @param {*} oMsgCode 倒计时按钮组件对象
+   * @returns {void} 
+   * @memberof Login
+   */
+  getMsgCode(oMsgCode: any): void {
     const _this = this;
     if (isInputEmpty(this.phone, '手机号码不能为空')) return;
     if (isPhoneNumber(this.phone, '手机号码格式有误')) return;
@@ -36,7 +43,7 @@ class Login extends Vue {
       title: '加载中'
     });
 
-    const params_vcode_request: Vcode_Request = {
+    const PARAMS_VCODE_REQUEST: Vcode_Request = {
       type: 0,
       mobile: _this.phone
     };
@@ -44,7 +51,7 @@ class Login extends Vue {
     ghbRequest({
       url: API.VCODE,
       method: 'POST',
-      data: params_vcode_request
+      data: PARAMS_VCODE_REQUEST
     }).then((res: GHB_Response<Vcode_Response>) => {
       if (!res.data.mobile) {
         showToastError();
@@ -53,6 +60,7 @@ class Login extends Vue {
         wx.showToast({
           title: '短信已发送'
         });
+        // 启用倒计时
         oMsgCode.run();
         if (process.env.NODE_ENV !== 'production') {
           _this.msgCode = res.data.code;
@@ -60,37 +68,10 @@ class Login extends Vue {
       }
     });
 
-    // wx.request({
-    //   url: API.VCODE,
-    //   method: 'POST',
-    //   data: params_vcode_request,
-    //   success: function (res: GHB_Response<Vcode_Response>) {
-    //     if (!res.data.mobile) {
-    //       showToastError();
-    //       return;
-    //     } else {
-    //       wx.showToast({
-    //         title: '短信已发送'
-    //       });
-    //       oMsgCode.run();
-    //       if (process.env.NODE_ENV !== 'production') {
-    //         _this.msgCode = res.data.code;
-    //       }
-    //     }
-    //   },
-    //   fail: function (err: any) {
-    //     console.log(err);
-    //     showToastError();
-    //   },
-    //   complete: function () {
-    //     wx.hideLoading();
-    //   }
-    // });
-
   }
 
   // 登录
-  login() {
+  login(): void {
     if (isInputEmpty(this.phone, '手机号码不能为空')) return;
     if (isInputEmpty(this.msgCode, '短信验证码不能为空')) return;
 
@@ -98,7 +79,7 @@ class Login extends Vue {
       title: '登陆中'
     });
 
-    const params_login_request: Login_Request = {
+    const PARAMS_LOGIN_REQUEST: Login_Request = {
       username: this.phone,
       validcode: this.msgCode,
       deviceId: 'wxmina',
@@ -108,41 +89,19 @@ class Login extends Vue {
     ghbRequest({
       url: API.LOGIN,
       method: 'POST',
-      data: params_login_request
+      data: PARAMS_LOGIN_REQUEST
     }).then((res: GHB_Response<Login_Response>) => {
       if (res.data.token) {
-        console.log('ojbk');
         wx.setStorageSync('token', res.data.token);
         wx.navigateBack();
       } else {
         showToastError(res.data.message);
       }
     });
-
-    // wx.request({
-    //   url: API.LOGIN,
-    //   method: 'POST',
-    //   data: params_login_request,
-    //   success: function (res: GHB_Response<Login_Response>) {
-    //     if (res.data.token) {
-    //       console.log('ojbk');
-    //       wx.setStorageSync('token', res.data.token);
-    //       wx.navigateBack();
-    //     } else {
-    //       showToastError(res.data.message);
-    //     }
-    //   },
-    //   fail: function (err: any) {
-    //     console.log(err);
-    //     showToastError();
-    //   },
-    //   complete: function () {
-    //     wx.hideLoading();
-    //   }
-    // });
   }
 
-  ghbRule() {
+  // 叫车规则跳 webview h5页面
+  ghbRule(): void {
     wx.navigateTo({
       url: '../webview/main?webUrl=' + 'https://www.guanghuobao.com/static/app-h5/resources/agreements/agreement_use.html'
     });

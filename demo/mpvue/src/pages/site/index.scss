@@ -1,33 +1,14 @@
 page {
   background-color: #f5f5f5;
 }
+
 .site-box {
   display: flex;
   flex-direction: column;
   .site-search-box {
     font-size: 14px;
-    display: flex;
-    flex-direction: row;
-    border-bottom: 2px solid #eeecec;
-
+    border-bottom: 1px solid #eeecec;
     background-color: #f5f5f5;
-
-    .site-suggest {
-      flex: 1;
-      input {
-        margin: 8px;
-        margin-right: 0px;
-        padding: 2px 10px;
-        background-color: #fff;
-        border: 1px solid #eeecec;
-      }
-    }
-    .site-cancel {
-      width: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
   }
   .site-list-box {
     flex: 1;
@@ -47,5 +28,53 @@ page {
         }
       }
     }
+  }
+}
+
+.search-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  .search-input-box {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    .search-icon-box,
+    .clear-icon-box {
+      height: 100%;
+      position: absolute;
+      top: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+    .search-icon-box {
+      left: 16px;
+    }
+    .clear-icon-box {
+      right: 10px;
+    }
+    .search-input {
+      flex: 1;
+      height: 28px;
+      margin: 8px;
+      margin-right: 0px;
+      padding: 0px 25px;
+      background-color: #fff;
+      border: 1px solid #eeecec;
+      border-radius: 8px;
+    }
+  }
+  .search-cancel {
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #F33650;
+    font-size: 16px;
   }
 }

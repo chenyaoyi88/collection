@@ -1,27 +1,34 @@
 <template>
   <div class="contact-box">
     <div class="contact-info-box">
-      <p class="contact-info-title">{{ sitePoint.name }}</p>
-      <p class="contact-info-content">{{ sitePoint.address }}</p>
+      <item 
+        iconType="point" 
+        textTop="" 
+        :textCenter="sitePoint.name" 
+        :textBottom="sitePoint.address"  
+        isStartPointlineHide="true"
+        isArrowHide="true"
+        noBorderTop="true"
+      ></item>
     </div>
     <div class="contact-item-box">
       <item 
         itemType="input"
-        inputPlc="联系人"
-        iconType="extra" 
+        inputPlc="联系人姓名"
+        iconType="contact" 
         noBorderTop="true"
         v-on:itemInput="getValue($event.target.value, 'name')"
       ></item>
       <item 
         itemType="input"
-        inputType="tel"
+        inputType="number"
         inputPlc="联系方式"
-        iconType="extra" 
+        iconType="mobile" 
         v-on:itemInput="getValue($event.target.value, 'mobile')"
       ></item>
     </div>
     <div class="contact-btn-box">
-      <button class="ghb-btn" @click="confirmGoback">确认</button>
+      <button class="ghb-btn contact-btn" @click="confirmGoback">确认</button>
     </div>
   </div>
 </template>

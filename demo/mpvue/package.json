@@ -5,7 +5,6 @@
   "author": "chenyaoyi88 <152296058@qq.com>",
   "private": true,
   "scripts": {
-    "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
     "build:sit": "cross-env NODE_ENV=sit node build/build.js",
     "build:prod": "cross-env NODE_ENV=production node build/build.js",

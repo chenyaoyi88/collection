@@ -13,3 +13,44 @@ page {
   align-items: center;
   justify-content: center;
 }
+
+.me-hd-box {
+  .me-avantar {
+    width: 100%;
+    height: 190px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    img {
+      width: 70px;
+      height: 70px;
+    }
+    p {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  }
+}
+
+.me-main-box {
+  .main-list-box {
+    margin: 10px 0;
+  }
+  .logout-btn-box {
+    .logout-btn {
+      height: 51px;
+      font-size: 14px;
+      color: #F33650;
+      background-color: #fff;
+    }
+  }
+}
+
+.version {
+  margin: 10px 0;
+  color: #8F8F8F;
+  font-size: 14px;
+  text-align: center;
+}

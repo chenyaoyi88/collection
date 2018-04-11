@@ -24,11 +24,14 @@ Component.registerHooks([
 const app = new Vue(MyApp);
 app.$mount();
 
+
+
 export default {
   // 这个字段走 app.json
   config: {
     // 页面前带有 ^ 符号的，会被编译成首页，其他页面可以选填，我们会自动把 webpack entry 里面的入口页面加进去
-    pages: ['^pages/a_tab/me/main'],
+    // pages: ['^pages/contact/main'],
+    pages: ['^pages/a_tab/index/main'],
     // pages: ['^pages/test/main'],
     // pages: ['^pages/login/main'],
     window: {
@@ -41,13 +44,19 @@ export default {
       selectedColor: '#960018',
       list: [{
         pagePath: 'pages/a_tab/index/main',
-        text: '叫车'
+        text: '叫车',
+        iconPath: 'static/images/callcar.png',
+        selectedIconPath: 'static/images/callcar_active.png'
       }, {
         pagePath: 'pages/a_tab/order/main',
-        text: '订单'
+        text: '订单',
+        iconPath: 'static/images/order.png',
+        selectedIconPath: 'static/images/order_active.png'
       }, {
         pagePath: 'pages/a_tab/me/main',
-        text: '我的'
+        text: '我的',
+        iconPath: 'static/images/me.png',
+        selectedIconPath: 'static/images/me_active.png'
       }]
     }
   },

@@ -10,9 +10,32 @@ class Index extends Vue {
   @Provide() inputValue: String = '';
   @Provide() results: Array<string> = [];
 
+  // 获取传过来的参数
+  onLoad(options: { type: string}) {
+    this.type = options.type;
+  }
+
+  // 每次来的时候都清空搜素结果
+  onShow() {
+    this.results = [];
+  }
+
+  // 计算/设置搜索结果的高度
+  mounted() {
+    this.inputValue = '';
+    const _this = this;
+    wx.getSystemInfo({
+      success: function (res: any) {
+        _this.listHeight = res.windowHeight - 50;
+      }
+    });
+  }
+
+  // 搜索
   search(e: any) {
     const __this = this;
-    if (e.target.value === '') {
+    this.inputValue = e.target.value;
+    if (this.inputValue === '') {
       this.results = [];
       return;
     }
@@ -21,7 +44,7 @@ class Index extends Vue {
     wx.request({
       url: 'http://api.map.baidu.com/place/v2/search?',
       data: {
-        query: e.target.value,
+        query: __this.inputValue,
         region: '广州',
         city_limit: true,
         output: 'json',
@@ -33,6 +56,7 @@ class Index extends Vue {
     });
   }
 
+  // 点击搜索结果
   selected(pointInfo: any) {
     pointInfo.type = this.type;
     wx.navigateTo({
@@ -41,17 +65,15 @@ class Index extends Vue {
     this.results = [];
   }
 
-  onLoad(options: { type: string}) {
-    this.type = options.type;
+  // 返回
+  goBack() {
+    wx.navigateBack();
   }
 
-  mounted() {
-    const _this = this;
-    wx.getSystemInfo({
-      success: function (res) {
-        _this.listHeight = res.windowHeight - res.windowWidth / 750 * 100;
-      }
-    });
+  // 清空搜素结果
+  clear() {
+    this.inputValue = '';
+    this.results = [];
   }
 }
 

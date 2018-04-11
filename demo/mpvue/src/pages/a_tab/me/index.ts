@@ -1,8 +1,12 @@
 import { Vue, Component, Provide } from 'vue-property-decorator';
+import item from '@/components/item/item.vue';
 
-@Component
+@Component({
+    components: {
+        item
+    }
+})
 class Me extends Vue {
-    msg: string = '我页面';
     @Provide() isLogin: boolean = false;
 
     onShow() {

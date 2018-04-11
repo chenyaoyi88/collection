@@ -2,11 +2,21 @@
   <div class="site-box">
 
     <div class="site-search-box">
-      <div class="site-suggest">
-        <input type="text" @input="search" focus="true">
-      </div>
-      <div class="site-cancel">
-        <p>取消</p>
+      <div class="search-box">
+
+        <div class="search-input-box">
+          <div class="search-icon-box">
+            <icon class="search-icon" size="14" type="search"></icon>
+          </div>
+          <input class="search-input" type="text" placeholder="请输入地点" @input="search" focus="true" :value="inputValue">
+          <div class="clear-icon-box" @click="clear">
+            <icon class="clear-icon" size="16" type="clear"></icon>
+          </div>
+        </div>
+
+        <div class="search-cancel">
+          <p @click="goBack">取消</p>
+        </div>
       </div>
     </div>
 

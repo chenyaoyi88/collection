@@ -14,8 +14,8 @@ class Index extends Vue {
   @Provide() mobile: string = '';
 
   onLoad(option: any) {
-    this.sitePoint = JSON.parse(option.pointInfo);
-    console.log('option', this.sitePoint);
+    console.log('option', option);
+    this.sitePoint = JSON.parse((option && option.pointInfo));
   }
 
   getValue(value: any, type: string) {
