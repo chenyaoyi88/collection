@@ -8,7 +8,7 @@
           <div class="search-icon-box">
             <icon class="search-icon" size="14" type="search"></icon>
           </div>
-          <input class="search-input" type="text" placeholder="请输入地点" @input="search" focus="true" :value="inputValue">
+          <input class="search-input" type="text" :placeholder="'请输入' + desText" @input="search" focus="true" :value="inputValue">
           <div class="clear-icon-box" @click="clear">
             <icon class="clear-icon" size="16" type="clear"></icon>
           </div>

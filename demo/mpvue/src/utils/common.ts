@@ -17,3 +17,7 @@ export function formatTime(date: Date) {
 
     return `${t1} ${t2}`;
 }
+
+export function zerofillBack(n: any) {
+    if (parseInt(n) === parseFloat(n)) { return n + '.00' } else { return n; }
+}

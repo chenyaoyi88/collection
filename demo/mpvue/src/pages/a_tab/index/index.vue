@@ -46,6 +46,9 @@
           inputPlc="货物信息、备注"
           iconType="cartype" 
         ></item>
+        <picker class="time-pick" mode="multiSelector" :range="aTime" @change="timeChange">
+          <view class="picker">{{time}}</view>
+        </picker>
       </div>
 
     </div>

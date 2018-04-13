@@ -16,6 +16,11 @@ class Login extends Vue {
   // 短信验证码
   @Provide() msgCode: string = '';
 
+  onShow() {
+    this.phone = '';
+    this.msgCode = '';
+  }
+
   /**
    * 获取输入框的值
    * 
@@ -72,6 +77,7 @@ class Login extends Vue {
 
   // 登录
   login(): void {
+    const _this = this;
     if (isInputEmpty(this.phone, '手机号码不能为空')) return;
     if (isInputEmpty(this.msgCode, '短信验证码不能为空')) return;
 
@@ -82,7 +88,8 @@ class Login extends Vue {
     const PARAMS_LOGIN_REQUEST: Login_Request = {
       username: this.phone,
       validcode: this.msgCode,
-      deviceId: 'wxmina',
+      // deviceId: 'wxmina',
+      deviceId: "160a3797c83ac0a361a",
       deviceType: 1
     };
 
@@ -93,6 +100,8 @@ class Login extends Vue {
     }).then((res: GHB_Response<Login_Response>) => {
       if (res.data.token) {
         wx.setStorageSync('token', res.data.token);
+        wx.setStorageSync('mobile', _this.phone);
+        console.log(_this.phone);
         wx.navigateBack();
       } else {
         showToastError(res.data.message);

@@ -4,8 +4,8 @@
       <item 
         iconType="point" 
         textTop="" 
-        :textCenter="sitePoint.name" 
-        :textBottom="sitePoint.address"  
+        :textCenter="searchInfo.name" 
+        :textBottom="searchInfo.address"  
         isStartPointlineHide="true"
         isArrowHide="true"
         noBorderTop="true"

@@ -5,14 +5,20 @@ import bmap from '../../libs/bmap-wx.min.js';
 // 必须使用装饰器的方式来指定components
 @Component
 class Index extends Vue {
-  @Provide() type: String = '';
+  @Provide() from: String = '';
   @Provide() listHeight: Number = 0;
   @Provide() inputValue: String = '';
   @Provide() results: Array<string> = [];
+  @Provide() desText: String = '地址';
 
-  // 获取传过来的参数
-  onLoad(options: { type: string}) {
-    this.type = options.type;
+  // 获取传过来的参数（从开始还是结束进来的）
+  onLoad(options: { from: string}) {
+    this.from = options.from;
+    if (this.from === 'start') {
+      this.desText = '发货地点';
+    } else if (this.from === 'end') {
+      this.desText = '收货地点';
+    }
   }
 
   // 每次来的时候都清空搜素结果
@@ -42,13 +48,13 @@ class Index extends Vue {
     
     // 参考：http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-placeapi
     wx.request({
-      url: 'http://api.map.baidu.com/place/v2/search?',
+      url: 'https://api.map.baidu.com/place/v2/search?',
       data: {
         query: __this.inputValue,
         region: '广州',
         city_limit: true,
         output: 'json',
-        ak: 'qLnjq14R4oIEEwtqHM3hcuRMsn1q61Hq'
+        ak: 'R2xVO3xWBt8aLM8pf0ONUB0eTWmlclck'
       },
       success: function (res) {
         __this.results = res.data.results;
@@ -57,10 +63,11 @@ class Index extends Vue {
   }
 
   // 点击搜索结果
-  selected(pointInfo: any) {
-    pointInfo.type = this.type;
+  selected(searchInfo: any) {
+    searchInfo.from = this.from;
+    console.log(searchInfo);
     wx.navigateTo({
-      url: '../contact/main?pointInfo=' + JSON.stringify(pointInfo)
+      url: '../contact/main?searchInfo=' + JSON.stringify(searchInfo)
     });
     this.results = [];
   }

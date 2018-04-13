@@ -1,4 +1,4 @@
-import { formatNumber, formatTime } from './common';
+import { formatNumber, formatTime, zerofillBack } from './common';
 import { 
   goBackSetData, 
   goBackGetData, 
@@ -10,6 +10,7 @@ import {
 export {
   formatNumber,
   formatTime,
+  zerofillBack,
   goBackSetData,
   goBackGetData,
   isInputEmpty,

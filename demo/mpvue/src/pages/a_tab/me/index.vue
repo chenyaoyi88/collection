@@ -9,8 +9,8 @@
       <!-- <p>已登录</p> -->
       <div class="me-hd-box">
         <div class="me-avantar">
-          <img src="../../../../static/images/avantar.png" alt="">
-          <p>13800138000</p>
+          <img :src="userInfo.avatarUrl || '../../../../static/images/avantar.png'" alt="">
+          <p>{{ mobile || '--' }}</p>
         </div>
       </div>
       <div class="me-main-box">
@@ -18,10 +18,11 @@
           <item 
           textCenter="收费标准" 
           noBorderTop="true"
+          v-on:itemClick="ghbLogisticFee"
         ></item>
         </div>
         <div class="logout-btn-box">
-          <button class="ghb-btn logout-btn">退出登录</button>
+          <button class="ghb-btn logout-btn" @click="logout">退出登录</button>
         </div>
       </div>
       <p class="version">版本号 V1.0.0</p>

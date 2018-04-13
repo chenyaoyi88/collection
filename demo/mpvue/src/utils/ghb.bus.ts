@@ -45,14 +45,18 @@ interface GhbRequest {
     url: string;
     method?: string;
     data?: any;
+    header?: any;
 }
 
 export function ghbRequest(options:GhbRequest): Promise<any> {
     return new Promise((resolve: any, reject: any) => {
         wx.request({
             url: options.url,
-            method: options.method,
+            method: options.method || 'GET',
             data: options.data,
+            header: {
+                'authorization': wx.getStorageSync('token') || ''
+            },
             success: function (res: any) {
                 resolve(res);
             },

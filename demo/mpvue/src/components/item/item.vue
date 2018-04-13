@@ -19,7 +19,7 @@
       <div class="item-r" :class="{'no-boder-top': noBorderTop ? true : false}">
         <div class="item-r-title">
           <p v-if="textTop" class="item-info-t">{{ textTop }}</p>
-          <p v-if="textCenter" class="item-info-c">{{ textCenter }}</p>
+          <p v-if="textCenter" class="item-info-c" :class="{'text-light': textLight}">{{ textCenter }}</p>
           <p v-if="textBottom" class="item-info-b">{{ textBottom }}</p>
         </div>
         <div class="item-r-value">
@@ -86,7 +86,8 @@ export default {
       time,
       extra,
       icon: '',
-      point: ''
+      point: '',
+      textLight: false
     };
   },
   methods: {
@@ -128,6 +129,10 @@ export default {
             default:
               this.point = 'start';
           }
+          if (!this.textTop || !this.textBottom) {
+            this.textLight = true;
+          }
+          console.log(this.textLight);
           break;
         default:
           this.icon = '';
@@ -206,6 +211,9 @@ export default {
       }
       .item-info-c {
         color: #333333;
+        &.text-light {
+          color: #b2b2b2;
+        }
       }
       .item-info-b {
         font-size: 12px;

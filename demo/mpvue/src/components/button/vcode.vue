@@ -69,6 +69,10 @@ export default {
   created() {
     this.countdownText = this.btnName;
     clearInterval(this.timer);
+  },
+  // 每次创建都重置
+  onShow() {
+    this.reset();
   }
 };
 </script>

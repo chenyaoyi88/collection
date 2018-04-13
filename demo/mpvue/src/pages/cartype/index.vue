@@ -1,14 +1,45 @@
 <template>
   <ul class="cartype-list">
     <li class="list-item" v-for="(item, index) of cartypeList" :key="index" @click="cartypeSelect(item)">
-      <div class="list-item-l">
-        <img src="../../../static/images/cartype.svg" alt="">
-        <p>{{ item.name }}</p>
+
+      <div class="list-item-title">
+        <div class="title-box">
+          <div class="title">{{ item.name }}
+            <img class="arrow" :src="img.arrow"></img>
+          </div>
+        </div>
       </div>
-      <div class="list-item-r">
-        <p>{{ item.long + ' x ' + item.wide + ' x ' + item.height + ' | ' + item.weight + '吨' }}</p>
-        <p>{{ item.text1 }}</p>
-        <p>{{ item.text2 }}</p>
+
+      <div class="list-item-main">
+        <div class="list-item-l">
+          <img :src="item.icon" alt="" mode="aspectFit">
+        </div>
+        <div class="list-item-r">
+
+          <div class="size-info-box">
+            <div class="info-text">
+              <div class="size-info size-info-l">
+                <img :src="img.text_size" alt=""  mode="aspectFit">
+                <p>{{ item.volume }}</p>
+              </div>
+              <div class="size-info size-info-r">
+                <img :src="img.text_load" alt=""  mode="aspectFit">
+                <p>{{ item.load + item.loadUnit }}</p>
+              </div>
+            </div>
+            <p class="info-desc">(起步{{ item.startPrice + '元' + item.startRange + (item.mileageUnit || '--') + ',后续' + (item.chargeStandard || '--')}})</p>
+          </div>
+
+          <div class="run-info-box">
+            <div class="icon_forbid" :class="item.forbiddenStatusClass">禁</div>
+            <span :class="item.forbiddenStatusClass">{{ item.forbiddenStatusText }}</span>
+          </div>
+          <div class="run-info-box">
+            <div class="icon_forbid black">夜</div>
+            <span class="color-light">夜间服务：{{ item.nightServiceFee }}元/次</span>
+          </div>
+
+        </div>
       </div>
     </li>
   </ul>

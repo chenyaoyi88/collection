@@ -9,13 +9,13 @@ import { goBackSetData } from '../../utils';
   }
 })
 class Index extends Vue {
-  @Provide() sitePoint: any = {};
+  @Provide() searchInfo: any = {};
   @Provide() name: string = '';
   @Provide() mobile: string = '';
 
   onLoad(option: any) {
-    console.log('option', option);
-    this.sitePoint = JSON.parse((option && option.pointInfo));
+    this.searchInfo = JSON.parse(option.searchInfo);
+    console.log('option', this.searchInfo);
   }
 
   getValue(value: any, type: string) {
@@ -23,13 +23,10 @@ class Index extends Vue {
   }
 
   confirmGoback() {
-    const options: any = {
-      name: this.name,
-      mobile: this.mobile,
-      sitePoint: this.sitePoint
-    };
+    this.searchInfo.userName = this.name;
+    this.searchInfo.mobile = this.mobile;
 
-    goBackSetData(options, 3);
+    goBackSetData(this.searchInfo, 3);
     wx.navigateBack({
       delta: 2
     });
