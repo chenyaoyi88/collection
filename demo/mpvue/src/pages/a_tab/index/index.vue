@@ -46,9 +46,16 @@
           inputPlc="货物信息、备注"
           iconType="cartype" 
         ></item>
-        <picker class="time-pick" mode="multiSelector" :range="aTime" @change="timeChange">
-          <view class="picker">{{time}}</view>
+        
+        <picker mode="multiSelector" @change="myTestChange" @columnchange="myTestColumnchange" :value="dateIndex" range-key="name" :range="dateArray">
+            <view class="picker">
+            当前选择：
+            {{dateArray[0][dateIndex[0]].name}},
+            {{dateArray[1][dateIndex[1]].name}},
+            {{dateArray[2] && dateArray[2][dateIndex[2]] && dateArray[2][dateIndex[2]].name}}
+            </view>
         </picker>
+
       </div>
 
     </div>
