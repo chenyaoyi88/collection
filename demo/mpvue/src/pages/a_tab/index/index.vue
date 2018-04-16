@@ -29,18 +29,16 @@
           noBorderTop="true"
           v-on:itemClick="carTypeSelect"
         ></item>
-        <item 
-          itemType="picker"
-          pickerMode="multiSelector"
-          pickerRangeKey="name"
-          :pickerValue="dateIndex"
-          :pickerRange="dateArray"
-          v-on:itemPickerChange="fnDateChange"
-          v-on:itemPickerColumnchange="fnDateColumnchange"
-          iconType="time" 
-          textCenter="时间" 
-          :value="bookingDate || '立即出发'"
-        ></item>
+        <div class="picker-time">
+          <item 
+            iconType="time" 
+            textCenter="时间" 
+            :value="bookingDate || '立即出发'"
+          ></item>
+          <picker class="picker" mode="multiSelector" @change="fnDateChange" @columnchange="fnDateColumnchange" :value="dateIndex" range-key="name" :range="dateArray">
+              <view class="picker-cover"></view>
+          </picker>
+        </div>
         <item 
           iconType="extra" 
           textCenter="额外服务" 
@@ -54,6 +52,7 @@
           iconType="cartype" 
         ></item>
 
+        <button @click="test">按钮</button>
       </div>
 
     </div>
@@ -65,6 +64,12 @@
       <div class="idx-ft-nextbtn">
         <button class="ghb-btn next-btn" @click="nextStep">下一步</button>
       </div>
+    </div>
+
+    <!--隐藏区域  -->
+    <div class='maskLayer' v-if="chooseSize" @click='hideModal'></div>
+    <div class='choose' v-if="chooseSize" :animation='animationData'>
+      <p>这里面是内容</p>
     </div>
 
   </div>

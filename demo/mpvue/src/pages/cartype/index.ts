@@ -25,6 +25,9 @@ class Index extends Vue {
 
   mounted() {
     const _this = this;
+    wx.showLoading({
+      title: '加载中'
+    });
     ghbRequest({
       url: API.CARTYPE,
     }).then((res: any) => {

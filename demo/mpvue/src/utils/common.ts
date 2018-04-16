@@ -31,8 +31,7 @@ export function getDateList() {
 
   const aDate = [
     { name: '今天', value: getLatestDate() },
-    { name: '明天', value: getLatestDate(1) },
-    { name: '后天', value: getLatestDate(2) }
+    { name: '明天', value: getLatestDate(1) }
   ];
 
   const aHour = getHoursArray(new Date().getHours());

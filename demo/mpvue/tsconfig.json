@@ -18,9 +18,8 @@
         "src/*"
       ]
     },
-    // 识别小程序和node的声明
+    // 识别小程序和node的声明 "tencent-wx-app",
     "types": [
-      "tencent-wx-app",
       "node"
     ],
     "allowJs": true,

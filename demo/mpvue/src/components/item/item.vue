@@ -26,7 +26,10 @@
     
     <template v-else-if="itemType === 'picker'">
       <template v-if="iconType === 'time'">
-        <picker :mode="pickerMode || 'selector'" class="item-picker" :value="pickerValue" :range="pickerRange" :range-key="pickerRangeKey" :disabled="pickerDisabled" @change="itemPickerChange" @columnchange="itemPickerColumnchange">
+        <slot></slot>
+
+        <!-- <picker :mode="pickerMode || 'selector'" class="item-picker" :value="pickerValue" :range="pickerRange" :range-key="pickerRangeKey" :disabled="pickerDisabled" @change="itemPickerChange" @columnchange="itemPickerColumnchange">
+
             <div class="item-r" :class="{'no-boder-top': noBorderTop ? true : false}">
               <div class="item-r-title">
                 <p v-if="textCenter" class="item-info-c" :class="{'text-light': textLight}">{{ textCenter }}</p>
@@ -38,7 +41,7 @@
                   <img class="img-item-arrow" :src="arrow">
               </div>
             </div>
-        </picker>
+        </picker> -->
       </template>
     </template>
 
