@@ -30,12 +30,19 @@ page {
     align-items: center;
     justify-content: center;
     .title-list {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: row;
       .title-list-item {
-        display: inline-block;
+        flex: 1;
         height: 100%;
-        margin: 0 5px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         &.active {
-          color: #c00;
+          color: #FB0628;
         }
       }
     }
@@ -51,15 +58,102 @@ page {
   }
 }
 
-
-
 .tab1-swiper-item {
   width: 100%;
   height: 100%;
   background-color: #f8f8f8;
-  .tab1 {
+  .tab-item {
     width: 100%;
     height: 100%;
     overflow-y: auto;
+  }
+}
+
+.list-box {
+  margin: 10px 0;
+  background-color: #fff;
+  .list-tile {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-bottom: 1px solid #EEEEEE;
+    .list-tile-l {
+      color: #888888;
+    }
+    .list-tile-r {}
+  }
+  .list-content {
+    padding: 5px 0;
+  }
+  .list-msg {
+    border-top: 1px solid #EEEEEE;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 15px;
+    .list-msg-l {
+      flex: 1;
+      font-size: 15px;
+      color: #888888;
+    }
+    .list-msg-r {
+      display: flex;
+      flex-direction: row;
+      button {
+        font-size: 14px;
+        width: 75px;
+        height: 30px;
+        padding: 0;
+        margin: 0;
+        margin-left: 10px;
+        border: 1px solid #FB0628;
+        &.cancel {
+          color: #FB0628;
+          background-color: #fff;
+        }
+      }
+    }
+  }
+}
+
+.no-order-box {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+.info {
+  margin-top: -5px;
+  padding: 0px 35px 10px 50px;
+  font-size: 12px;
+  .info-car {
+    margin-top: 10px;
+    .info-box {
+      margin-right: 20px;
+      .info-title {
+        color: #000;
+      }
+      .info-text {
+        color: #888888;
+      }
+    }
+  }
+}
+
+.order {
+  .item-r {
+    padding: 5px 35px 5px 0;
+    .item-r-title {
+      .item-info-c {
+        color: #333333 !important;
+      }
+    }
   }
 }

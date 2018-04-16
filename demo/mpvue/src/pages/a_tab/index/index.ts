@@ -9,10 +9,6 @@ import item from '@/components/item/item.vue';
   }
 })
 class Index extends Vue {
-  // computed
-  get msg() {
-    return this.$store.state.msg;
-  }
 
   nextStepParams: any = {};
   startPoint: string = '选择发货地点';
@@ -20,60 +16,56 @@ class Index extends Vue {
   dateArray: Array<any> = getDateList();
   dateIndex: Array<number> = [0, 0, 0];
 
-  myTestChange(e: any) {
+  bookingDate: string = '';
+
+  fnDateChange(e: any) {
     const myIndex = e.target.value;
 
     const index0 = myIndex[0];
     const index1 = myIndex[1];
     const index2 = myIndex[2];
 
-    console.log('index0', this.dateArray[0][index0].value);
-    console.log('index1', this.dateArray[1][index1].value);
-    console.log(
-      'index2',
-      this.dateArray[2] && this.dateArray[2][index2] && this.dateArray[2][index2].value
-    );
+    const sDate: string = this.dateArray[0][index0].value;
+    const sHour: string = this.dateArray[1][index1].value;
+    const sMin: string = this.dateArray[2] && this.dateArray[2][index2] && this.dateArray[2][index2].value;
+
+    if(sHour) {
+      this.bookingDate = `${sDate} ${sHour}:${sMin}:00`;
+    } else {
+      this.bookingDate = '';
+    }
   }
 
-  myTestColumnchange(e: any) {
-    console.log('修改的列为', e.target.column, '，值为', e.target.value);
+  fnDateColumnchange(e: any) {
+    // console.log('修改的列为', e.target.column, '，值为', e.target.value);
 
-    let dateArray: Array<any> = this.dateArray;
-    let dateIndex: Array<number> = this.dateIndex;
-
-    dateIndex[e.target.column] = e.target.value;
+    this.$set(this.dateIndex, e.target.column, e.target.value);
 
     switch (e.target.column) {
       case 0:
-        switch (dateIndex[0]) {
+        switch (this.dateIndex[0]) {
           case 0:
-            dateArray[1] = getHoursArray(new Date().getHours());
-            dateArray[2] = [];
+            this.$set(this.dateArray, 1, getHoursArray(new Date().getHours()));
+            this.$set(this.dateArray, 2, []);
             break;
           case 1:
-            dateArray[1] = getHoursArray();
-            dateArray[2] = getMinsArray();
-            break;
           case 2:
-            dateArray[1] = getHoursArray();
-            dateArray[2] = getMinsArray();
+            this.$set(this.dateArray, 1, getHoursArray());
+            this.$set(this.dateArray, 2, getMinsArray());
             break;
         }
-        dateIndex[1] = 0;
-        dateIndex[2] = 0;
+        this.$set(this.dateIndex, 1, 0);
+        this.$set(this.dateIndex, 2, 0);
         break;
       case 1:
-        switch (dateIndex[0]) {
+        switch (this.dateIndex[0]) {
           case 0:
-            dateArray[2] = dateIndex[1] === 0 ? [] : getMinsArray();
+            this.$set(this.dateArray, 2, this.dateIndex[1] === 0 ? [] : getMinsArray());
             break;
         }
-        dateIndex[2] = 0;
+        this.dateIndex[2] = 0;
         break;
     }
-
-    this.dateArray = dateArray;
-    this.dateIndex = dateIndex;
   }
 
   getPonit(type: string) {
@@ -94,6 +86,7 @@ class Index extends Vue {
   onShow() {
     // console.log(goBackGetData());
   }
+
 }
 
 export default Index;

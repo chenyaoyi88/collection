@@ -70,7 +70,7 @@ export function getHoursArray(start: number = 0) {
   }
   if (start) {
     aHour.unshift({
-      name: '立即触发',
+      name: '立即出发',
       value: ''
     });
   }

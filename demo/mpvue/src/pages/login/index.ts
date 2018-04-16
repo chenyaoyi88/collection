@@ -88,8 +88,8 @@ class Login extends Vue {
     const PARAMS_LOGIN_REQUEST: Login_Request = {
       username: this.phone,
       validcode: this.msgCode,
-      // deviceId: 'wxmina',
-      deviceId: "160a3797c83ac0a361a",
+      deviceId: 'wxmina',
+      // deviceId: "160a3797c83ac0a361a",
       deviceType: 1
     };
 

@@ -1,51 +1,28 @@
 import { Vue, Component, Provide } from 'vue-property-decorator';
+import item from '@/components/item/item.vue';
+import { ghbRequest } from '../../../utils';
+import API from '../../../api';
 
-@Component
-class Order extends Vue {
-  @Provide() isLogin: boolean = false;
-  @Provide() tabList: Array<string> = ['进行中', '已完成', '已取消'];
-  @Provide() tab1List: Array<any> = [];
-  @Provide() tab1ListLen: number = 30;
-  @Provide() tabText: string = 'bitch';
-  @Provide() currentIndex: number = 0;
-  @Provide() contentHeight: number = 0;
-  @Provide() headerHeight: number = 30;
+// NOTE：/api/v1/logistics/logisticsorders 接口缺少【车型】 和 【额外服务】字段
 
-  created() {
-
-    // wx.login({
-    //   success: function (res) {
-    //     console.log(res);
-    //     if (res.code) {
-    //       //发起网络请求
-    //       // wx.request({
-    //       //   url: 'https://test.com/onLogin',
-    //       //   data: {
-    //       //     code: res.code
-    //       //   }
-    //       // })
-    //     } else {
-    //       console.log('登录失败！' + res.errMsg)
-    //     }
-    //   }
-    // });
-
-    // wx.getUserInfo({
-    //   lang: 'zh_CN',
-    //   success: function (res) {
-    //     console.log(res);
-    //     var userInfo = res.userInfo
-    //     var nickName = userInfo.nickName
-    //     var avatarUrl = userInfo.avatarUrl
-    //     var gender = userInfo.gender //性别 0：未知、1：男、2：女
-    //     var province = userInfo.province
-    //     var city = userInfo.city
-    //     var country = userInfo.country
-    //   }
-    // })
-
-    // console.log('获取设备信息', wx.getSystemInfoSync());
+@Component({
+  components: {
+    item
   }
+})
+class Order extends Vue {
+  isLogin: boolean = false;
+  tabList: Array<string> = ['进行中', '已完成', '已取消'];
+  currentIndex: number = 0;
+  contentHeight: number = 0;
+  headerHeight: number = 30;
+
+  ingOffset: number = 0;
+  pageLimit: number = 10;
+
+  ingList: Array<any> = [];
+  finishList: Array<any> = [];
+  cancelList: Array<any> = [];
 
   mounted() {
     const oTab = this;
@@ -54,12 +31,35 @@ class Order extends Vue {
         oTab.contentHeight = res.windowHeight - oTab.headerHeight;
       }
     });
-    // this.$emit('tabChange', this.currentIndex);
   }
 
   onShow() {
     const token = wx.getStorageSync('token');
-    this.isLogin = token ? true : false;
+    // this.isLogin = token ? true : false;
+    this.isLogin = true;
+    // this.currentIndex = 0;
+    this.getList('finishList', 3);
+  }
+
+  getList(listType: string, searchType: number, offset: number = 0, limit: number = 10) {
+    wx.showLoading({
+      title: '加载中'
+    });
+    const oTab = this;
+    ghbRequest({
+      url: API.LOGISTICSORDERS,
+      data: {
+        searchType,
+        offset,
+        limit
+      }
+    }).then((res: any) => {
+      console.log(res);
+      wx.hideLoading();
+      if (res.statusCode === 200) {
+        oTab[listType] = res.data;
+      }
+    });
   }
 
   tabClick(index: number) {
@@ -69,10 +69,6 @@ class Order extends Vue {
 
   tabChange(e: any) {
     this.currentIndex = e.target.current;
-  }
-
-  sayFuck() {
-    this.tabText = 'fuck you!';
   }
 
   gotoLogin() {

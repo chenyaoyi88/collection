@@ -1,40 +1,64 @@
 <template>
-  <div class="item" @click="itemClick">
-    <block v-if="iconType">
+  <div class="item" @click="itemClick" :class="itemClass">
+
+    <template v-if="iconType">
       <div class="item-l">
-        <block v-if="!icon && (point === 'start' || point ==='end')">
+        <template v-if="!icon && (point === 'start' || point ==='end')">
           <div v-if="!icon" class="item-point" :class="point"></div>
           <div v-if="point === 'start' && !isStartPointlineHide" class="line s"></div>
           <div v-if="point === 'end' && !isEndPointlineHide" class="line e"></div>
-        </block>
-        <block v-if="icon">
+        </template>
+        <template v-if="icon">
           <img v-if="icon" class="item-icon" :src="icon" mode="aspectFit">
-        </block>
+        </template>
       </div>
-    </block>
-    <block v-if="!iconType">
+    </template>
+
+    <template v-else>
       <div class="item-l-none"></div>
-    </block>
-    <block v-if="!itemType">
-      <div class="item-r" :class="{'no-boder-top': noBorderTop ? true : false}">
-        <div class="item-r-title">
-          <p v-if="textTop" class="item-info-t">{{ textTop }}</p>
-          <p v-if="textCenter" class="item-info-c" :class="{'text-light': textLight}">{{ textCenter }}</p>
-          <p v-if="textBottom" class="item-info-b">{{ textBottom }}</p>
-        </div>
-        <div class="item-r-value">
-            <p :class="{light: valueColor ? valueColor : false}">{{ value }}</p>
-        </div>
-        <div v-if="!isArrowHide" class="item-r-arrow">
-            <img class="img-item-arrow" :src="arrow">
-        </div>
-      </div>
-    </block>
-    <block v-if="itemType === 'input'">
+    </template>
+
+    <template v-if="itemType === 'input'">
       <div class="item-r" :class="{'no-boder-top': noBorderTop ? true : false}">
         <input class="item-input" :type="inputType || 'text'" :placeholder="inputPlc" placeholder-style="color:#b2b2b2" :value="value" @input="itemInput($event)" :maxlength="maxlength || 140">
       </div>
-    </block>
+    </template>
+    
+    <template v-else-if="itemType === 'picker'">
+      <template v-if="iconType === 'time'">
+        <picker :mode="pickerMode || 'selector'" class="item-picker" :value="pickerValue" :range="pickerRange" :range-key="pickerRangeKey" :disabled="pickerDisabled" @change="itemPickerChange" @columnchange="itemPickerColumnchange">
+            <div class="item-r" :class="{'no-boder-top': noBorderTop ? true : false}">
+              <div class="item-r-title">
+                <p v-if="textCenter" class="item-info-c" :class="{'text-light': textLight}">{{ textCenter }}</p>
+              </div>
+              <div class="item-r-value">
+                  <p :class="{light: valueColor ? valueColor : false}">{{ value }}</p>
+              </div>
+              <div v-if="!isArrowHide" class="item-r-arrow">
+                  <img class="img-item-arrow" :src="arrow">
+              </div>
+            </div>
+        </picker>
+      </template>
+    </template>
+
+    <template v-else>
+        <div class="item-r" :class="{'no-boder-top': noBorderTop ? true : false}">
+          <div class="item-r-title">
+            <p v-if="textTop" class="item-info-t">{{ textTop }}</p>
+            <p v-if="textCenter" class="item-info-c" :class="{'text-light': textLight}">{{ textCenter }}</p>
+            <p v-if="textBottom" class="item-info-b">{{ textBottom }}</p>
+          </div>
+          <div class="item-r-value">
+              <p :class="{light: valueColor ? valueColor : false}">{{ value }}</p>
+          </div>
+          <div v-if="!isArrowHide" class="item-r-arrow">
+              <img class="img-item-arrow" :src="arrow">
+          </div>
+        </div>
+    </template>
+
+
   </div>
 </template>
 
@@ -48,6 +72,8 @@ import contact from './icon/contact.png';
 
 export default {
   props: [
+    // item style
+    'itemClass',
     // item 类型
     'itemType',
     // input 的 placeholder
@@ -77,7 +103,13 @@ export default {
     // 是否显示 item 的顶部边线
     'noBorderTop',
     // 是否隐藏右侧箭头
-    'isArrowHide'
+    'isArrowHide',
+    // picker模式
+    'pickerMode',
+    'pickerRange',
+    'pickerRangeKey',
+    'pickerValue',
+    'pickerDisabled'
   ],
   data() {
     return {
@@ -87,7 +119,7 @@ export default {
       extra,
       icon: '',
       point: '',
-      textLight: false
+      textLight: false,
     };
   },
   methods: {
@@ -96,7 +128,16 @@ export default {
     },
     itemInput(e) {
       this.$emit('itemInput', e);
-    }
+    },
+    itemPickerChange(e) {
+      this.$emit('itemPickerChange', e);
+    },
+    itemPickerColumnchange(e) {
+      this.$emit('itemPickerColumnchange', e);
+    },
+    itemPickerCancel(e) {
+      this.$emit('itemPickerCancel', e);
+    },
   },
 
   created() {
@@ -132,7 +173,6 @@ export default {
           if (!this.textTop || !this.textBottom) {
             this.textLight = true;
           }
-          console.log(this.textLight);
           break;
         default:
           this.icon = '';
@@ -143,106 +183,6 @@ export default {
 </script>
 
 <style lang="scss">
-.no-boder-top {
-  border-top: none !important;
-}
-.item {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  background-color: #fff;
-  .item-l-none {
-    padding-left: 15px;
-  }
-  .item-l {
-    width: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 3;
-    .item-icon {
-      width: 18px;
-      height: 18px;
-    }
-    .item-point {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      position: relative;
-      z-index: 5;
-      &.start {
-        background-color: #15c145;
-      }
-      &.end {
-        background-color: #f13744;
-      }
-    }
-    .line {
-      position: absolute;
-      left: 50%;
-      width: 1px;
-      height: 50%;
-      z-index: 4;
-      background: #eeeeee;
-      &.s {
-        bottom: 0;
-      }
-      &.e {
-        top: 0;
-      }
-    }
-  }
-  .item-r {
-    position: relative;
-    z-index: 1;
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 14px;
-    padding: 15px 35px 15px 0;
-    border-top: 1px solid #eeeeee;
-    line-height: 1.6;
-    .item-r-title {
-      .item-info-t {
-        color: #888888;
-      }
-      .item-info-c {
-        color: #333333;
-        &.text-light {
-          color: #b2b2b2;
-        }
-      }
-      .item-info-b {
-        font-size: 12px;
-        color: #888888;
-      }
-    }
-    .item-r-value {
-      color: #4a4a4a;
-      .light {
-        color: #c2c2c2;
-      }
-    }
-    .item-r-arrow {
-      position: absolute;
-      right: 15px;
-      top: 0px;
-      z-index: 3;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      .img-item-arrow {
-        width: 8px;
-        height: 13px;
-      }
-    }
-    .item-input {
-      width: 100%;
-    }
-  }
-}
+@import './item.scss';
 </style>
+

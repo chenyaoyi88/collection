@@ -45,4 +45,8 @@ export default {
   VCODE: `${APP_REQUEST_HOST}/api/v1/verificationCode`,
   // 车型（http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-04%20%E8%BD%A6%E5%9E%8B%E5%88%97%E8%A1%A8）
   CARTYPE: `${APP_REQUEST_HOST}/api/v1/logistics/cartype`,
+  // 订单列表查询（后面有s）
+  LOGISTICSORDERS: `${APP_REQUEST_HOST}/api/v1/logistics/logisticsorders`,
+  // 订单详情查询（后面没有s）
+  LOGISTICSORDER: `${APP_REQUEST_HOST}/api/v1/logistics/logisticsorder`
 };
