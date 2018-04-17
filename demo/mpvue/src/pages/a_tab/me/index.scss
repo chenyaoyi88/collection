@@ -18,20 +18,26 @@ page {
   .me-avantar {
     width: 100%;
     height: 190px;
+    background-color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #fff;
-    img {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      overflow: hidden;
-    }
-    p {
-      margin-top: 10px;
-      font-size: 14px;
+    .avantar-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      img {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+      p {
+        margin-top: 10px;
+        font-size: 14px;
+      }
     }
   }
 }

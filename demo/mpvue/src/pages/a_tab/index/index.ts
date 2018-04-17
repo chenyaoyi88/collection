@@ -1,11 +1,14 @@
 import { Vue, Component } from 'vue-property-decorator';
-import { goBackGetData, getDateList, getHoursArray, getMinsArray } from '../../../utils';
+import { goBackGetData, getDateList, getHoursArray, getMinsArray, ghbRequest } from '../../../utils';
+import API from '../../../api';
 import item from '@/components/item/item.vue';
+import slider from '@/components/slider/slider.vue';
 
 // 必须使用装饰器的方式来指定components
 @Component({
   components: {
-    item
+    item,
+    slider
   }
 })
 class Index extends Vue {
@@ -17,10 +20,43 @@ class Index extends Vue {
 
   bookingDate: string = '';
 
-  animation: any = null;
-  chooseSize: boolean = false;
-  animationData: any = {};
+  additionalServicesList: Array<any> = [
+    // {
+    //   id: 8,
+    //   name: '推车',
+    //   remark: '需要司机提供推车设备'
+    // },
+    // {
+    //   id: 9,
+    //   name: '搬运',
+    //   remark: '需要司机提供搬运服务，价格面议'
+    // },
+    // {
+    //   id: 10,
+    //   name: '代收',
+    //   remark: '需要司机提供代收货款的服务，价格方式面议'
+    // }
+  ];
 
+  aSelectedServices: Array<any> = [];
+  sSelectedServices: string = '';
+
+  // （TODO：下次抽离部分）--------------------------start
+  isShowMask: boolean = false;
+
+  aniSlideMask: any = null;
+  aniSlideMaskData: any = null;
+
+  aniSlideContent: any = null;
+  aniSlideContentData: any = null;
+  // （TODO：下次抽离部分）--------------------------end
+
+  // 提交参数
+  clothsAmount: number = 0;
+  // 货物信息
+  goodsDesc: string = '';
+
+  // 时间选择器选中逻辑（TODO：抽离出来作为独立组件逻辑）
   fnDateChange(e: any) {
     const myIndex = e.target.value;
 
@@ -40,6 +76,7 @@ class Index extends Vue {
     }
   }
 
+  // 时间选择器内部逻辑（TODO：抽离出来作为独立组件逻辑）
   fnDateColumnchange(e: any) {
     // console.log('修改的列为', e.target.column, '，值为', e.target.value);
 
@@ -72,67 +109,115 @@ class Index extends Vue {
     }
   }
 
+  // 选择发货/收货地点
   getPonit(type: string) {
     wx.navigateTo({
       url: '../../search/main?from=' + type
     });
   }
 
+  // 选择车型
   carTypeSelect() {
     const url = '../../cartype/main';
     wx.navigateTo({ url });
   }
 
+  // 点击额外服务
+  extraServices() {
+    this.showSlider();
+  }
+
+  getClothsAmount(value: any) {
+    this.clothsAmount = value;
+    console.log(this.clothsAmount);
+  }
+
+  // 货物信息
+  fnGoodsInfo() {
+    wx.navigateTo({
+      url: '../../goodsinfo/main'
+    });
+  }
+
+  // 下一步
   nextStep() {
     console.log('nextStep');
   }
 
-  showModal() {
-    // 用that取代this，防止不必要的情况发生
-    const _this = this;
-    // 创建一个动画实例
-    const animation = wx.createAnimation({
-      // 动画持续时间
-      duration: 500,
-      // 定义动画效果，当前是匀速
+  // 显示底部滑动内容（TODO：抽离出来作为独立组件逻辑）
+  showSlider() {
+    const animationMask = wx.createAnimation({
+      duration: 300,
       timingFunction: 'ease'
     });
-    // 将该变量赋值给当前动画
-    _this.animation = animation;
-    // 先在y轴偏移，然后用step()完成一个动画
-    animation.translateY(50).step();
-    // 用setData改变当前动画
-    this.animationData = animation.export();
-    this.chooseSize = true;
-    // 设置setTimeout来改变y轴偏移量，实现有感觉的滑动
-    setTimeout(function() {
-      animation.translateY(0).step();
-      _this.animationData = animation.export();
-    }, 200);
-  }
-
-  hideModal() {
-    const _this = this;
-    const animation = wx.createAnimation({
-      duration: 1000,
+    const animationContent = wx.createAnimation({
+      duration: 300,
       timingFunction: 'ease'
     });
-    _this.animation = animation;
-    animation.translateY(200).step();
-    _this.animationData = animation.export();
-    setTimeout(function() {
-      animation.translateY(0).step();
-      _this.animationData = animation.export();
-      _this.chooseSize = false;
-    }, 200);
+
+    this.aniSlideMask = animationMask;
+    this.aniSlideContent = animationContent;
+
+    this.isShowMask = true;
+
+    setTimeout(() => {
+      this.aniSlideMask.opacity(0.5).step();
+      this.aniSlideContent.translateY(0).step();
+      this.aniSlideMaskData = this.aniSlideMask.export();
+      this.aniSlideContentData = this.aniSlideContent.export();
+    }, 0);
   }
 
-  test() {
-    this.showModal();
+  // 隐藏底部滑动内容（TODO：抽离出来作为独立组件逻辑）
+  hideMask() {
+    this.aniSlideMask.opacity(0).step();
+    this.aniSlideContent.translateY(300).step();
+    this.aniSlideMaskData = this.aniSlideMask.export();
+    this.aniSlideContentData = this.aniSlideContent.export();
+    setTimeout(() => {
+      this.isShowMask = false;
+    }, 300);
+  }
+
+  // 底部滑动取消（TODO：抽离出来作为独立组件逻辑）
+  sliderCancel() {
+    this.hideMask();
+  }
+
+  // 底部滑动确定（TODO：抽离出来作为独立组件逻辑）
+  sliderComfirm() {
+    this.aSelectedServices = [];
+    this.sSelectedServices = '';
+    for (let item of this.additionalServicesList) {
+      if (item.selected) {
+        this.sSelectedServices += item.name + ' ';
+        this.aSelectedServices.push(item);
+      }
+    }
+    this.hideMask();
+  }
+
+  checkboxChange(item: any, index: number) {
+    this.$set(this.additionalServicesList[index], 'selected', !this.additionalServicesList[index].selected);
   }
 
   onShow() {
-    // console.log(goBackGetData());
+    console.log(goBackGetData());
+    const _this = this;
+    ghbRequest({
+      url: API.GETADDITIONALSERVICES
+    }).then((res: any) => {
+      console.log(res);
+      _this.additionalServicesList = res.data;
+    });
+
+    this.goodsDesc = goBackGetData().goodsDesc || '';
+
+    console.log('车型ID', goBackGetData().carInfo && goBackGetData().carInfo.id);
+    console.log('额外服务', this.sSelectedServices);
+    console.log('时间', this.bookingDate);
+    console.log('货物信息-条数', this.clothsAmount);
+    console.log('货物信息-备注', goBackGetData().goodsDesc);
   }
 }
 

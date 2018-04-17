@@ -11,17 +11,17 @@
           <input @input="getValue($event.target.value, 'msgCode')" type="number" maxlength="6" placeholder-class="phcolor" placeholder="请输入短信验证码" :value="msgCode">
         </div>
         <div class="msg-box input-group-r">
-          <btnVcode v-on:getMsgCode="getMsgCode" :vcodeClass="'input-group-vcode ghb-btn'"></btnVcode>
+          <btnVcode v-on:getMsgCode="getMsgCode" :vcodeClass="'input-group-vcode'" :btnName="'发送验证码'"></btnVcode>
         </div>
       </div>
+    </div>
+
+    <div class="login-btn-box">
+      <button class="ghb-btn login-btn" @click="login">登录</button>
     </div>
     
     <div class="login-tips-box">
       <p>登录广货宝，即表示您同意<span class="color-notice" @click="ghbRule">《广货宝叫车规则》</span></p>
-    </div>
-
-    <div class="login-btn-box">
-      <button class="ghb-btn login-btn" @click="login">登录广货宝</button>
     </div>
 
   </div>

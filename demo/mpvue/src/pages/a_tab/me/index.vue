@@ -1,16 +1,12 @@
 <template>
   <div class="ghb-me-box">
-    <div v-if="!isLogin" class="login-box">
-      <div class="login-page-box">
-        <button class="login-page-btn" @click="gotoLogin">请登录</button>
-      </div>
-    </div>
-    <div v-if="isLogin">
-      <!-- <p>已登录</p> -->
+    <div>
       <div class="me-hd-box">
         <div class="me-avantar">
-          <img :src="userInfo.avatarUrl || '../../../../static/images/avantar.png'" alt="">
-          <p>{{ mobile || '--' }}</p>
+          <div class="avantar-box" @click="gotoLogin">
+            <img :src="avantar" alt="">
+            <p>{{ mobile || '--' }}</p>
+          </div>
         </div>
       </div>
       <div class="me-main-box">
@@ -21,7 +17,7 @@
           v-on:itemClick="ghbLogisticFee"
         ></item>
         </div>
-        <div class="logout-btn-box">
+        <div class="logout-btn-box" v-if="isLogin">
           <button class="ghb-btn logout-btn" @click="logout">退出登录</button>
         </div>
       </div>

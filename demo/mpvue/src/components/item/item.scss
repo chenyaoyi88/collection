@@ -79,7 +79,7 @@
     .item-r-value {
       color: #4a4a4a;
       .light {
-        color: #c2c2c2;
+        color: #b2b2b2;
       }
     }
     .item-r-arrow {
@@ -102,6 +102,29 @@
   }
 }
 
-.item-picker {
+.light {
+  color: #b2b2b2;
+}
+
+.goods-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   width: 100%;
+  .goods-title {}
+  .goods-amount-box {
+    padding: 0 10px;
+    width: 50px;
+    border-right: 1px solid #eeeeee;
+    input {
+      text-align: center;
+    }
+  }
+  .goods-info-box {
+    width: 150px;
+    word-break:keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }

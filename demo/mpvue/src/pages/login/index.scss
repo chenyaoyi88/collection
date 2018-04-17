@@ -1,16 +1,16 @@
 .input-group {
   height: 40px;
-  border: 1px solid #f5f5f5;
+  border-bottom: 1px solid #eeeeee;
   border-radius: 3px;
   margin-top: 10px;
   input {
     height: 100%;
-    padding: 0 15px;
   }
 }
 
 .phcolor {
-  font-size: 16px;
+  font-size: 14px;
+  color: #B2B2B2;
 }
 
 .input-group-split {
@@ -26,20 +26,27 @@
     }
     .input-group-vcode {
       width: 100px;
+      color: #F13744;
+      background-color: transparent;
+      &::after {
+        border: none;
+      }
+      &[disabled] {
+        color: #ccc !important;
+      }
     }
   }
 }
 
 .login-tips-box {
-  font-size: 14px;
+  font-size: 12px;
   margin: 10px 0;
   text-align: center;
+  color: #8F8F8F;
 }
 
 .login-btn-box {
-  .login-btn {
-    // border-radius: 0px;
-  }
+  margin-top: 30px;
 }
 
 .fuck {

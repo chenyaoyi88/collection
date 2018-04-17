@@ -47,6 +47,8 @@ export default {
   CARTYPE: `${APP_REQUEST_HOST}/api/v1/logistics/cartype`,
   // 订单列表查询（后面有s）
   LOGISTICSORDERS: `${APP_REQUEST_HOST}/api/v1/logistics/logisticsorders`,
-  // 订单详情查询（后面没有s）
-  LOGISTICSORDER: `${APP_REQUEST_HOST}/api/v1/logistics/logisticsorder`
+  // 订单详情查询/下单（http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-08%20%E4%B8%8B%E5%8D%95）
+  LOGISTICSORDER: `${APP_REQUEST_HOST}/api/v1/logistics/logisticsorder`,
+  // 附加服务
+  GETADDITIONALSERVICES: `${APP_REQUEST_HOST}/api/v1/logistics/getAdditionalServices`
 };

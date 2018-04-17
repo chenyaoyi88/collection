@@ -1,6 +1,5 @@
 import { Vue, Component, Provide } from 'vue-property-decorator';
 import { goBackSetData } from '../../utils';
-import bmap from '../../libs/bmap-wx.min.js'; 
 
 // 必须使用装饰器的方式来指定components
 @Component

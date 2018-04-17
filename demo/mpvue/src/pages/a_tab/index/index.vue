@@ -42,34 +42,60 @@
         <item 
           iconType="extra" 
           textCenter="额外服务" 
-          value="装卸搬运等额外服务" 
-          valueColor="light"
+          :value="sSelectedServices || '装卸搬运等额外服务'" 
+          :valueColor="sSelectedServices.length ? 'dark' : 'light'"
+          v-on:itemClick="extraServices"
         ></item>
         <item 
-          itemType="input"
-          inputType="text"
-          inputPlc="货物信息、备注"
-          iconType="cartype" 
+          itemType="goods"
+          iconType="goods" 
+          textCenter="货物信息"
+          :value="goodsDesc || '货物信息，备注等'" 
+          :valueColor="goodsDesc ? 'dark' : 'light'"
+          v-on:itemClickGoods="fnGoodsInfo"
+          v-on:itemInput="getClothsAmount($event.target.value)"
         ></item>
 
-        <button @click="test">按钮</button>
       </div>
 
     </div>
 
     <div class="idx-ft-box">
       <div class="idx-ft-price">
-        <p class="price-text">￥400.00</p>
+        <p class="price-text">￥--</p>
       </div>
       <div class="idx-ft-nextbtn">
         <button class="ghb-btn next-btn" @click="nextStep">下一步</button>
       </div>
     </div>
 
-    <!--隐藏区域  -->
-    <div class='maskLayer' v-if="chooseSize" @click='hideModal'></div>
-    <div class='choose' v-if="chooseSize" :animation='animationData'>
-      <p>这里面是内容</p>
+    <div class='maskLayer' v-if="isShowMask" :animation='aniSlideMaskData' @click='hideMask'></div>
+    <div class='sliderContent' v-if="isShowMask" :animation='aniSlideContentData' :style="{transform: 'translateY('+300+'px)'}">
+      <!-- <p>这里面是内容</p> -->
+      <div class="slider-content-box">
+        <div class="title-box">
+          <div class="cancel" @click="sliderCancel">取消</div>
+          <div class="title">附加服务</div>
+          <div class="comfirm" @click="sliderComfirm">确定</div>
+        </div>
+        <div class="content-box">
+            <div class="checkbox" v-for="(item, index) of additionalServicesList" :key="index">
+              <div class="check-item" @click="checkboxChange(item, index)">
+                <div class="name">{{ item.name }}</div>
+                <div class="remark">{{item.remark}}</div>
+                <div class="check">
+                  <template v-if="item.selected">
+                    <icon color="#f33650" size="20" type="success"></icon>
+                  </template>
+                  <template v-else>
+                    <div class="uncheck"></div>
+                  </template>
+                  <!-- <icon color="#f33650" size="20" type="success"></icon> -->
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
     </div>
 
   </div>

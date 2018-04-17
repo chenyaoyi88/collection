@@ -13,8 +13,8 @@ import arrow from '../../../static/images/arrow.png';
 @Component
 class Index extends Vue {
 
-  @Provide() cartypeData: Array<any> = [];
-  @Provide() img: any = {
+  cartypeData: Array<any> = [];
+  img: any = {
     text_forbid_red,
     text_forbid_yellow,
     text_load,

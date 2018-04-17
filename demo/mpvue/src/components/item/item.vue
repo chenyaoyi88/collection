@@ -18,33 +18,40 @@
       <div class="item-l-none"></div>
     </template>
 
+    <!-- 输入框专用 -->
     <template v-if="itemType === 'input'">
       <div class="item-r" :class="{'no-boder-top': noBorderTop ? true : false}">
         <input class="item-input" :type="inputType || 'text'" :placeholder="inputPlc" placeholder-style="color:#b2b2b2" :value="value" @input="itemInput($event)" :maxlength="maxlength || 140">
       </div>
     </template>
     
-    <template v-else-if="itemType === 'picker'">
-      <template v-if="iconType === 'time'">
+    <!-- 货物信息专用 -->
+    <template v-else-if="itemType === 'goods'">
+      <div class="item-r" :class="{'no-boder-top': noBorderTop ? true : false}">
+        <div class="goods-box">
+          <div class="goods-title">{{ textCenter }}</div>
+          <div class="goods-amount-box">
+            <input placeholder-style="color:#b2b2b2" placeholder="条数" type="number" @input="itemInput($event)">
+          </div>
+          <div class="goods-info-box" :class="{light: valueColor === 'light' ? true : false}" @click="itemClickGoods">{{ value }}</div>
+        </div>
+        <div v-if="!isArrowHide" class="item-r-arrow">
+            <img class="img-item-arrow" :src="arrow">
+        </div>
+      </div>
+    </template>
+    
+    <!-- 自定义内容专用（TODO：暂时不知道如何添加 slot 插入内容的事件） -->
+    <template v-else-if="itemType === 'custom'">
+      <div class="item-r" :class="{'no-boder-top': noBorderTop ? true : false}">
         <slot></slot>
-
-        <!-- <picker :mode="pickerMode || 'selector'" class="item-picker" :value="pickerValue" :range="pickerRange" :range-key="pickerRangeKey" :disabled="pickerDisabled" @change="itemPickerChange" @columnchange="itemPickerColumnchange">
-
-            <div class="item-r" :class="{'no-boder-top': noBorderTop ? true : false}">
-              <div class="item-r-title">
-                <p v-if="textCenter" class="item-info-c" :class="{'text-light': textLight}">{{ textCenter }}</p>
-              </div>
-              <div class="item-r-value">
-                  <p :class="{light: valueColor ? valueColor : false}">{{ value }}</p>
-              </div>
-              <div v-if="!isArrowHide" class="item-r-arrow">
-                  <img class="img-item-arrow" :src="arrow">
-              </div>
-            </div>
-        </picker> -->
-      </template>
+        <div v-if="!isArrowHide" class="item-r-arrow">
+            <img class="img-item-arrow" :src="arrow">
+        </div>
+      </div>
     </template>
 
+    <!-- 其他常用共用内容 -->
     <template v-else>
         <div class="item-r" :class="{'no-boder-top': noBorderTop ? true : false}">
           <div class="item-r-title">
@@ -53,7 +60,7 @@
             <p v-if="textBottom" class="item-info-b">{{ textBottom }}</p>
           </div>
           <div class="item-r-value">
-              <p :class="{light: valueColor ? valueColor : false}">{{ value }}</p>
+              <p :class="{light: valueColor === 'light' ? true : false}">{{ value }}</p>
           </div>
           <div v-if="!isArrowHide" class="item-r-arrow">
               <img class="img-item-arrow" :src="arrow">
@@ -69,6 +76,7 @@
 import arrow from './icon/arrow.png';
 import cartype from './icon/cartype.png';
 import time from './icon/time.png';
+import goods from './icon/goods.png';
 import extra from './icon/extra.png';
 import mobile from './icon/mobile.png';
 import contact from './icon/contact.png';
@@ -107,12 +115,6 @@ export default {
     'noBorderTop',
     // 是否隐藏右侧箭头
     'isArrowHide',
-    // picker模式
-    'pickerMode',
-    'pickerRange',
-    'pickerRangeKey',
-    'pickerValue',
-    'pickerDisabled'
   ],
   data() {
     return {
@@ -122,7 +124,7 @@ export default {
       extra,
       icon: '',
       point: '',
-      textLight: false,
+      textLight: false
     };
   },
   methods: {
@@ -141,6 +143,9 @@ export default {
     itemPickerCancel(e) {
       this.$emit('itemPickerCancel', e);
     },
+    itemClickGoods(e) {
+      this.$emit('itemClickGoods', e);
+    }
   },
 
   created() {
@@ -157,6 +162,9 @@ export default {
           break;
         case 'mobile':
           this.icon = mobile;
+          break;
+        case 'goods':
+          this.icon = goods;
           break;
         case 'contact':
           this.icon = contact;

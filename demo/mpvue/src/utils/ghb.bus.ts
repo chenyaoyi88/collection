@@ -64,6 +64,8 @@ export function ghbRequest(options: GhbRequest): Promise<any> {
             icon: 'none',
             duration: 2500
           });
+          wx.removeStorageSync('token');
+          wx.removeStorageSync('mobile');
         }
         resolve(res);
       },
