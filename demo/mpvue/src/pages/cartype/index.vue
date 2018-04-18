@@ -1,6 +1,6 @@
 <template>
   <ul class="cartype-list">
-    <li class="list-item" v-for="(item, index) of cartypeList" :key="index" @click="cartypeSelect(item)">
+    <li class="list-item" v-for="(item, index) of carTypeList" :key="index" @click="cartypeSelect(item)">
 
       <div class="list-item-title">
         <div class="title-box">

@@ -33,8 +33,13 @@ switch (APP_ENV) {
   default:
 }
 
-// 接口地址
-export default {
+const AK = 'R2xVO3xWBt8aLM8pf0ONUB0eTWmlclck';
+
+const API = {
+  BAIDU_MAP: {
+    SEARCH: `https://api.map.baidu.com/place/v2/search?ak=${AK}&output=json`,
+    GEOCODER: `https://api.map.baidu.com/geocoder/v2/?ak=${AK}&output=json`
+  },
   // 测试请求
   TEST: `${APP_REQUEST_HOST}/test`,
   // 登录
@@ -50,5 +55,11 @@ export default {
   // 订单详情查询/下单（http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-08%20%E4%B8%8B%E5%8D%95）
   LOGISTICSORDER: `${APP_REQUEST_HOST}/api/v1/logistics/logisticsorder`,
   // 附加服务
-  GETADDITIONALSERVICES: `${APP_REQUEST_HOST}/api/v1/logistics/getAdditionalServices`
+  GETADDITIONALSERVICES: `${APP_REQUEST_HOST}/api/v1/logistics/getAdditionalServices`,
+  // 计算运费
+  COSTS: `${APP_REQUEST_HOST}/api/v1/logistics/calculation/costs`,
 };
+
+
+// 接口地址
+export default API;

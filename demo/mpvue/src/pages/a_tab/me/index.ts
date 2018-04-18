@@ -29,7 +29,7 @@ class Me extends Vue {
                 }
             });
         } else {
-            this.mobile = '登陆';
+            this.mobile = '点击登录';
             this.avantar = avantarImg;
         }
     }

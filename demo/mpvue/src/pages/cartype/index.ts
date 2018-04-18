@@ -13,7 +13,7 @@ import arrow from '../../../static/images/arrow.png';
 @Component
 class Index extends Vue {
 
-  cartypeData: Array<any> = [];
+  carTypeData: Array<any> = [];
   img: any = {
     text_forbid_red,
     text_forbid_yellow,
@@ -25,16 +25,7 @@ class Index extends Vue {
 
   mounted() {
     const _this = this;
-    wx.showLoading({
-      title: '加载中'
-    });
-    ghbRequest({
-      url: API.CARTYPE,
-    }).then((res: any) => {
-      if (res.statusCode === 200) {
-        _this.cartypeData = res.data;
-      }
-    })
+    this.carTypeData = wx.getStorageSync('carTypeList');
   }
 
   getForbiddenStatus(result: CarForbiddenTimeResult) {
@@ -63,8 +54,8 @@ class Index extends Vue {
   }
 
   // 二次处理数组
-  get cartypeList() {
-    for (let item of this.cartypeData) {
+  get carTypeList() {
+    for (let item of this.carTypeData) {
       item.startPrice = (item.startPrice && zerofillBack(item.startPrice)) || '--';
       item.startRange = (item.startPrice && zerofillBack(item.startRange)) || '--';
       item.nightServiceFee = (item.nightServiceFee && zerofillBack(item.nightServiceFee)) || '--';
@@ -82,7 +73,7 @@ class Index extends Vue {
         }
       }
     }
-    return this.cartypeData;
+    return this.carTypeData;
   }
 
   cartypeSelect(item: any) {

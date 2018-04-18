@@ -22,7 +22,7 @@
               <div class="tab-item">
 
                 <div class="no-order-box" v-if="!ingList.length">
-                  <img src="../../../../static/images/callcar.png" alt="" mode="aspectFit">
+                  <img :src="imgNoOrder" alt="" mode="aspectFit">
                 </div>
 
                 <div v-if="ingList.length" class="list-box" v-for="(item, index) of ingList" :key="index">
@@ -82,7 +82,7 @@
               <div class="tab-item">
 
                 <div class="no-order-box" v-if="!finishList.length">
-                  <img src="../../../../static/images/callcar.png" alt="" mode="aspectFit">
+                  <img :src="imgNoOrder" alt="" mode="aspectFit">
                 </div>
 
                 <div v-if="finishList.length" class="list-box" v-for="(item, index) of finishList" :key="index">
@@ -138,7 +138,7 @@
               <div class="tab-item">
 
                 <div class="no-order-box" v-if="!cancelList.length">
-                  <img src="../../../../static/images/callcar.png" alt="" mode="aspectFit">
+                  <img :src="imgNoOrder" alt="" mode="aspectFit">
                 </div>
 
                 <div v-if="cancelList.length" class="list-box" v-for="(item, index) of cancelList" :key="index">

@@ -24,8 +24,6 @@ Component.registerHooks([
 const app = new Vue(MyApp);
 app.$mount();
 
-
-
 export default {
   // 这个字段走 app.json
   config: {
@@ -45,6 +43,7 @@ export default {
       onReachBottomDistance: 100
     },
     tabBar: {
+      color: '#B2B2B2',
       selectedColor: '#F13744',
       list: [{
         pagePath: 'pages/a_tab/index/main',

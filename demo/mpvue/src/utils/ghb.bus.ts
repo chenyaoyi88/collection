@@ -48,6 +48,7 @@ interface GhbRequest {
 }
 
 export function ghbRequest(options: GhbRequest): Promise<any> {
+  let isToastShowing: boolean = false;
   return new Promise((resolve: any, reject: any) => {
     wx.request({
       url: options.url,
@@ -56,7 +57,7 @@ export function ghbRequest(options: GhbRequest): Promise<any> {
       header: {
         authorization: wx.getStorageSync('token') || ''
       },
-      success: function(res: any) {
+      success: function (res: any) {
         console.log(res);
         if (res.statusCode === 401) {
           wx.showToast({
@@ -66,16 +67,28 @@ export function ghbRequest(options: GhbRequest): Promise<any> {
           });
           wx.removeStorageSync('token');
           wx.removeStorageSync('mobile');
+          isToastShowing = true;
         }
         resolve(res);
       },
-      fail: function(err: any) {
+      fail: function (err: any) {
         console.log(err);
         showToastError();
       },
-      complete: function() {
+      complete: function () {
+        if (isToastShowing) return;
         wx.hideLoading();
       }
     });
   });
+}
+
+export function getDesText(des: string) {
+  let retStr: string = '';
+  if (des === 'start') {
+    retStr = '发货';
+  } else if (des === 'end') {
+    retStr = '收货';
+  }
+  return retStr;
 }

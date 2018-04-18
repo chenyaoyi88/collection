@@ -1,4 +1,5 @@
-<script></script>
+<script>
+</script>
 
 <style lang="scss">
 // app.scss 未全局样式

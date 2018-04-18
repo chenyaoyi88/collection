@@ -1,34 +1,38 @@
-import { Vue, Component, Provide } from 'vue-property-decorator';
-import { goBackSetData } from '../../utils';
+import { Vue, Component } from 'vue-property-decorator';
+import { goBackSetData, getDesText } from '../../utils';
+import API from '../../api';
 
 // 必须使用装饰器的方式来指定components
 @Component
 class Index extends Vue {
-  @Provide() from: String = '';
-  @Provide() listHeight: Number = 0;
-  @Provide() inputValue: String = '';
-  @Provide() results: Array<string> = [];
-  @Provide() desText: String = '地址';
+  from: string = '';
+  listHeight: number = 0;
+  inputValue: string = '';
+  results: Array<string> = [];
+  desText: string = '地址';
 
   // 获取传过来的参数（从开始还是结束进来的）
-  onLoad(options: { from: string}) {
+  onLoad(options: { from: string, searchResult: string }) {
     this.from = options.from;
-    if (this.from === 'start') {
-      this.desText = '发货地点';
-    } else if (this.from === 'end') {
-      this.desText = '收货地点';
+    this.inputValue = options.searchResult;
+    this.desText = `${getDesText(this.from)}地点`;
+    if (this.inputValue) {
+      this.getMapData();
     }
   }
 
-  // 每次来的时候都清空搜素结果
-  onShow() {
-    this.results = [];
+  onReady() {
+    wx.setNavigationBarTitle({
+      title: `输入${getDesText(this.from)}地点` 
+    })
   }
 
   // 计算/设置搜索结果的高度
   mounted() {
-    this.inputValue = '';
     const _this = this;
+    if (!this.inputValue) {
+      this.results = [];
+    }
     wx.getSystemInfo({
       success: function (res: any) {
         _this.listHeight = res.windowHeight - 50;
@@ -44,18 +48,23 @@ class Index extends Vue {
       this.results = [];
       return;
     }
-    
+
+    this.getMapData();
+  }
+
+  // 获取搜索结果
+  getMapData(): void {
+    const __this = this;
     // 参考：http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-placeapi
     wx.request({
-      url: 'https://api.map.baidu.com/place/v2/search?',
+      url: API.BAIDU_MAP.SEARCH,
       data: {
         query: __this.inputValue,
         region: '广州',
         city_limit: true,
-        output: 'json',
-        ak: 'R2xVO3xWBt8aLM8pf0ONUB0eTWmlclck'
+        // ak: 'R2xVO3xWBt8aLM8pf0ONUB0eTWmlclck'
       },
-      success: function (res) {
+      success: function (res: any) {
         __this.results = res.data.results;
       }
     });
@@ -64,11 +73,9 @@ class Index extends Vue {
   // 点击搜索结果
   selected(searchInfo: any) {
     searchInfo.from = this.from;
-    console.log(searchInfo);
     wx.navigateTo({
       url: '../contact/main?searchInfo=' + JSON.stringify(searchInfo)
     });
-    this.results = [];
   }
 
   // 返回

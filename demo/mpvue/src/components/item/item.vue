@@ -115,6 +115,7 @@ export default {
     'noBorderTop',
     // 是否隐藏右侧箭头
     'isArrowHide',
+    'textLight'
   ],
   data() {
     return {
@@ -123,8 +124,7 @@ export default {
       time,
       extra,
       icon: '',
-      point: '',
-      textLight: false
+      point: ''
     };
   },
   methods: {
@@ -181,9 +181,9 @@ export default {
             default:
               this.point = 'start';
           }
-          if (!this.textTop || !this.textBottom) {
-            this.textLight = true;
-          }
+          // if (!this.textTop && !this.textBottom) {
+          //   this.textLight = true;
+          // }
           break;
         default:
           this.icon = '';

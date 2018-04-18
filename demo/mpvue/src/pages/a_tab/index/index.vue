@@ -1,23 +1,24 @@
 <template>
-  <div class="idx-box">
-
+  <div class="idx-box"> 
     <div class="idx-main-box">
       <div class="idx-site-box">
         <item 
           iconType="point" 
-          textTop="" 
-          :textCenter="startPoint" 
-          textBottom=""  
-          v-on:itemClick="getPonit('start')"
+          :textTop="(startInfo.userName || '') + ' ' + (startInfo.mobile || '')" 
+          :textCenter="startInfo.name || '选择发货地点'" 
+          :textBottom="startInfo.address || ''" 
+          v-on:itemClick="getPonit('start', startInfo)"
           noBorderTop="true"
+          :textLight="startInfo.name ? false : true"
         ></item>
         <item 
           iconType="point" 
           pointType="end" 
-          textTop="" 
-          textCenter="选择收货地点" 
-          textBottom=""  
-          v-on:itemClick="getPonit('end')"
+          :textTop="(endInfo.userName || '') + ' ' + (endInfo.mobile || '')" 
+          :textCenter="endInfo.name || '选择收货地点'" 
+          :textBottom="endInfo.address || ''"  
+          v-on:itemClick="getPonit('end', endInfo)"
+          :textLight="endInfo.name ? false : true"
         ></item>
       </div>
 
@@ -25,20 +26,13 @@
         <item 
           iconType="cartype" 
           textCenter="车型" 
-          value="小型面包" 
+          :value="carSelected.name || '请选择车型'" 
           noBorderTop="true"
           v-on:itemClick="carTypeSelect"
         ></item>
-        <div class="picker-time">
-          <item 
-            iconType="time" 
-            textCenter="时间" 
-            :value="bookingDate || '立即出发'"
-          ></item>
-          <picker class="picker" mode="multiSelector" @change="fnDateChange" @columnchange="fnDateColumnchange" :value="dateIndex" range-key="name" :range="dateArray">
-              <view class="picker-cover"></view>
-          </picker>
-        </div>
+
+        <itemTimePicker v-on:getDateValue="getDateValue"></itemTimePicker>
+
         <item 
           iconType="extra" 
           textCenter="额外服务" 
@@ -62,7 +56,7 @@
 
     <div class="idx-ft-box">
       <div class="idx-ft-price">
-        <p class="price-text">￥--</p>
+        <p class="price-text">￥{{ costs || '--'}}</p>
       </div>
       <div class="idx-ft-nextbtn">
         <button class="ghb-btn next-btn" @click="nextStep">下一步</button>
@@ -79,8 +73,8 @@
           <div class="comfirm" @click="sliderComfirm">确定</div>
         </div>
         <div class="content-box">
-            <div class="checkbox" v-for="(item, index) of additionalServicesList" :key="index">
-              <div class="check-item" @click="checkboxChange(item, index)">
+            <div class="checkbox" v-for="(item, index) of additionalServicesList" :key="index" @click="checkboxChange(item, index)">
+              <div class="check-item">
                 <div class="name">{{ item.name }}</div>
                 <div class="remark">{{item.remark}}</div>
                 <div class="check">
@@ -90,7 +84,6 @@
                   <template v-else>
                     <div class="uncheck"></div>
                   </template>
-                  <!-- <icon color="#f33650" size="20" type="success"></icon> -->
                 </div>
               </div>
             </div>

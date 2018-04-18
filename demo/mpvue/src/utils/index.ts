@@ -6,7 +6,8 @@ import {
   getLatestDate,
   addZero,
   getHoursArray,
-  getMinsArray
+  getMinsArray,
+  formatCurrency
 } from './common';
 import {
   goBackSetData,
@@ -14,12 +15,14 @@ import {
   isInputEmpty,
   isPhoneNumber,
   showToastError,
-  ghbRequest
+  ghbRequest,
+  getDesText
 } from './ghb.bus';
 
 export {
   formatNumber,
   formatTime,
+  formatCurrency,
   zerofillBack,
   getDateList,
   getLatestDate,
@@ -31,5 +34,6 @@ export {
   isInputEmpty,
   isPhoneNumber,
   showToastError,
-  ghbRequest
+  ghbRequest,
+  getDesText
 };

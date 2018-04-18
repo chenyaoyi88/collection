@@ -1,24 +1,31 @@
 import { Vue, Component } from 'vue-property-decorator';
-import { goBackGetData, getDateList, getHoursArray, getMinsArray, ghbRequest } from '../../../utils';
+import { goBackGetData, getDateList, getHoursArray, getMinsArray, ghbRequest, formatCurrency } from '../../../utils';
 import API from '../../../api';
 import item from '@/components/item/item.vue';
-import slider from '@/components/slider/slider.vue';
+import itemTimePicker from '@/components/item/item_time_picker.vue';
 
 // 必须使用装饰器的方式来指定components
 @Component({
   components: {
     item,
-    slider
+    itemTimePicker
   }
 })
 class Index extends Vue {
-  nextStepParams: any = {};
-  startPoint: string = '选择发货地点';
-  endPoint: string = '选择收货地点';
-  dateArray: Array<any> = getDateList();
-  dateIndex: Array<number> = [0, 0, 0];
+  isLogin: boolean = false;
 
-  bookingDate: string = '';
+  // 下一步需要的参数
+  nextStepParams: any = {};
+
+  searchInfo: any = null;
+  startInfo: any = {};
+  endInfo: any = {};
+
+  // 计算运费
+  oCostRequest: any = {};
+
+  carInfo: any = null;
+  bookingTime: string = '';
 
   additionalServicesList: Array<any> = [
     // {
@@ -38,6 +45,14 @@ class Index extends Vue {
     // }
   ];
 
+  // 车型列表
+  carTypeList: Array<any> = [];
+  // 默认车型
+  carSelected: any = {
+    name: '小面包',
+    id: null
+  };
+
   aSelectedServices: Array<any> = [];
   sSelectedServices: string = '';
 
@@ -49,6 +64,8 @@ class Index extends Vue {
 
   aniSlideContent: any = null;
   aniSlideContentData: any = null;
+
+  isClickSelected: boolean = false;
   // （TODO：下次抽离部分）--------------------------end
 
   // 提交参数
@@ -56,80 +73,77 @@ class Index extends Vue {
   // 货物信息
   goodsDesc: string = '';
 
-  // 时间选择器选中逻辑（TODO：抽离出来作为独立组件逻辑）
-  fnDateChange(e: any) {
-    const myIndex = e.target.value;
+  // 页面显示变量
+  costs: any = '';
 
-    const index0 = myIndex[0];
-    const index1 = myIndex[1];
-    const index2 = myIndex[2];
+  // 如果填写了发货和收货地址，就可以计算运费
+  fnCanCost(): void {
+    if (!(this.startInfo.name && this.endInfo.name)) return;
 
-    const sDate: string = this.dateArray[0][index0].value;
-    const sHour: string = this.dateArray[1][index1].value;
-    const sMin: string =
-      this.dateArray[2] && this.dateArray[2][index2] && this.dateArray[2][index2].value;
-
-    if (sHour) {
-      this.bookingDate = `${sDate} ${sHour}:${sMin}:00`;
-    } else {
-      this.bookingDate = '';
-    }
+    const _this = this;
+    const PARAMS_COSTS_REQUEST: CalcCost_Request = {
+      senderX: this.startInfo.location.lng,
+      senderY: this.startInfo.location.lat,
+      receiverX: this.endInfo.location.lng,
+      receiverY: this.endInfo.location.lat,
+      vehicleTypeId: this.carSelected.id,
+      paymentType: 1,
+      isBooking: this.bookingTime ? 'Y' : 'N',
+      bookingTime: this.bookingTime ? this.bookingTime : null,
+      isBuyInsurance: false
+    };
+    ghbRequest({
+      url: API.COSTS,
+      method: 'POST',
+      data: PARAMS_COSTS_REQUEST
+    }).then((res: any) => {
+      console.log(res);
+      if (res.statusCode === 400) {
+        wx.showToast({
+          title: res.data.message,
+          icon: 'none'
+        });
+      } else {
+        _this.costs = formatCurrency(res.data.amount);
+      }
+    });
   }
 
-  // 时间选择器内部逻辑（TODO：抽离出来作为独立组件逻辑）
-  fnDateColumnchange(e: any) {
-    // console.log('修改的列为', e.target.column, '，值为', e.target.value);
-
-    this.$set(this.dateIndex, e.target.column, e.target.value);
-
-    switch (e.target.column) {
-      case 0:
-        switch (this.dateIndex[0]) {
-          case 0:
-            this.$set(this.dateArray, 1, getHoursArray(new Date().getHours()));
-            this.$set(this.dateArray, 2, []);
-            break;
-          case 1:
-          case 2:
-            this.$set(this.dateArray, 1, getHoursArray());
-            this.$set(this.dateArray, 2, getMinsArray());
-            break;
-        }
-        this.$set(this.dateIndex, 1, 0);
-        this.$set(this.dateIndex, 2, 0);
-        break;
-      case 1:
-        switch (this.dateIndex[0]) {
-          case 0:
-            this.$set(this.dateArray, 2, this.dateIndex[1] === 0 ? [] : getMinsArray());
-            break;
-        }
-        this.dateIndex[2] = 0;
-        break;
-    }
+  // 获取预定时间
+  getDateValue(value: string) {
+    this.bookingTime = value;
+    this.fnCanCost();
   }
 
   // 选择发货/收货地点
-  getPonit(type: string) {
+  getPonit(type: string, searchResult: any) {
     wx.navigateTo({
-      url: '../../search/main?from=' + type
+      url: `../../search/main?from=${type}&searchResult=${searchResult.name || ''}`
     });
   }
 
   // 选择车型
   carTypeSelect() {
-    const url = '../../cartype/main';
-    wx.navigateTo({ url });
+    wx.navigateTo({
+      url: '../../cartype/main'
+    });
   }
 
   // 点击额外服务
   extraServices() {
+    if (!this.additionalServicesList.length) {
+      wx.showToast({
+        title: '获取额外服务列表失败，请登录后再尝试',
+        icon: 'none'
+      });
+      return;
+    }
     this.showSlider();
   }
 
+  // 条数
   getClothsAmount(value: any) {
     this.clothsAmount = value;
-    console.log(this.clothsAmount);
   }
 
   // 货物信息
@@ -142,6 +156,12 @@ class Index extends Vue {
   // 下一步
   nextStep() {
     console.log('nextStep');
+    console.log(this.carSelected);
+    if (!this.isLogin) {
+      wx.navigateTo({
+        url: '../../login/main'
+      });
+    }
   }
 
   // 显示底部滑动内容（TODO：抽离出来作为独立组件逻辑）
@@ -184,8 +204,7 @@ class Index extends Vue {
     this.hideMask();
   }
 
-  // 底部滑动确定（TODO：抽离出来作为独立组件逻辑）
-  sliderComfirm() {
+  sliderSelect() {
     this.aSelectedServices = [];
     this.sSelectedServices = '';
     for (let item of this.additionalServicesList) {
@@ -194,16 +213,28 @@ class Index extends Vue {
         this.aSelectedServices.push(item);
       }
     }
+  }
+
+  // 底部滑动确定（TODO：抽离出来作为独立组件逻辑）
+  sliderComfirm() {
+    this.sliderSelect();
     this.hideMask();
   }
 
   checkboxChange(item: any, index: number) {
     this.$set(this.additionalServicesList[index], 'selected', !this.additionalServicesList[index].selected);
+    this.sliderSelect();
   }
 
   onShow() {
+    const token = wx.getStorageSync('token');
+    this.isLogin = token ? true : false;
+
     console.log(goBackGetData());
+
     const _this = this;
+
+    // 获取额外服务
     ghbRequest({
       url: API.GETADDITIONALSERVICES
     }).then((res: any) => {
@@ -211,13 +242,55 @@ class Index extends Vue {
       _this.additionalServicesList = res.data;
     });
 
+    // 获取车型列表（NOTE：因为默认要选择小面包，所以要提前请求一次）
+    ghbRequest({
+      url: API.CARTYPE,
+    }).then((res: any) => {
+      if (res.statusCode === 200) {
+        _this.carTypeList = res.data;
+        wx.setStorageSync('carTypeList', _this.carTypeList);
+        for (let item of _this.carTypeList) {
+          if (item.name === _this.carSelected.name) {
+            _this.carSelected.id = item.id;
+          }
+        }
+      }
+    });
+
+    this.carInfo = goBackGetData().carInfo;
+    // 从车型选择页面返回
+    if (this.carInfo) {
+      this.carSelected = {
+        name: this.carInfo.name,
+        id: this.carInfo.id
+      };
+      this.fnCanCost();
+    }
     this.goodsDesc = goBackGetData().goodsDesc || '';
 
-    console.log('车型ID', goBackGetData().carInfo && goBackGetData().carInfo.id);
+    this.searchInfo = goBackGetData().searchInfo;
+    if (this.searchInfo && this.searchInfo.from) {
+      if (this.searchInfo.from === 'start') {
+        this.startInfo = this.searchInfo;
+
+        this.fnCanCost();
+
+      } else if (this.searchInfo.from === 'end') {
+        this.endInfo = this.searchInfo;
+
+        this.fnCanCost();
+      }
+    }
+
+    console.log('endInfo', this.endInfo);
+
+    console.log('车型信息', this.carInfo);
     console.log('额外服务', this.sSelectedServices);
-    console.log('时间', this.bookingDate);
+    console.log('时间', this.bookingTime);
     console.log('货物信息-条数', this.clothsAmount);
-    console.log('货物信息-备注', goBackGetData().goodsDesc);
+    console.log('货物信息-备注', this.goodsDesc);
+
+    console.log();
   }
 }
 

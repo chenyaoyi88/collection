@@ -3,10 +3,11 @@
     <div class="contact-info-box">
       <item 
         iconType="point" 
-        textTop="" 
+        :pointType="searchInfo.from === 'start' ? 'start' : 'end' "
         :textCenter="searchInfo.name" 
         :textBottom="searchInfo.address"  
         isStartPointlineHide="true"
+        isEndPointlineHide="true"
         isArrowHide="true"
         noBorderTop="true"
       ></item>

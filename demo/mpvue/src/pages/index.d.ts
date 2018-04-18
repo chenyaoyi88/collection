@@ -92,7 +92,7 @@ interface CalcCost_Request {
     // 支付方式：1: 立刻支付 2: 货到付款
     paymentType: number;
     // 是否预定：是: "Y" 否: "N"
-    isBooking: boolean;
+    isBooking: string;
     // 预定时间：yyyy - MM - dd HH: mm: ss，没有则填null
     bookingTime: any;
     // 优惠券码的ID（从优惠券列表选择的优惠券的id）

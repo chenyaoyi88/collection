@@ -2,6 +2,7 @@ import { Vue, Component, Provide } from 'vue-property-decorator';
 import item from '@/components/item/item.vue';
 import { ghbRequest } from '../../../utils';
 import API from '../../../api';
+import IMG_NOORDER from '../../../../static/images/callcar.png';
 
 // NOTE：/api/v1/logistics/logisticsorders 接口缺少【车型】 和 【额外服务】字段
 
@@ -11,6 +12,7 @@ import API from '../../../api';
   }
 })
 class Order extends Vue {
+  imgNoOrder: any = IMG_NOORDER;
   isLogin: boolean = false;
   tabList: Array<string> = ['进行中', '已完成', '已取消'];
   currentIndex: number = 0;
@@ -27,7 +29,7 @@ class Order extends Vue {
   mounted() {
     const oTab = this;
     wx.getSystemInfo({
-      success(res) {
+      success(res: any) {
         oTab.contentHeight = res.windowHeight - oTab.headerHeight;
       }
     });
@@ -35,8 +37,7 @@ class Order extends Vue {
 
   onShow() {
     const token = wx.getStorageSync('token');
-    // this.isLogin = token ? true : false;
-    this.isLogin = true;
+    this.isLogin = token ? true : false;
     // this.currentIndex = 0;
     this.getList('finishList', 3);
   }
