@@ -12,6 +12,26 @@ page {
   display: flex;
   align-items: center;
   justify-content: center;
+  .login-page-box {
+    width: 100%;
+    margin-bottom: 30%;
+    .login-page-img {
+      width: 100%;
+      height: 140px;
+    }
+    .login-page-tips {
+      font-size: 12px;
+      text-align: center;
+      color: #8F8F8F;
+      margin: 8px 0 15px;
+    }
+    .login-page-btn {
+      width: 70px;
+      height: 35px;
+      font-size: 14px;
+      padding: 0;
+    }
+  }
 }
 
 .tabswitch-box {
@@ -42,7 +62,7 @@ page {
         align-items: center;
         justify-content: center;
         &.active {
-          color: #FB0628;
+          color: #fb0628;
         }
       }
     }
@@ -78,17 +98,18 @@ page {
     justify-content: space-between;
     padding: 10px 15px;
     font-size: 14px;
-    border-bottom: 1px solid #EEEEEE;
+    border-bottom: 1px solid #eeeeee;
     .list-tile-l {
       color: #888888;
     }
-    .list-tile-r {}
+    .list-tile-r {
+    }
   }
   .list-content {
     padding: 5px 0;
   }
   .list-msg {
-    border-top: 1px solid #EEEEEE;
+    border-top: 1px solid #eeeeee;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -108,9 +129,9 @@ page {
         padding: 0;
         margin: 0;
         margin-left: 10px;
-        border: 1px solid #FB0628;
+        border: 1px solid #fb0628;
         &.cancel {
-          color: #FB0628;
+          color: #fb0628;
           background-color: #fff;
         }
       }

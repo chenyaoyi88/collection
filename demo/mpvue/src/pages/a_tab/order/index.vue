@@ -1,10 +1,14 @@
 <template>
   <div class="ghb-order-box">
+
     <div v-if="!isLogin" class="login-box">
       <div class="login-page-box">
-        <button class="login-page-btn" @click="gotoLogin">请登录</button>
+        <img class="login-page-img" :src="imgNodata" alt=""  mode="aspectFit">
+        <p class="login-page-tips">您还未登录噢，速速去登录吧～</p>
+        <button class="ghb-btn login-page-btn" @click="gotoLogin">登录</button>
       </div>
     </div>
+
     <div v-if="isLogin">
       <div class="tabswitch-box">
         <div class="tabswitch-title-box" v-if="tabList.length" :style="{height: headerHeight + 'px'}">

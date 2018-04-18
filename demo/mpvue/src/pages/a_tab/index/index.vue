@@ -7,7 +7,7 @@
           :textTop="(startInfo.userName || '') + ' ' + (startInfo.mobile || '')" 
           :textCenter="startInfo.name || '选择发货地点'" 
           :textBottom="startInfo.address || ''" 
-          v-on:itemClick="getPonit('start', startInfo)"
+          v-on:itemClick="fnGetPonit('start', startInfo)"
           noBorderTop="true"
           :textLight="startInfo.name ? false : true"
         ></item>
@@ -17,7 +17,7 @@
           :textTop="(endInfo.userName || '') + ' ' + (endInfo.mobile || '')" 
           :textCenter="endInfo.name || '选择收货地点'" 
           :textBottom="endInfo.address || ''"  
-          v-on:itemClick="getPonit('end', endInfo)"
+          v-on:itemClick="fnGetPonit('end', endInfo)"
           :textLight="endInfo.name ? false : true"
         ></item>
       </div>
@@ -28,17 +28,17 @@
           textCenter="车型" 
           :value="carSelected.name || '请选择车型'" 
           noBorderTop="true"
-          v-on:itemClick="carTypeSelect"
+          v-on:itemClick="fnCarTypeSelect"
         ></item>
 
-        <itemTimePicker v-on:getDateValue="getDateValue"></itemTimePicker>
+        <itemTimePicker v-on:getDateValue="fnGetDateValue"></itemTimePicker>
 
         <item 
           iconType="extra" 
           textCenter="额外服务" 
           :value="sSelectedServices || '装卸搬运等额外服务'" 
           :valueColor="sSelectedServices.length ? 'dark' : 'light'"
-          v-on:itemClick="extraServices"
+          v-on:itemClick="fnExtraServices"
         ></item>
         <item 
           itemType="goods"
@@ -46,8 +46,8 @@
           textCenter="货物信息"
           :value="goodsDesc || '货物信息，备注等'" 
           :valueColor="goodsDesc ? 'dark' : 'light'"
-          v-on:itemClickGoods="fnGoodsInfo"
-          v-on:itemInput="getClothsAmount($event.target.value)"
+          v-on:itemClickGoods="fnGetGoodsInfo"
+          v-on:itemInput="fnGetClothsAmount($event.target.value)"
         ></item>
 
       </div>
@@ -59,7 +59,7 @@
         <p class="price-text">￥{{ costs || '--'}}</p>
       </div>
       <div class="idx-ft-nextbtn">
-        <button class="ghb-btn next-btn" @click="nextStep">下一步</button>
+        <button class="ghb-btn next-btn" @click="fnNextStep">下一步</button>
       </div>
     </div>
 

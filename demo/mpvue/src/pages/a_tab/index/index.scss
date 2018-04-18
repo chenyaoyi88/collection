@@ -36,7 +36,7 @@
       align-items: center;
       justify-content: center;
       font-size: 24px;
-      color: #F13744;
+      color: #f13744;
       background-color: #fff;
     }
   }
@@ -44,10 +44,6 @@
 
 .idx-ft-nextbtn {
   .next-btn {
-    // display: flex;
-    // align-items: center;
-    // justify-content: center;
-    // font-size: 18px;
   }
 }
 
@@ -136,7 +132,8 @@
   flex-direction: row;
   align-items: center;
   width: 100%;
-  .goods-title {}
+  .goods-title {
+  }
   .goods-amount-box {
     padding: 0 10px;
     width: 50px;

@@ -27,23 +27,7 @@ class Index extends Vue {
   carInfo: any = null;
   bookingTime: string = '';
 
-  additionalServicesList: Array<any> = [
-    // {
-    //   id: 8,
-    //   name: '推车',
-    //   remark: '需要司机提供推车设备'
-    // },
-    // {
-    //   id: 9,
-    //   name: '搬运',
-    //   remark: '需要司机提供搬运服务，价格面议'
-    // },
-    // {
-    //   id: 10,
-    //   name: '代收',
-    //   remark: '需要司机提供代收货款的服务，价格方式面议'
-    // }
-  ];
+  additionalServicesList: Array<any> = [];
 
   // 车型列表
   carTypeList: Array<any> = [];
@@ -110,27 +94,27 @@ class Index extends Vue {
   }
 
   // 获取预定时间
-  getDateValue(value: string) {
+  fnGetDateValue(value: string) {
     this.bookingTime = value;
     this.fnCanCost();
   }
 
   // 选择发货/收货地点
-  getPonit(type: string, searchResult: any) {
+  fnGetPonit(type: string, searchResult: any) {
     wx.navigateTo({
       url: `../../search/main?from=${type}&searchResult=${searchResult.name || ''}`
     });
   }
 
   // 选择车型
-  carTypeSelect() {
+  fnCarTypeSelect() {
     wx.navigateTo({
       url: '../../cartype/main'
     });
   }
 
   // 点击额外服务
-  extraServices() {
+  fnExtraServices() {
     if (!this.additionalServicesList.length) {
       wx.showToast({
         title: '获取额外服务列表失败，请登录后再尝试',
@@ -142,19 +126,19 @@ class Index extends Vue {
   }
 
   // 条数
-  getClothsAmount(value: any) {
+  fnGetClothsAmount(value: any) {
     this.clothsAmount = value;
   }
 
   // 货物信息
-  fnGoodsInfo() {
+  fnGetGoodsInfo() {
     wx.navigateTo({
       url: '../../goodsinfo/main'
     });
   }
 
   // 下一步
-  nextStep() {
+  fnNextStep() {
     console.log('nextStep');
     console.log(this.carSelected);
     if (!this.isLogin) {

@@ -18,6 +18,7 @@
         inputPlc="联系人姓名"
         iconType="contact" 
         noBorderTop="true"
+        maxlength="10"
         v-on:itemInput="getValue($event.target.value, 'name')"
       ></item>
       <item 
@@ -25,6 +26,7 @@
         inputType="number"
         inputPlc="联系方式"
         iconType="mobile" 
+        maxlength="11"
         v-on:itemInput="getValue($event.target.value, 'mobile')"
       ></item>
     </div>

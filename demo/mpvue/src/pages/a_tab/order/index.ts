@@ -3,16 +3,21 @@ import item from '@/components/item/item.vue';
 import { ghbRequest } from '../../../utils';
 import API from '../../../api';
 import IMG_NOORDER from '../../../../static/images/callcar.png';
+import IMG_NODATA from '../../../../static/images/nodata.png';
+import nodata from '@/components/other/nodata.vue';
 
 // NOTE：/api/v1/logistics/logisticsorders 接口缺少【车型】 和 【额外服务】字段
 
 @Component({
   components: {
-    item
+    item,
+    nodata
   }
 })
 class Order extends Vue {
   imgNoOrder: any = IMG_NOORDER;
+  imgNodata: any = IMG_NODATA;
+
   isLogin: boolean = false;
   tabList: Array<string> = ['进行中', '已完成', '已取消'];
   currentIndex: number = 0;
@@ -39,7 +44,9 @@ class Order extends Vue {
     const token = wx.getStorageSync('token');
     this.isLogin = token ? true : false;
     // this.currentIndex = 0;
-    this.getList('finishList', 3);
+    if (this.isLogin) {
+      this.getList('finishList', 3);
+    }
   }
 
   getList(listType: string, searchType: number, offset: number = 0, limit: number = 10) {
@@ -64,7 +71,6 @@ class Order extends Vue {
   }
 
   tabClick(index: number) {
-    console.log(index);
     this.currentIndex = index;
   }
 
