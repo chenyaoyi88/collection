@@ -92,3 +92,32 @@ export function getDesText(des: string) {
   }
   return retStr;
 }
+
+export function getOrderStatusText(code: number): string {
+  let statusText: string = '';
+  switch (code) {
+    case -10:
+      statusText = '已取消';
+      break;
+    case 10:
+      statusText = '待接单';
+      break;
+    case 20:
+      statusText = '已接单';
+      break;
+    case 30:
+      statusText = '装货中';
+      break;
+    case 40:
+      statusText = '运输中';
+      break;
+    case 50:
+      statusText = '已送达';
+      break;
+    case 60:
+      statusText = '已完成';
+      break;
+    default:
+  }
+  return statusText;
+}

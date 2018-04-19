@@ -44,8 +44,8 @@
           itemType="goods"
           iconType="goods" 
           textCenter="货物信息"
-          :value="goodsDesc || '货物信息，备注等'" 
-          :valueColor="goodsDesc ? 'dark' : 'light'"
+          :value="goodsRemark || '货物信息，备注等'" 
+          :valueColor="goodsRemark ? 'dark' : 'light'"
           v-on:itemClickGoods="fnGetGoodsInfo"
           v-on:itemInput="fnGetClothsAmount($event.target.value)"
         ></item>
@@ -56,45 +56,28 @@
 
     <div class="idx-ft-box">
       <div class="idx-ft-price">
-        <p class="price-text">￥{{ costs || '--'}}</p>
+        <p class="price-text">￥{{ (costs && costs.amount) || '--'}}</p>
       </div>
       <div class="idx-ft-nextbtn">
         <button class="ghb-btn next-btn" @click="fnNextStep">下一步</button>
       </div>
     </div>
 
-    <div class='maskLayer' v-if="isShowMask" :animation='aniSlideMaskData' @click='hideMask'></div>
-    <div class='sliderContent' v-if="isShowMask" :animation='aniSlideContentData' :style="{transform: 'translateY('+300+'px)'}">
-      <!-- <p>这里面是内容</p> -->
-      <div class="slider-content-box">
-        <div class="title-box">
-          <div class="cancel" @click="sliderCancel">取消</div>
-          <div class="title">附加服务</div>
-          <div class="comfirm" @click="sliderComfirm">确定</div>
-        </div>
-        <div class="content-box">
-            <div class="checkbox" v-for="(item, index) of additionalServicesList" :key="index" @click="checkboxChange(item, index)">
-              <div class="check-item">
-                <div class="name">{{ item.name }}</div>
-                <div class="remark">{{item.remark}}</div>
-                <div class="check">
-                  <template v-if="item.selected">
-                    <icon color="#f33650" size="20" type="success"></icon>
-                  </template>
-                  <template v-else>
-                    <div class="uncheck"></div>
-                  </template>
-                </div>
-              </div>
-            </div>
-        </div>
-      </div>
-    </div>
+    <sliderSelect 
+      :dataList="additionalServicesList" 
+      :isSliderShow="selectSlider"
+      v-on:hideSlider="fnHideSlider"
+      v-on:checkboxChange="fnCheckboxChange"
+    ></sliderSelect>
 
   </div>
 </template>
 
 <script lang="ts" src="./index.ts"></script>
+
+<style lang="scss">
+@import './index.scss';
+</style>
 
 <style lang="scss">
 @import './index.scss';

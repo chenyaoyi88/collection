@@ -102,9 +102,9 @@ interface CalcCost_Request {
     // 货物价值（保额），当isBuyInsurance为ture需要填
     coverage?: any;
     // 发货城市code，当isBuyInsurance为ture需要填
-    startCityCode?: number;
+    startCityCode?: any;
     // 收货城市code，当isBuyInsurance为ture需要填
-    endCityCode?: number;
+    endCityCode?: any;
     // 订单类型，默认普通订单（1：普通订单 2: 循环线订单）
     type?: number;
     // 布匹条数，默认0条
@@ -113,6 +113,25 @@ interface CalcCost_Request {
     needLoading?: boolean;
     // 中途点List
     halfways?: any;
+}
+
+interface CalcCost_Response {
+    // 运费金额，
+    // 普通订单：不包括保险金额（即：zpt运费－优惠劵金额）
+    // 循环线订单：不包括保险金额，（即：循环线运费－优惠劵金额）
+    amount?: number;
+    // zpt运费
+    zptFreight?: number;
+    // 夜间服务费
+    nightServiceFee?: number;
+    // 预计里程
+    dist: number;
+    // 优惠劵金额
+    couponAmount?: any;
+    // 保险费
+    insuranceAmount?: any;
+    // 车型
+    carType?: string;
 }
 
 /**
@@ -177,6 +196,10 @@ interface Logisticsorder_Request {
     uuid: string;
     // 中途点List
     halfways?: Array<any>;
+    // 发货城市code，当isBuyInsurance为ture需要填
+    startCityCode?: any;
+    // 收货城市code，当isBuyInsurance为ture需要填
+    endCityCode?: any;
 }
 
 interface WX_UserInfo {

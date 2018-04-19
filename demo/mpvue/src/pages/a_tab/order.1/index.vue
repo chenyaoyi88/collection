@@ -9,186 +9,7 @@
       </div>
     </div>
 
-    <div v-else>
-      <div class="title-box">
-        <div v-for="(item, index) in tabList" class="title-list-item" :key="index" :class="{active: currentIndex === index}" @click="tabClick(index)">{{ item }}</div>
-        <div class="title-slider" :style="{width: titleSlider.width + '%;',left: titleSlider.left + '%;'}">
-          <div class="slider"></div>
-        </div>
-      </div>
-      <swiper class="content-box" @change="tabChange" :current="currentIndex"
-            duration="200">
-
-        <swiper-item>
-          <scroll-view class="content" scroll-y @scrolltolower="v1bottom" @scrolltoupper="v1Top">
-
-            <div class="no-order-box" v-if="!ingList.length">
-              <img :src="imgNoOrder" alt="" mode="aspectFit">
-            </div>
-
-            <div v-if="ingList.length" class="list-box" v-for="(item, index) of ingList" :key="index">
-              <div class="list-tile">
-                <div class="list-tile-l">{{ item.logisticsOrderTime }}</div>
-                <div class="list-tile-r">{{ item.statusText }}</div>
-              </div>
-              <div class="list-content">
-                <item 
-                  iconType="point" 
-                  textTop="" 
-                  :textCenter="item.senderAddressName" 
-                  :textBottom="item.senderSiteName"  
-                  noBorderTop="true"
-                  isArrowHide="true"
-                  itemClass="order"
-                ></item>
-                <item 
-                  iconType="point" 
-                  pointType="end" 
-                  textTop="" 
-                  :textCenter="item.receiverAddressName" 
-                  :textBottom="item.receiverSiteName"  
-                  noBorderTop="true"
-                  isArrowHide="true"
-                  itemClass="order"
-                ></item>
-                <div class="info">
-                  <p class="info-car">
-                    <text class="info-box">
-                      <text class="info-title">车型：</text><text class="info-text">小面包</text>
-                    </text>
-                    <text class="info-box">
-                      <text class="info-title">额外服务：</text><text class="info-text">搬运 推车 代收</text>
-                    </text>
-                  </p>
-                  <p class="info-car">
-                    <text class="info-title">订单信息：</text><text class="info-text">{{ item.goodsDesc }}</text>
-                  </p>
-                </div>
-              </div>
-              <div class="list-msg">
-                <div class="list-msg-l">订单信息:<text class="color-notice">￥{{ item.paymentAmount }}</text></div>
-                <div class="list-msg-r">
-                  <button class="ghb-btn cancel">取消订单</button>
-                  <button class="ghb-btn">支付订单</button>
-                </div>
-              </div>
-            </div>
-
-          </scroll-view>
-        </swiper-item>
-
-        <swiper-item>
-          <scroll-view class="content" scroll-y @scrolltolower="v2bottom">
-
-            <div class="no-order-box" v-if="!finishList.length">
-              <img :src="imgNoOrder" alt="" mode="aspectFit">
-            </div>
-
-            <div v-if="finishList.length" class="list-box" v-for="(item, index) of finishList" :key="index">
-              <div class="list-tile">
-                <div class="list-tile-l">{{ item.logisticsOrderTime }}</div>
-                <div class="list-tile-r">{{ item.statusText }}</div>
-              </div>
-              <div class="list-content">
-                <item 
-                  iconType="point" 
-                  textTop="" 
-                  :textCenter="item.senderAddressName" 
-                  :textBottom="item.senderSiteName"  
-                  noBorderTop="true"
-                  isArrowHide="true"
-                  itemClass="order"
-                ></item>
-                <item 
-                  iconType="point" 
-                  pointType="end" 
-                  textTop="" 
-                  :textCenter="item.receiverAddressName" 
-                  :textBottom="item.receiverSiteName"  
-                  noBorderTop="true"
-                  isArrowHide="true"
-                  itemClass="order"
-                ></item>
-                <div class="info">
-                  <p class="info-car">
-                    <text class="info-box">
-                      <text class="info-title">车型：</text><text class="info-text">小面包</text>
-                    </text>
-                    <text class="info-box">
-                      <text class="info-title">额外服务：</text><text class="info-text">搬运 推车 代收</text>
-                    </text>
-                  </p>
-                  <p class="info-car">
-                    <text class="info-title">订单信息：</text><text class="info-text">{{ item.goodsDesc }}</text>
-                  </p>
-                </div>
-              </div>
-              <div class="list-msg">
-                <div class="list-msg-l">订单信息:<text class="color-notice">￥{{ item.paymentAmount }}</text></div>
-              </div>
-            </div>
-
-          </scroll-view>
-        </swiper-item>
-
-        <swiper-item>
-          <scroll-view class="content" scroll-y @scrolltolower="v3bottom">
-
-              <div class="no-order-box" v-if="!cancelList.length">
-                <img :src="imgNoOrder" alt="" mode="aspectFit">
-              </div>
-
-              <div v-if="cancelList.length" class="list-box" v-for="(item, index) of cancelList" :key="index">
-                <div class="list-tile">
-                  <div class="list-tile-l">{{ item.logisticsOrderTime }}</div>
-                  <div class="list-tile-r">{{ item.statusText }}</div>
-                </div>
-                <div class="list-content">
-                  <item 
-                    iconType="point" 
-                    textTop="" 
-                    :textCenter="item.senderAddressName" 
-                    :textBottom="item.senderSiteName"  
-                    noBorderTop="true"
-                    isArrowHide="true"
-                    itemClass="order"
-                  ></item>
-                  <item 
-                    iconType="point" 
-                    pointType="end" 
-                    textTop="" 
-                    :textCenter="item.receiverAddressName" 
-                    :textBottom="item.receiverSiteName"  
-                    noBorderTop="true"
-                    isArrowHide="true"
-                    itemClass="order"
-                  ></item>
-                  <div class="info">
-                    <p class="info-car">
-                      <text class="info-box">
-                        <text class="info-title">车型：</text><text class="info-text">小面包</text>
-                      </text>
-                      <text class="info-box">
-                        <text class="info-title">额外服务：</text><text class="info-text">搬运 推车 代收</text>
-                      </text>
-                    </p>
-                    <p class="info-car">
-                      <text class="info-title">订单信息：</text><text class="info-text">{{ item.goodsDesc }}</text>
-                    </p>
-                  </div>
-                </div>
-                <div class="list-msg">
-                  <div class="list-msg-l">订单信息:<text class="color-notice">￥{{ item.paymentAmount }}</text></div>
-                  
-                </div>
-              </div>
-
-          </scroll-view>
-        </swiper-item>
-      </swiper>
-    </div>
-
-    <!-- <div v-if="isLogin">
+    <div v-if="isLogin">
       <div class="tabswitch-box">
         <div class="tabswitch-title-box" v-if="tabList.length" :style="{height: headerHeight + 'px'}">
           <ul class="title-list">
@@ -365,7 +186,10 @@
                   </div>
                   <div class="list-msg">
                     <div class="list-msg-l">订单信息:<text class="color-notice">￥{{ item.paymentAmount }}</text></div>
-                    
+                    <!-- <div class="list-msg-r">
+                      <button class="ghb-btn cancel">取消订单</button>
+                      <button class="ghb-btn">支付订单</button>
+                    </div> -->
                   </div>
                 </div>
 
@@ -375,7 +199,7 @@
           </swiper>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 

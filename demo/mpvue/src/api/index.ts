@@ -33,7 +33,7 @@ switch (APP_ENV) {
   default:
 }
 
-const AK = 'R2xVO3xWBt8aLM8pf0ONUB0eTWmlclck';
+const AK = 'qLnjq14R4oIEEwtqHM3hcuRMsn1q61Hq';
 
 const API = {
   BAIDU_MAP: {

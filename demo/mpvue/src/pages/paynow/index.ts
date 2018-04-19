@@ -1,14 +1,31 @@
-import { Vue, Component, Provide } from 'vue-property-decorator';
-import Card from '@/components/card.vue'; // mpvue目前只支持的单文件组件
+import { Vue, Component } from 'vue-property-decorator';
+import API from '../../api';
+import { ghbRequest } from '../../utils';
 
 // 必须使用装饰器的方式来指定components
-@Component({
-  components: {
-    Card,
-  }
-})
+@Component
 class Index extends Vue {
-  @Provide() tabList: Array<string> = ['进行中1', '已完成', '已取消'];
+
+  costs: any = {};
+
+  onLoad(options: { logisticsorder: any, costs: any }) {
+    const PARAMS_LOGISTICSORDER_REQUEST: Logisticsorder_Request = JSON.parse(options.logisticsorder);
+    this.costs = JSON.parse(options.costs);
+  }
+
+  payNow() {
+    wx.requestPayment({
+      timeStamp: '',
+      nonceStr: '',
+      package: '',
+      signType: 'MD5',
+      paySign: '',
+      success: function (res: any) {
+      },
+      fail: function (res: any) {
+      }
+    })
+  }
 }
 
 export default Index;

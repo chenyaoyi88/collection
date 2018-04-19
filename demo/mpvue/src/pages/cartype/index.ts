@@ -9,14 +9,9 @@ import text_night from '../../../static/images/text_night.png';
 import text_size from '../../../static/images/text_size.png';
 import arrow from '../../../static/images/arrow.png';
 
-import nodata from '@/components/other/nodata.vue';
 
 // 必须使用装饰器的方式来指定components
-@Component({
-  components: {
-    nodata
-  }
-})
+@Component
 class Index extends Vue {
 
   carTypeData: Array<any> = [];

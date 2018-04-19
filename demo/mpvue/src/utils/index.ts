@@ -7,7 +7,8 @@ import {
   addZero,
   getHoursArray,
   getMinsArray,
-  formatCurrency
+  formatCurrency,
+  uuid
 } from './common';
 import {
   goBackSetData,
@@ -16,13 +17,15 @@ import {
   isPhoneNumber,
   showToastError,
   ghbRequest,
-  getDesText
+  getDesText,
+  getOrderStatusText
 } from './ghb.bus';
 
 export {
   formatNumber,
   formatTime,
   formatCurrency,
+  uuid,
   zerofillBack,
   getDateList,
   getLatestDate,
@@ -35,5 +38,6 @@ export {
   isPhoneNumber,
   showToastError,
   ghbRequest,
-  getDesText
+  getDesText,
+  getOrderStatusText
 };

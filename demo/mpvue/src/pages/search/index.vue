@@ -22,9 +22,9 @@
 
     <div class="site-list-box" :style="{height: listHeight + 'px'}">
       <ul class="site-list">
-        <li v-for="(item, index) of results" v-bind:key="index" @click="selected(item)">
-          <p>{{ item.name }}</p>
-          <p class="light">{{ item.address }}</p>
+        <li v-for="(item, index) of results" v-bind:key="index" @click="selected(item)" v-if="item.address">
+            <p>{{ item.name }}</p>
+            <p class="light">{{ item.address }}</p>
         </li>
       </ul>
     </div>

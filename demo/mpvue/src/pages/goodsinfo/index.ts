@@ -4,16 +4,15 @@ import { goBackSetData, ghbRequest, zerofillBack } from '../../utils';
 // 必须使用装饰器的方式来指定components
 @Component
 class Index extends Vue {
-    goodsDesc: string = '';
+    goodsRemark: string = '';
 
-    getGoodsDesc(value: string) {
-        console.log(value);
-        this.goodsDesc = value;
+    getGoodsRemark(value: string) {
+        this.goodsRemark = value;
     }
 
     submit() {
         goBackSetData({
-            goodsDesc: this.goodsDesc
+            goodsRemark: this.goodsRemark
         }, 2);
         wx.navigateBack();
     }

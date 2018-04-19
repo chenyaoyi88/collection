@@ -62,7 +62,6 @@ class Index extends Vue {
         query: __this.inputValue,
         region: '广州',
         city_limit: true,
-        // ak: 'R2xVO3xWBt8aLM8pf0ONUB0eTWmlclck'
       },
       success: function (res: any) {
         __this.results = res.data.results;

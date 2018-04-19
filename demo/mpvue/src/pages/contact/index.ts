@@ -18,11 +18,20 @@ class Index extends Vue {
     this.searchInfo = JSON.parse(option.searchInfo);
     console.log('option', this.searchInfo);
     // 获取地点所在城市
-    
+
+    // 参考：http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
+    this.getCityCode();
+  }
+
+  onReady() {
+    wx.setNavigationBarTitle({
+      title: `输入${getDesText(this.searchInfo.from)}联系人`
+    })
+  }
+
+  getCityCode() {
     const __this = this;
     // 参考：http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
-
-    // http://api.map.baidu.com/geocoder/v2/?callback=renderReverse&location=35.658651,139.745415&output=json&pois=1&ak=您的ak
     wx.request({
       url: API.BAIDU_MAP.GEOCODER,
       data: {
@@ -30,14 +39,20 @@ class Index extends Vue {
       },
       success: function (res: any) {
         console.log(res);
+        if (res.statusCode === 200) {
+          if (res.data && res.data.result && res.data.result.cityCode) {
+            __this.searchInfo.cityCode = res.data.result.cityCode;
+          } else {
+            __this.searchInfo.cityCode = '';
+          }
+        } else {
+          wx.showToast({
+            title: '获取地址所在城市失败',
+            icon: 'none'
+          });
+        }
       }
     });
-  }
-
-  onReady() {
-    wx.setNavigationBarTitle({
-      title: `输入${getDesText(this.searchInfo.from)}联系人` 
-    })
   }
 
   getValue(value: any, type: string) {
