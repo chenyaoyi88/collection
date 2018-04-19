@@ -24,7 +24,7 @@ switch (APP_ENV) {
   case 'production':
     APP_REQUEST_HOST = PROD_URL.MAIN;
     break;
-  case 'test':
+  case 'sit':
     APP_REQUEST_HOST = TEST_URL.MAIN;
     break;
   case 'development':

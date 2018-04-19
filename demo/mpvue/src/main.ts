@@ -35,12 +35,11 @@ export default {
     // pages: ['^pages/demo/main'],
     // pages: ['^pages/login/main'],
     window: {
-      backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
+      backgroundTextStyle: 'dark',
+      navigationBarBackgroundColor: '#F33650',
       navigationBarTitleText: '广货宝-同城货运',
-      navigationBarTextStyle: 'black',
       enablePullDownRefresh: true,
-      onReachBottomDistance: 100
+      onReachBottomDistance: 200
     },
     tabBar: {
       color: '#B2B2B2',

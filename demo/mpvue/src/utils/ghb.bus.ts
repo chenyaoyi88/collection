@@ -58,7 +58,7 @@ export function ghbRequest(options: GhbRequest): Promise<any> {
         authorization: wx.getStorageSync('token') || ''
       },
       success: function (res: any) {
-        console.log(res);
+        // console.log(res);
         if (res.statusCode === 401) {
           wx.showToast({
             title: res.data.message,
@@ -74,10 +74,12 @@ export function ghbRequest(options: GhbRequest): Promise<any> {
       fail: function (err: any) {
         console.log(err);
         showToastError();
+        reject('fail');
       },
       complete: function () {
         if (isToastShowing) return;
         wx.hideLoading();
+        reject('complete');
       }
     });
   });
