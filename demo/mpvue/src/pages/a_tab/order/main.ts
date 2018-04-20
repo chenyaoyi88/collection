@@ -6,6 +6,6 @@ app.$mount();
 
 export default {
   config: {
-    navigationBarTitleText: '订单'
+    navigationBarTitleText: '订单',
   }
 };

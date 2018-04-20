@@ -1515,6 +1515,18 @@ declare namespace wx {
    * 隐藏消息提示框
    */
   function hideLoading(): void;
+  
+
+  interface LoadingOptions extends BaseOptions {
+    /**
+     * 提示的内容
+     */
+    title: string;
+    /**
+     * 是否显示透明蒙层，防止触摸穿透，默认：false
+     */
+    mask?: boolean;
+  }
 
   interface ModalOptions extends BaseOptions {
     /**
@@ -1584,6 +1596,16 @@ declare namespace wx {
    * 显示操作菜单
    */
   function showActionSheet(options: ActionSheetOptions): void;
+
+  function hideTabBar(options: HideTabBarOptions): void;
+  
+  interface HideTabBarOptions extends BaseOptions {
+    /**
+     * 是否需要动画效果，默认无
+     */
+    animation?: boolean;
+  }
+  
 }
 
 // 界面-----设置导航条

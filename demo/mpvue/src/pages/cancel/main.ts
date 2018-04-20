@@ -5,7 +5,8 @@ const app = new Vue(App);
 app.$mount();
 
 export default {
-  config: {
-    navigationBarTitleText: '订单'
-  }
-};
+    config: {
+      navigationBarTitleText: '取消订单原因'
+    },
+  };
+  

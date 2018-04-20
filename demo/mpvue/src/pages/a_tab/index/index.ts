@@ -292,7 +292,7 @@ class Index extends Vue {
 
     wx.login({
       success: function (res: any) {
-        console.log(res);
+        // console.log(res);
       }
     });
     // wx.getLocation({

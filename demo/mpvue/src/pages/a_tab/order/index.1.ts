@@ -2,22 +2,20 @@ import { Vue, Component } from 'vue-property-decorator';
 import item from '@/components/item/item.vue';
 import { ghbRequest, getOrderStatusText } from '../../../utils';
 import API from '../../../api';
+import IMG_NOORDER from '../../../../static/images/callcar.png';
 import IMG_NODATA from '../../../../static/images/nodata.png';
-import noorder from './noorder.vue';
-
-import mockData from './mock.json';
+import nodata from '@/components/other/nodata.vue';
 
 // NOTE：/api/v1/logistics/logisticsorders 接口缺少【车型】 和 【额外服务】字段
 
 @Component({
   components: {
     item,
-    noorder
+    nodata
   }
 })
 class Order extends Vue {
-  mockData: any = mockData;
-
+  imgNoOrder: any = IMG_NOORDER;
   imgNodata: any = IMG_NODATA;
 
   isLogin: boolean = false;
@@ -33,14 +31,14 @@ class Order extends Vue {
 
   ingList: Array<any> = [];
   ingListTmp: Array<any> = [];
-  ingListOffet: number = 0;
+  ingListOffet: number = 10;
 
   finishList: Array<any> = [];
   finishListTmp: Array<any> = [];
-  finishListOffet: number = 0;
+  finishListOffet: number = 10;
 
   cancelListTmp: Array<any> = [];
-  cancelListOffet: number = 0;
+  cancelListOffet: number = 10;
   cancelList: Array<any> = [];
 
   listLoaded: boolean = false;
@@ -61,7 +59,7 @@ class Order extends Vue {
   }
 
   // 请求数据
-  getList(listType: string, searchType: number, offset: number = 0, limit: number = 10) {
+  getList(listType: string, searchType: number, offset: number = 10, limit: number = 10) {
     wx.showLoading({
       title: '加载中'
     });
@@ -105,22 +103,16 @@ class Order extends Vue {
   // 清空-重载数据
   reloadCurrentListData() {
     switch (this.currentIndex) {
-      // 进行中
       case 0:
         this.ingList = [];
-        this.ingListOffet = 0;
         this.getList('ingList', 2, this.ingListOffet);
         break;
-      // 已完成
       case 1:
         this.finishList = [];
-        this.finishListOffet = 0;
         this.getList('finishList', 3, this.finishListOffet);
         break;
-      // 已取消
       case 2:
         this.cancelList = [];
-        this.cancelListOffet = 0;
         this.getList('cancelList', 4, this.cancelListOffet);
         break;
       default:
@@ -158,57 +150,21 @@ class Order extends Vue {
       success: function (res: { confirm: boolean; cancel: boolean }) {
         if (res.confirm) {
           console.log('用户点击确定-取消订单', id || 'id');
-          // TODO：请求取消原因列表 -> 请求取消订单接口
-
-          ghbRequest({
-            url: API.CANCELREASONS
-          }).then((res: any) => {
-            console.log(res);
-          });
-
-          // 请求取消订单之后
+          // TODO：请求取消订单接口
+          // 请求取消订单
           _this.cancelList = [];
-          _this.cancelListOffet = 0;
+          _this.cancelListOffet = 10;
           _this.getList('cancelList', 4, _this.cancelListOffet);
         }
       }
     });
   }
 
-  // 订单支付
+  // 订单支付（TODO：支付页面所需参数未知）
   orderPay(order?: any) {
-
-    ghbRequest({
-      url: API.PAY,
-      method: 'POST',
-      data: {
-        orderId: order.id,
-        method: 'WX_SMALL_PROGRAM',
-        paymentType: 'ZPT',
-        productName: '物流运费',
-        productDesc: `物流运费 ¥${order.paymentAmount}`
-      }
-    }).then((res: any) => {
-      const PARAMS_PAY = JSON.parse(res.data.payData);
-
-      PARAMS_PAY.success = function (res: any) {
-        // 支付成功
-        this.ingList = [];
-        this.ingListOffet = 0;
-        this.getList('ingList', 2, this.ingListOffet);
-      };
-
-      PARAMS_PAY.fail = function (res: any) {
-        // 支付失败（TODO：回到列表）
-        this.ingList = [];
-        this.ingListOffet = 0;
-        this.getList('ingList', 2, this.ingListOffet);
-      };
-
-      wx.requestPayment(PARAMS_PAY);
-
+    wx.navigateTo({
+      url: '../../paynow/main?order=' + JSON.stringify(order)
     });
-
   }
 
   onShow() {
@@ -218,19 +174,6 @@ class Order extends Vue {
       this.reloadCurrentListData();
     }
   }
-
-  // mockDataList() {
-  //   setTimeout(() => { 
-  //     if (this.mockData && this.mockData.length) {
-  //       for (let item of this.mockData) {
-  //         item.statusText = getOrderStatusText(item.status);
-  //       }
-  //       this.finishList = this.finishList.concat(this.mockData);
-  //     } else {
-  //       this.listLoaded = true;
-  //     }
-  //   }, 200);
-  // }
 }
 
 export default Order;

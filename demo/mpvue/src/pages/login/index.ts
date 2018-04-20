@@ -12,9 +12,9 @@ import { trim } from '../../utils/validate';
 })
 class Login extends Vue {
   // 手机号码
-  @Provide() phone: string = '';
+  phone: string = '';
   // 短信验证码
-  @Provide() msgCode: string = '';
+  msgCode: string = '';
 
   onShow() {
     this.phone = '';
@@ -89,8 +89,7 @@ class Login extends Vue {
       username: this.phone,
       validcode: this.msgCode,
       deviceId: 'wxmina',
-      // deviceId: "160a3797c83ac0a361a",
-      deviceType: 1
+      deviceType: 5
     };
 
     ghbRequest({
@@ -101,8 +100,23 @@ class Login extends Vue {
       if (res.data.token) {
         wx.setStorageSync('token', res.data.token);
         wx.setStorageSync('mobile', _this.phone);
-        console.log(_this.phone);
-        wx.navigateBack();
+
+        // 获取 code
+        wx.login({
+          success: function (e: any) {
+            const code: string = e.code;
+            // 获取 openid 
+            ghbRequest({
+              url: API.JSCODE2SESSION,
+              data: {
+                code
+              },
+            }).then((res: any) => {
+              console.log(res);
+              wx.navigateBack();
+            });
+          }
+        });
       } else {
         showToastError(res.data.message);
       }

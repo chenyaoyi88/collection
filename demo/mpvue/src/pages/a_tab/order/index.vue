@@ -1,37 +1,34 @@
 <template>
   <div class="ghb-order-box">
 
-    <div v-if="!isLogin" class="login-box">
-      <div class="login-page-box">
-        <img class="login-page-img" :src="imgNodata" alt=""  mode="aspectFit">
-        <p class="login-page-tips">您还未登录噢，速速去登录吧～</p>
-        <button class="ghb-btn login-page-btn" @click="gotoLogin">登录</button>
-      </div>
-    </div>
+    <!-- 未登录 -->
+    <noorder 
+      :isShow="!isLogin" 
+      isShowBtn="true" 
+      text="您还未登录噢，速速去登录吧～" 
+      v-on:btnEvent="gotoLogin"
+    ></noorder>
 
-    <div v-else>
+    <!-- 已登录 -->
+    <div v-if="isLogin">
       <div class="title-box">
         <div v-for="(item, index) in tabList" class="title-list-item" :key="index" :class="{active: currentIndex === index}" @click="tabClick(index)">{{ item }}</div>
         <div class="title-slider" :style="{width: titleSlider.width + '%;',left: titleSlider.left + '%;'}">
           <div class="slider"></div>
         </div>
       </div>
-      <swiper class="content-box" @change="tabChange" :current="currentIndex"
-            duration="200">
-
+      <swiper class="content-box" @change="tabChange" :current="currentIndex" duration="200">
+        <!-- 第一个进行中 tab 内容 -->
         <swiper-item>
           <scroll-view class="content" scroll-y @scrolltolower="v1bottom">
-
-            <div class="no-order-box" v-if="listLoaded">
-              <img :src="imgNoOrder" alt="" mode="aspectFit">
-            </div>
-
+            <noorder :isShow="listLoaded" text="您最近没有订单"></noorder>
             <div v-if="ingList.length" class="list-box" v-for="(item, index) of ingList" :key="index">
               <div class="list-tile">
                 <div class="list-tile-l">{{ item.logisticsOrderTime }}</div>
                 <div class="list-tile-r">{{ item.statusText }}</div>
               </div>
               <div class="list-content">
+
                 <item 
                   iconType="point" 
                   textTop="" 
@@ -51,6 +48,7 @@
                   isArrowHide="true"
                   itemClass="order"
                 ></item>
+
                 <div class="info">
                   <p class="info-car">
                     <text class="info-box">
@@ -67,29 +65,26 @@
               </div>
               <div class="list-msg">
                 <div class="list-msg-l">订单信息:<text class="color-notice">￥{{ item.paymentAmount }}</text></div>
-                <div class="list-msg-r">
+                <div class="list-msg-r" v-if="item.paymentStatus === 0">
                   <button class="ghb-btn cancel" @click="orderCancel(item.id)">取消订单</button>
                   <button class="ghb-btn" @click="orderPay(item)">支付订单</button>
                 </div>
               </div>
             </div>
-
           </scroll-view>
         </swiper-item>
 
+        <!-- 第二个已完成 tab 内容 -->
         <swiper-item>
           <scroll-view class="content" scroll-y @scrolltolower="v2bottom">
-
-            <div class="no-order-box" v-if="listLoaded">
-              <img :src="imgNoOrder" alt="" mode="aspectFit">
-            </div>
-
+            <noorder :isShow="listLoaded" text="您最近没有订单"></noorder>
             <div v-if="finishList.length" class="list-box" v-for="(item, index) of finishList" :key="index">
               <div class="list-tile">
                 <div class="list-tile-l">{{ item.logisticsOrderTime }}</div>
                 <div class="list-tile-r">{{ item.statusText }}</div>
               </div>
               <div class="list-content">
+
                 <item 
                   iconType="point" 
                   textTop="" 
@@ -109,6 +104,7 @@
                   isArrowHide="true"
                   itemClass="order"
                 ></item>
+
                 <div class="info">
                   <p class="info-car">
                     <text class="info-box">
@@ -127,23 +123,20 @@
                 <div class="list-msg-l">订单信息:<text class="color-notice">￥{{ item.paymentAmount }}</text></div>
               </div>
             </div>
-
           </scroll-view>
         </swiper-item>
 
+        <!-- 第三个已取消 tab 内容 -->
         <swiper-item>
           <scroll-view class="content" scroll-y @scrolltolower="v3bottom">
-
-              <div class="no-order-box" v-if="listLoaded">
-                <img :src="imgNoOrder" alt="" mode="aspectFit">
-              </div>
-
+              <noorder :isShow="listLoaded" text="您最近没有订单"></noorder>
               <div v-if="cancelList.length" class="list-box" v-for="(item, index) of cancelList" :key="index">
                 <div class="list-tile">
                   <div class="list-tile-l">{{ item.logisticsOrderTime }}</div>
                   <div class="list-tile-r">{{ item.statusText }}</div>
                 </div>
                 <div class="list-content">
+
                   <item 
                     iconType="point" 
                     textTop="" 
@@ -163,6 +156,7 @@
                     isArrowHide="true"
                     itemClass="order"
                   ></item>
+
                   <div class="info">
                     <p class="info-car">
                       <text class="info-box">
@@ -182,7 +176,6 @@
                   
                 </div>
               </div>
-
           </scroll-view>
         </swiper-item>
       </swiper>

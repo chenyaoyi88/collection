@@ -65,7 +65,8 @@ class Me extends Vue {
                 wx.removeStorageSync('mobile');
             } else {
                 wx.showToast({
-                    title: '操作失败'
+                    title: '操作失败，请稍后再试',
+                    icon: 'none'
                 });
             }
         });

@@ -1,6 +1,6 @@
 import { Vue, Component } from 'vue-property-decorator';
 import item from '@/components/item/item.vue'; // mpvue目前只支持的单文件组件
-import { goBackSetData, getDesText } from '../../utils';
+import { goBackSetData, getDesText, showToastError } from '../../utils';
 import API from '../../api';
 
 // 必须使用装饰器的方式来指定components
@@ -46,10 +46,7 @@ class Index extends Vue {
             __this.searchInfo.cityCode = '';
           }
         } else {
-          wx.showToast({
-            title: '获取地址所在城市失败',
-            icon: 'none'
-          });
+          showToastError('获取地址所在城市失败');
         }
       }
     });
@@ -64,10 +61,12 @@ class Index extends Vue {
     this.searchInfo.mobile = this.mobile;
 
     if (!(/\S/.test(this.searchInfo.userName)) || !(/\S/.test(this.searchInfo.mobile))) {
-      wx.showToast({
-        title: '联系人姓名和联系方式不能为空',
-        icon: 'none'
-      });
+      showToastError('联系人姓名和联系方式不能为空');
+      return;
+    }
+
+    if (!/^1[3-9][0-9]{9}$|^[0-9]{8}$/g.test(this.searchInfo.mobile)) {
+      showToastError('您输入的手机号码格式有误');
       return;
     }
 

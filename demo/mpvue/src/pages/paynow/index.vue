@@ -25,7 +25,7 @@
     </div>
   </div>
   <p class="paynow-tips">若涉及高速费、停车费和搬运费，需要用户额外向司机支付</p>
-  <button class="ghb-btn paynow-btn" @click="payNow">立即支付</button>
+  <button class="ghb-btn paynow-btn" @click="payNow">确认订单并支付</button>
 </div>
 </template>
 
