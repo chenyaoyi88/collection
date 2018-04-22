@@ -2,7 +2,6 @@ import { Vue, Component } from 'vue-property-decorator';
 import item from '@/components/item/item.vue';
 import { ghbRequest, getOrderStatusText } from '../../../utils';
 import API from '../../../api';
-import IMG_NODATA from '../../../../static/images/nodata.png';
 import noorder from './noorder.vue';
 
 import mockData from './mock.json';
@@ -18,76 +17,149 @@ import mockData from './mock.json';
 class Order extends Vue {
   mockData: any = mockData;
 
-  imgNodata: any = IMG_NODATA;
-
+  // 是否登录
   isLogin: boolean = false;
-  tabList: Array<string> = ['进行中', '已完成', '已取消'];
-
+  // tab 标题
+  tabTitle: Array<string> = ['进行中', '已完成', '已取消'];
+  // tab 标题滑块
   titleSlider = {
-    width: 100 / this.tabList.length,
+    width: 100 / this.tabTitle.length,
     left: 0
   };
 
+  // 当前 tab 索引
   currentIndex: number = 0;
+  // 每页请求个数
   pageLimit: number = 10;
 
+  // 进行中渲染列表
   ingList: Array<any> = [];
+  // 进行中渲染列表（临时）
   ingListTmp: Array<any> = [];
-  ingListOffet: number = 0;
+  // 进行中渲染列表页码
+  ingListOffset: number = 0;
 
   finishList: Array<any> = [];
   finishListTmp: Array<any> = [];
-  finishListOffet: number = 0;
+  finishListOffset: number = 0;
 
   cancelListTmp: Array<any> = [];
-  cancelListOffet: number = 0;
+  cancelListOffset: number = 0;
   cancelList: Array<any> = [];
 
-  listLoaded: boolean = false;
+  // 页面无数据时显示图片
+  isListNoData: boolean = false;
 
-  // tab1 触底事件
-  v1bottom() {
-    this.getMoreListData('ingList', 2);
+  // 点击 tab
+  tabClick(index: number) {
+    if (this.currentIndex === index) return;
+    this.currentIndex = index;
+    this.isListNoData = false;
+    this.titleSlider.left = this.titleSlider.width * this.currentIndex;
+    this.loadCurrentListData(true);
   }
 
-  // tab2 触底事件
-  v2bottom() {
-    this.getMoreListData('finishList', 3);
-  }
-
-  // tab3 触底事件
-  v3bottom() {
-    this.getMoreListData('cancelList', 4);
-  }
-
-  // 请求数据
-  getList(listType: string, searchType: number, offset: number = 0, limit: number = 10) {
+  // 请求接口
+  getList(listType: string, searchType: number, reload: boolean) {
     wx.showLoading({
-      title: '加载中'
+      title: '加载中',
+      mask: true
     });
     const oTab = this;
+
+    let offset: number = 0;
+
+    if (!reload) {
+      offset = oTab[listType + 'Offset'];
+    } else {
+      wx.pageScrollTo({
+        scrollTop: 0,
+        duration: 0
+      });
+
+      for (let j = 0; j <= oTab[listType + 'Offset'] / 10; j++) {
+        oTab[listType][j] = [];
+      }
+      offset = oTab[listType + 'Offset'] = 0;
+    }
+
     ghbRequest({
       url: API.LOGISTICSORDERS,
       data: {
         searchType,
         offset,
-        limit
+        limit: this.pageLimit
       }
     }).then((res: any) => {
-      // console.log(res);
       wx.hideLoading();
       if (res.statusCode === 200) {
         oTab[listType + 'Tmp'] = res.data;
+
+        let aShowList = [];
+
         if (res.data && res.data.length) {
-          for (let item of res.data) {
-            item.statusText = getOrderStatusText(item.status);
+          for (let i = 0; i < res.data.length; i++) {
+            const order = res.data[i];
+            let json = {
+              paymentAmount: order.paymentAmount,
+              logisticsOrderTime: order.logisticsOrderTime,
+              statusText: getOrderStatusText(order.status),
+              senderAddressName: order.senderAddressName,
+              senderSiteName: order.senderSiteName,
+              receiverAddressName: order.receiverAddressName,
+              goodsDesc: order.goodsDesc,
+              paymentStatus: order.paymentStatus,
+              id: order.id
+            };
+            aShowList.push(json);
           }
-          oTab[listType] = oTab[listType].concat(res.data);
+          oTab[listType][offset / 10] = aShowList;
         } else {
-          this.listLoaded = true;
+          this.isListNoData = true;
         }
+        wx.stopPullDownRefresh();
       }
     });
+
+    // setTimeout(() => {
+    //   wx.hideLoading();
+    //   oTab[listType + 'Tmp'] = mockData;
+
+    //   let aShowList = [];
+
+    //   if (mockData && mockData.length) {
+    //     for (let i = 0; i < mockData.length; i++) {
+    //       const order = mockData[i];
+    //       let json = {
+    //         paymentAmount: order.paymentAmount,
+    //         logisticsOrderTime: order.logisticsOrderTime,
+    //         statusText: getOrderStatusText(order.status),
+    //         senderAddressName: order.senderAddressName,
+    //         senderSiteName: order.senderSiteName,
+    //         receiverAddressName: order.receiverAddressName,
+    //         goodsDesc: order.goodsDesc,
+    //         paymentStatus: order.paymentStatus,
+    //         id: order.id
+    //       };
+    //       aShowList.push(json);
+    //     }
+
+    //     if (reload) {
+    //       wx.pageScrollTo({
+    //         scrollTop: 0,
+    //         duration: 0
+    //       });
+
+    //       for (let j = 0; j <= oTab[listType + 'Offset'] / 10; j++) {
+    //         oTab[listType][j] = [];
+    //       }
+    //       oTab[listType + 'Offset'] = 0;
+    //     }
+    //     oTab[listType][oTab[listType + 'Offset'] / 10] = aShowList;
+    //   } else {
+    //     this.isListNoData = true;
+    //   }
+    // }, 100);
   }
 
   // 向上滚动获取更多数据
@@ -99,47 +171,39 @@ class Order extends Vue {
       });
       return;
     }
-    this.getList(name, type, (this[name + 'Offet'] += 10));
+    this[name + 'Offset'] += 10;
+    this.getList(name, type, false);
   }
 
-  // 清空-重载数据
-  reloadCurrentListData() {
+  // 重载/加载数据
+  loadCurrentListData(isReload: boolean = false) {
     switch (this.currentIndex) {
       // 进行中
       case 0:
-        this.ingList = [];
-        this.ingListOffet = 0;
-        this.getList('ingList', 2, this.ingListOffet);
+        if (isReload) {
+          this.getList('ingList', 2, isReload);
+        } else {
+          this.getMoreListData('ingList', 2);
+        }
         break;
       // 已完成
       case 1:
-        this.finishList = [];
-        this.finishListOffet = 0;
-        this.getList('finishList', 3, this.finishListOffet);
+        if (isReload) {
+          this.getList('finishList', 3, isReload);
+        } else {
+          this.getMoreListData('finishList', 3);
+        }
         break;
       // 已取消
       case 2:
-        this.cancelList = [];
-        this.cancelListOffet = 0;
-        this.getList('cancelList', 4, this.cancelListOffet);
+        if (isReload) {
+          this.getList('cancelList', 4, isReload);
+        } else {
+          this.getMoreListData('cancelList', 4);
+        }
         break;
       default:
     }
-  }
-
-  // 点击 tab
-  tabClick(index: number) {
-    this.currentIndex = index;
-  }
-
-  // tab 切换事件
-  tabChange(e: any) {
-    this.listLoaded = false;
-    this.currentIndex = e.target.current;
-    this.titleSlider.left = this.titleSlider.width * this.currentIndex;
-    setTimeout(() => {
-      this.reloadCurrentListData();
-    }, 200);
   }
 
   // 未登录->去登录
@@ -155,7 +219,7 @@ class Order extends Vue {
     wx.showModal({
       title: '取消订单',
       content: '是否确定取消该订单？',
-      success: function (res: { confirm: boolean; cancel: boolean }) {
+      success: function(res: { confirm: boolean; cancel: boolean }) {
         if (res.confirm) {
           console.log('用户点击确定-取消订单', id || 'id');
           // TODO：请求取消原因列表 -> 请求取消订单接口
@@ -166,10 +230,9 @@ class Order extends Vue {
             console.log(res);
           });
 
-          // 请求取消订单之后
-          _this.cancelList = [];
-          _this.cancelListOffet = 0;
-          _this.getList('cancelList', 4, _this.cancelListOffet);
+          // 请求取消订单之后，切换到取消订单列表
+          _this.currentIndex = 2;
+          _this.loadCurrentListData(true);
         }
       }
     });
@@ -177,7 +240,6 @@ class Order extends Vue {
 
   // 订单支付
   orderPay(order?: any) {
-
     ghbRequest({
       url: API.PAY,
       method: 'POST',
@@ -191,46 +253,36 @@ class Order extends Vue {
     }).then((res: any) => {
       const PARAMS_PAY = JSON.parse(res.data.payData);
 
-      PARAMS_PAY.success = function (res: any) {
-        // 支付成功
-        this.ingList = [];
-        this.ingListOffet = 0;
-        this.getList('ingList', 2, this.ingListOffet);
+      PARAMS_PAY.success = function(res: any) {
+        // 支付成功，刷新当前列表
+        this.loadCurrentListData(true);
       };
 
-      PARAMS_PAY.fail = function (res: any) {
-        // 支付失败（TODO：回到列表）
-        this.ingList = [];
-        this.ingListOffet = 0;
-        this.getList('ingList', 2, this.ingListOffet);
+      PARAMS_PAY.fail = function(res: any) {
+        // 支付失败，无操作
       };
 
       wx.requestPayment(PARAMS_PAY);
-
     });
-
   }
 
+  // 滚动条触底事件
+  onReachBottom() {
+    // 获取数据
+    this.loadCurrentListData();
+  }
+
+  // 用户下拉动作，刷新当前列表
+  onPullDownRefresh() {
+    this.loadCurrentListData(true);
+  }
+
+  // 每次打开当前页面执行的事件
   onShow() {
     const token = wx.getStorageSync('token');
     this.isLogin = token ? true : false;
-    if (this.isLogin) {
-      this.reloadCurrentListData();
-    }
+    this.isLogin && this.loadCurrentListData(true);
   }
-
-  // mockDataList() {
-  //   setTimeout(() => { 
-  //     if (this.mockData && this.mockData.length) {
-  //       for (let item of this.mockData) {
-  //         item.statusText = getOrderStatusText(item.status);
-  //       }
-  //       this.finishList = this.finishList.concat(this.mockData);
-  //     } else {
-  //       this.listLoaded = true;
-  //     }
-  //   }, 200);
-  // }
 }
 
 export default Order;

@@ -29,9 +29,9 @@ export default {
   config: {
     // 页面前带有 ^ 符号的，会被编译成首页，其他页面可以选填，我们会自动把 webpack entry 里面的入口页面加进去
     // pages: ['^pages/cancel/main'],
-    pages: ['^pages/a_tab/index/main'],
+    // pages: ['^pages/a_tab/index/main'],
     // pages: ['^pages/goodsinfo/main'],
-    // pages: ['^pages/a_tab/order/main'],
+    pages: ['^pages/a_tab/order/main'],
     // pages: ['^pages/demo/main'],
     // pages: ['^pages/login/main'],
     window: {
@@ -39,8 +39,7 @@ export default {
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: '广货宝-同城货运',
       navigationBarTextStyle: 'black',
-      enablePullDownRefresh: true,
-      onReachBottomDistance: 50
+      enablePullDownRefresh: true
     },
     tabBar: {
       color: '#B2B2B2',
