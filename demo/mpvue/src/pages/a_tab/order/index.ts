@@ -30,7 +30,7 @@ class Order extends Vue {
   };
 
   // 当前 tab 索引
-  currentIndex: number = 0;
+  currentIndex: number = -1;
   // 每页请求个数
   pageLimit: number = 10;
 
@@ -88,7 +88,7 @@ class Order extends Vue {
           id: _this.cancelReasonWLId,
           canelReasonId: _this.cancelReasonId
         }
-      }).then((res: any) => { 
+      }).then((res: any) => {
         if (res.statusCode === 200) {
           console.log(res);
           // 请求取消订单之后，切换到取消订单列表
@@ -261,7 +261,7 @@ class Order extends Vue {
     wx.showModal({
       title: '取消订单',
       content: '是否确定取消该订单？',
-      success: function (res: { confirm: boolean; cancel: boolean }) {
+      success: function(res: { confirm: boolean; cancel: boolean }) {
         if (res.confirm) {
           _this.cancelReasonWLId = id;
           // TODO：请求取消原因列表 -> 请求取消订单接口
@@ -295,12 +295,12 @@ class Order extends Vue {
     }).then((res: any) => {
       const PARAMS_PAY = JSON.parse(res.data.payData);
 
-      PARAMS_PAY.success = function (res: any) {
+      PARAMS_PAY.success = function(res: any) {
         // 支付成功，刷新当前列表
         this.loadCurrentListData(true);
       };
 
-      PARAMS_PAY.fail = function (res: any) {
+      PARAMS_PAY.fail = function(res: any) {
         // 支付失败，无操作
       };
 
@@ -323,7 +323,9 @@ class Order extends Vue {
   onShow() {
     const token = wx.getStorageSync('token');
     this.isLogin = token ? true : false;
-    this.isLogin && this.loadCurrentListData(true);
+    if (this.isLogin) {
+      this.tabClick(0);
+    }
   }
 }
 

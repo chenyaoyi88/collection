@@ -59,6 +59,8 @@
           </div>
         </div>
 
+        <button @click="fnResetAll">重置</button>
+
         <!-- <item 
           itemType="goods"
           iconType="goods" 
@@ -69,8 +71,6 @@
           v-on:itemClickGoods="fnGetGoodsInfo"
           v-on:itemInput="fnGetClothsAmount($event.target.value)"
         ></item> -->
-
-
 
       </div>
 

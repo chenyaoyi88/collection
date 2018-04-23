@@ -28,6 +28,12 @@ export default {
     };
   },
   methods: {
+    reset() {
+      this.bookingTime = '';
+      this.dateArray = getDateList();
+      this.dateIndex = [0, 0, 0];
+      this.$emit('reset', this.bookingTime);
+    },
     // 时间选择器选中逻辑（TODO：抽离出来作为独立组件逻辑）
     dateChange(e) {
       const myIndex = e.target.value;

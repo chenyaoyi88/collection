@@ -1,11 +1,17 @@
 <template>
   <div>
-    <radio-group class="radio-group" @change="radioChange">
+    <!-- <radio-group class="radio-group" @change="radioChange">
       <label class="radio" v-for="(item, index) in items" :key="item.name">
         <radio :value="item.name" :checked="item.checked"/> {{item.value}}
       </label>
     </radio-group>
-    <div>{{tabIndex}}</div>
+    <div>{{tabIndex}}</div> -->
+    
+    <picker mode="multiSelector" @change="dateChange" @columnchange="aateColumnchange" :value="dateIndex" range-key="name" :range="dateArray">
+      {{ bookingTime || '立即叫车'}}
+    </picker>
+
+    <button @click="reset">重置</button>
   </div>
 </template>
 

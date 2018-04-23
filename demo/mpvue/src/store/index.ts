@@ -5,18 +5,28 @@ Vue.use(Vuex as any);
 
 const store = new Vuex.Store({
   state: {
-    msg: '',
     tabIndex: 0,
+    carTypeList: [],
+    isLogin: false,
+    isIndexReset: false
   },
   mutations: {
-    msgChange: (state, newState) => {
-      state.msg = newState.msg;
-      return state.msg;
+    carTypeListChange: (state, newState) => {
+      state.carTypeList = newState.carTypeList;
+      return state.carTypeList;
     },
     tabIndexChange: (state, newState) => {
       state.tabIndex = newState.tabIndex;
       return state.tabIndex;
     },
+    isLoginChange: (state, newState) => {
+      state.isLogin = newState.isLogin;
+      return state.isLogin;
+    },
+    isIndexResetChange: (state, newState) => {
+      state.isIndexReset = newState.isIndexReset;
+      return state.isIndexReset;
+    }
   }
 });
 

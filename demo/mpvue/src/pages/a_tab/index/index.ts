@@ -20,10 +20,8 @@ class Index extends Vue {
     imgGoods,
     imgArrow
   };
-  isLogin: boolean = false;
 
-  // searchInfo: any = null;
-  // carInfo: any = null;
+  isLogin: boolean = false;
 
   // 下单需要的参数
   // 发货信息
@@ -36,8 +34,6 @@ class Index extends Vue {
   bookingTime: string = '';
   // 已选择的额外服务列表
   aSelectedServices: Array<any> = [];
-  // 货物信息
-  goodsDesc: string = '';
 
   // 额外服务列表
   additionalServicesList: Array<any> = [];
@@ -51,7 +47,6 @@ class Index extends Vue {
 
   // 额外服务页面显示
   sSelectedServices: string = '';
-
   // 提交条数
   clothsAmount: number = 1;
   // 货物备注
@@ -73,7 +68,7 @@ class Index extends Vue {
       senderY: this.startInfo.location.lat,
       receiverX: this.endInfo.location.lng,
       receiverY: this.endInfo.location.lat,
-      vehicleTypeId: this.vehicleTypeId,
+      vehicleTypeId: this.carSelected.id,
       paymentType: 1,
       isBooking: this.bookingTime ? 'Y' : 'N',
       bookingTime: this.bookingTime ? this.bookingTime : null,
@@ -85,13 +80,13 @@ class Index extends Vue {
       method: 'POST',
       data: PARAMS_COSTS_REQUEST
     }).then((res: any) => {
-      if (res.statusCode === 400) {
-        showToastError(res.data.message);
-      } else {
+      if (res.statusCode === 200) {
         _this.costs = res.data;
         _this.costs.amount = formatCurrency(_this.costs.amount);
         _this.costs.zptFreight = formatCurrency(_this.costs.zptFreight);
         _this.costs.nightServiceFee = formatCurrency(_this.costs.nightServiceFee);
+      } else {
+        showToastError(res.data.message);
       }
     });
   }
@@ -104,9 +99,6 @@ class Index extends Vue {
 
   // 选择发货/收货地点
   fnGetPonit(type: string, searchResult: any) {
-    // wx.navigateTo({
-    //   url: `../../search/main?from=${type}&searchResult=${searchResult.name || ''}`
-    // });
     wx.navigateTo({
       url: `../../search/main?from=${type}&searchResult=${JSON.stringify(searchResult)}`
     });
@@ -155,6 +147,45 @@ class Index extends Vue {
     this.sSelectedServices = str;
   }
 
+  // 设置默认车型
+  fnSetDefaultCar(resetCar: boolean = false) {
+    for (let item of this.carTypeList) {
+      // 设置小面包为默认车型
+      if (item.name.includes('小面包')) {
+        if (!resetCar) {
+          if (!this.carSelected.id) {
+            this.carSelected.name = item.name;
+            this.carSelected.id = item.id;
+          }
+        } else {
+          this.carSelected.name = item.name;
+          this.carSelected.id = item.id;
+        }
+      }
+    }
+  }
+
+  // 重置预约时间
+  fnResetBookingTime() {
+    for (let i = 0; i < this.$children.length; i++) {
+      const comp = this.$children[i];
+      comp['reset'] && comp['reset']();
+    }
+    this.bookingTime = '';
+  }
+
+  // 清空/重置所有填写项目
+  fnResetAll() {
+    this.startInfo = {};
+    this.endInfo = {};
+    this.fnSetDefaultCar(true);
+    this.fnResetBookingTime();
+    this.fnCheckboxChange([], '');
+    this.clothsAmount = 1;
+    this.goodsRemark = '';
+    this.costs = null;
+  }
+
   // 下一步
   fnNextStep() {
     // 没有登录去登录页面
@@ -173,13 +204,13 @@ class Index extends Vue {
       showToastError('请填写收货详细地址');
       return;
     }
-    if (!this.vehicleTypeId) {
+    if (!this.carSelected.id) {
       showToastError('请选择车型');
       return;
     }
     const sBookingTime = `${this.bookingTime && `${this.bookingTime}接货`}`;
     const sClothsAmount = `${this.clothsAmount && `${this.clothsAmount}件`}`;
-    this.goodsDesc = `${sBookingTime} ${this.goodsRemark} ${sClothsAmount}`;
+    const goodsDesc = `${sBookingTime} ${this.goodsRemark} ${sClothsAmount}`;
     if (!/\S/.test(this.goodsRemark)) {
       showToastError('请输入货物信息');
       return;
@@ -193,11 +224,11 @@ class Index extends Vue {
     // 下单所需参数
     const PARAMS_LOGISTICSORDER_REQUEST: Logisticsorder_Request = {
       type: 1,
-      vehicleTypeId: this.vehicleTypeId,
+      vehicleTypeId: this.carSelected.id,
       bookingTime: this.bookingTime,
       isBooking: this.bookingTime ? true : false,
       clothsAmount: this.clothsAmount,
-      goodsDesc: this.goodsDesc,
+      goodsDesc,
       insuranceStatus: 0,
       listOfAdditionalRequest: this.aSelectedServices,
       uuid: uuid(),
@@ -216,20 +247,20 @@ class Index extends Vue {
       senderSiteName: this.startInfo.name,
       senderX: this.startInfo.location.lng,
       senderY: this.startInfo.location.lat,
-      startCityCode: this.startInfo.cityCode,
-    }
-    console.log('下单参数', PARAMS_LOGISTICSORDER_REQUEST);
-    console.log('运费', this.costs);
+      startCityCode: this.startInfo.cityCode
+    };
     wx.navigateTo({
-      url: `../../paynow/main?logisticsorder=${JSON.stringify(PARAMS_LOGISTICSORDER_REQUEST)}&costs=${JSON.stringify(this.costs)}`
+      url: `../../paynow/main?logisticsorder=${JSON.stringify(
+        PARAMS_LOGISTICSORDER_REQUEST
+      )}&costs=${JSON.stringify(this.costs)}`
     });
   }
 
   onShow() {
+    const _this = this;
     const token = wx.getStorageSync('token');
     this.isLogin = token ? true : false;
-
-    const _this = this;
+    console.log(this);
 
     // 获取额外服务
     ghbRequest({
@@ -253,16 +284,18 @@ class Index extends Vue {
 
     const searchInfo = goBackGetData().searchInfo;
     if (searchInfo && searchInfo.from) {
-      if (searchInfo.from === 'start') {
+      if (searchInfo.from.includes('start')) {
         if (
-          this.startInfo.uid !== searchInfo.uid || 
+          this.startInfo.uid !== searchInfo.uid ||
           this.startInfo.userName !== searchInfo.userName ||
-          this.startInfo.mobile !== searchInfo.mobile) {
+          this.startInfo.mobile !== searchInfo.mobile
+        ) {
           this.startInfo = searchInfo;
           this.fnCanCost();
         }
-      } else if (searchInfo.from === 'end') {
-        if (this.endInfo.uid !== searchInfo.uid ||
+      } else if (searchInfo.from.includes('end')) {
+        if (
+          this.endInfo.uid !== searchInfo.uid ||
           this.endInfo.userName !== searchInfo.userName ||
           this.endInfo.mobile !== searchInfo.mobile
         ) {
@@ -273,48 +306,33 @@ class Index extends Vue {
     }
 
     console.log(goBackGetData());
-    // console.log('endInfo', this.endInfo);
-    // console.log('车型信息', carInfo);
-    // console.log('额外服务', this.sSelectedServices);
-    // console.log('时间', this.bookingTime);
-    // console.log('货物信息-条数', this.clothsAmount);
-    // console.log('货物信息-备注', this.goodsRemark);
-
   }
 
-  mounted() {
+  created() {
     const _this = this;
-    // 获取车型列表（NOTE：因为默认要选择小面包，所以要提前请求一次）
+    // 获取车型列表
     ghbRequest({
-      url: API.CARTYPE,
+      url: API.CARTYPE
     }).then((res: any) => {
       if (res.statusCode === 200) {
         _this.carTypeList = res.data;
         if (_this.carTypeList.length) {
-          wx.setStorageSync('carTypeList', _this.carTypeList);
-          for (let item of _this.carTypeList) {
-            // 设置小面包为默认车型
-            if (item.name === '小面包') {
-              if (!_this.carSelected.id) {
-                _this.carSelected.name = item.name;
-                _this.carSelected.id = _this.vehicleTypeId = item.id;
-              }
-            }
-          }
+          _this.$store.commit('carTypeListChange', {
+            carTypeList: _this.carTypeList
+          });
+          _this.fnSetDefaultCar();
+          // for (let item of _this.carTypeList) {
+          //   // 设置小面包为默认车型
+          //   if (item.name.includes('小面包')) {
+          //     if (!_this.carSelected.id) {
+          //       _this.carSelected.name = item.name;
+          //       _this.carSelected.id = _this.vehicleTypeId = item.id;
+          //     }
+          //   }
+          // }
         }
       }
     });
-
-    wx.login({
-      success: function (res: any) {
-        // console.log(res);
-      }
-    });
-    // wx.getLocation({
-    //   success: function (res: any) {
-    //     console.log(res);
-    //   }
-    // })
   }
 }
 

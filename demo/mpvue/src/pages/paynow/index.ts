@@ -5,18 +5,16 @@ import { ghbRequest } from '../../utils';
 // 必须使用装饰器的方式来指定components
 @Component
 class Index extends Vue {
-
   costs: any = {};
 
   logisticsorderParams: any;
 
-  onLoad(options: { logisticsorder: any, costs: any }) {
+  onLoad(options: { logisticsorder: any; costs: any }) {
     this.logisticsorderParams = JSON.parse(options.logisticsorder);
     this.costs = JSON.parse(options.costs);
   }
 
   payNow() {
-
     // 请求下订单接口得到订单号 -> 唤起微信支付
     ghbRequest({
       url: API.LOGISTICSORDER,
@@ -39,14 +37,14 @@ class Index extends Vue {
         }).then((res: any) => {
           const PARAMS_PAY = JSON.parse(res.data.payData);
 
-          PARAMS_PAY.success = function (res: any) {
+          PARAMS_PAY.success = function(res: any) {
             // 支付成功
             wx.switchTab({
               url: '../a_tab/order/main'
             });
           };
 
-          PARAMS_PAY.fail = function (res: any) {
+          PARAMS_PAY.fail = function(res: any) {
             // 支付失败
             wx.showModal({
               title: '支付失败',
@@ -55,9 +53,7 @@ class Index extends Vue {
           };
 
           wx.requestPayment(PARAMS_PAY);
-
         });
-
       }
 
       // TODO：唤起微信支付
@@ -67,16 +63,10 @@ class Index extends Vue {
         package: '',
         signType: 'MD5',
         paySign: '',
-        success: function (res: any) {
-        },
-        fail: function (res: any) {
-        }
+        success: function(res: any) {},
+        fail: function(res: any) {}
       });
-
     });
-
-
-
   }
 }
 
