@@ -8,7 +8,8 @@ import {
   getHoursArray,
   getMinsArray,
   formatCurrency,
-  uuid
+  uuid, 
+  formatTrim
 } from './common';
 import {
   goBackSetData,
@@ -25,7 +26,8 @@ export {
   formatNumber,
   formatTime,
   formatCurrency,
-  uuid,
+  uuid, 
+  formatTrim,
   zerofillBack,
   getDateList,
   getLatestDate,

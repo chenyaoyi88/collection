@@ -55,10 +55,10 @@
                 <div class="info">
                   <p class="info-car">
                     <text class="info-box">
-                      <text class="info-title">车型：</text><text class="info-text">小面包</text>
+                      <text class="info-title">车型：</text><text class="info-text">{{ order.carTypeName }}</text>
                     </text>
                     <text class="info-box">
-                      <text class="info-title">额外服务：</text><text class="info-text">搬运 推车 代收</text>
+                      <text class="info-title">额外服务：</text><text class="info-text">{{ order.additionalRequests }}</text>
                     </text>
                   </p>
                   <p class="info-car">
@@ -67,7 +67,11 @@
                 </div>
               </div>
               <div class="list-msg">
-                <div class="list-msg-l">订单信息:<text class="color-notice">￥{{ order.paymentAmount }}</text></div>
+                <div class="list-msg-l">订单金额:<text class="color-notice">￥{{ order.paymentAmount }}</text></div>
+                <div class="list-msg-r" v-if="order.paymentStatus === 0">
+                  <button class="ghb-btn cancel" @click="orderCancel(order.id)">取消订单</button>
+                  <button class="ghb-btn" @click="orderPay(order)">支付订单</button>
+                </div>
               </div>
             </div>
           </block>
@@ -105,10 +109,10 @@
                 <div class="info">
                   <p class="info-car">
                     <text class="info-box">
-                      <text class="info-title">车型：</text><text class="info-text">小面包</text>
+                      <text class="info-title">车型：</text><text class="info-text">{{ order.carTypeName }}</text>
                     </text>
                     <text class="info-box">
-                      <text class="info-title">额外服务：</text><text class="info-text">搬运 推车 代收</text>
+                      <text class="info-title">额外服务：</text><text class="info-text">{{ order.additionalRequests }}</text>
                     </text>
                   </p>
                   <p class="info-car">
@@ -117,7 +121,7 @@
                 </div>
               </div>
               <div class="list-msg">
-                <div class="list-msg-l">订单信息:<text class="color-notice">￥{{ order.paymentAmount }}</text></div>
+                <div class="list-msg-l">订单金额:<text class="color-notice">￥{{ order.paymentAmount }}</text></div>
               </div>
             </div>
           </block>
@@ -157,10 +161,10 @@
                 <div class="info">
                   <p class="info-car">
                     <text class="info-box">
-                      <text class="info-title">车型：</text><text class="info-text">小面包</text>
+                      <text class="info-title">车型：</text><text class="info-text">{{ order.carTypeName }}</text>
                     </text>
                     <text class="info-box">
-                      <text class="info-title">额外服务：</text><text class="info-text">搬运 推车 代收</text>
+                      <text class="info-title">额外服务：</text><text class="info-text">{{ order.additionalRequests || '无' }}</text>
                     </text>
                   </p>
                   <p class="info-car">
@@ -169,7 +173,7 @@
                 </div>
               </div>
               <div class="list-msg">
-                <div class="list-msg-l">订单信息:<text class="color-notice">￥{{ order.paymentAmount }}</text></div>
+                <div class="list-msg-l">订单金额:<text class="color-notice">￥{{ order.paymentAmount }}</text></div>
                 
               </div>
             </div>
@@ -179,6 +183,18 @@
       </div>
 
     </div>
+
+    <sliderSelect 
+      type="radio"
+      :dataList="cancelReasonList" 
+      :isSliderShow="selectSlider"
+      title="取消订单原因"
+      name="reason"
+      value="id"
+      @hideSlider="fnHideSlider"
+      @radioChange="fnRadioChange"
+      @sliderComfirm="fnRadioComfirm"
+    ></sliderSelect>
 
   </div>
 </template>

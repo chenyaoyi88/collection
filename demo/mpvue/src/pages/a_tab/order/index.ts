@@ -1,8 +1,9 @@
 import { Vue, Component } from 'vue-property-decorator';
 import item from '@/components/item/item.vue';
-import { ghbRequest, getOrderStatusText } from '../../../utils';
+import { ghbRequest, getOrderStatusText, showToastError } from '../../../utils';
 import API from '../../../api';
 import noorder from './noorder.vue';
+import sliderSelect from '@/components/slider/slider_select.vue';
 
 import mockData from './mock.json';
 
@@ -11,7 +12,8 @@ import mockData from './mock.json';
 @Component({
   components: {
     item,
-    noorder
+    noorder,
+    sliderSelect
   }
 })
 class Order extends Vue {
@@ -47,6 +49,15 @@ class Order extends Vue {
   cancelListOffset: number = 0;
   cancelList: Array<any> = [];
 
+  // 取消原因列表
+  cancelReasonList: Array<any> = [];
+  // 取消原因 id
+  cancelReasonId: any = 0;
+  // 取消原因物流 id
+  cancelReasonWLId: any = 0;
+  // 控制额外服务的 slider 显示隐藏
+  selectSlider: boolean = false;
+
   // 页面无数据时显示图片
   isListNoData: boolean = false;
 
@@ -57,6 +68,34 @@ class Order extends Vue {
     this.isListNoData = false;
     this.titleSlider.left = this.titleSlider.width * this.currentIndex;
     this.loadCurrentListData(true);
+  }
+
+  // 底部滑动隐藏
+  fnHideSlider(isSliderShow: boolean) {
+    this.selectSlider = isSliderShow;
+    this.cancelReasonId = null;
+  }
+
+  // 点击确定取消订单
+  fnRadioComfirm(item: any) {
+    const _this = this;
+    if (item && item.id) {
+      this.cancelReasonId = item.id;
+      ghbRequest({
+        url: API.CANCEL,
+        method: 'POST',
+        data: {
+          id: _this.cancelReasonWLId,
+          canelReasonId: _this.cancelReasonId
+        }
+      }).then((res: any) => { 
+        if (res.statusCode === 200) {
+          console.log(res);
+          // 请求取消订单之后，切换到取消订单列表
+          _this.tabClick(2);
+        }
+      });
+    }
   }
 
   // 请求接口
@@ -103,12 +142,15 @@ class Order extends Vue {
             let json = {
               paymentAmount: order.paymentAmount,
               logisticsOrderTime: order.logisticsOrderTime,
-              statusText: getOrderStatusText(order.status),
+              statusText: getOrderStatusText(order),
               senderAddressName: order.senderAddressName,
               senderSiteName: order.senderSiteName,
               receiverAddressName: order.receiverAddressName,
+              receiverSiteName: order.receiverSiteName,
               goodsDesc: order.goodsDesc,
               paymentStatus: order.paymentStatus,
+              carTypeName: order.carTypeName,
+              additionalRequests: order.additionalRequests.join('、'),
               id: order.id
             };
             aShowList.push(json);
@@ -219,20 +261,20 @@ class Order extends Vue {
     wx.showModal({
       title: '取消订单',
       content: '是否确定取消该订单？',
-      success: function(res: { confirm: boolean; cancel: boolean }) {
+      success: function (res: { confirm: boolean; cancel: boolean }) {
         if (res.confirm) {
-          console.log('用户点击确定-取消订单', id || 'id');
+          _this.cancelReasonWLId = id;
           // TODO：请求取消原因列表 -> 请求取消订单接口
-
           ghbRequest({
             url: API.CANCELREASONS
           }).then((res: any) => {
-            console.log(res);
+            if (res.statusCode === 200) {
+              if (res.data && res.data.length) {
+                _this.cancelReasonList = res.data;
+                _this.selectSlider = true;
+              }
+            }
           });
-
-          // 请求取消订单之后，切换到取消订单列表
-          _this.currentIndex = 2;
-          _this.loadCurrentListData(true);
         }
       }
     });
@@ -253,12 +295,12 @@ class Order extends Vue {
     }).then((res: any) => {
       const PARAMS_PAY = JSON.parse(res.data.payData);
 
-      PARAMS_PAY.success = function(res: any) {
+      PARAMS_PAY.success = function (res: any) {
         // 支付成功，刷新当前列表
         this.loadCurrentListData(true);
       };
 
-      PARAMS_PAY.fail = function(res: any) {
+      PARAMS_PAY.fail = function (res: any) {
         // 支付失败，无操作
       };
 

@@ -40,15 +40,37 @@
           :valueColor="sSelectedServices.length ? 'dark' : 'light'"
           v-on:itemClick="fnExtraServices"
         ></item>
-        <item 
+
+        <div class="item">
+          <div class="item-l">
+            <img class="item-icon" :src="img.imgGoods" mode="aspectFit">
+          </div>
+          <div class="item-r">
+            <div class="goods-box">
+              <div class="goods-title">货物信息</div>
+              <div class="goods-amount-box">
+                <input placeholder-style="color:#b2b2b2" placeholder="条数" type="number" @input="fnGetClothsAmount($event.target.value)" :value="clothsAmount">
+              </div>
+              <div class="goods-info-box" :class="{light: goodsRemark ? false : true}" @click="fnGetGoodsInfo">{{ goodsRemark || '货物信息，备注等' }}</div>
+            </div>
+            <div class="item-r-arrow">
+                <img class="img-item-arrow" :src="img.imgArrow">
+            </div>
+          </div>
+        </div>
+
+        <!-- <item 
           itemType="goods"
           iconType="goods" 
           textCenter="货物信息"
           :value="goodsRemark || '货物信息，备注等'" 
+          :amount="clothsAmount"
           :valueColor="goodsRemark ? 'dark' : 'light'"
           v-on:itemClickGoods="fnGetGoodsInfo"
           v-on:itemInput="fnGetClothsAmount($event.target.value)"
-        ></item>
+        ></item> -->
+
+
 
       </div>
 
@@ -66,6 +88,8 @@
     <sliderSelect 
       :dataList="additionalServicesList" 
       :isSliderShow="selectSlider"
+      name="name"
+      value="remark"
       v-on:hideSlider="fnHideSlider"
       v-on:checkboxChange="fnCheckboxChange"
     ></sliderSelect>

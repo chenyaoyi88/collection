@@ -4,6 +4,8 @@ import API from '../../../api';
 import item from '@/components/item/item.vue';
 import itemTimePicker from '@/components/item/item_time_picker.vue';
 import sliderSelect from '@/components/slider/slider_select.vue';
+import imgGoods from '../../../components/item/icon/goods.png';
+import imgArrow from '../../../components/item/icon/arrow.png';
 
 // 必须使用装饰器的方式来指定components
 @Component({
@@ -14,6 +16,10 @@ import sliderSelect from '@/components/slider/slider_select.vue';
   }
 })
 class Index extends Vue {
+  img: any = {
+    imgGoods,
+    imgArrow
+  };
   isLogin: boolean = false;
 
   // searchInfo: any = null;
@@ -47,7 +53,7 @@ class Index extends Vue {
   sSelectedServices: string = '';
 
   // 提交条数
-  clothsAmount: number = 0;
+  clothsAmount: number = 1;
   // 货物备注
   goodsRemark: string = '';
 
@@ -98,8 +104,11 @@ class Index extends Vue {
 
   // 选择发货/收货地点
   fnGetPonit(type: string, searchResult: any) {
+    // wx.navigateTo({
+    //   url: `../../search/main?from=${type}&searchResult=${searchResult.name || ''}`
+    // });
     wx.navigateTo({
-      url: `../../search/main?from=${type}&searchResult=${searchResult.name || ''}`
+      url: `../../search/main?from=${type}&searchResult=${JSON.stringify(searchResult)}`
     });
   }
 
@@ -136,7 +145,7 @@ class Index extends Vue {
   // 货物信息
   fnGetGoodsInfo() {
     wx.navigateTo({
-      url: '../../goodsinfo/main'
+      url: '../../goodsinfo/main?goodsRemark=' + this.goodsRemark
     });
   }
 
@@ -245,12 +254,18 @@ class Index extends Vue {
     const searchInfo = goBackGetData().searchInfo;
     if (searchInfo && searchInfo.from) {
       if (searchInfo.from === 'start') {
-        if (this.startInfo.uid !== searchInfo.uid) {
+        if (
+          this.startInfo.uid !== searchInfo.uid || 
+          this.startInfo.userName !== searchInfo.userName ||
+          this.startInfo.mobile !== searchInfo.mobile) {
           this.startInfo = searchInfo;
           this.fnCanCost();
         }
       } else if (searchInfo.from === 'end') {
-        if (this.endInfo.uid !== searchInfo.uid) {
+        if (this.endInfo.uid !== searchInfo.uid ||
+          this.endInfo.userName !== searchInfo.userName ||
+          this.endInfo.mobile !== searchInfo.mobile
+        ) {
           this.endInfo = searchInfo;
           this.fnCanCost();
         }

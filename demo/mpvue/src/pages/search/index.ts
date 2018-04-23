@@ -10,11 +10,13 @@ class Index extends Vue {
   inputValue: string = '';
   results: Array<string> = [];
   desText: string = '地址';
+  searchResult: any = null;
 
   // 获取传过来的参数（从开始还是结束进来的）
   onLoad(options: { from: string, searchResult: string }) {
     this.from = options.from;
-    this.inputValue = options.searchResult;
+    this.searchResult = JSON.parse(options.searchResult);
+    this.inputValue = this.searchResult.name;
     this.desText = `${getDesText(this.from)}地点`;
     if (this.inputValue) {
       this.getMapData();
@@ -72,8 +74,11 @@ class Index extends Vue {
   // 点击搜索结果
   selected(searchInfo: any) {
     searchInfo.from = this.from;
+    searchInfo.userName = this.searchResult.userName ? this.searchResult.userName : '';
+    searchInfo.mobile = this.searchResult.mobile ? this.searchResult.mobile : '';
     wx.navigateTo({
-      url: '../contact/main?searchInfo=' + JSON.stringify(searchInfo)
+      // url: '../contact/main?searchInfo=' + JSON.stringify(searchInfo)
+      url: `../contact/main?searchInfo=${JSON.stringify(searchInfo)}`
     });
   }
 

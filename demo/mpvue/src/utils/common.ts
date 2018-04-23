@@ -117,4 +117,8 @@ export function uuid() {
 
   const uuid = s.join('');
   return uuid;
-} 
+}
+
+export function formatTrim(str: string) {
+  return str.replace(/^\s+|\s+$/g, '').replace(/\s+/g, ' ');
+}

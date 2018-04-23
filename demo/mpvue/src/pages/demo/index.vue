@@ -1,91 +1,11 @@
 <template>
   <div>
-    <div class="title-box">
-      <div class="title">标题1</div>
-      <div class="title">标题2</div>
-      <div class="title">标题3</div>
-      <div class="title-slider" :style="{width: titleSlider.width + '%;',left: titleSlider.left + '%;'}"></div>
-    </div>
-    <swiper class="content-box">
-
-      <swiper-item>
-        <scroll-view class="content" scroll-y @scrolltolower="v1bottom" @scrolltoupper="v1Top">
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-        </scroll-view>
-      </swiper-item>
-
-      <swiper-item>
-        <scroll-view class="content" scroll-y>
-          <div>456</div>
-        </scroll-view>
-      </swiper-item>
-
-      <swiper-item>
-        <scroll-view class="content" scroll-y>
-          <div>789</div>
-        </scroll-view>
-      </swiper-item>
-    </swiper>
+    <radio-group class="radio-group" @change="radioChange">
+      <label class="radio" v-for="(item, index) in items" :key="item.name">
+        <radio :value="item.name" :checked="item.checked"/> {{item.value}}
+      </label>
+    </radio-group>
+    <div>{{tabIndex}}</div>
   </div>
 </template>
 

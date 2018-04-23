@@ -6,7 +6,9 @@
       placeholder-style="font-size:14px;"
       cols="30" 
       rows="10"
+      :value="goodsRemark"
       @input="getGoodsRemark($event.target.value)"
+      auto-focus="true"
     ></textarea>
     <div class="goodsinfo-btn-box">
       <button class="ghb-btn" @click="submit">确认</button>

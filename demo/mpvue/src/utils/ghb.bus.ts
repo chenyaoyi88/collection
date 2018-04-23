@@ -95,31 +95,44 @@ export function getDesText(des: string) {
   return retStr;
 }
 
-export function getOrderStatusText(code: number): string {
+export function getOrderStatusText(data: any): string {
+
   let statusText: string = '';
-  switch (code) {
+  switch (data.status) {
     case -10:
-      statusText = '已取消';
+      statusText = "已取消";
       break;
     case 10:
-      statusText = '待接单';
+      // 立即支付
+      statusText = "正在寻找司机";
+      if (data.paymentType == 1) {
+        if (data.paymentStatus == 0 || data.paymentStatus == 10) {
+          statusText = "未支付运费";
+        }
+      } else {
+        // 货到付款，支付保费
+        if (data.paymentStatus == 0) {
+          if (data.insuranceStatus == 1) {
+            statusText = "未支付保费";
+          }
+        }
+      }
       break;
     case 20:
-      statusText = '已接单';
+      statusText = "已有司机接单";
       break;
     case 30:
-      statusText = '装货中';
+      statusText = "正在装货";
       break;
     case 40:
-      statusText = '运输中';
+      statusText = "运送中";
       break;
     case 50:
-      statusText = '已送达';
+      statusText = data.paymentType == 2 ? '货已送达，对方未付款' : '已送达目的地';
       break;
     case 60:
-      statusText = '已完成';
+      statusText = "已完成";
       break;
-    default:
   }
   return statusText;
 }

@@ -1,7 +1,10 @@
 import { Vue, Component } from 'vue-property-decorator';
 import item from '@/components/item/item.vue'; // mpvue目前只支持的单文件组件
-import { goBackSetData, getDesText, showToastError } from '../../utils';
+import { goBackSetData, getDesText, showToastError, formatTrim } from '../../utils';
 import API from '../../api';
+
+import contact from '../../components/item/icon/contact.png';
+import mobile from '../../components/item/icon/mobile.png';
 
 // 必须使用装饰器的方式来指定components
 @Component({
@@ -14,9 +17,20 @@ class Index extends Vue {
   name: string = '';
   mobile: string = '';
 
+  icon: any = {
+    contact,
+    mobile
+  };
+
   onLoad(option: any) {
+    this.name = '';
+    this.mobile = '';
     this.searchInfo = JSON.parse(option.searchInfo);
-    console.log('option', this.searchInfo);
+    this.searchInfo.from = formatTrim(this.searchInfo.from); 
+    if (this.searchInfo) {
+      this.name = this.searchInfo.userName;
+      this.mobile = this.searchInfo.mobile;
+    }
     // 获取地点所在城市
 
     // 参考：http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
@@ -26,7 +40,7 @@ class Index extends Vue {
   onReady() {
     wx.setNavigationBarTitle({
       title: `输入${getDesText(this.searchInfo.from)}联系人`
-    })
+    });
   }
 
   getCityCode() {
@@ -38,7 +52,6 @@ class Index extends Vue {
         location: `${this.searchInfo.location.lat},${this.searchInfo.location.lng}`
       },
       success: function (res: any) {
-        console.log(res);
         if (res.statusCode === 200) {
           if (res.data && res.data.result && res.data.result.cityCode) {
             __this.searchInfo.cityCode = res.data.result.cityCode;

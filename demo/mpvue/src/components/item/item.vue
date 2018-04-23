@@ -31,7 +31,7 @@
         <div class="goods-box">
           <div class="goods-title">{{ textCenter }}</div>
           <div class="goods-amount-box">
-            <input placeholder-style="color:#b2b2b2" placeholder="条数" type="number" @input="itemInput($event)">
+            <input placeholder-style="color:#b2b2b2" placeholder="条数" type="number" @input="itemInput($event)" :value="amount">
           </div>
           <div class="goods-info-box" :class="{light: valueColor === 'light' ? true : false}" @click="itemClickGoods">{{ value }}</div>
         </div>
@@ -110,6 +110,7 @@ export default {
     // input 的值
     'value',
     // item 右侧文字颜色（light 或者 dark）
+    'amount',
     'valueColor',
     // 是否显示 item 的顶部边线
     'noBorderTop',
