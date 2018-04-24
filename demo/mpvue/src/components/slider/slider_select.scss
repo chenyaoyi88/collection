@@ -26,27 +26,58 @@
     display: flex;
     flex-direction: row;
     text-align: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #eaeaea;
-    font-size: 16px;
+    // height: 44px;
+    // border-bottom: 1px solid #eaeaea;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    position: relative;
+    z-index: 2001;
     .cancel {
-      width: 100px;
-      color: #ccc;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 50px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding-left: 15px;
+      .cancel-img {
+        padding-top: 10px;
+        width: 15px;
+        height: 15px;
+      }
     }
     .title {
       flex: 1;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .comfirm {
       width: 100px;
       color: #f13744;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
   .slider-content {
-    .slider-checkbox {
-      padding: 10px;
+    min-height: 220px;
+    overflow-y: auto;
+    .slider-item {
+      padding: 15px 15px 15px 0;
+      margin-left: 15px;
+      border-bottom: 1px solid #f2f2f2;
     }
     .slider-radio {
       padding: 10px;
+    }
+    .slider-notice {
+      font-size: 12px;
+      color: #b2b2b2;
+      text-align: center;
+      padding: 18px 0; 
     }
   }
 }
@@ -55,26 +86,32 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  font-size: 16px;
   .name {
     margin-right: 10px;
+    font-size: 15px;
   }
   .remark {
     flex: 1;
     font-size: 13px;
-    color: #ccc;
+    color: #b2b2b2;
     display: flex;
-    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 2px;
   }
   .check {
     display: flex;
     justify-content: center;
     align-items: center;
+    .selected-img {
+      width: 18px;
+      height: 18px;
+    }
     .uncheck {
-      width: 15px;
-      height: 15px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
-      border: 2px solid #ccc;
+      border: 1px solid #b2b2b2;
     }
   }
 }

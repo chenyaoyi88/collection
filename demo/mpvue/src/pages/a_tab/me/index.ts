@@ -1,6 +1,6 @@
 import { Vue, Component, Provide } from 'vue-property-decorator';
 import item from '@/components/item/item.vue';
-import { ghbRequest } from '../../../utils';
+import { ghbRequest, showToastError } from '../../../utils';
 import API from '../../../api';
 import avantarImg from '../../../../static/images/avantar.png';
 
@@ -50,24 +50,23 @@ class Me extends Vue {
     }
 
     logout() {
-        // console.log('退出');
-
         ghbRequest({
             url: API.LOGOUT,
             method: 'DELETE'
         }).then((res: GHB_Response<{}>) => {
-            console.log(res);
             if (res.statusCode === 200) {
+
+                this.$store.commit('isIndexResetChange', {
+                    isIndexReset: true
+                });
+
                 wx.switchTab({
                     url: "../index/main"
                 });
                 wx.removeStorageSync('token');
                 wx.removeStorageSync('mobile');
             } else {
-                wx.showToast({
-                    title: '操作失败，请稍后再试',
-                    icon: 'none'
-                });
+                showToastError('操作失败，请稍后再试');
             }
         });
     }

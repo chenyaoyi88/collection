@@ -14,6 +14,7 @@ import {
 import {
   goBackSetData,
   goBackGetData,
+  getOtherPage,
   isInputEmpty,
   isPhoneNumber,
   showToastError,
@@ -36,6 +37,7 @@ export {
   getMinsArray,
   goBackSetData,
   goBackGetData,
+  getOtherPage,
   isInputEmpty,
   isPhoneNumber,
   showToastError,

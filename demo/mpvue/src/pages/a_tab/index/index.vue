@@ -59,7 +59,7 @@
           </div>
         </div>
 
-        <button @click="fnResetAll">重置</button>
+        <!-- <button @click="fnResetAll">重置</button> -->
 
         <!-- <item 
           itemType="goods"

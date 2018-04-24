@@ -30,7 +30,7 @@ class Order extends Vue {
   };
 
   // 当前 tab 索引
-  currentIndex: number = -1;
+  currentIndex: number = 0;
   // 每页请求个数
   pageLimit: number = 10;
 
@@ -64,6 +64,11 @@ class Order extends Vue {
   // 点击 tab
   tabClick(index: number) {
     if (this.currentIndex === index) return;
+    this.tabSwitch(index);
+  }
+
+  // 切换 tab
+  tabSwitch(index: number) {
     this.currentIndex = index;
     this.isListNoData = false;
     this.titleSlider.left = this.titleSlider.width * this.currentIndex;
@@ -90,7 +95,7 @@ class Order extends Vue {
         }
       }).then((res: any) => {
         if (res.statusCode === 200) {
-          console.log(res);
+          // console.log(res);
           // 请求取消订单之后，切换到取消订单列表
           _this.tabClick(2);
         }
@@ -324,7 +329,7 @@ class Order extends Vue {
     const token = wx.getStorageSync('token');
     this.isLogin = token ? true : false;
     if (this.isLogin) {
-      this.tabClick(0);
+      this.tabSwitch(0);
     }
   }
 }

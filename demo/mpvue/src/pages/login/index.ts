@@ -112,7 +112,7 @@ class Login extends Vue {
                 code
               },
             }).then((res: any) => {
-              console.log(res);
+              // console.log(res);
               wx.navigateBack();
             });
           }

@@ -5,22 +5,20 @@
       <!-- <p>这里面是内容</p> -->
       <div class="slider-content-box">
         <div class="slider-title-box">
-          <div class="cancel" @click="sliderCancel">
-            <img class="cancel-img" :src="img.imgClose" alt="" mode="aspectFit">
-          </div>
+          <div class="cancel" @click="sliderCancel">取消</div>
           <div class="title">{{ title }}</div>
-          <!-- <div class="comfirm" @click="sliderComfirm">确定</div> -->
+          <div class="comfirm" @click="sliderComfirm">确定</div>
         </div>
         <div class="slider-content">
           
           <template v-if="type === 'checkbox'">
-            <div class="slider-item" v-for="(item, index) of dataList" :key="index" @click="checkboxChange(item, index)">
+            <div class="slider-checkbox" v-for="(item, index) of dataList" :key="index" @click="checkboxChange(item, index)">
               <div class="slider-check-item">
                 <div class="name">{{ item[name] }}</div>
                 <div class="remark">{{ item[value] }}</div>
                 <div class="check">
                   <template v-if="item.selected">
-                    <img class="selected-img" :src="img.imgSelectedCheckbox" alt="" mode="aspectFit">
+                    <icon color="#f33650" size="20" type="success"></icon>
                   </template>
                   <template v-else>
                     <div class="uncheck"></div>
@@ -31,12 +29,12 @@
           </template>
 
           <template v-if="type === 'radio'">
-            <div class="slider-item" v-for="(item, index) in dataList" :key="item.id" @click="radioChange(item, index)">
+            <div class="slider-radio" v-for="(item, index) in dataList" :key="item.id" @click="radioChange(item, index)">
               <div class="slider-check-item">
                 <div class="name">{{ item[name] }}</div>
                 <div class="check">
                   <template v-if="item.selected">
-                    <img class="selected-img" :src="img.imgSelectedRadio" alt="" mode="aspectFit">
+                    <icon color="#f33650" size="20" type="success"></icon>
                   </template>
                   <template v-else>
                     <div class="uncheck"></div>
@@ -44,12 +42,8 @@
                 </div>
               </div>
             </div>
-            <p class="slider-notice">已付款项会在取消后第二天返回您的钱包</p>
           </template>
 
-        </div>
-        <div class="slider-comfirm">
-          <button class="ghb-btn" @click="sliderComfirm">确定</button>
         </div>
       </div>
     </div>
@@ -61,11 +55,6 @@
  * NOTE：目前 mpvue slot插槽子组件添加事件响应不了，因此暂时把整个底部滑动也相关业务的部分耦合封装在一起，等可以添加事件之后再抽象。
  *
  */
-import imgClose from './icon/close.png';
-import imgSelectedCheckbox from './icon/selected_checkbox.png';
-import imgSelectedRadio from './icon/selected_radio.png';
-import imgUnSelected from './icon/unselected.png';
-
 export default {
   props: {
     type: {
@@ -102,13 +91,7 @@ export default {
       aniSlideContentData: null,
       isLock: false,
       duration: 300,
-      currentIndex: null,
-      img: {
-        imgClose,
-        imgSelectedCheckbox,
-        imgSelectedRadio,
-        imgUnSelected
-      }
+      currentIndex: null
     };
   },
   watch: {
@@ -123,19 +106,6 @@ export default {
     }
   },
   methods: {
-    reset() {
-      if (this.type === 'checkbox') {
-        this.aSelectedServices = [];
-        this.sSelectedServices = '';
-        for (let i = 0; i < this.dataList.length; i += 1) {
-          this.dataList[i].selected = false;
-        }
-      } else if (this.type === 'radio') {
-        for (let i = 0; i < this.dataList.length; i += 1) {
-          this.$set(this.dataList[i], 'selected', false);
-        }
-      }
-    },
     showSlider() {
       wx.hideTabBar({
         duration: true
@@ -170,7 +140,7 @@ export default {
     hideSlider() {
       if (this.isLock) return;
       this.aniSlideMask.opacity(0).step();
-      this.aniSlideContent.translateY(400).step();
+      this.aniSlideContent.translateY(300).step();
       this.aniSlideMaskData = this.aniSlideMask.export();
       this.aniSlideContentData = this.aniSlideContent.export();
       setTimeout(() => {

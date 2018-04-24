@@ -1,5 +1,5 @@
-import { Vue, Component } from 'vue-property-decorator';
-import { goBackGetData, ghbRequest, formatCurrency, showToastError, uuid } from '../../../utils';
+import { Vue, Component, Emit } from 'vue-property-decorator';
+import { goBackGetData, ghbRequest, formatCurrency, showToastError, uuid, getOtherPage } from '../../../utils';
 import API from '../../../api';
 import item from '@/components/item/item.vue';
 import itemTimePicker from '@/components/item/item_time_picker.vue';
@@ -16,6 +16,7 @@ import imgArrow from '../../../components/item/icon/arrow.png';
   }
 })
 class Index extends Vue {
+
   img: any = {
     imgGoods,
     imgArrow
@@ -35,8 +36,6 @@ class Index extends Vue {
   // 已选择的额外服务列表
   aSelectedServices: Array<any> = [];
 
-  // 额外服务列表
-  additionalServicesList: Array<any> = [];
   // 车型列表
   carTypeList: Array<any> = [];
   // 默认车型
@@ -166,23 +165,23 @@ class Index extends Vue {
   }
 
   // 重置预约时间
-  fnResetBookingTime() {
+  fnResetComponent() {
     for (let i = 0; i < this.$children.length; i++) {
       const comp = this.$children[i];
       comp['reset'] && comp['reset']();
     }
-    this.bookingTime = '';
   }
 
   // 清空/重置所有填写项目
   fnResetAll() {
-    this.startInfo = {};
+    // this.startInfo = {};
     this.endInfo = {};
     this.fnSetDefaultCar(true);
-    this.fnResetBookingTime();
+    this.fnResetComponent();
     this.fnCheckboxChange([], '');
     this.clothsAmount = 1;
     this.goodsRemark = '';
+    this.bookingTime = '';
     this.costs = null;
   }
 
@@ -208,7 +207,21 @@ class Index extends Vue {
       showToastError('请选择车型');
       return;
     }
-    const sBookingTime = `${this.bookingTime && `${this.bookingTime}接货`}`;
+    if (!this.clothsAmount) {
+      showToastError('请填写货物信息');
+      return;
+    }
+
+    let sBookingTime = '';
+    if (this.bookingTime) {
+      const sTime = this.bookingTime.split(' ')[1];
+      sBookingTime = `${sTime && this.bookingTime}接货`;
+    } else {
+      sBookingTime = this.bookingTime;
+    }
+
+    // const sBookingTime = `${this.bookingTime && `${this.bookingTime}接货`}`;
+
     const sClothsAmount = `${this.clothsAmount && `${this.clothsAmount}件`}`;
     const goodsDesc = `${sBookingTime} ${this.goodsRemark} ${sClothsAmount}`;
     if (!/\S/.test(this.goodsRemark)) {
@@ -231,7 +244,7 @@ class Index extends Vue {
       goodsDesc,
       insuranceStatus: 0,
       listOfAdditionalRequest: this.aSelectedServices,
-      uuid: uuid(),
+      uuid: '',
       needLoading: false,
       paymentType: 1,
       receiverAddressName: this.endInfo.address,
@@ -256,56 +269,131 @@ class Index extends Vue {
     });
   }
 
+
+
   onShow() {
+
     const _this = this;
     const token = wx.getStorageSync('token');
     this.isLogin = token ? true : false;
-    console.log(this);
 
-    // 获取额外服务
-    ghbRequest({
-      url: API.GETADDITIONALSERVICES
-    }).then((res: any) => {
-      _this.additionalServicesList = res.data;
-    });
+    // const pages = getCurrentPages(); // eslint-disable-line
+    // const currPage = pages[pages.length - 1];
 
-    const carInfo = goBackGetData().carInfo;
-    // 从车型选择页面返回
-    if (carInfo) {
-      if (this.carSelected.id !== carInfo.id) {
-        this.carSelected = {
-          name: carInfo.name,
-          id: carInfo.id
-        };
-        this.fnCanCost();
-      }
-    }
-    this.goodsRemark = goBackGetData().goodsRemark || '';
+    // // 从车型选择页面返回
+    // const carInfo = currPage.data.carInfo;
+    // if (carInfo) {
+    //   if (this.carSelected.id !== carInfo.id) {
+    //     this.carSelected = {
+    //       name: carInfo.name,
+    //       id: carInfo.id
+    //     };
 
-    const searchInfo = goBackGetData().searchInfo;
-    if (searchInfo && searchInfo.from) {
-      if (searchInfo.from.includes('start')) {
-        if (
-          this.startInfo.uid !== searchInfo.uid ||
-          this.startInfo.userName !== searchInfo.userName ||
-          this.startInfo.mobile !== searchInfo.mobile
-        ) {
-          this.startInfo = searchInfo;
+    //     currPage.data.carInfo = null;
+
+    //     this.fnCanCost();
+    //   }
+    // }
+
+    // // 从货物信息页面返回
+    // this.goodsRemark = currPage.data.goodsRemark || '';
+
+    // if (this.goodsRemark) {
+    //   currPage.data.goodsRemark = '';
+    // }
+
+    // // 从发货/收货地点返回
+    // const searchInfo = currPage.data.searchInfo;
+    // if (searchInfo && searchInfo.from) {
+    //   if (searchInfo.from.includes('start')) {
+    //     if (
+    //       this.startInfo.uid !== searchInfo.uid ||
+    //       this.startInfo.userName !== searchInfo.userName ||
+    //       this.startInfo.mobile !== searchInfo.mobile
+    //     ) {
+    //       this.startInfo = searchInfo;
+
+    //       currPage.data.searchInfo = {};
+
+    //       this.fnCanCost();
+    //     }
+    //   } else if (searchInfo.from.includes('end')) {
+    //     if (
+    //       this.endInfo.uid !== searchInfo.uid ||
+    //       this.endInfo.userName !== searchInfo.userName ||
+    //       this.endInfo.mobile !== searchInfo.mobile
+    //     ) {
+    //       this.endInfo = searchInfo;
+
+    //       currPage.data.searchInfo = {};
+
+    //       this.fnCanCost();
+    //     }
+    //   }
+    // }
+
+    if (this.$store.state.isIndexReset) {
+      // 重置所有输入
+      this.fnResetAll();
+      this.$store.commit('isIndexResetChange', {
+        isIndexReset: false
+      });
+    } else {
+      const pages = getCurrentPages(); // eslint-disable-line
+      const currPage = pages[pages.length - 1];
+  
+      // 从车型选择页面返回
+      const carInfo = currPage.data.carInfo;
+      if (carInfo) {
+        if (this.carSelected.id !== carInfo.id) {
+          this.carSelected = {
+            name: carInfo.name,
+            id: carInfo.id
+          };
+          currPage.data.carInfo = null;
           this.fnCanCost();
         }
-      } else if (searchInfo.from.includes('end')) {
-        if (
-          this.endInfo.uid !== searchInfo.uid ||
-          this.endInfo.userName !== searchInfo.userName ||
-          this.endInfo.mobile !== searchInfo.mobile
-        ) {
-          this.endInfo = searchInfo;
-          this.fnCanCost();
+      }
+  
+      // 从货物信息页面返回
+      this.goodsRemark = currPage.data.goodsRemark || '';
+      if (this.goodsRemark) {
+        currPage.data.goodsRemark = '';
+      }
+  
+      // 从发货/收货地点返回
+      const searchInfo = currPage.data.searchInfo;
+      if (searchInfo && searchInfo.from) {
+        if (searchInfo.from.includes('start')) {
+          if (
+            this.startInfo.uid !== searchInfo.uid ||
+            this.startInfo.userName !== searchInfo.userName ||
+            this.startInfo.mobile !== searchInfo.mobile
+          ) {
+            this.startInfo = searchInfo;
+            currPage.data.searchInfo = {};
+            this.fnCanCost();
+          }
+        } else if (searchInfo.from.includes('end')) {
+          if (
+            this.endInfo.uid !== searchInfo.uid ||
+            this.endInfo.userName !== searchInfo.userName ||
+            this.endInfo.mobile !== searchInfo.mobile
+          ) {
+            this.endInfo = searchInfo;
+            currPage.data.searchInfo = {};
+            this.fnCanCost();
+          }
         }
       }
+  
     }
 
     console.log(goBackGetData());
+  }
+
+  get additionalServicesList() {
+    return this.$store.state.additionalServicesList;
   }
 
   created() {
@@ -317,10 +405,13 @@ class Index extends Vue {
       if (res.statusCode === 200) {
         _this.carTypeList = res.data;
         if (_this.carTypeList.length) {
+
           _this.$store.commit('carTypeListChange', {
             carTypeList: _this.carTypeList
           });
+
           _this.fnSetDefaultCar();
+
           // for (let item of _this.carTypeList) {
           //   // 设置小面包为默认车型
           //   if (item.name.includes('小面包')) {
@@ -333,6 +424,16 @@ class Index extends Vue {
         }
       }
     });
+
+    // 获取额外服务
+    ghbRequest({
+      url: API.GETADDITIONALSERVICES
+    }).then((res: any) => {
+      _this.$store.commit('additionalServicesListChange', {
+        additionalServicesList: res.data
+      });
+    });
+
   }
 }
 

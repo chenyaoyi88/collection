@@ -1,18 +1,67 @@
 import { Vue, Component, Provide } from 'vue-property-decorator';
 
-import { getDateList, getHoursArray, getMinsArray } from '../../utils';
+import { getDateList, getHoursArray, getMinsArray, uuid } from '../../utils';
 import item from '@/components/item/item.vue';
+import sliderSelect from '@/components/slider/slider_select.vue';
 
 // 必须使用装饰器的方式来指定components
 @Component({
   components: {
-    item
+    item,
+    sliderSelect
   }
 })
 class Index extends Vue {
   bookingTime: string = '';
   dateArray: any = getDateList();
   dateIndex: any = [0, 0, 0];
+
+  dataList: any = [{ "id": 8, "name": "推车", "remark": "需要司机提供推车设备" }, { "id": 9, "name": "搬运", "remark": "需要司机提供搬运服务，价格面议" }, { "id": 10, "name": "代收", "remark": "需要司机提供代收货款的服务，价格方式面议" }];
+
+  // 取消原因列表
+  cancelReasonList: Array<any> = [
+    {
+      "id": 1,
+      "reason": "下错订单"
+    },
+    {
+      "id": 3,
+      "reason": "6666666666"
+    },
+    {
+      "id": 4,
+      "reason": "价格太高"
+    },
+    {
+      "id": 5,
+      "reason": "车到现场发现装不下"
+    },
+    {
+      "id": 6,
+      "reason": "等太久了都没车"
+    }
+  ];
+
+  // 控制额外服务的 slider 显示隐藏
+  selectSlider: boolean = false;
+  aList: Array<any> = [];
+  sList: string = '';
+
+  // 底部滑动隐藏
+  fnHideSlider(isSliderShow: boolean) {
+    this.selectSlider = isSliderShow;
+  }
+
+  // 获取选择的额外服务列表和显示的值
+  fnCheckboxChange(list: any, str: string) {
+    this.aList = list;
+    this.sList = str;
+  }
+
+  // 点击确定取消订单
+  fnRadioComfirm(item: any) {
+    console.log(item);
+  }
 
   reset() {
     this.bookingTime = '';
@@ -79,8 +128,13 @@ class Index extends Vue {
     }
   }
 
+  getUUID() {
+    console.log(uuid());
+  }
+
   // 全局
   mounted() {
+    this.selectSlider = true;
     this.$store.commit('tabIndexChange', {
       tabIndex: 2
     });
@@ -90,6 +144,12 @@ class Index extends Vue {
   // computed
   get tabIndex() {
     return this.$store.state.tabIndex;
+  }
+
+  onLoad() {
+    const pages = getCurrentPages(); // eslint-disable-line
+    const currPage = pages[pages.length - 1];
+    console.log(currPage);
   }
 }
 

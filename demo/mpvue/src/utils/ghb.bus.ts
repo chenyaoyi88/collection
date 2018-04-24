@@ -11,6 +11,12 @@ export function goBackGetData() {
   return currPage.data;
 }
 
+export function getOtherPage(pageLevel: number = 1) {
+  const pages = getCurrentPages(); // eslint-disable-line
+  const targetPage = pages[pages.length - pageLevel];
+  return targetPage;
+}
+
 export function isInputEmpty(value: string, title: string, icon: any = 'none') {
   if (!/\S/.test(value)) {
     wx.showToast({
@@ -107,7 +113,7 @@ export function getOrderStatusText(data: any): string {
       statusText = "正在寻找司机";
       if (data.paymentType == 1) {
         if (data.paymentStatus == 0 || data.paymentStatus == 10) {
-          statusText = "未支付运费";
+          statusText = "下单未支付";
         }
       } else {
         // 货到付款，支付保费

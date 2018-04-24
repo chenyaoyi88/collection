@@ -34,7 +34,7 @@ class Index extends Vue {
     ghbRequest({
       url: API.CANCELREASONS,
     }).then((res: any) => {
-      console.log(res);
+      // console.log(res);
       if (res.statusCode === 200) {
         _this.cancelList = res.data;
       } else {

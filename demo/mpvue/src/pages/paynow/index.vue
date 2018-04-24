@@ -20,7 +20,7 @@
       </div>
       <div class="info-item">
         <div class="info-item-l">其他费用</div>
-        <div class="info-item-r">￥--</div>
+        <div class="info-item-r">￥0.00</div>
       </div>
     </div>
   </div>

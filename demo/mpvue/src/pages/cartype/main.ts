@@ -6,6 +6,7 @@ app.$mount();
 
 export default {
   config: {
-    navigationBarTitleText: '选择车型'
+    navigationBarTitleText: '选择车型',
+    enablePullDownRefresh: false
   }
 };

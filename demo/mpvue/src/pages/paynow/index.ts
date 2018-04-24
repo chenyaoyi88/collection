@@ -1,6 +1,6 @@
 import { Vue, Component } from 'vue-property-decorator';
 import API from '../../api';
-import { ghbRequest } from '../../utils';
+import { ghbRequest, showToastError, uuid } from '../../utils';
 
 // 必须使用装饰器的方式来指定components
 @Component
@@ -9,19 +9,20 @@ class Index extends Vue {
 
   logisticsorderParams: any;
 
-  onLoad(options: { logisticsorder: any; costs: any }) {
+  onLoad(options: { logisticsorder: any; costs: any; }) {
     this.logisticsorderParams = JSON.parse(options.logisticsorder);
     this.costs = JSON.parse(options.costs);
   }
 
   payNow() {
     // 请求下订单接口得到订单号 -> 唤起微信支付
+    this.logisticsorderParams.uuid = uuid();
     ghbRequest({
       url: API.LOGISTICSORDER,
       method: 'POST',
       data: this.logisticsorderParams
     }).then((res: any) => {
-      console.log(res.data.id);
+      // console.log(res.data.id);
 
       if (res.data.id) {
         ghbRequest({
@@ -35,37 +36,37 @@ class Index extends Vue {
             productDesc: `物流运费 ¥${res.data.amount}`
           }
         }).then((res: any) => {
-          const PARAMS_PAY = JSON.parse(res.data.payData);
+          if (res.statusCode === 200) {
 
-          PARAMS_PAY.success = function(res: any) {
-            // 支付成功
-            wx.switchTab({
-              url: '../a_tab/order/main'
+            this.$store.commit('isIndexResetChange', {
+              isIndexReset: true
             });
-          };
+            
+            // 下单成功（TODO：重置首页输入的内容）
+            const PARAMS_PAY = JSON.parse(res.data.payData);
 
-          PARAMS_PAY.fail = function(res: any) {
-            // 支付失败
-            wx.showModal({
-              title: '支付失败',
-              content: '支付失败，请稍后再试'
-            });
-          };
+            PARAMS_PAY.success = function (res: any) {
+              // 支付成功
+              wx.switchTab({
+                url: '../a_tab/order/main'
+              });
+            };
 
-          wx.requestPayment(PARAMS_PAY);
+            PARAMS_PAY.fail = function (res: any) {
+              // 支付失败
+              wx.showModal({
+                title: '支付失败',
+                content: '支付失败，请稍后再试'
+              });
+            };
+
+            wx.requestPayment(PARAMS_PAY);
+          } else {
+            showToastError('下单失败，请稍后再试');
+          }
         });
       }
 
-      // TODO：唤起微信支付
-      wx.requestPayment({
-        timeStamp: '',
-        nonceStr: '',
-        package: '',
-        signType: 'MD5',
-        paySign: '',
-        success: function(res: any) {},
-        fail: function(res: any) {}
-      });
     });
   }
 }

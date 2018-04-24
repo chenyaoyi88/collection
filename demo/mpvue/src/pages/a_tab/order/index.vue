@@ -30,7 +30,7 @@
             <div class="list-box" v-for="(order, orderIndex) of item" :key="order.id+orderIndex">
               <div class="list-tile">
                 <div class="list-tile-l">{{ order.logisticsOrderTime }}</div>
-                <div class="list-tile-r">{{ order.statusText }}</div>
+                <div class="list-tile-r" :class="{'color-notice': order.paymentStatus == 0 || order.paymentStatus == 10}">{{ order.statusText }}</div>
               </div>
               <div class="list-content">
                 <item 
@@ -116,7 +116,8 @@
                     </text>
                   </p>
                   <p class="info-car">
-                    <text class="info-title">订单信息：</text><text class="info-text">{{ order.goodsDesc }}</text>
+                    <text class="info-title">订单信息：</text>
+                    <text class="info-text">{{ order.goodsDesc }}</text>
                   </p>
                 </div>
               </div>

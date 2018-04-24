@@ -22,6 +22,12 @@ class Index extends Vue {
     arrow
   };
 
+  test() {
+    this.$store.commit('isIndexResetChange', {
+      isIndexReset: true
+    });
+  }
+
   get carTypeData() {
     return this.$store.state.carTypeList;
   }

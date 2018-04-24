@@ -7,11 +7,36 @@
     </radio-group>
     <div>{{tabIndex}}</div> -->
     
-    <picker mode="multiSelector" @change="dateChange" @columnchange="aateColumnchange" :value="dateIndex" range-key="name" :range="dateArray">
+    <!-- <picker mode="multiSelector" @change="dateChange" @columnchange="aateColumnchange" :value="dateIndex" range-key="name" :range="dateArray">
       {{ bookingTime || '立即叫车'}}
     </picker>
 
-    <button @click="reset">重置</button>
+    <button @click="reset">重置</button> -->
+    
+
+    <sliderSelect 
+      :dataList="dataList" 
+      :isSliderShow="selectSlider"
+      name="name"
+      value="remark"
+      v-on:hideSlider="fnHideSlider"
+      v-on:checkboxChange="fnCheckboxChange"
+    ></sliderSelect>
+
+    <button @click="getUUID">按钮</button>
+
+    
+    <!-- <sliderSelect 
+      type="radio"
+      :dataList="cancelReasonList" 
+      :isSliderShow="selectSlider"
+      title="取消订单原因"
+      name="reason"
+      value="id"
+      @hideSlider="fnHideSlider"
+      @sliderComfirm="fnRadioComfirm"
+    ></sliderSelect> -->
+
   </div>
 </template>
 
@@ -21,6 +46,7 @@
 <style lang="scss">
 page {
   background-color: #f5f5f5;
+  height: 100%;;
 }
 .title-box {
   width: 100%;

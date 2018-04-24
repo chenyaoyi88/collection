@@ -7,6 +7,7 @@ const store = new Vuex.Store({
   state: {
     tabIndex: 0,
     carTypeList: [],
+    additionalServicesList: [],
     isLogin: false,
     isIndexReset: false
   },
@@ -14,6 +15,10 @@ const store = new Vuex.Store({
     carTypeListChange: (state, newState) => {
       state.carTypeList = newState.carTypeList;
       return state.carTypeList;
+    },
+    additionalServicesListChange: (state, newState) => {
+      state.additionalServicesList = newState.additionalServicesList;
+      return state.additionalServicesList;
     },
     tabIndexChange: (state, newState) => {
       state.tabIndex = newState.tabIndex;
