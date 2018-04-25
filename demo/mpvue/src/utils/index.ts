@@ -20,7 +20,8 @@ import {
   showToastError,
   ghbRequest,
   getDesText,
-  getOrderStatusText
+  getOrderStatusText,
+  formatGhbGoodsRemarkDate
 } from './ghb.bus';
 
 export {
@@ -43,5 +44,6 @@ export {
   showToastError,
   ghbRequest,
   getDesText,
-  getOrderStatusText
+  getOrderStatusText,
+  formatGhbGoodsRemarkDate
 };

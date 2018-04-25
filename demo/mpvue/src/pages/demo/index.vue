@@ -12,6 +12,15 @@
     </picker>
 
     <button @click="reset">重置</button> -->
+    <button @click="test">测试</button>
+    <button @click="test2">测试2</button>
+    <button @click="test3">测试3</button>
+
+    <div>{{logisticsorder.name}}</div>
+    <div>{{logisticsorder.age}}</div>
+    <div>{{logisticsorder.time}}</div>
+    <div>{{logisticsorder.sex}}</div>
+    <div>{{logisticsorder.fuck}}</div>
     
 
     <sliderSelect 
@@ -23,7 +32,7 @@
       v-on:checkboxChange="fnCheckboxChange"
     ></sliderSelect>
 
-    <button @click="getUUID">按钮</button>
+    <!-- <button @click="getUUID">按钮</button> -->
 
     
     <!-- <sliderSelect 

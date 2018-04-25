@@ -5,9 +5,10 @@
   "author": "chenyaoyi88 <152296058@qq.com>",
   "private": true,
   "scripts": {
+    "clean": "rimraf dist && rimraf .awcache",
     "start": "node build/dev-server.js",
-    "build:sit": "cross-env NODE_ENV=sit node build/build.js",
-    "build:prod": "cross-env NODE_ENV=production node build/build.js",
+    "build:sit": "npm run clean && cross-env NODE_ENV=sit node build/build.js",
+    "build:prod": "npm run clean && cross-env NODE_ENV=production node build/build.js",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {

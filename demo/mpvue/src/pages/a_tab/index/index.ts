@@ -1,5 +1,12 @@
-import { Vue, Component, Emit } from 'vue-property-decorator';
-import { goBackGetData, ghbRequest, formatCurrency, showToastError, uuid, getOtherPage } from '../../../utils';
+import { Vue, Component } from 'vue-property-decorator';
+import {
+  goBackGetData,
+  ghbRequest,
+  formatCurrency,
+  showToastError,
+  getOtherPage,
+  formatGhbGoodsRemarkDate
+} from '../../../utils';
 import API from '../../../api';
 import item from '@/components/item/item.vue';
 import itemTimePicker from '@/components/item/item_time_picker.vue';
@@ -174,7 +181,6 @@ class Index extends Vue {
 
   // 清空/重置所有填写项目
   fnResetAll() {
-    // this.startInfo = {};
     this.endInfo = {};
     this.fnSetDefaultCar(true);
     this.fnResetComponent();
@@ -194,6 +200,7 @@ class Index extends Vue {
       });
       return;
     }
+
     // 已登录，检查必填项，通过则前往下一步
     if (!this.startInfo.address) {
       showToastError('请填写发货详细地址');
@@ -212,18 +219,10 @@ class Index extends Vue {
       return;
     }
 
-    let sBookingTime = '';
-    if (this.bookingTime) {
-      const sTime = this.bookingTime.split(' ')[1];
-      sBookingTime = `${sTime && this.bookingTime}接货`;
-    } else {
-      sBookingTime = this.bookingTime;
-    }
-
-    // const sBookingTime = `${this.bookingTime && `${this.bookingTime}接货`}`;
-
+    const sGoodsRemarkDate = formatGhbGoodsRemarkDate(this.bookingTime);
     const sClothsAmount = `${this.clothsAmount && `${this.clothsAmount}件`}`;
-    const goodsDesc = `${sBookingTime} ${this.goodsRemark} ${sClothsAmount}`;
+    const goodsDesc = `${sGoodsRemarkDate && sGoodsRemarkDate + ' 接货'} ${this.goodsRemark} ${sClothsAmount}`;
+
     if (!/\S/.test(this.goodsRemark)) {
       showToastError('请输入货物信息');
       return;
@@ -251,6 +250,7 @@ class Index extends Vue {
       receiverContact: this.endInfo.userName,
       receiverPhone: this.endInfo.mobile,
       receiverSiteName: this.endInfo.name,
+      receiverStreet: this.endInfo.street,
       receiverX: this.endInfo.location.lng,
       receiverY: this.endInfo.location.lat,
       endCityCode: this.endInfo.cityCode,
@@ -258,10 +258,12 @@ class Index extends Vue {
       senderContact: this.startInfo.userName,
       senderPhone: this.startInfo.mobile,
       senderSiteName: this.startInfo.name,
+      senderStreet: this.startInfo.street,
       senderX: this.startInfo.location.lng,
       senderY: this.startInfo.location.lat,
       startCityCode: this.startInfo.cityCode
     };
+    // console.log(PARAMS_LOGISTICSORDER_REQUEST);
     wx.navigateTo({
       url: `../../paynow/main?logisticsorder=${JSON.stringify(
         PARAMS_LOGISTICSORDER_REQUEST
@@ -269,68 +271,11 @@ class Index extends Vue {
     });
   }
 
-
-
   onShow() {
 
     const _this = this;
     const token = wx.getStorageSync('token');
     this.isLogin = token ? true : false;
-
-    // const pages = getCurrentPages(); // eslint-disable-line
-    // const currPage = pages[pages.length - 1];
-
-    // // 从车型选择页面返回
-    // const carInfo = currPage.data.carInfo;
-    // if (carInfo) {
-    //   if (this.carSelected.id !== carInfo.id) {
-    //     this.carSelected = {
-    //       name: carInfo.name,
-    //       id: carInfo.id
-    //     };
-
-    //     currPage.data.carInfo = null;
-
-    //     this.fnCanCost();
-    //   }
-    // }
-
-    // // 从货物信息页面返回
-    // this.goodsRemark = currPage.data.goodsRemark || '';
-
-    // if (this.goodsRemark) {
-    //   currPage.data.goodsRemark = '';
-    // }
-
-    // // 从发货/收货地点返回
-    // const searchInfo = currPage.data.searchInfo;
-    // if (searchInfo && searchInfo.from) {
-    //   if (searchInfo.from.includes('start')) {
-    //     if (
-    //       this.startInfo.uid !== searchInfo.uid ||
-    //       this.startInfo.userName !== searchInfo.userName ||
-    //       this.startInfo.mobile !== searchInfo.mobile
-    //     ) {
-    //       this.startInfo = searchInfo;
-
-    //       currPage.data.searchInfo = {};
-
-    //       this.fnCanCost();
-    //     }
-    //   } else if (searchInfo.from.includes('end')) {
-    //     if (
-    //       this.endInfo.uid !== searchInfo.uid ||
-    //       this.endInfo.userName !== searchInfo.userName ||
-    //       this.endInfo.mobile !== searchInfo.mobile
-    //     ) {
-    //       this.endInfo = searchInfo;
-
-    //       currPage.data.searchInfo = {};
-
-    //       this.fnCanCost();
-    //     }
-    //   }
-    // }
 
     if (this.$store.state.isIndexReset) {
       // 重置所有输入
@@ -341,7 +286,7 @@ class Index extends Vue {
     } else {
       const pages = getCurrentPages(); // eslint-disable-line
       const currPage = pages[pages.length - 1];
-  
+
       // 从车型选择页面返回
       const carInfo = currPage.data.carInfo;
       if (carInfo) {
@@ -354,13 +299,13 @@ class Index extends Vue {
           this.fnCanCost();
         }
       }
-  
+
       // 从货物信息页面返回
-      this.goodsRemark = currPage.data.goodsRemark || '';
-      if (this.goodsRemark) {
+      if (currPage.data.goodsRemark) {
+        this.goodsRemark = currPage.data.goodsRemark || '';
         currPage.data.goodsRemark = '';
       }
-  
+
       // 从发货/收货地点返回
       const searchInfo = currPage.data.searchInfo;
       if (searchInfo && searchInfo.from) {
@@ -368,7 +313,8 @@ class Index extends Vue {
           if (
             this.startInfo.uid !== searchInfo.uid ||
             this.startInfo.userName !== searchInfo.userName ||
-            this.startInfo.mobile !== searchInfo.mobile
+            this.startInfo.mobile !== searchInfo.mobile ||
+            this.startInfo.street !== searchInfo.street
           ) {
             this.startInfo = searchInfo;
             currPage.data.searchInfo = {};
@@ -378,7 +324,8 @@ class Index extends Vue {
           if (
             this.endInfo.uid !== searchInfo.uid ||
             this.endInfo.userName !== searchInfo.userName ||
-            this.endInfo.mobile !== searchInfo.mobile
+            this.endInfo.mobile !== searchInfo.mobile ||
+            this.endInfo.street !== searchInfo.street
           ) {
             this.endInfo = searchInfo;
             currPage.data.searchInfo = {};
@@ -386,7 +333,7 @@ class Index extends Vue {
           }
         }
       }
-  
+
     }
 
     console.log(goBackGetData());
@@ -396,7 +343,7 @@ class Index extends Vue {
     return this.$store.state.additionalServicesList;
   }
 
-  created() {
+  getListData() {
     const _this = this;
     // 获取车型列表
     ghbRequest({
@@ -405,22 +352,10 @@ class Index extends Vue {
       if (res.statusCode === 200) {
         _this.carTypeList = res.data;
         if (_this.carTypeList.length) {
-
           _this.$store.commit('carTypeListChange', {
             carTypeList: _this.carTypeList
           });
-
           _this.fnSetDefaultCar();
-
-          // for (let item of _this.carTypeList) {
-          //   // 设置小面包为默认车型
-          //   if (item.name.includes('小面包')) {
-          //     if (!_this.carSelected.id) {
-          //       _this.carSelected.name = item.name;
-          //       _this.carSelected.id = _this.vehicleTypeId = item.id;
-          //     }
-          //   }
-          // }
         }
       }
     });
@@ -433,6 +368,30 @@ class Index extends Vue {
         additionalServicesList: res.data
       });
     });
+  }
+
+  // 处理逻辑：本地存有 token 先更新 token
+  created() {
+    const _this = this;
+
+    // 如果有 token ，先更新
+    if (wx.getStorageSync('token')) {
+      ghbRequest({
+        url: API.REFRESH,
+        data: {
+          authorization: wx.getStorageSync('token') || ''
+        }
+      }).then((res: any) => {
+        if (res.statusCode === 200) {
+          if (res.data.token) {
+            wx.setStorageSync('token', res.data.token);
+          }
+        }
+        this.getListData();
+      });
+    } else {
+      this.getListData();
+    }
 
   }
 }

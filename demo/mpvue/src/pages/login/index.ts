@@ -11,6 +11,7 @@ import { trim } from '../../utils/validate';
   }
 })
 class Login extends Vue {
+
   // 手机号码
   phone: string = '';
   // 短信验证码
@@ -45,7 +46,8 @@ class Login extends Vue {
     if (isPhoneNumber(this.phone, '手机号码格式有误')) return;
 
     wx.showLoading({
-      title: '加载中'
+      title: '短信发送中',
+      mask: true
     });
 
     const PARAMS_VCODE_REQUEST: Vcode_Request = {
@@ -82,7 +84,8 @@ class Login extends Vue {
     if (isInputEmpty(this.msgCode, '短信验证码不能为空')) return;
 
     wx.showLoading({
-      title: '登陆中'
+      title: '登陆中',
+      mask: true
     });
 
     const PARAMS_LOGIN_REQUEST: Login_Request = {
@@ -112,7 +115,6 @@ class Login extends Vue {
                 code
               },
             }).then((res: any) => {
-              // console.log(res);
               wx.navigateBack();
             });
           }

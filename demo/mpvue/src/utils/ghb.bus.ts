@@ -142,3 +142,25 @@ export function getOrderStatusText(data: any): string {
   }
   return statusText;
 }
+
+/**
+ * 将 年-月-日 时:分:秒处理成格式：月-日 时:分 返回
+ * 
+ * @export
+ * @param {string} sDate 年-月-日 时:分:秒
+ * @returns 
+ */
+export function formatGhbGoodsRemarkDate(sDate: string) {
+  const aTime = sDate.split(' ');
+  let rTime = '';
+  if (aTime && aTime.length) {
+    const sTimeMD = aTime[0];
+    const sTimeHM = aTime[1];
+    const aTimeMD = sTimeMD.split('-');
+    const aTimeHM = sTimeHM.split(':');
+    rTime = `${aTimeMD[1]}-${aTimeMD[2]} ${aTimeHM[0]}:${aTimeHM[1]}`;
+    return rTime;
+  } else {
+    return sDate;
+  }
+}

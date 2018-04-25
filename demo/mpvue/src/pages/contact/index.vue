@@ -12,13 +12,33 @@
         noBorderTop="true"
       ></item>
     </div>
+
+    <div class="contact-stree">
+      <div class="item">
+        <div class="item-l">
+          <img class="item-icon" :src="icon.street" mode="aspectFit">
+        </div>
+        <div class="item-r no-boder-top">
+          <textarea 
+            auto-height
+            class="item-textarea"
+            maxlength="140"
+            placeholder="地址附加说明，如楼层、门牌、档口等" 
+            placeholder-style="color:#b2b2b2" 
+            :value="street" 
+            @input="getValue($event.target.value, 'street')" 
+          ></textarea>
+        </div>
+      </div>
+    </div>
+
     <div class="contact-item-box">
       
       <div class="item">
         <div class="item-l">
           <img class="item-icon" :src="icon.contact" mode="aspectFit">
         </div>
-        <div class="item-r no-boder-top">
+        <div class="item-r">
           <input 
             class="item-input" 
             type="text" 

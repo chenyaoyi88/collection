@@ -1,10 +1,11 @@
 import { Vue, Component } from 'vue-property-decorator';
 import item from '@/components/item/item.vue'; // mpvue目前只支持的单文件组件
-import { goBackSetData, getDesText, showToastError, formatTrim } from '../../utils';
+import { goBackSetData, getDesText, showToastError, formatTrim, ghbRequest } from '../../utils';
 import API from '../../api';
 
 import contact from '../../components/item/icon/contact.png';
 import mobile from '../../components/item/icon/mobile.png';
+import street from '../../components/item/icon/street.png';
 
 // 必须使用装饰器的方式来指定components
 @Component({
@@ -16,20 +17,25 @@ class Index extends Vue {
   searchInfo: any = {};
   name: string = '';
   mobile: string = '';
+  street: string = '';
 
   icon: any = {
     contact,
-    mobile
+    mobile,
+    street
   };
 
   onLoad(option: any) {
     this.name = '';
     this.mobile = '';
+    this.street = '';
     this.searchInfo = JSON.parse(option.searchInfo);
-    this.searchInfo.from = formatTrim(this.searchInfo.from); 
+    this.searchInfo.from = formatTrim(this.searchInfo.from);
+    console.log(this.searchInfo);
     if (this.searchInfo) {
       this.name = this.searchInfo.userName;
       this.mobile = this.searchInfo.mobile;
+      this.street = this.searchInfo.street;
     }
     // 获取地点所在城市
 
@@ -72,6 +78,7 @@ class Index extends Vue {
   confirmGoback() {
     this.searchInfo.userName = this.name;
     this.searchInfo.mobile = this.mobile;
+    this.searchInfo.street = this.street;
 
     if (!(/\S/.test(this.searchInfo.userName)) || !(/\S/.test(this.searchInfo.mobile))) {
       showToastError('联系人姓名和联系方式不能为空');
@@ -82,6 +89,33 @@ class Index extends Vue {
       showToastError('您输入的手机号码格式有误');
       return;
     }
+
+    const PARAMRS_CERATE_REQUEST = {
+      address: this.searchInfo.name,
+      street: this.searchInfo.street,
+      isDefault: false,
+      serviceType: 1,
+      longitude: this.searchInfo.location.lng,
+      latitude: this.searchInfo.location.lat,
+      remark: '',
+      mobile: this.searchInfo.mobile,
+      name: this.searchInfo.userName,
+      addressName: this.searchInfo.address,
+      cityCode: this.searchInfo.cityCode,
+    };
+
+    // 保存联系人和地址
+    ghbRequest({
+      url: API.CREATE,
+      method: 'POST',
+      data: PARAMRS_CERATE_REQUEST
+    }).then((res: any) => {
+      if (res.statusCode !== 200) {
+        showToastError(res.data.message);
+      } else {
+        // console.log('保存成功');
+      }
+    });
 
     goBackSetData({
       searchInfo: this.searchInfo

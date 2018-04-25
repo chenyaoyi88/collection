@@ -76,6 +76,7 @@ class Index extends Vue {
     searchInfo.from = this.from;
     searchInfo.userName = this.searchResult.userName ? this.searchResult.userName : '';
     searchInfo.mobile = this.searchResult.mobile ? this.searchResult.mobile : '';
+    searchInfo.street = this.searchResult.street ? this.searchResult.street : '';
     wx.navigateTo({
       // url: '../contact/main?searchInfo=' + JSON.stringify(searchInfo)
       url: `../contact/main?searchInfo=${JSON.stringify(searchInfo)}`

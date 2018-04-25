@@ -15,6 +15,10 @@ class Index extends Vue {
   }
 
   payNow() {
+    wx.showLoading({
+      title: '支付请求中',
+      mask: true
+    });
     // 请求下订单接口得到订单号 -> 唤起微信支付
     this.logisticsorderParams.uuid = uuid();
     ghbRequest({
@@ -22,8 +26,7 @@ class Index extends Vue {
       method: 'POST',
       data: this.logisticsorderParams
     }).then((res: any) => {
-      // console.log(res.data.id);
-
+      // 下单成功，获取订单号
       if (res.data.id) {
         ghbRequest({
           url: API.PAY,
@@ -36,16 +39,19 @@ class Index extends Vue {
             productDesc: `物流运费 ¥${res.data.amount}`
           }
         }).then((res: any) => {
+          // 获取微信支付所需参数
           if (res.statusCode === 200) {
 
+            // 下单成功之后，清空首页填写的信息
             this.$store.commit('isIndexResetChange', {
               isIndexReset: true
             });
-            
-            // 下单成功（TODO：重置首页输入的内容）
+
             const PARAMS_PAY = JSON.parse(res.data.payData);
 
+            // 微信支付成功
             PARAMS_PAY.success = function (res: any) {
+              wx.hideLoading();
               // 支付成功
               wx.switchTab({
                 url: '../a_tab/order/main'
@@ -53,6 +59,7 @@ class Index extends Vue {
             };
 
             PARAMS_PAY.fail = function (res: any) {
+              wx.hideLoading();
               // 支付失败
               wx.showModal({
                 title: '支付失败',
@@ -63,6 +70,7 @@ class Index extends Vue {
             wx.requestPayment(PARAMS_PAY);
           } else {
             showToastError('下单失败，请稍后再试');
+            wx.hideLoading();
           }
         });
       }

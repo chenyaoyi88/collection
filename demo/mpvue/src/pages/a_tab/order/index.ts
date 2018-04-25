@@ -168,6 +168,7 @@ class Order extends Vue {
       }
     });
 
+    // // mock数据
     // setTimeout(() => {
     //   wx.hideLoading();
     //   oTab[listType + 'Tmp'] = mockData;
@@ -269,15 +270,18 @@ class Order extends Vue {
       success: function(res: { confirm: boolean; cancel: boolean }) {
         if (res.confirm) {
           _this.cancelReasonWLId = id;
-          // TODO：请求取消原因列表 -> 请求取消订单接口
+          // 请求取消原因列表 -> 请求取消订单接口
           ghbRequest({
             url: API.CANCELREASONS
           }).then((res: any) => {
             if (res.statusCode === 200) {
               if (res.data && res.data.length) {
                 _this.cancelReasonList = res.data;
+                // 弹出底部滑动选项
                 _this.selectSlider = true;
               }
+            } else {
+              showToastError(res.data.message);
             }
           });
         }

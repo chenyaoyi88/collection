@@ -18,6 +18,48 @@ class Index extends Vue {
 
   dataList: any = [{ "id": 8, "name": "推车", "remark": "需要司机提供推车设备" }, { "id": 9, "name": "搬运", "remark": "需要司机提供搬运服务，价格面议" }, { "id": 10, "name": "代收", "remark": "需要司机提供代收货款的服务，价格方式面议" }];
 
+  // logisticsorder: any = {
+  //   name: 'cyy',
+  //   age: 18,
+  //   time: new Date().getTime()
+  // };
+
+  get logisticsorder() {
+    console.log(this.$store.state.logisticsorder);
+    return this.$store.state.logisticsorder;
+  }
+
+  test() {
+    const json = {
+      name: 'cyy1',
+      age: 19,
+      time: new Date().getTime()
+    };
+    this.$store.commit('logisticsorderChange', {
+      logisticsorder: json
+    });
+  }
+
+  test2() {
+    const json = {
+      sex: 'male'
+    };
+    this.$store.commit('logisticsorderChange', {
+      logisticsorder: json
+    });
+  }
+
+  test3() {
+    const json = {
+      name: 'cyy100',
+      age: 21,
+      fuck: 'fuckme'
+    };
+    this.$store.commit('logisticsorderChange', {
+      logisticsorder: json
+    });
+  }
+
   // 取消原因列表
   cancelReasonList: Array<any> = [
     {
@@ -134,11 +176,10 @@ class Index extends Vue {
 
   // 全局
   mounted() {
-    this.selectSlider = true;
-    this.$store.commit('tabIndexChange', {
-      tabIndex: 2
-    });
-    console.log(this.$store);
+    // this.selectSlider = true;
+    // this.$store.commit('tabIndexChange', {
+    //   tabIndex: 2
+    // });
   }
 
   // computed
@@ -147,9 +188,9 @@ class Index extends Vue {
   }
 
   onLoad() {
-    const pages = getCurrentPages(); // eslint-disable-line
-    const currPage = pages[pages.length - 1];
-    console.log(currPage);
+    // const pages = getCurrentPages(); // eslint-disable-line
+    // const currPage = pages[pages.length - 1];
+    // console.log(currPage);
   }
 }
 

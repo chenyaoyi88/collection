@@ -40,8 +40,8 @@ const API = {
     SEARCH: `https://api.map.baidu.com/place/v2/search?ak=${AK}&output=json`,
     GEOCODER: `https://api.map.baidu.com/geocoder/v2/?ak=${AK}&output=json`
   },
-  // 测试请求
-  TEST: `${APP_REQUEST_HOST}/test`,
+  // 刷新 token
+  REFRESH: `${APP_REQUEST_HOST}/api/v1/refresh`,
   // 关联小程序（http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/05%20%E5%BA%97%E9%93%BA%E7%94%A8%E6%88%B7/5-5%20%E5%85%B3%E8%81%94%E5%B0%8F%E7%A8%8B%E5%BA%8F）
   JSCODE2SESSION: `${APP_REQUEST_HOST}/api/v1/seller/ghbmina/jscode2session`,
   // 登录
@@ -65,7 +65,9 @@ const API = {
   // 物流取消订单原因列表
   CANCELREASONS: `${APP_REQUEST_HOST}/api/v1/logistics/logisticsCancelReasons`,
   // 发起支付
-  PAY: `${APP_REQUEST_HOST}/api/v1/payment/pay`
+  PAY: `${APP_REQUEST_HOST}/api/v1/payment/pay`,
+  // 保存地址（http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/26%20%20%E5%B8%B8%E7%94%A8%E5%9C%B0%E5%9D%80/26-2%20%E5%88%9B%E5%BB%BA%E5%B8%B8%E7%94%A8%E5%9C%B0%E5%9D%80）
+  CREATE: `${APP_REQUEST_HOST}/api/v1/addressBookRest/create`,
 };
 
 
