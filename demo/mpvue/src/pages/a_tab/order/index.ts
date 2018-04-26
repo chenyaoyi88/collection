@@ -95,7 +95,6 @@ class Order extends Vue {
         }
       }).then((res: any) => {
         if (res.statusCode === 200) {
-          // console.log(res);
           // 请求取消订单之后，切换到取消订单列表
           _this.tabClick(2);
         }
@@ -144,21 +143,8 @@ class Order extends Vue {
         if (res.data && res.data.length) {
           for (let i = 0; i < res.data.length; i++) {
             const order = res.data[i];
-            let json = {
-              paymentAmount: order.paymentAmount,
-              logisticsOrderTime: order.logisticsOrderTime,
-              statusText: getOrderStatusText(order),
-              senderAddressName: order.senderAddressName,
-              senderSiteName: order.senderSiteName,
-              receiverAddressName: order.receiverAddressName,
-              receiverSiteName: order.receiverSiteName,
-              goodsDesc: order.goodsDesc,
-              paymentStatus: order.paymentStatus,
-              carTypeName: order.carTypeName,
-              additionalRequests: order.additionalRequests.join('、'),
-              id: order.id
-            };
-            aShowList.push(json);
+            order.statusText = getOrderStatusText(order);
+            aShowList.push(order);
           }
           oTab[listType][offset / 10] = aShowList;
         } else {
@@ -267,7 +253,7 @@ class Order extends Vue {
     wx.showModal({
       title: '取消订单',
       content: '是否确定取消该订单？',
-      success: function(res: { confirm: boolean; cancel: boolean }) {
+      success: function (res: { confirm: boolean; cancel: boolean }) {
         if (res.confirm) {
           _this.cancelReasonWLId = id;
           // 请求取消原因列表 -> 请求取消订单接口
@@ -291,6 +277,11 @@ class Order extends Vue {
 
   // 订单支付
   orderPay(order?: any) {
+    const _this = this;
+    wx.showLoading({
+      title: '支付请求中',
+      mask: true
+    });
     ghbRequest({
       url: API.PAY,
       method: 'POST',
@@ -302,18 +293,20 @@ class Order extends Vue {
         productDesc: `物流运费 ¥${order.paymentAmount}`
       }
     }).then((res: any) => {
-      const PARAMS_PAY = JSON.parse(res.data.payData);
-
-      PARAMS_PAY.success = function(res: any) {
-        // 支付成功，刷新当前列表
-        this.loadCurrentListData(true);
-      };
-
-      PARAMS_PAY.fail = function(res: any) {
-        // 支付失败，无操作
-      };
-
-      wx.requestPayment(PARAMS_PAY);
+      if (res.statusCode === 200) {
+        const PARAMS_PAY = JSON.parse(res.data.payData);
+        PARAMS_PAY.success = function (res: any) {
+          // 支付成功，刷新当前列表
+          // this.loadCurrentListData(true);
+          _this.tabSwitch(0);
+        };
+        PARAMS_PAY.fail = function (res: any) {
+          // 支付失败，无操作
+        };
+        wx.requestPayment(PARAMS_PAY);
+      } else {
+        showToastError(res.data.message);
+      }
     });
   }
 

@@ -172,6 +172,7 @@ export default {
           break;
         case 'point':
           this.icon = '';
+          // console.log('pointType', this.pointType);
           switch (this.pointType) {
             case 'start':
               this.point = 'start';

@@ -37,7 +37,7 @@
                   iconType="point" 
                   textTop="" 
                   :textCenter="order.senderAddressName" 
-                  :textBottom="order.senderSiteName"  
+                  :textBottom="order.senderSiteName + ' ' + (order.senderStreet || '')"  
                   noBorderTop="true"
                   isArrowHide="true"
                   itemClass="order"
@@ -47,7 +47,7 @@
                   pointType="end" 
                   textTop="" 
                   :textCenter="order.receiverAddressName" 
-                  :textBottom="order.receiverSiteName"  
+                  :textBottom="order.receiverSiteName + ' ' + (order.receiverStreet || '')"  
                   noBorderTop="true"
                   isArrowHide="true"
                   itemClass="order"
@@ -68,10 +68,14 @@
               </div>
               <div class="list-msg">
                 <div class="list-msg-l">订单金额:<text class="color-notice">￥{{ order.paymentAmount }}</text></div>
-                <div class="list-msg-r" v-if="order.paymentStatus === 0">
-                  <button class="ghb-btn cancel" @click="orderCancel(order.id)">取消订单</button>
+
+                <!-- 立即支付 + 未支付，显示2个按钮 -->
+                <div class="list-msg-r" v-if="(order.status === 10 && order.paymentType === 1 && (order.paymentStatus == 0 || order.paymentStatus == 10)) || (order.status === 50 && order.paymentType === 2)">
+                  <!-- 已送达 + 未支付不可取消，隐藏取消订单按钮 -->
+                  <button v-if="!(order.status === 50 && order.paymentType === 2)" class="ghb-btn cancel" @click="orderCancel(order.id)">取消订单</button>
                   <button class="ghb-btn" @click="orderPay(order)">支付订单</button>
                 </div>
+
               </div>
             </div>
           </block>
@@ -91,7 +95,7 @@
                   iconType="point" 
                   textTop="" 
                   :textCenter="order.senderAddressName" 
-                  :textBottom="order.senderSiteName"  
+                  :textBottom="order.senderSiteName + ' ' + (order.senderStreet || '')"  
                   noBorderTop="true"
                   isArrowHide="true"
                   itemClass="order"
@@ -101,7 +105,7 @@
                   pointType="end" 
                   textTop="" 
                   :textCenter="order.receiverAddressName" 
-                  :textBottom="order.receiverSiteName"  
+                  :textBottom="order.receiverSiteName + ' ' + (order.receiverStreet || '')"  
                   noBorderTop="true"
                   isArrowHide="true"
                   itemClass="order"
@@ -143,7 +147,7 @@
                   iconType="point" 
                   textTop="" 
                   :textCenter="order.senderAddressName" 
-                  :textBottom="order.senderSiteName"  
+                  :textBottom="order.senderSiteName + ' ' + (order.senderStreet || '')"  
                   noBorderTop="true"
                   isArrowHide="true"
                   itemClass="order"
@@ -153,7 +157,7 @@
                   pointType="end" 
                   textTop="" 
                   :textCenter="order.receiverAddressName" 
-                  :textBottom="order.receiverSiteName"  
+                  :textBottom="order.receiverSiteName + ' ' + (order.receiverStreet || '')"  
                   noBorderTop="true"
                   isArrowHide="true"
                   itemClass="order"

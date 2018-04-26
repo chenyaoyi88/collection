@@ -1,7 +1,22 @@
 <template>
   <div class="contact-box">
     <div class="contact-info-box">
-      <item 
+
+      <div class="item">
+        <div class="item-l">
+          <div class="item-point" :class="searchInfo.from"></div>
+          <div v-if="searchInfo.from === 'start'"></div>
+          <div v-if="searchInfo.from === 'end'"></div>
+        </div>
+        <div class="item-r no-boder-top">
+          <div class="item-r-title">
+            <p v-if="searchInfo.name" class="item-info-c">{{ searchInfo.name }}</p>
+            <p v-if="searchInfo.address" class="item-info-b">{{ searchInfo.address }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- <item 
         iconType="point" 
         :pointType="searchInfo.from"
         :textCenter="searchInfo.name" 
@@ -10,7 +25,8 @@
         isEndPointlineHide="true"
         isArrowHide="true"
         noBorderTop="true"
-      ></item>
+      ></item> -->
+
     </div>
 
     <div class="contact-stree">

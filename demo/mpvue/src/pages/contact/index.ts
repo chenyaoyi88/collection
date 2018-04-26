@@ -30,8 +30,8 @@ class Index extends Vue {
     this.mobile = '';
     this.street = '';
     this.searchInfo = JSON.parse(option.searchInfo);
-    this.searchInfo.from = formatTrim(this.searchInfo.from);
-    console.log(this.searchInfo);
+    // this.searchInfo.from = this.searchInfo.from;
+    console.log('searchInfo', this.searchInfo.from);
     if (this.searchInfo) {
       this.name = this.searchInfo.userName;
       this.mobile = this.searchInfo.mobile;

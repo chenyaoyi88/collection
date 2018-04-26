@@ -14,7 +14,7 @@ const TEST_URL = {
 
 // 生产环境
 const PROD_URL = {
-  MAIN: 'https://sit.guanghuobao.com'
+  MAIN: 'https://www.guanghuobao.com'
 };
 
 // 请求 host

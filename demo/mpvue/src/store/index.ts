@@ -8,8 +8,8 @@ const store = new Vuex.Store({
     tabIndex: 0,
     carTypeList: [],
     additionalServicesList: [],
-    isIndexReset: false,
-    logisticsorder: {}
+    isLogin: false,
+    isIndexReset: false
   },
   mutations: {
     carTypeListChange: (state, newState) => {
@@ -24,13 +24,13 @@ const store = new Vuex.Store({
       state.tabIndex = newState.tabIndex;
       return state.tabIndex;
     },
+    isLoginChange: (state, newState) => {
+      state.isLogin = newState.isLogin;
+      return state.isLogin;
+    },
     isIndexResetChange: (state, newState) => {
       state.isIndexReset = newState.isIndexReset;
       return state.isIndexReset;
-    },
-    logisticsorderChange: (state, newState) => {
-      state.logisticsorder = Object.assign({}, state.logisticsorder, newState.logisticsorder);
-      return state.logisticsorder;
     }
   }
 });

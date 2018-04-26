@@ -1,4 +1,4 @@
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Emit } from 'vue-property-decorator';
 import {
   goBackGetData,
   ghbRequest,
@@ -271,12 +271,15 @@ class Index extends Vue {
     });
   }
 
+
+
   onShow() {
 
     const _this = this;
     const token = wx.getStorageSync('token');
     this.isLogin = token ? true : false;
 
+    // TODO：页面重置在用户界面出现瞬变的情况，需要优化
     if (this.$store.state.isIndexReset) {
       // 重置所有输入
       this.fnResetAll();
@@ -336,7 +339,7 @@ class Index extends Vue {
 
     }
 
-    console.log(goBackGetData());
+    // console.log(goBackGetData());
   }
 
   get additionalServicesList() {

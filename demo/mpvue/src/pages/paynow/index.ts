@@ -50,7 +50,7 @@ class Index extends Vue {
             const PARAMS_PAY = JSON.parse(res.data.payData);
 
             // 微信支付成功
-            PARAMS_PAY.success = function (res: any) {
+            PARAMS_PAY.success = PARAMS_PAY.fail = function (res: any) {
               wx.hideLoading();
               // 支付成功
               wx.switchTab({
@@ -58,14 +58,13 @@ class Index extends Vue {
               });
             };
 
-            PARAMS_PAY.fail = function (res: any) {
-              wx.hideLoading();
-              // 支付失败
-              wx.showModal({
-                title: '支付失败',
-                content: '支付失败，请稍后再试'
-              });
-            };
+            // PARAMS_PAY.fail = function (res: any) {
+            //   wx.hideLoading();
+            //   // 支付取消
+            //   wx.switchTab({
+            //     url: '../a_tab/order/main'
+            //   });
+            // };
 
             wx.requestPayment(PARAMS_PAY);
           } else {

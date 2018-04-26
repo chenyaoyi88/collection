@@ -151,15 +151,19 @@ export function getOrderStatusText(data: any): string {
  * @returns 
  */
 export function formatGhbGoodsRemarkDate(sDate: string) {
-  const aTime = sDate.split(' ');
-  let rTime = '';
-  if (aTime && aTime.length) {
-    const sTimeMD = aTime[0];
-    const sTimeHM = aTime[1];
-    const aTimeMD = sTimeMD.split('-');
-    const aTimeHM = sTimeHM.split(':');
-    rTime = `${aTimeMD[1]}-${aTimeMD[2]} ${aTimeHM[0]}:${aTimeHM[1]}`;
-    return rTime;
+  if (sDate) {
+    const aTime = sDate.split(' ');
+    let rTime = '';
+    if (aTime && aTime.length) {
+      const sTimeMD = aTime[0];
+      const sTimeHM = aTime[1];
+      const aTimeMD = sTimeMD.split('-');
+      const aTimeHM = sTimeHM.split(':');
+      rTime = `${aTimeMD[1]}-${aTimeMD[2]} ${aTimeHM[0]}:${aTimeHM[1]}`;
+      return rTime;
+    } else {
+      return sDate;
+    }
   } else {
     return sDate;
   }
