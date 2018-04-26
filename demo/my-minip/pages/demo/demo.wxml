@@ -1,4 +1,5 @@
 <!--logs.wxml-->
 <view class="container">
   <view>{{ text }}}</view>
+  <component-tabbar list="{{list}}" class="tabbar-class" tab-index="1"></component-tabbar>
 </view>

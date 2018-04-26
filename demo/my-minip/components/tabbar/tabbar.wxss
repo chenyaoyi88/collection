@@ -2,6 +2,10 @@
   /* 组件可以指定它所在节点的默认样式 */
 }
 
+.tabbar-content {
+  padding-bottom: 50px;
+}
+
 .tabbar-box {
   width: 100%;
   height: 50px;

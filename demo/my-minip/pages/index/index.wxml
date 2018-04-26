@@ -1,6 +1,6 @@
 <!-- index.wxml -->
-<view class="container">
-  <view class="userinfo">
+<view class="-container">
+  <!-- <view class="userinfo">
     <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">
       获取头像昵称
     </button>
@@ -19,9 +19,10 @@
     <component-item inner-text="Some text">
       <view bindtap="test">插入的元素内容</view>
     </component-item>
-  </view>
-  <component-tabbar list="{{list}}" class="tabbar-class"></component-tabbar>
-  <view class="cover">
-    <canvas class="cover"></canvas>
-  </view>
+  </view> -->
+  <component-tabbar list="{{list}}" class="tabbar-class" bindtabClickEvent="tabClickEvent">
+    <view slot="tab0">0000</view>
+    <view slot="tab1">1111</view>
+    <view slot="tab2">2222</view>
+  </component-tabbar>
 </view>
