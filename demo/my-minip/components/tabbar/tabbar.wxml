@@ -1,0 +1,14 @@
+<!-- 组件模板 -->
+<view class="tabbar-box">
+    <view 
+        class="tabbar-item" 
+        data-list-index="{{index}}" 
+        data-page-path="{{item}}"
+        bindtap="tabSwitch" 
+        wx:for="{{list}}" 
+        wx:key="{{index}}"
+    >
+        <image class="tabbar-item-img" src="{{(index == currentTabIndex) ? item.selectedIconPath : item.iconPath}}" mode="aspectFit"></image>
+        <view class="tabbar-item-title" style="color: {{(index == currentTabIndex) ? selectedColor : color}}">{{item.text}}</view>
+    </view>
+</view>

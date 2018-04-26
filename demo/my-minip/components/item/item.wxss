@@ -1,0 +1,11 @@
+:host {
+  color: yellow;
+}
+
+/* .container {
+  color: red;
+} */
+
+.inner {
+  color: red;
+}
