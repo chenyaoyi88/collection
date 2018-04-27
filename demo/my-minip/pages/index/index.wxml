@@ -1,27 +1,65 @@
 <!-- index.wxml -->
 <view class="-container">
-  <!-- <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">
-      获取头像昵称
-    </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
-  </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
-  </view>
-  <view>
-    <navigator url="../demo/demo" hover-class="navigator-hover">跳转到demo页面</navigator>
-  </view>
-  <view>
-    <component-item inner-text="Some text">
-      <view bindtap="test">插入的元素内容</view>
-    </component-item>
-  </view> -->
-  <component-tabbar list="{{list}}" class="tabbar-class" bindtabClickEvent="tabClickEvent">
-    <view slot="tab0">0000</view>
+  <component-tabbar 
+    list="{{tabbarList}}" 
+    tabIndex="{{tabIndex}}"
+    class="tabbar-class" 
+    bindtabClickEvent="tabClickEvent"
+  >
+
+    <view slot="tab0">
+      <view class="tab0-box">
+        <view class="tab0-main-box">
+
+          <view class="tab0-item-point">
+            <component-item 
+              item-icon-type="start"
+              item-value-left-top=""
+              item-value-left-center="选择发货地点"
+              item-value-right=""
+            ></component-item>
+
+            <component-item 
+              item-icon-type="end"
+              item-value-left-top=""
+              item-value-left-center="选择收货地点"
+              item-value-right=""
+            ></component-item>
+          </view>
+
+          <view class="tab0-item-other">
+            <component-item 
+              item-icon-type="icon"
+              item-icon="{{iconList.carType}}"
+              item-value-left-center="车型"
+              item-valur-right="请选择车型"
+            ></component-item>
+            <component-item 
+              item-icon-type="icon"
+              item-icon="{{iconList.time}}"
+              item-value-left-center="时间"
+              item-valur-right="立即叫车"
+            ></component-item>
+            <component-item 
+              item-icon-type="icon"
+              item-icon="{{iconList.extra}}"
+              item-value-left-center="额外服务"
+              item-valur-right="装卸搬运等额外服务"
+            ></component-item>
+            <component-item
+              item-icon-type="icon"
+              item-icon="{{iconList.goods}}"
+            >
+              <view slot="item-r">
+                货物信息
+              </view>
+            </component-item>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
     <view slot="tab1">1111</view>
     <view slot="tab2">2222</view>
   </component-tabbar>

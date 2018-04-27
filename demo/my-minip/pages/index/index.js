@@ -1,86 +1,37 @@
 //index.js
+// import tabbarList from './tabbar_list';
+import {
+  tabbarList,
+  iconList
+} from './utils';
 //获取应用实例
 const app = getApp();
 
 Page({
   data: {
     tabIndex: 0,
-    list: [
-      {
-        pagePath: '../../pages/index/index',
-        text: '叫车',
-        iconPath: '../../assets/images/callcar.png',
-        selectedIconPath: '../../assets/images/callcar_active.png'
-      },
-      {
-        pagePath: '../../pages/demo/demo',
-        text: '叫车',
-        iconPath: '../../assets/images/order.png',
-        selectedIconPath: '../../assets/images/order_active.png'
-      },
-      {
-        pagePath: '../../pages/logs/logs',
-        text: '叫车',
-        iconPath: '../../assets/images/me.png',
-        selectedIconPath: '../../assets/images/me_active.png'
-      }
-    ],
-    motto: 'Hello World',
-    userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    tabbarList,
+    iconList
   },
-  //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    });
-  },
-
-  tabClickEvent: function(e) {
+  tabClickEvent: function (e) {
     console.log(e.detail);
-    const tabIndex = e.detail.tabIndex;
     this.setData({
-      tabIndex
+      tabIndex: e.detail.tabIndex
     });
   },
-  test: function() {
-    console.log('test');
-  },
-  onLoad: function() {
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      });
-    } else if (this.data.canIUse) {
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        });
-      };
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo;
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          });
-        }
-      });
+  // itemClick1: function (e) {
+  //   console.log(e);
+  // },
+  onLoad: function () {
+    console.log(this);
+
+    switch (this.data.tabIndex) {
+      case 0:
+        break;
+      case 1:
+        break;
+      case 2:
+        break;
     }
-  },
-  getUserInfo: function(e) {
-    console.log(e);
-    app.globalData.userInfo = e.detail.userInfo;
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
-    });
   }
 });

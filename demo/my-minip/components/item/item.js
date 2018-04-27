@@ -1,35 +1,88 @@
-// Component({
-//   properties: {
-//     // 属性名
-//     text: {
-//       // 类型（必填），目前接受的类型包括：String, Number, Boolean, Object, Array, null（表示任意类型）
-//       type: String,
-//       // 属性初始值（可选），如果未指定则会根据类型选择一个
-//       value: '',
-//       // 属性被改变时执行的函数（可选），也可以写成在methods段中定义的方法名字符串, 如：'_propertyChange'
-//       observer: function (newVal, oldVal) {
-//         console.log('newVal', newVal);
-//         console.log('oldVal', oldVal);
-//       }
-//     },
-//     text2: String // 简化的定义方式
-//   },
-//   // 私有数据，可用于模版渲染
-//   data: {
-//     msg: ''
-//   },
-//   methods: {
-//     test: function () {
-//       console.log('test');
-//     }
-//   }
-// })
 Component({
+  options: {
+    // 在组件定义时的选项中启用多slot支持
+    multipleSlots: true
+  },
   properties: {
-    // 这里定义了innerText属性，属性值可以在组件使用时指定
-    innerText: {
+    // item 类型（input/point/custom)
+    itemType: {
       type: String,
-      value: 'default value',
+      value: 'normal'
+    },
+    // item class 样式
+    itemClass: {
+      type: String,
+      value: ''
+    },
+    // icon 图标地址
+    itemIcon: {
+      type: String,
+      value: ''
+    },
+    // icon 类型（icon/start/end/custom）
+    itemIconType: {
+      type: String,
+      value: 'icon'
+    },
+    // 是否隐藏 item 左边
+    isHideItemLeft: {
+      type: Boolean,
+      value: false,
+    },
+    // 是否隐藏 item 箭头图标
+    isHideItemArrow: {
+      type: Boolean,
+      value: false,
+    },
+    // 是否隐藏顶部边线
+    isHideBorderTop: {
+      type: Boolean,
+      value: false,
+    },
+    // item 左侧的值 top
+    itemValueLeftTop: {
+      type: String,
+      value: ''
+    },
+    // item 左侧的值 center
+    itemValueLeftCenter: {
+      type: String,
+      value: ''
+    },
+    // item 左侧的值 bottom
+    itemValueLeftBottom: {
+      type: String,
+      value: ''
+    },
+    // item 右侧的值
+    itemValueRight: {
+      type: String,
+      value: ''
+    },
+    // input 的类型
+    itemTnputType: {
+      type: String,
+      value: 'text'
+    },
+    // input 最大限制
+    itemInputMaxlength: {
+      type: Number,
+      value: 140
+    },
+    // input 值
+    itemInputValue: {
+      type: String,
+      value: ''
+    },
+    // placeholder 文字显示
+    itemInputPlc: {
+      type: String,
+      value: ''
+    },
+    // placeholder style 样式
+    itemInputPlcStyle: {
+      type: String,
+      value: 'color:#b2b2b2'
     }
   },
   data: {
@@ -37,7 +90,22 @@ Component({
     someData: {}
   },
   methods: {
-    // 这里是一个自定义方法
-    customMethod: function () {}
+    // 点击 item
+    itemClickEvent: function (e) {
+      const myEventDetail = {
+        e,
+        item: this
+      };
+      const myEventOption = {};
+      this.triggerEvent('itemClickEvent', myEventDetail, myEventOption);
+    },
+    // input 输入
+    itemInputEvent: function (e) {
+      const myEventDetail = {
+        e
+      };
+      const myEventOption = {};
+      this.triggerEvent('itemInputEvent', myEventDetail, myEventOption);
+    }
   }
 })

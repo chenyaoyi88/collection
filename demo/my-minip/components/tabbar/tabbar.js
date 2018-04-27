@@ -22,7 +22,6 @@ Component({
     }
   },
   methods: {
-    // 这里是一个自定义方法
     tabSwitch: function(e) {
       // console.log(e);
 
@@ -34,7 +33,8 @@ Component({
 
       const myEventDetail = {
         tabIndex: listIndex
-      }; // detail对象，提供给事件监听函数
+      }; 
+      
       const myEventOption = {};
       this.triggerEvent('tabClickEvent', myEventDetail, myEventOption);
     }

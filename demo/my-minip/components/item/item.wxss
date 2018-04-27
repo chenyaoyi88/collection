@@ -1,11 +1,105 @@
-:host {
-  color: yellow;
+:host {}
+
+.item {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
 }
 
-/* .container {
-  color: red;
-} */
+.item .item-l {
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 3;
+}
 
-.inner {
-  color: red;
+.item .item-r {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding: 15px 35px 15px 0;
+  border-top: 1px solid #eeeeee;
+  line-height: 1.7;
+}
+
+/* item 左侧 icon 发货/收货 点 */
+
+.item .item-l .item-point {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  position: relative;
+  z-index: 5;
+}
+
+.item .item-l .item-point.start {
+  background-color: #15c145;
+}
+
+.item .item-l .item-point.end {
+  background-color: #f13744;
+}
+
+.item .item-l .item-point-line {
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  height: 50%;
+  z-index: 4;
+  background: #eeeeee;
+}
+
+.item .item-l .item-point-line.start {
+  bottom: 0;
+}
+
+.item .item-l .item-point-line.end {
+  top: 0;
+}
+
+.item .item-r.no-border-top {
+  border-top: none;
+}
+
+/* .item .item-r .item-r-title {} */
+
+.item-r .item-r-title .item-info-t {
+  color: #888888;
+}
+
+.item-r .item-r-title .item-info-c {
+  color: #333333;
+}
+
+.item-r .item-r-title .item-info-b {
+  color: #888888;
+  font-size: 12px;
+}
+
+.item-r .item-r-value {
+  color: #4a4a4a;
+}
+
+.item-r .item-r-arrow {
+  position: absolute;
+  right: 15px;
+  top: 0px;
+  z-index: 3;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.item-r .item-r-arrow .img-item-arrow {
+  width: 8px;
+  height: 13px;
 }

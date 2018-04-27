@@ -1,4 +1,12 @@
+@import './order.wxss';
+@import './me.wxss';
+
+page {
+  background: #f5f5f5;
+}
+
 /**index.wxss**/
+
 .userinfo {
   display: flex;
   flex-direction: column;
@@ -20,7 +28,7 @@
   margin-top: 200px;
 }
 
-.tabbar-class{
+.tabbar-class {
   background: red;
 }
 
