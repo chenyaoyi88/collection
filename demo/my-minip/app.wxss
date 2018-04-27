@@ -7,4 +7,57 @@
   justify-content: space-between;
   padding: 200rpx 0;
   box-sizing: border-box;
-} 
+}
+
+.color-notice {
+  color: #fb0628;
+}
+
+.color-warn {
+  color: #ffc631;
+}
+
+.color-pass {
+  color: #24c551;
+}
+
+.color-light {
+  color: #888888;
+}
+
+.no-boder-top {
+  border-top: none !important;
+}
+
+.ghb-container {
+  padding: 20px;
+}
+
+.ghb-btn {
+  width: 100%;
+  height: 47px;
+  background-color: #f33650;
+  font-size: 18px;
+  color: #fff;
+  border-radius: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ghb-btn:active {
+  background-color: #db343f;
+}
+
+.ghb-btn:after {
+  background-color: #db343f;
+}
+
+.ghb-btn[disabled] {
+  color: #fdfdfd !important;
+  background-color: #dfdfdf !important;
+}
+
+.ghb-input {
+  border: 0;
+}

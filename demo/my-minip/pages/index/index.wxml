@@ -13,13 +13,16 @@
 
           <view class="tab0-item-point">
             <component-item 
+              item-class="item-point-class"
               item-icon-type="start"
               item-value-left-top=""
               item-value-left-center="选择发货地点"
               item-value-right=""
-            ></component-item>
+              is-hide-border-top="true"
+            />
 
             <component-item 
+              item-class="item-point-class"
               item-icon-type="end"
               item-value-left-top=""
               item-value-left-center="选择收货地点"
@@ -32,29 +35,47 @@
               item-icon-type="icon"
               item-icon="{{iconList.carType}}"
               item-value-left-center="车型"
-              item-valur-right="请选择车型"
+              item-value-right="请选择车型"
             ></component-item>
             <component-item 
               item-icon-type="icon"
               item-icon="{{iconList.time}}"
               item-value-left-center="时间"
-              item-valur-right="立即叫车"
+              item-value-right="立即叫车"
             ></component-item>
             <component-item 
               item-icon-type="icon"
               item-icon="{{iconList.extra}}"
               item-value-left-center="额外服务"
-              item-valur-right="装卸搬运等额外服务"
+              item-value-right="装卸搬运等额外服务"
             ></component-item>
             <component-item
+              item-type="custom"
               item-icon-type="icon"
               item-icon="{{iconList.goods}}"
             >
-              <view slot="item-r">
-                货物信息
+              <view class="goods-box" slot="item-r">
+                <view class="goods-title">货物信息</view>
+                <view class="goods-amount-box">
+                  <input 
+                    placeholder-style="color:#b2b2b2" 
+                    placeholder="条数" 
+                    type="number"/>
+                </view>
+                <view class="goods-info-box">{{ goodsRemark || '货物信息，备注等' }}</view>
               </view>
             </component-item>
           </view>
+
+          <view class="idx-ft-box">
+            <view class="idx-ft-price">
+              <view class="price-text">￥{{ (costs && costs.amount) || '--'}}</view>
+            </view>
+            <view class="idx-ft-nextbtn">
+              <button class="ghb-btn next-btn">下一步</button>
+            </view>
+          </view>
+
         </view>
       </view>
 
