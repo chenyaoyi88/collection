@@ -148,7 +148,9 @@ class Order extends Vue {
           }
           oTab[listType][offset / 10] = aShowList;
         } else {
-          this.isListNoData = true;
+          if (!(oTab[listType] && oTab[listType][0].length) && !res.data.length) {
+            this.isListNoData = true;
+          }
         }
         wx.stopPullDownRefresh();
       }

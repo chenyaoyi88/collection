@@ -102,7 +102,3 @@
 <style lang="scss">
 @import './index.scss';
 </style>
-
-<style lang="scss">
-@import './index.scss';
-</style>

@@ -21,7 +21,8 @@ import {
   ghbRequest,
   getDesText,
   getOrderStatusText,
-  formatGhbGoodsRemarkDate
+  formatGhbGoodsRemarkDate,
+  wxPosChangtobdPos
 } from './ghb.bus';
 
 export {
@@ -45,5 +46,6 @@ export {
   ghbRequest,
   getDesText,
   getOrderStatusText,
-  formatGhbGoodsRemarkDate
+  formatGhbGoodsRemarkDate,
+  wxPosChangtobdPos
 };

@@ -126,7 +126,13 @@ class Login extends Vue {
   }
 
   // 叫车规则跳 webview h5页面
-  ghbRule(): void {
+  ghbRuleCallcar(): void {
+    wx.navigateTo({
+      url: '../webview/main?webUrl=' + 'https://www.guanghuobao.com/static/app-h5/html/rule/user_callcar.html'
+    });
+  }
+
+  ghbRuleService(): void {
     wx.navigateTo({
       url: '../webview/main?webUrl=' + 'https://www.guanghuobao.com/static/app-h5/resources/agreements/agreement_use.html'
     });

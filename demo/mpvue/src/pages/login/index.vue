@@ -20,7 +20,7 @@
     </div>
     
     <div class="login-tips-box">
-      <p>登录广货宝，即表示您同意<span class="color-notice" @click="ghbRule">《广货宝叫车规则》</span></p>
+      <p>登录广货宝，即表示您同意<span class="color-notice" @click="ghbRuleCallcar">《广货宝叫车规则》</span>和<span class="color-notice" @click="ghbRuleService">《广货宝使用条款和服务协议》</span></p>
     </div>
 
   </div>

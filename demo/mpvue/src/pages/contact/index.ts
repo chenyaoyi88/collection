@@ -18,6 +18,7 @@ class Index extends Vue {
   name: string = '';
   mobile: string = '';
   street: string = '';
+  isLogin: boolean = false;
 
   icon: any = {
     contact,
@@ -31,7 +32,7 @@ class Index extends Vue {
     this.street = '';
     this.searchInfo = JSON.parse(option.searchInfo);
     // this.searchInfo.from = this.searchInfo.from;
-    console.log('searchInfo', this.searchInfo.from);
+    // console.log('searchInfo', this.searchInfo.from);
     if (this.searchInfo) {
       this.name = this.searchInfo.userName;
       this.mobile = this.searchInfo.mobile;
@@ -76,6 +77,10 @@ class Index extends Vue {
   }
 
   confirmGoback() {
+    const _this = this;
+    const token = wx.getStorageSync('token');
+    this.isLogin = token ? true : false;
+
     this.searchInfo.userName = this.name;
     this.searchInfo.mobile = this.mobile;
     this.searchInfo.street = this.street;
@@ -90,32 +95,35 @@ class Index extends Vue {
       return;
     }
 
-    const PARAMRS_CERATE_REQUEST = {
-      address: this.searchInfo.name,
-      street: this.searchInfo.street,
-      isDefault: false,
-      serviceType: 1,
-      longitude: this.searchInfo.location.lng,
-      latitude: this.searchInfo.location.lat,
-      remark: '',
-      mobile: this.searchInfo.mobile,
-      name: this.searchInfo.userName,
-      addressName: this.searchInfo.address,
-      cityCode: this.searchInfo.cityCode,
-    };
+    // 登录状态下可保存联系人和地址
+    if (this.isLogin) {
+      const PARAMRS_CERATE_REQUEST = {
+        address: this.searchInfo.name,
+        street: this.searchInfo.street,
+        isDefault: false,
+        serviceType: 1,
+        longitude: this.searchInfo.location.lng,
+        latitude: this.searchInfo.location.lat,
+        remark: '',
+        mobile: this.searchInfo.mobile,
+        name: this.searchInfo.userName,
+        addressName: this.searchInfo.address,
+        cityCode: this.searchInfo.cityCode,
+      };
 
-    // 保存联系人和地址
-    ghbRequest({
-      url: API.CREATE,
-      method: 'POST',
-      data: PARAMRS_CERATE_REQUEST
-    }).then((res: any) => {
-      if (res.statusCode !== 200) {
-        showToastError(res.data.message);
-      } else {
-        // console.log('保存成功');
-      }
-    });
+      // 保存联系人和地址
+      ghbRequest({
+        url: API.CREATE,
+        method: 'POST',
+        data: PARAMRS_CERATE_REQUEST
+      }).then((res: any) => {
+        if (res.statusCode !== 200) {
+          showToastError(res.data.message);
+        } else {
+          // console.log('保存成功');
+        }
+      });
+    }
 
     goBackSetData({
       searchInfo: this.searchInfo

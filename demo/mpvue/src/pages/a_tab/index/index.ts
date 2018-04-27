@@ -5,7 +5,8 @@ import {
   formatCurrency,
   showToastError,
   getOtherPage,
-  formatGhbGoodsRemarkDate
+  formatGhbGoodsRemarkDate,
+  wxPosChangtobdPos
 } from '../../../utils';
 import API from '../../../api';
 import item from '@/components/item/item.vue';
@@ -395,8 +396,41 @@ class Index extends Vue {
     } else {
       this.getListData();
     }
-
   }
+
+  // mounted() {
+  //   const _this = this;
+  //   wx.getLocation({
+  //     type: 'gcj02',
+  //     success: function (res: any) {
+  //       // console.log(res);
+  //       const pos = wxPosChangtobdPos(res.latitude, res.longitude);
+  //       // console.log(pos);
+
+  //       // 参考：http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
+  //       wx.request({
+  //         url: API.BAIDU_MAP.GEOCODER,
+  //         data: {
+  //           location: `${pos.lat},${pos.lng}`,
+  //         },
+  //         success: function (res: any) {
+  //           // console.log(res.data);
+  //           if (res.statusCode === 200) {
+  //             if (res.data && res.data.result && res.data.result.formatted_address) {
+  //               const address = res.data.result.formatted_address;
+  //               _this.startInfo = {
+  //                 name: address
+  //               };
+  //             }
+  //           }
+  //         }
+  //       });
+
+  //     },
+  //   });
+
+
+  // }
 }
 
 export default Index;
