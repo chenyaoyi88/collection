@@ -5,10 +5,6 @@ import API from '../../../api';
 import noorder from './noorder.vue';
 import sliderSelect from '@/components/slider/slider_select.vue';
 
-import mockData from './mock.json';
-
-// NOTE：/api/v1/logistics/logisticsorders 接口缺少【车型】 和 【额外服务】字段
-
 @Component({
   components: {
     item,
@@ -17,8 +13,6 @@ import mockData from './mock.json';
   }
 })
 class Order extends Vue {
-  mockData: any = mockData;
-
   // 是否登录
   isLogin: boolean = false;
   // tab 标题
@@ -71,7 +65,7 @@ class Order extends Vue {
   tabSwitch(index: number) {
     this.currentIndex = index;
     this.isListNoData = false;
-    this.titleSlider.left = this.titleSlider.width * this.currentIndex;
+    this.titleSlider.left = 100 * this.currentIndex;
     this.loadCurrentListData(true);
   }
 
@@ -104,107 +98,72 @@ class Order extends Vue {
 
   // 请求接口
   getList(listType: string, searchType: number, reload: boolean) {
+    const oTab = this;
+
     wx.showLoading({
       title: '加载中',
       mask: true
     });
-    const oTab = this;
 
-    let offset: number = 0;
-
-    if (!reload) {
-      offset = oTab[listType + 'Offset'];
-    } else {
+    if (reload) {
       wx.pageScrollTo({
         scrollTop: 0,
         duration: 0
       });
-
-      for (let j = 0; j <= oTab[listType + 'Offset'] / 10; j++) {
-        oTab[listType][j] = [];
-      }
-      offset = oTab[listType + 'Offset'] = 0;
     }
 
     ghbRequest({
       url: API.LOGISTICSORDERS,
       data: {
         searchType,
-        offset,
+        offset: reload ? 0 : oTab[listType + 'Offset'],
         limit: this.pageLimit
       }
     }).then((res: any) => {
       wx.hideLoading();
       if (res.statusCode === 200) {
         oTab[listType + 'Tmp'] = res.data;
-
         let aShowList = [];
-
         if (res.data && res.data.length) {
+
+          const pageSize = oTab[listType + 'Offset'] / 10;
+
           for (let i = 0; i < res.data.length; i++) {
             const order = res.data[i];
             order.statusText = getOrderStatusText(order);
             aShowList.push(order);
           }
-          oTab[listType][offset / 10] = aShowList;
+
+          if (reload) {
+            for (let j = 0; j <= pageSize; j++) {
+              if (j > 0) {
+                oTab[listType][j] = [];
+              } else {
+                oTab[listType][j] = aShowList;
+              }
+            }
+            oTab[listType + 'Offset'] = 0;
+          } else {
+            oTab[listType][pageSize] = aShowList;
+          }
+
         } else {
           if (!(oTab[listType] && oTab[listType][0].length) && !res.data.length) {
             this.isListNoData = true;
+          } else if (!res.data.length) {
+            showToastError('没有更多数据了');
           }
         }
         wx.stopPullDownRefresh();
       }
     });
 
-    // // mock数据
-    // setTimeout(() => {
-    //   wx.hideLoading();
-    //   oTab[listType + 'Tmp'] = mockData;
-
-    //   let aShowList = [];
-
-    //   if (mockData && mockData.length) {
-    //     for (let i = 0; i < mockData.length; i++) {
-    //       const order = mockData[i];
-    //       let json = {
-    //         paymentAmount: order.paymentAmount,
-    //         logisticsOrderTime: order.logisticsOrderTime,
-    //         statusText: getOrderStatusText(order.status),
-    //         senderAddressName: order.senderAddressName,
-    //         senderSiteName: order.senderSiteName,
-    //         receiverAddressName: order.receiverAddressName,
-    //         goodsDesc: order.goodsDesc,
-    //         paymentStatus: order.paymentStatus,
-    //         id: order.id
-    //       };
-    //       aShowList.push(json);
-    //     }
-
-    //     if (reload) {
-    //       wx.pageScrollTo({
-    //         scrollTop: 0,
-    //         duration: 0
-    //       });
-
-    //       for (let j = 0; j <= oTab[listType + 'Offset'] / 10; j++) {
-    //         oTab[listType][j] = [];
-    //       }
-    //       oTab[listType + 'Offset'] = 0;
-    //     }
-    //     oTab[listType][oTab[listType + 'Offset'] / 10] = aShowList;
-    //   } else {
-    //     this.isListNoData = true;
-    //   }
-    // }, 100);
   }
 
   // 向上滚动获取更多数据
   getMoreListData(name: string, type: number) {
     if (this[name + 'Tmp'].length < this.pageLimit) {
-      wx.showToast({
-        title: '没有更多数据了',
-        icon: 'none'
-      });
+      showToastError('没有更多数据了');
       return;
     }
     this[name + 'Offset'] += 10;
@@ -299,7 +258,6 @@ class Order extends Vue {
         const PARAMS_PAY = JSON.parse(res.data.payData);
         PARAMS_PAY.success = function (res: any) {
           // 支付成功，刷新当前列表
-          // this.loadCurrentListData(true);
           _this.tabSwitch(0);
         };
         PARAMS_PAY.fail = function (res: any) {

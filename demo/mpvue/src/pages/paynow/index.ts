@@ -58,14 +58,6 @@ class Index extends Vue {
               });
             };
 
-            // PARAMS_PAY.fail = function (res: any) {
-            //   wx.hideLoading();
-            //   // 支付取消
-            //   wx.switchTab({
-            //     url: '../a_tab/order/main'
-            //   });
-            // };
-
             wx.requestPayment(PARAMS_PAY);
           } else {
             showToastError('下单失败，请稍后再试');

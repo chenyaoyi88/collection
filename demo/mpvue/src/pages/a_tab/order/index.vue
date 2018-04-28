@@ -15,8 +15,7 @@
       <div class="title-box">
         <div v-for="(item, index) in tabTitle" class="title-list-item" :key="index" :class="{active: currentIndex === index}" @click="tabClick(index)">{{ item }}</div>
         <div class="title-slider" 
-          :style="{width: titleSlider.width + '%',left: titleSlider.left + '%'}"
-        >
+          :style="{width: titleSlider.width + '%',transform: 'translate3d(' + titleSlider.left + '%,0,0)'}">
           <div class="slider"></div>
         </div>
       </div>
@@ -68,14 +67,12 @@
               </div>
               <div class="list-msg">
                 <div class="list-msg-l">订单金额:<text class="color-notice">￥{{ order.paymentAmount }}</text></div>
-
                 <!-- 立即支付 + 未支付，显示2个按钮 -->
                 <div class="list-msg-r" v-if="(order.status === 10 && order.paymentType === 1 && (order.paymentStatus == 0 || order.paymentStatus == 10)) || (order.status === 50 && order.paymentType === 2)">
                   <!-- 已送达 + 未支付不可取消，隐藏取消订单按钮 -->
                   <button v-if="!(order.status === 50 && order.paymentType === 2)" class="ghb-btn cancel" @click="orderCancel(order.id)">取消订单</button>
                   <button class="ghb-btn" @click="orderPay(order)">支付订单</button>
                 </div>
-
               </div>
             </div>
           </block>
@@ -179,7 +176,6 @@
               </div>
               <div class="list-msg">
                 <div class="list-msg-l">订单金额:<text class="color-notice">￥{{ order.paymentAmount }}</text></div>
-                
               </div>
             </div>
           </block>

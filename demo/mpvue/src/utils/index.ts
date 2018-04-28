@@ -22,7 +22,6 @@ import {
   getDesText,
   getOrderStatusText,
   formatGhbGoodsRemarkDate,
-  wxPosChangtobdPos
 } from './ghb.bus';
 
 export {
@@ -47,5 +46,4 @@ export {
   getDesText,
   getOrderStatusText,
   formatGhbGoodsRemarkDate,
-  wxPosChangtobdPos
 };

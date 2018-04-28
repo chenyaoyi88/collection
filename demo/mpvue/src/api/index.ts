@@ -38,7 +38,9 @@ const AK = 'qLnjq14R4oIEEwtqHM3hcuRMsn1q61Hq';
 const API = {
   BAIDU_MAP: {
     SEARCH: `https://api.map.baidu.com/place/v2/search?ak=${AK}&output=json`,
-    GEOCODER: `https://api.map.baidu.com/geocoder/v2/?ak=${AK}&output=json`
+    GEOCODER: `https://api.map.baidu.com/geocoder/v2/?ak=${AK}&output=json`,
+    // 根据小程序返回的经纬度去百度地图查找对应的具体位置：http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
+    GETCURRENTPOS: `https://api.map.baidu.com/geocoder/v2/?coordtype=wgs84ll&output=json&pois=1&ak=${AK}&s=1`
   },
   // 刷新 token
   REFRESH: `${APP_REQUEST_HOST}/api/v1/refresh`,

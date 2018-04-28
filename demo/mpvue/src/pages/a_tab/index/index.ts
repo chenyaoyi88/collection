@@ -1,17 +1,18 @@
 import { Vue, Component, Emit } from 'vue-property-decorator';
+// 方法
 import {
   goBackGetData,
   ghbRequest,
   formatCurrency,
   showToastError,
-  getOtherPage,
   formatGhbGoodsRemarkDate,
-  wxPosChangtobdPos
 } from '../../../utils';
 import API from '../../../api';
+// 组件
 import item from '@/components/item/item.vue';
 import itemTimePicker from '@/components/item/item_time_picker.vue';
 import sliderSelect from '@/components/slider/slider_select.vue';
+// 图片
 import imgGoods from '../../../components/item/icon/goods.png';
 import imgArrow from '../../../components/item/icon/arrow.png';
 
@@ -272,8 +273,6 @@ class Index extends Vue {
     });
   }
 
-
-
   onShow() {
 
     const _this = this;
@@ -398,39 +397,49 @@ class Index extends Vue {
     }
   }
 
-  // mounted() {
-  //   const _this = this;
-  //   wx.getLocation({
-  //     type: 'gcj02',
-  //     success: function (res: any) {
-  //       // console.log(res);
-  //       const pos = wxPosChangtobdPos(res.latitude, res.longitude);
-  //       // console.log(pos);
+  // 获取当前位置
+  mounted() {
+    const _this = this;
+    // 小程序获取经纬度
+    wx.getLocation({
+      type: 'wgs84',
+      success: function (res: any) {
+        const latitude = res.latitude;
+        const longitude = res.longitude;
+        // 经纬度请求百度地图接口获取位置
+        wx.request({
+          url: API.BAIDU_MAP.GETCURRENTPOS,
+          data: {
+            location: `${latitude},${longitude}`
+          },
+          success: function (res: any) {
+            if (res.statusCode === 200) {
 
-  //       // 参考：http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
-  //       wx.request({
-  //         url: API.BAIDU_MAP.GEOCODER,
-  //         data: {
-  //           location: `${pos.lat},${pos.lng}`,
-  //         },
-  //         success: function (res: any) {
-  //           // console.log(res.data);
-  //           if (res.statusCode === 200) {
-  //             if (res.data && res.data.result && res.data.result.formatted_address) {
-  //               const address = res.data.result.formatted_address;
-  //               _this.startInfo = {
-  //                 name: address
-  //               };
-  //             }
-  //           }
-  //         }
-  //       });
+              if (res.data && res.data.result) {
+                // 如果有 展示POI检索结果 ，优先选择这里面的
+                const oResult = res.data.result;
+                if (oResult.pois && oResult.pois.length) {
+                  const posList = res.data.result.pois;
+                  _this.startInfo = {
+                    name: (posList[0] && posList[0].name) || ''
+                  };
+                } else {
+                  // 如果 pois 没有数据，就拿 formatted_address 去展示
+                  _this.startInfo = {
+                    name: oResult.formatted_address || ''
+                  };
+                }
+              }
 
-  //     },
-  //   });
+            }
+          }
+        });
+
+      }
+    })
 
 
-  // }
+  }
 }
 
 export default Index;
