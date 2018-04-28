@@ -1,5 +1,3 @@
-:host {}
-
 .item {
   width: 100%;
   display: flex;
@@ -8,12 +6,17 @@
 }
 
 .item .item-l {
-  width: 50px;
+  width: 100rpx;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   z-index: 3;
+}
+
+.item .item-l .item-icon {
+  width: 36rpx;
+  height: 36rpx;
 }
 
 .item .item-r {
@@ -24,8 +27,8 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  font-size: 14px;
-  padding: 15px 35px 15px 0;
+  font-size: 28rpx;
+  padding: 30rpx 70rpx 30rpx 0;
   border-top: 1px solid #eeeeee;
   line-height: 1.7;
 }
@@ -33,8 +36,8 @@
 /* item 左侧 icon 发货/收货 点 */
 
 .item .item-l .item-point {
-  width: 11px;
-  height: 11px;
+  width: 22rpx;
+  height: 22rpx;
   border-radius: 50%;
   position: relative;
   z-index: 5;
@@ -51,7 +54,7 @@
 .item .item-l .item-point-line {
   position: absolute;
   left: 50%;
-  width: 1px;
+  width: 1rpx;
   height: 50%;
   z-index: 4;
   background: #eeeeee;
@@ -90,7 +93,7 @@
 
 .item-r .item-r-arrow {
   position: absolute;
-  right: 15px;
+  right: 30rpx;
   top: 0px;
   z-index: 3;
   height: 100%;
@@ -100,6 +103,11 @@
 }
 
 .item-r .item-r-arrow .img-item-arrow {
-  width: 8px;
-  height: 13px;
+  width: 16rpx;
+  height: 26rpx;
+}
+
+/* 定制样式 */
+.item-point-class .item-r {
+  min-height: 134rpx;
 }

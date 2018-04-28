@@ -23,7 +23,7 @@ Page({
   //   console.log(e);
   // },
   onLoad: function () {
-    console.log(this);
+    console.log(wx.getSystemInfoSync());
 
     switch (this.data.tabIndex) {
       case 0:
