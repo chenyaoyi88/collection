@@ -71,7 +71,7 @@ export default {
     clearInterval(this.timer);
   },
   // 每次创建都重置
-  mounted() {
+  onShow() {
     this.reset();
   }
 };

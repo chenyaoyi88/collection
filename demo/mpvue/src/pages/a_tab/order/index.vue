@@ -13,174 +13,37 @@
     <div v-if="isLogin">
 
       <div class="title-box">
-        <div v-for="(item, index) in tabTitle" class="title-list-item" :key="index" :class="{active: currentIndex === index}" @click="tabClick(index)">{{ item }}</div>
+        <div v-for="(item, index) in tabTitle" class="title-list-item" :key="index" :class="{active: currentIndex === index}" @click="tabClick(index)">{{ item.name }}</div>
         <div class="title-slider" 
           :style="{width: titleSlider.width + '%',transform: 'translate3d(' + titleSlider.left + '%,0,0)'}">
           <div class="slider"></div>
         </div>
       </div>
 
-
       <div class="tab-box">
-        <div class="tab tab1" :class="{active: currentIndex === 0}">
-          <noorder :isShow="isListNoData" text="您最近没有订单"></noorder>
-          
-          <block v-if="ingList.length" v-for="(item, index) of ingList" :key="index">
-            <div class="list-box" v-for="(order, orderIndex) of item" :key="order.id+orderIndex">
-              <div class="list-tile">
-                <div class="list-tile-l">{{ order.logisticsOrderTime }}</div>
-                <div class="list-tile-r" :class="{'color-notice': order.paymentStatus == 0 || order.paymentStatus == 10}">{{ order.statusText }}</div>
-              </div>
-              <div class="list-content">
-                <item 
-                  iconType="point" 
-                  textTop="" 
-                  :textCenter="order.senderAddressName" 
-                  :textBottom="order.senderSiteName + ' ' + (order.senderStreet || '')"  
-                  noBorderTop="true"
-                  isArrowHide="true"
-                  itemClass="order"
-                ></item>
-                <item 
-                  iconType="point" 
-                  pointType="end" 
-                  textTop="" 
-                  :textCenter="order.receiverAddressName" 
-                  :textBottom="order.receiverSiteName + ' ' + (order.receiverStreet || '')"  
-                  noBorderTop="true"
-                  isArrowHide="true"
-                  itemClass="order"
-                ></item>
-                <div class="info">
-                  <p class="info-car">
-                    <text class="info-box">
-                      <text class="info-title">车型：</text><text class="info-text">{{ order.carTypeName }}</text>
-                    </text>
-                    <text class="info-box">
-                      <text class="info-title">额外服务：</text><text class="info-text">{{ order.additionalRequests }}</text>
-                    </text>
-                  </p>
-                  <p class="info-car">
-                    <text class="info-title">订单信息：</text><text class="info-text">{{ order.goodsDesc }}</text>
-                  </p>
-                </div>
-              </div>
-              <div class="list-msg">
-                <div class="list-msg-l">订单金额:<text class="color-notice">￥{{ order.paymentAmount }}</text></div>
-                <!-- 立即支付 + 未支付，显示2个按钮 -->
-                <div class="list-msg-r" v-if="(order.status === 10 && order.paymentType === 1 && (order.paymentStatus == 0 || order.paymentStatus == 10)) || (order.status === 50 && order.paymentType === 2)">
-                  <!-- 已送达 + 未支付不可取消，隐藏取消订单按钮 -->
-                  <button v-if="!(order.status === 50 && order.paymentType === 2)" class="ghb-btn cancel" @click="orderCancel(order.id)">取消订单</button>
-                  <button class="ghb-btn" @click="orderPay(order)">支付订单</button>
-                </div>
-              </div>
-            </div>
-          </block>
 
-        </div>
-        <div class="tab tab2" :class="{active: currentIndex === 1}">
-          <noorder :isShow="isListNoData" text="您最近没有订单"></noorder>
+        <orderlist 
+          :tabIndex="0"
+          :currentIndex="currentIndex"
+          :isShowNone="ingListNone"
+          :dataList="ingList"
+          @orderCancel="orderCancel"
+          @orderPay="orderPay"
+        ></orderlist>
 
-          <block v-if="finishList.length" v-for="(item, index) of finishList" :key="index">
-            <div class="list-box" v-for="(order, orderIndex) of item" :key="order.id+orderIndex">
-              <div class="list-tile">
-                <div class="list-tile-l">{{ order.logisticsOrderTime }}</div>
-                <div class="list-tile-r">{{ order.statusText }}</div>
-              </div>
-              <div class="list-content">
-                <item 
-                  iconType="point" 
-                  textTop="" 
-                  :textCenter="order.senderAddressName" 
-                  :textBottom="order.senderSiteName + ' ' + (order.senderStreet || '')"  
-                  noBorderTop="true"
-                  isArrowHide="true"
-                  itemClass="order"
-                ></item>
-                <item 
-                  iconType="point" 
-                  pointType="end" 
-                  textTop="" 
-                  :textCenter="order.receiverAddressName" 
-                  :textBottom="order.receiverSiteName + ' ' + (order.receiverStreet || '')"  
-                  noBorderTop="true"
-                  isArrowHide="true"
-                  itemClass="order"
-                ></item>
-                <div class="info">
-                  <p class="info-car">
-                    <text class="info-box">
-                      <text class="info-title">车型：</text><text class="info-text">{{ order.carTypeName }}</text>
-                    </text>
-                    <text class="info-box">
-                      <text class="info-title">额外服务：</text><text class="info-text">{{ order.additionalRequests }}</text>
-                    </text>
-                  </p>
-                  <p class="info-car">
-                    <text class="info-title">订单信息：</text>
-                    <text class="info-text">{{ order.goodsDesc }}</text>
-                  </p>
-                </div>
-              </div>
-              <div class="list-msg">
-                <div class="list-msg-l">订单金额:<text class="color-notice">￥{{ order.paymentAmount }}</text></div>
-              </div>
-            </div>
-          </block>
+        <orderlist 
+          :tabIndex="1"
+          :currentIndex="currentIndex"
+          :isShowNone="finishListNone"
+          :dataList="finishList"
+        ></orderlist>
 
-        </div>
-        <div class="tab tab3" :class="{active: currentIndex === 2}">
-          <noorder :isShow="isListNoData" text="您最近没有订单"></noorder>
-
-          <block v-if="cancelList.length" v-for="(item, index) of cancelList" :key="index">
-            <div class="list-box" v-for="(order, orderIndex) of item" :key="order.id+orderIndex">
-              <div class="list-tile">
-                <div class="list-tile-l">{{ order.logisticsOrderTime }}</div>
-                <div class="list-tile-r">{{ order.statusText }}</div>
-              </div>
-              <div class="list-content">
-
-                <item 
-                  iconType="point" 
-                  textTop="" 
-                  :textCenter="order.senderAddressName" 
-                  :textBottom="order.senderSiteName + ' ' + (order.senderStreet || '')"  
-                  noBorderTop="true"
-                  isArrowHide="true"
-                  itemClass="order"
-                ></item>
-                <item 
-                  iconType="point" 
-                  pointType="end" 
-                  textTop="" 
-                  :textCenter="order.receiverAddressName" 
-                  :textBottom="order.receiverSiteName + ' ' + (order.receiverStreet || '')"  
-                  noBorderTop="true"
-                  isArrowHide="true"
-                  itemClass="order"
-                ></item>
-
-                <div class="info">
-                  <p class="info-car">
-                    <text class="info-box">
-                      <text class="info-title">车型：</text><text class="info-text">{{ order.carTypeName }}</text>
-                    </text>
-                    <text class="info-box">
-                      <text class="info-title">额外服务：</text><text class="info-text">{{ order.additionalRequests || '无' }}</text>
-                    </text>
-                  </p>
-                  <p class="info-car">
-                    <text class="info-title">订单信息：</text><text class="info-text">{{ order.goodsDesc }}</text>
-                  </p>
-                </div>
-              </div>
-              <div class="list-msg">
-                <div class="list-msg-l">订单金额:<text class="color-notice">￥{{ order.paymentAmount }}</text></div>
-              </div>
-            </div>
-          </block>
-
-        </div>
+        <orderlist 
+          :tabIndex="2"
+          :currentIndex="currentIndex"
+          :isShowNone="cancelListNone"
+          :dataList="cancelList"
+        ></orderlist>
       </div>
 
     </div>

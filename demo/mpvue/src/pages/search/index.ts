@@ -42,6 +42,10 @@ class Index extends Vue {
     });
   }
 
+  onUnload() {
+    this.results = [];
+  }
+
   // 搜索
   search(e: any) {
     const __this = this;
@@ -78,7 +82,6 @@ class Index extends Vue {
     searchInfo.mobile = this.searchResult.mobile ? this.searchResult.mobile : '';
     searchInfo.street = this.searchResult.street ? this.searchResult.street : '';
     wx.navigateTo({
-      // url: '../contact/main?searchInfo=' + JSON.stringify(searchInfo)
       url: `../contact/main?searchInfo=${JSON.stringify(searchInfo)}`
     });
   }

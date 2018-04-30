@@ -2,7 +2,6 @@ import { Vue, Component, Provide } from 'vue-property-decorator';
 import btnVcode from '@/components/button/vcode.vue'; // mpvue目前只支持的单文件组件
 import API from '../../api';
 import { isInputEmpty, isPhoneNumber, showToastError, ghbRequest } from '../../utils';
-import { trim } from '../../utils/validate';
 
 // 必须使用装饰器的方式来指定components
 @Component({
