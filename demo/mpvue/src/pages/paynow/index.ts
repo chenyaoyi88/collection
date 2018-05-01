@@ -9,7 +9,7 @@ class Index extends Vue {
 
   logisticsorderParams: any;
 
-  onLoad(options: { logisticsorder: any; costs: any; }) {
+  onLoad(options: { logisticsorder: any; costs: any }) {
     this.logisticsorderParams = JSON.parse(options.logisticsorder);
     this.costs = JSON.parse(options.costs);
   }
@@ -27,7 +27,7 @@ class Index extends Vue {
       data: this.logisticsorderParams
     }).then((res: any) => {
       // 下单成功，获取订单号
-      if (res.data.id) {
+      if (res.data && res.data.id) {
         ghbRequest({
           url: API.PAY,
           method: 'POST',
@@ -41,7 +41,6 @@ class Index extends Vue {
         }).then((res: any) => {
           // 获取微信支付所需参数
           if (res.statusCode === 200) {
-
             // 下单成功之后，清空首页填写的信息
             this.$store.commit('isIndexResetChange', {
               isIndexReset: true
@@ -50,7 +49,7 @@ class Index extends Vue {
             const PARAMS_PAY = JSON.parse(res.data.payData);
 
             // 微信支付成功
-            PARAMS_PAY.success = PARAMS_PAY.fail = function (res: any) {
+            PARAMS_PAY.success = PARAMS_PAY.fail = function(res: any) {
               wx.hideLoading();
               // 支付成功
               wx.switchTab({
@@ -64,8 +63,9 @@ class Index extends Vue {
             wx.hideLoading();
           }
         });
+      } else {
+        showToastError('下单失败，请重试');
       }
-
     });
   }
 }

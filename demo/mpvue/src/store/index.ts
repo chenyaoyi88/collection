@@ -5,7 +5,6 @@ Vue.use(Vuex as any);
 
 const store = new Vuex.Store({
   state: {
-    tabIndex: 0,
     carTypeList: [],
     additionalServicesList: [],
     isIndexReset: false,
@@ -19,10 +18,6 @@ const store = new Vuex.Store({
     additionalServicesListChange: (state, newState) => {
       state.additionalServicesList = newState.additionalServicesList;
       return state.additionalServicesList;
-    },
-    tabIndexChange: (state, newState) => {
-      state.tabIndex = newState.tabIndex;
-      return state.tabIndex;
     },
     isIndexResetChange: (state, newState) => {
       state.isIndexReset = newState.isIndexReset;

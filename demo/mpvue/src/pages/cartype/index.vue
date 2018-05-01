@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <button @click="test">测试按钮</button> -->
     <ul class="cartype-list">
       <li class="list-item" v-for="(item, index) of carTypeList" :key="index" @click="cartypeSelect(item)">
 

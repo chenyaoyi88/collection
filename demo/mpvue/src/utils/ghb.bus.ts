@@ -63,7 +63,7 @@ export function ghbRequest(options: GhbRequest): Promise<any> {
       header: {
         authorization: wx.getStorageSync('token') || ''
       },
-      success: function (res: any) {
+      success: function(res: any) {
         // console.log(res);
         if (res.statusCode === 401) {
           wx.showToast({
@@ -77,12 +77,12 @@ export function ghbRequest(options: GhbRequest): Promise<any> {
         }
         resolve(res);
       },
-      fail: function (err: any) {
+      fail: function(err: any) {
         console.log(err);
         showToastError();
         reject('fail');
       },
-      complete: function () {
+      complete: function() {
         if (isToastShowing) return;
         wx.hideLoading();
         reject('complete');
@@ -102,42 +102,41 @@ export function getDesText(des: string) {
 }
 
 export function getOrderStatusText(data: any): string {
-
   let statusText: string = '';
   switch (data.status) {
     case -10:
-      statusText = "已取消";
+      statusText = '已取消';
       break;
     case 10:
       // 立即支付
-      statusText = "正在寻找司机";
+      statusText = '正在寻找司机';
       if (data.paymentType == 1) {
         if (data.paymentStatus == 0 || data.paymentStatus == 10) {
-          statusText = "下单未支付";
+          statusText = '下单未支付';
         }
       } else {
         // 货到付款，支付保费
         if (data.paymentStatus == 0) {
           if (data.insuranceStatus == 1) {
-            statusText = "未支付保费";
+            statusText = '未支付保费';
           }
         }
       }
       break;
     case 20:
-      statusText = "已有司机接单";
+      statusText = '已有司机接单';
       break;
     case 30:
-      statusText = "正在装货";
+      statusText = '正在装货';
       break;
     case 40:
-      statusText = "运送中";
+      statusText = '运送中';
       break;
     case 50:
       statusText = data.paymentType == 2 ? '货已送达，对方未付款' : '已送达目的地';
       break;
     case 60:
-      statusText = "已完成";
+      statusText = '已完成';
       break;
   }
   return statusText;
@@ -145,10 +144,10 @@ export function getOrderStatusText(data: any): string {
 
 /**
  * 将 年-月-日 时:分:秒处理成格式：月-日 时:分 返回
- * 
+ *
  * @export
  * @param {string} sDate 年-月-日 时:分:秒
- * @returns 
+ * @returns
  */
 export function formatGhbGoodsRemarkDate(sDate: string) {
   if (sDate) {
@@ -169,3 +168,70 @@ export function formatGhbGoodsRemarkDate(sDate: string) {
   }
 }
 
+export function getCurrentPosition(url: string) {
+  return new Promise((resolve, reject) => {
+    // 小程序获取经纬度
+    wx.getLocation({
+      type: 'wgs84',
+      success: function(res: any) {
+        const latitude = res.latitude;
+        const longitude = res.longitude;
+        // 经纬度请求百度地图接口获取位置
+        wx.request({
+          url,
+          data: {
+            location: `${latitude},${longitude}`
+          },
+          success: function(res: any) {
+            if (res.data && res.data.result) {
+              const oResult = res.data.result;
+              let sPosition = '';
+              // 如果有 展示POI检索结果 ，优先选择这里面的
+              if (oResult.pois && oResult.pois.length) {
+                const posList = res.data.result.pois;
+                sPosition = (posList[0] && posList[0].name) || '';
+              } else {
+                // 如果 pois 没有数据，就拿 formatted_address 去展示
+                sPosition = oResult.formatted_address || '';
+              }
+              resolve(sPosition);
+            }
+          },
+          fail: function() {
+            reject({
+              type: 'getPosition',
+              msg: '百度获取具体位置失败'
+            });
+          }
+        });
+      },
+      fail: function() {
+        reject({
+          type: 'getLocation',
+          msg: '获取经纬度失败'
+        });
+      }
+    });
+  });
+}
+
+export function refreshToken(url: string) {
+  return new Promise((resolve, reject) => {
+    // 如果有 token ，先更新
+    if (wx.getStorageSync('token')) {
+      ghbRequest({
+        url,
+        data: {
+          authorization: wx.getStorageSync('token') || ''
+        }
+      }).then((res: any) => {
+        if (res.data && res.data.token) {
+          wx.setStorageSync('token', res.data.token);
+        }
+        resolve();
+      });
+    } else {
+      resolve();
+    }
+  });
+}

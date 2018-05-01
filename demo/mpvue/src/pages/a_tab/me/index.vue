@@ -21,7 +21,7 @@
           <button class="ghb-btn logout-btn" @click="logout">退出登录</button>
         </div>
       </div>
-      <p class="version">版本号 V1.0.0</p>
+      <p class="version">版本号 V1.0.1</p>
     </div>
   </div>
 </template>

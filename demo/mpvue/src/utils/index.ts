@@ -22,6 +22,8 @@ import {
   getDesText,
   getOrderStatusText,
   formatGhbGoodsRemarkDate,
+  getCurrentPosition,
+  refreshToken
 } from './ghb.bus';
 
 export {
@@ -46,4 +48,6 @@ export {
   getDesText,
   getOrderStatusText,
   formatGhbGoodsRemarkDate,
+  getCurrentPosition,
+  refreshToken
 };

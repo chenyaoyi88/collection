@@ -131,6 +131,7 @@ class Login extends Vue {
     });
   }
 
+  // 广货宝使用条款和服务协议跳 webview h5页面
   ghbRuleService(): void {
     wx.navigateTo({
       url: '../webview/main?webUrl=' + 'https://www.guanghuobao.com/static/app-h5/resources/agreements/agreement_use.html'

@@ -1,11 +1,12 @@
 import { Vue, Component, Emit } from 'vue-property-decorator';
 // 方法
 import {
-  goBackGetData,
   ghbRequest,
   formatCurrency,
   showToastError,
   formatGhbGoodsRemarkDate,
+  getCurrentPosition,
+  refreshToken
 } from '../../../utils';
 import API from '../../../api';
 // 组件
@@ -25,15 +26,11 @@ import imgArrow from '../../../components/item/icon/arrow.png';
   }
 })
 class Index extends Vue {
-
   img: any = {
     imgGoods,
     imgArrow
   };
 
-  isLogin: boolean = false;
-
-  // 下单需要的参数
   // 发货信息
   startInfo: any = {};
   // 收货信息
@@ -70,7 +67,6 @@ class Index extends Vue {
   fnCanCost(): void {
     if (!(this.startInfo.name && this.endInfo.name)) return;
 
-    const _this = this;
     const PARAMS_COSTS_REQUEST: CalcCost_Request = {
       senderX: this.startInfo.location.lng,
       senderY: this.startInfo.location.lat,
@@ -89,10 +85,10 @@ class Index extends Vue {
       data: PARAMS_COSTS_REQUEST
     }).then((res: any) => {
       if (res.statusCode === 200) {
-        _this.costs = res.data;
-        _this.costs.amount = formatCurrency(_this.costs.amount);
-        _this.costs.zptFreight = formatCurrency(_this.costs.zptFreight);
-        _this.costs.nightServiceFee = formatCurrency(_this.costs.nightServiceFee);
+        this.costs = res.data;
+        this.costs.amount = formatCurrency(this.costs.amount);
+        this.costs.zptFreight = formatCurrency(this.costs.zptFreight);
+        this.costs.nightServiceFee = formatCurrency(this.costs.nightServiceFee);
       } else {
         showToastError(res.data.message);
       }
@@ -115,7 +111,7 @@ class Index extends Vue {
   // 选择车型
   fnCarTypeSelect() {
     if (!this.carTypeList.length) {
-      showToastError('获取车型列表失败，请登录后再重试');
+      showToastError('获取车型列表失败');
       return;
     }
     wx.navigateTo({
@@ -126,7 +122,7 @@ class Index extends Vue {
   // 点击额外服务
   fnExtraServices() {
     if (!this.additionalServicesList.length) {
-      showToastError('获取额外服务列表失败，请登录后再重试');
+      showToastError('获取额外服务列表失败');
       return;
     }
     this.selectSlider = true;
@@ -155,7 +151,7 @@ class Index extends Vue {
     this.sSelectedServices = str;
   }
 
-  // 设置默认车型
+  // 设置默认车型和车型 ID
   fnSetDefaultCar(resetCar: boolean = false) {
     for (let item of this.carTypeList) {
       // 设置小面包为默认车型
@@ -173,7 +169,7 @@ class Index extends Vue {
     }
   }
 
-  // 重置预约时间
+  // 重置页面所有自定义组件
   fnResetComponent() {
     for (let i = 0; i < this.$children.length; i++) {
       const comp = this.$children[i];
@@ -193,10 +189,10 @@ class Index extends Vue {
     this.costs = null;
   }
 
-  // 下一步
+  // 点击下一步
   fnNextStep() {
     // 没有登录去登录页面
-    if (!this.isLogin) {
+    if (!wx.getStorageSync('token')) {
       wx.navigateTo({
         url: '../../login/main'
       });
@@ -223,7 +219,9 @@ class Index extends Vue {
 
     const sGoodsRemarkDate = formatGhbGoodsRemarkDate(this.bookingTime);
     const sClothsAmount = `${this.clothsAmount && `${this.clothsAmount}件`}`;
-    const goodsDesc = `${sGoodsRemarkDate && sGoodsRemarkDate + ' 接货'} ${this.goodsRemark} ${sClothsAmount}`;
+    const goodsDesc = `${sGoodsRemarkDate && sGoodsRemarkDate + ' 接货'} ${
+      this.goodsRemark
+    } ${sClothsAmount}`;
 
     if (!/\S/.test(this.goodsRemark)) {
       showToastError('请输入货物信息');
@@ -265,7 +263,7 @@ class Index extends Vue {
       senderY: this.startInfo.location.lat,
       startCityCode: this.startInfo.cityCode
     };
-    // console.log(PARAMS_LOGISTICSORDER_REQUEST);
+
     wx.navigateTo({
       url: `../../paynow/main?logisticsorder=${JSON.stringify(
         PARAMS_LOGISTICSORDER_REQUEST
@@ -273,12 +271,50 @@ class Index extends Vue {
     });
   }
 
+  // 额外服务列表
+  get additionalServicesList() {
+    return this.$store.state.additionalServicesList;
+  }
+
+  getListData() {
+    // 获取车型列表
+    ghbRequest({
+      url: API.CARTYPE
+    }).then((res: any) => {
+      this.carTypeList = res.data;
+      if (this.carTypeList.length) {
+        this.$store.commit('carTypeListChange', {
+          carTypeList: this.carTypeList
+        });
+        this.fnSetDefaultCar();
+      }
+    });
+
+    // 获取额外服务
+    ghbRequest({
+      url: API.GETADDITIONALSERVICES
+    }).then((res: any) => {
+      this.$store.commit('additionalServicesListChange', {
+        additionalServicesList: res.data
+      });
+    });
+  }
+
+  created() {
+    // 更新 token
+    refreshToken(API.REFRESH).then(() => {
+      this.getListData();
+    });
+
+    // 获取当前位置
+    getCurrentPosition(API.BAIDU_MAP.GETCURRENTPOS).then((position: any) => {
+      this.startInfo = {
+        name: position
+      };
+    });
+  }
+
   onShow() {
-
-    const _this = this;
-    const token = wx.getStorageSync('token');
-    this.isLogin = token ? true : false;
-
     // TODO：页面重置在用户界面出现瞬变的情况，需要优化
     if (this.$store.state.isIndexReset) {
       // 重置所有输入
@@ -336,110 +372,9 @@ class Index extends Vue {
           }
         }
       }
-
-    }
-
-    // console.log(goBackGetData());
-  }
-
-  get additionalServicesList() {
-    return this.$store.state.additionalServicesList;
-  }
-
-  getListData() {
-    const _this = this;
-    // 获取车型列表
-    ghbRequest({
-      url: API.CARTYPE
-    }).then((res: any) => {
-      if (res.statusCode === 200) {
-        _this.carTypeList = res.data;
-        if (_this.carTypeList.length) {
-          _this.$store.commit('carTypeListChange', {
-            carTypeList: _this.carTypeList
-          });
-          _this.fnSetDefaultCar();
-        }
-      }
-    });
-
-    // 获取额外服务
-    ghbRequest({
-      url: API.GETADDITIONALSERVICES
-    }).then((res: any) => {
-      _this.$store.commit('additionalServicesListChange', {
-        additionalServicesList: res.data
-      });
-    });
-  }
-
-  // 处理逻辑：本地存有 token 先更新 token
-  created() {
-    const _this = this;
-
-    // 如果有 token ，先更新
-    if (wx.getStorageSync('token')) {
-      ghbRequest({
-        url: API.REFRESH,
-        data: {
-          authorization: wx.getStorageSync('token') || ''
-        }
-      }).then((res: any) => {
-        if (res.statusCode === 200) {
-          if (res.data.token) {
-            wx.setStorageSync('token', res.data.token);
-          }
-        }
-        this.getListData();
-      });
-    } else {
-      this.getListData();
     }
   }
 
-  // 获取当前位置
-  mounted() {
-    const _this = this;
-    // 小程序获取经纬度
-    wx.getLocation({
-      type: 'wgs84',
-      success: function (res: any) {
-        const latitude = res.latitude;
-        const longitude = res.longitude;
-        // 经纬度请求百度地图接口获取位置
-        wx.request({
-          url: API.BAIDU_MAP.GETCURRENTPOS,
-          data: {
-            location: `${latitude},${longitude}`
-          },
-          success: function (res: any) {
-            if (res.statusCode === 200) {
-
-              if (res.data && res.data.result) {
-                // 如果有 展示POI检索结果 ，优先选择这里面的
-                const oResult = res.data.result;
-                if (oResult.pois && oResult.pois.length) {
-                  const posList = res.data.result.pois;
-                  _this.startInfo = {
-                    name: (posList[0] && posList[0].name) || ''
-                  };
-                } else {
-                  // 如果 pois 没有数据，就拿 formatted_address 去展示
-                  _this.startInfo = {
-                    name: oResult.formatted_address || ''
-                  };
-                }
-              }
-
-            }
-          }
-        });
-
-      }
-    })
-
-
-  }
 }
 
 export default Index;

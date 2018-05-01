@@ -1,4 +1,4 @@
-import { Vue, Component, Provide } from 'vue-property-decorator';
+import { Vue, Component } from 'vue-property-decorator';
 import item from '@/components/item/item.vue';
 import { ghbRequest, showToastError } from '../../../utils';
 import API from '../../../api';
@@ -71,10 +71,6 @@ class Me extends Vue {
         });
 
         eventBus.$emit(ghbEvent.resetOrderList);
-
-        // wx.switchTab({
-        //   url: '../index/main'
-        // });
 
         wx.removeStorageSync('token');
         wx.removeStorageSync('mobile');

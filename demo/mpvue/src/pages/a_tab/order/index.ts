@@ -1,11 +1,12 @@
 import { Vue, Component } from 'vue-property-decorator';
-import item from '@/components/item/item.vue';
 import { ghbRequest, getOrderStatusText, showToastError } from '../../../utils';
 import API from '../../../api';
+import { eventBus, ghbEvent } from '../../eventbus';
+
 import noorder from './noorder.vue';
 import orderlist from './orderlist.vue';
+import item from '@/components/item/item.vue';
 import sliderSelect from '@/components/slider/slider_select.vue';
-import { eventBus, ghbEvent } from '../../eventbus';
 
 @Component({
   components: {
