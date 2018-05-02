@@ -19,9 +19,6 @@ Page({
       tabIndex: e.detail.tabIndex
     });
   },
-  // itemClick1: function (e) {
-  //   console.log(e);
-  // },
   onLoad: function () {
     console.log(wx.getSystemInfoSync());
 

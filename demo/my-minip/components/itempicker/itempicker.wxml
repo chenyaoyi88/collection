@@ -1,0 +1,7 @@
+<!-- 组件模板 -->
+<view class="item-picker">
+    <component-item item-icon-type="icon" item-icon="../../assets/icons/time.png" item-value-left-center="时间" item-value-right="{{bookingTime || '立即叫车'}}"></component-item>
+    <picker class="picker" mode="multiSelector" bindchange="dateChange" bindcolumnchange="dateColumnchange" value="{{dateIndex}}" range-key="name" range="{{dateArray}}">
+        <view class="picker-cover"></view>
+    </picker>
+</view>

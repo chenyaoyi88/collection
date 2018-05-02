@@ -36,13 +36,11 @@
               item-icon="{{iconList.carType}}"
               item-value-left-center="车型"
               item-value-right="请选择车型"
+              is-hide-border-top="true"
             ></component-item>
-            <component-item 
-              item-icon-type="icon"
-              item-icon="{{iconList.time}}"
-              item-value-left-center="时间"
-              item-value-right="立即叫车"
-            ></component-item>
+            
+            <component-item-picker></component-item-picker>
+
             <component-item 
               item-icon-type="icon"
               item-icon="{{iconList.extra}}"
@@ -65,6 +63,7 @@
                 <view class="goods-info-box">{{ goodsRemark || '货物信息，备注等' }}</view>
               </view>
             </component-item>
+
           </view>
 
           <view class="idx-ft-box">

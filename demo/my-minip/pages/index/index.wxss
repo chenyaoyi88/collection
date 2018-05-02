@@ -1,11 +1,11 @@
 @import './order.wxss';
 @import './me.wxss';
-
 page {
   background: #f5f5f5;
 }
 
 /**index.wxss**/
+
 .tab0-item-point {
   margin: 20rpx 0;
 }
@@ -38,4 +38,19 @@ page {
   bottom: 50px;
   z-index: 1;
   width: 100%;
+}
+
+.idx-ft-box .idx-ft-price {
+  position: relative;
+  z-index: 2;
+}
+
+.idx-ft-box .idx-ft-price .price-text {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #f13744;
+  background-color: #fff;
 }

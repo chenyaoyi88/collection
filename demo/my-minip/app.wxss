@@ -1,4 +1,5 @@
 /**app.wxss**/
+
 .container {
   height: 100%;
   display: flex;
@@ -35,26 +36,31 @@
 
 .ghb-btn {
   width: 100%;
-  height: 47px;
-  background-color: #f33650;
-  font-size: 18px;
+  height: 94rpx;
+  background-color: #F33650;
+  font-size: 36rpx;
   color: #fff;
-  border-radius: 0px;
+  border-radius: 0;
+  border: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+button::after {
+  display: none;
 }
 
 .ghb-btn:active {
   background-color: #db343f;
 }
 
-.ghb-btn:after {
+/* .ghb-btn:after {
   background-color: #db343f;
-}
+} */
 
 .ghb-btn[disabled] {
-  color: #fdfdfd !important;
+  color: #1f0202 !important;
   background-color: #dfdfdf !important;
 }
 

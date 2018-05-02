@@ -54,10 +54,11 @@
 .item .item-l .item-point-line {
   position: absolute;
   left: 50%;
-  width: 1rpx;
+  width: 2rpx;
   height: 50%;
   z-index: 4;
   background: #eeeeee;
+  margin-left: -1rpx;
 }
 
 .item .item-l .item-point-line.start {

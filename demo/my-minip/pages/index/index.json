@@ -1,7 +1,7 @@
 {
-  "navigationBarTitleText": "首页",
   "usingComponents": {
     "component-item": "../../components/item/item",
+    "component-item-picker": "../../components/itempicker/itempicker",
     "component-tabbar": "../../components/tabbar/tabbar"
   }
 }
