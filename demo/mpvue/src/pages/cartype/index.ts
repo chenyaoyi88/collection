@@ -12,6 +12,7 @@ import arrow from '../../../static/images/arrow.png';
 // 必须使用装饰器的方式来指定components
 @Component
 class Index extends Vue {
+  // carTypeData: Array<any> = [];
   img: any = {
     text_forbid_red,
     text_forbid_yellow,

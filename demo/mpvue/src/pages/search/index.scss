@@ -13,14 +13,38 @@ page {
   .site-list-box {
     flex: 1;
     overflow-y: auto;
+    
+    position: absolute;
+    left: 0;
+    top: 48px;
+    width: 100%;
+    height: calc(100vh - 48px);
+    z-index: 1;
+
     .site-list {
       background-color: #fff;
       li {
-        font-size: 14px;
-        padding: 10px 10px 10px 0px;
+        display: flex;
+        flex-direction: row;
         margin-left: 15px;
         border-top: 1px solid #eaeaea;
-        line-height: 1.6;
+        .site-list-item-tag {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-right: 5px;
+          img {
+            width: 18px;
+            height: 18px;
+          }
+        }
+        .site-list-item {
+          flex: 1;
+          font-size: 14px;
+          padding: 10px 10px 10px 0px;
+          // margin-left: 15px;
+          line-height: 1.6;
+        }
         &:first-child {
           border-top: none;
         }
@@ -28,6 +52,38 @@ page {
           font-size: 12px;
           color: #c2c2c2;
         }
+      }
+    }
+  }
+}
+
+.site-current-pos {
+  .site-current-title {
+    font-size: 16px;
+    padding: 5px 10px;
+  }
+  .site-current-box {
+    background-color: #fff;
+    padding: 0 10px;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    .site-current-name {
+    }
+    .site-current-info {
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      color: #F33650;
+      .site-current-img {
+        width: 18px;
+        height: 18px;
+        margin: 0 5px;
       }
     }
   }
@@ -77,7 +133,7 @@ page {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #F33650;
+    color: #f33650;
     font-size: 16px;
   }
 }

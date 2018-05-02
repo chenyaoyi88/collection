@@ -2,6 +2,7 @@ import { Vue, Component, Provide } from 'vue-property-decorator';
 import btnVcode from '@/components/button/vcode.vue'; // mpvue目前只支持的单文件组件
 import API from '../../api';
 import { isInputEmpty, isPhoneNumber, showToastError, ghbRequest } from '../../utils';
+import { trim } from '../../utils/validate';
 
 // 必须使用装饰器的方式来指定components
 @Component({
@@ -131,7 +132,6 @@ class Login extends Vue {
     });
   }
 
-  // 广货宝使用条款和服务协议跳 webview h5页面
   ghbRuleService(): void {
     wx.navigateTo({
       url: '../webview/main?webUrl=' + 'https://www.guanghuobao.com/static/app-h5/resources/agreements/agreement_use.html'

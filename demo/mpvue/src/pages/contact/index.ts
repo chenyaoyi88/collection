@@ -10,7 +10,7 @@ import street from '../../components/item/icon/street.png';
 // 必须使用装饰器的方式来指定components
 @Component({
   components: {
-    item
+    item,
   }
 })
 class Index extends Vue {
@@ -31,6 +31,8 @@ class Index extends Vue {
     this.mobile = '';
     this.street = '';
     this.searchInfo = JSON.parse(option.searchInfo);
+    // this.searchInfo.from = this.searchInfo.from;
+    // console.log('searchInfo', this.searchInfo.from);
     if (this.searchInfo) {
       this.name = this.searchInfo.userName;
       this.mobile = this.searchInfo.mobile;
@@ -56,11 +58,15 @@ class Index extends Vue {
       data: {
         location: `${this.searchInfo.location.lat},${this.searchInfo.location.lng}`
       },
-      success: function(res: any) {
-        if (res.data && res.data.result && res.data.result.cityCode) {
-          __this.searchInfo.cityCode = res.data.result.cityCode;
+      success: function (res: any) {
+        if (res.statusCode === 200) {
+          if (res.data && res.data.result && res.data.result.cityCode) {
+            __this.searchInfo.cityCode = res.data.result.cityCode;
+          } else {
+            __this.searchInfo.cityCode = '';
+          }
         } else {
-          __this.searchInfo.cityCode = '';
+          showToastError('获取地址所在城市失败');
         }
       }
     });
@@ -79,7 +85,7 @@ class Index extends Vue {
     this.searchInfo.mobile = this.mobile;
     this.searchInfo.street = this.street;
 
-    if (!/\S/.test(this.searchInfo.userName) || !/\S/.test(this.searchInfo.mobile)) {
+    if (!(/\S/.test(this.searchInfo.userName)) || !(/\S/.test(this.searchInfo.mobile))) {
       showToastError('联系人姓名和联系方式不能为空');
       return;
     }
@@ -102,27 +108,31 @@ class Index extends Vue {
         mobile: this.searchInfo.mobile,
         name: this.searchInfo.userName,
         addressName: this.searchInfo.address,
-        cityCode: this.searchInfo.cityCode
+        cityCode: this.searchInfo.cityCode,
       };
 
-      // 保存联系人和地址（点击确定的时候用户完全不知道的情况下保存）
+      // 保存联系人和地址
       ghbRequest({
         url: API.CREATE,
         method: 'POST',
         data: PARAMRS_CERATE_REQUEST
+      }).then((res: any) => {
+        if (res.statusCode !== 200) {
+          showToastError(res.data.message);
+        } else {
+          // console.log('保存成功');
+        }
       });
     }
 
-    goBackSetData(
-      {
-        searchInfo: this.searchInfo
-      },
-      3
-    );
+    goBackSetData({
+      searchInfo: this.searchInfo
+    }, 3);
     wx.navigateBack({
       delta: 2
     });
   }
+
 }
 
 export default Index;

@@ -59,6 +59,19 @@
           </div>
         </div>
 
+        <!-- <button @click="fnResetAll">重置</button> -->
+
+        <!-- <item 
+          itemType="goods"
+          iconType="goods" 
+          textCenter="货物信息"
+          :value="goodsRemark || '货物信息，备注等'" 
+          :amount="clothsAmount"
+          :valueColor="goodsRemark ? 'dark' : 'light'"
+          v-on:itemClickGoods="fnGetGoodsInfo"
+          v-on:itemInput="fnGetClothsAmount($event.target.value)"
+        ></item> -->
+
       </div>
 
     </div>

@@ -137,9 +137,9 @@ export default {
       }
     },
     showSlider() {
-      // wx.hideTabBar({
-      //   duration: true
-      // });
+      wx.hideTabBar({
+        duration: true
+      });
       const animationMask = wx.createAnimation({
         duration: this.duration,
         timingFunction: 'ease'
