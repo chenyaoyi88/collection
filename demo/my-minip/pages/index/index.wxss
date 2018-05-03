@@ -54,3 +54,79 @@ page {
   color: #f13744;
   background-color: #fff;
 }
+
+.select {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+  visibility: hidden;
+}
+
+.select.active {
+  visibility: visible;
+}
+
+.select .select-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2001;
+  transition: 0.3s ease all;
+}
+
+.select.active .select-bg {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.select .select-content {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 2001;
+  transition: 0.3s ease all;
+  background: #fff;
+  transform: translate3d(0, 100%, 0);
+}
+
+.select.active .select-content {
+  transform: translate3d(0, 0, 0);
+}
+
+.select-content .select-title-box {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  padding-top: 40rpx;
+  padding-bottom: 20rpx;
+  position: relative;
+  z-index: 2001;
+}
+.select-content .select-title-box .select-cancel-box {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100rpx;
+  height: 100%;
+  z-index: 2002;
+  display: flex;
+  align-items: center;
+  padding-left: 30rpx;
+}
+.select-content .select-title-box .select-title {
+  flex: 1;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.select-title-box .select-cancel-box .select-cancel-img {
+  padding-top: 20rpx;
+  width: 30rpx;
+  height: 30rpx;
+}

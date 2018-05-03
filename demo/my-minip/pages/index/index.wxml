@@ -71,10 +71,22 @@
               <view class="price-text">￥{{ (costs && costs.amount) || '--'}}</view>
             </view>
             <view class="idx-ft-nextbtn">
-              <button class="ghb-btn next-btn">下一步</button>
+              <button class="ghb-btn next-btn" bindtap="show">下一步</button>
             </view>
           </view>
 
+        </view>
+      </view>
+
+      <view class="select {{show ? 'active' : ''}}">
+        <view class="select-bg" bindtap="hide"></view>
+        <view class="select-content">
+          <view class="select-title-box">
+            <view class="select-cancel-box">
+              <image class="select-cancel-img" src="{{iconList.carType}}" alt="" mode="aspectFit"></image>
+            </view>
+            <view class="select-title">额外服务</view>
+          </view>
         </view>
       </view>
 
