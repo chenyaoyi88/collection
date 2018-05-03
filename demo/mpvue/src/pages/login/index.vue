@@ -2,7 +2,7 @@
   <div class="ghb-container">
     <div class="login-input-box">
       <div class="input-group">
-        <input @input="getValue($event.target.value, 'phone')" placeholder-class="phcolor" type="number" placeholder="请输入手机号码" maxlength="11">
+        <input @input="getValue($event.target.value, 'phone')" placeholder-class="phcolor" type="number" placeholder="请输入手机号码" maxlength="11" :value="phone">
       </div>
 
       <div class="input-group input-group-split">

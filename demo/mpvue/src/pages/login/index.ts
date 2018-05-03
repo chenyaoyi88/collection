@@ -17,7 +17,7 @@ class Login extends Vue {
   // 短信验证码
   msgCode: string = '';
 
-  onShow() {
+  mounted() {
     this.phone = '';
     this.msgCode = '';
   }

@@ -187,16 +187,12 @@ export function getCurrentPosition(url: string) {
           success: function (res: any) {
             if (res.data && res.data.result) {
               const oResult = res.data.result;
-              let sPosition = '';
               // 如果有 展示POI检索结果 ，优先选择这里面的
               if (oResult.pois && oResult.pois.length) {
-                const posList = res.data.result.pois;
-                sPosition = (posList[0] && posList[0].name) || '';
+                resolve(oResult.pois);
               } else {
-                // 如果 pois 没有数据，就拿 formatted_address 去展示
-                sPosition = oResult.formatted_address || '';
+                resolve([]);
               }
-              resolve(sPosition);
             }
           },
           fail: function () {

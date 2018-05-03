@@ -30,13 +30,29 @@
       </div>
     </div>
 
-    <!-- <div class="site-list-box" :style="{height: listHeight + 'px'}"> -->
+    <div class="site-current-pos" v-if="from === 'start' && oCurrentPosition">
+      <div class="site-current-title">当前位置附近</div>
+      <ul class="site-list">
+        
+        <li v-if="isGettingPosition">
+            <div class="site-list-item">
+              <p>正在获取当前位置附近信息...</p>
+            </div>
+        </li>
+        
+        <li v-if="!isGettingPosition" v-for="(item, index) of aNearbyPosition" :key="index" @click="selected(item)">
+            <div class="site-list-item">
+              <p>{{ item.name }}</p>
+              <p class="light">{{ item.address }}</p>
+            </div>
+        </li>
+
+      </ul>
+    </div>
+
     <div class="site-list-box" v-show="results.length">
       <ul class="site-list">
-        <li v-for="(item, index) of results" v-bind:key="index" @click="selected(item)" v-if="item.address">
-            <div class="site-list-item-tag" v-if="item.isCurrentPosition">
-              <img :src="imgPos" mode="aspectFit" alt="">
-            </div>
+        <li v-for="(item, index) of results" :key="index" @click="selected(item)" v-if="item.address">
             <div class="site-list-item">
               <p>{{ item.name }}</p>
               <p class="light">{{ item.address }}</p>
