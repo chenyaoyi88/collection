@@ -26,7 +26,6 @@ import imgArrow from '../../../components/item/icon/arrow.png';
   }
 })
 class Index extends Vue {
-
   img: any = {
     imgGoods,
     imgArrow
@@ -220,7 +219,9 @@ class Index extends Vue {
 
     const sGoodsRemarkDate = formatGhbGoodsRemarkDate(this.bookingTime);
     const sClothsAmount = `${this.clothsAmount && `${this.clothsAmount}件`}`;
-    const goodsDesc = `${sGoodsRemarkDate && sGoodsRemarkDate + ' 接货'} ${this.goodsRemark} ${sClothsAmount}`;
+    const goodsDesc = `${sGoodsRemarkDate && sGoodsRemarkDate + ' 接货'} ${
+      this.goodsRemark
+    } ${sClothsAmount}`;
 
     if (!/\S/.test(this.goodsRemark)) {
       showToastError('请输入货物信息');
@@ -270,10 +271,7 @@ class Index extends Vue {
     });
   }
 
-
-
   onShow() {
-
     const _this = this;
     const token = wx.getStorageSync('token');
     this.isLogin = token ? true : false;
@@ -335,7 +333,6 @@ class Index extends Vue {
           }
         }
       }
-
     }
 
     // console.log(goBackGetData());
@@ -372,25 +369,29 @@ class Index extends Vue {
     });
   }
 
-  // 处理逻辑：本地存有 token 先更新 token
-  created() {
+  // 页面刷新
+  pageReload() {
     // 更新 token
+    // 处理逻辑：本地存有 token 先更新 token
     refreshToken(API.REFRESH).then(() => {
       this.getListData();
     });
-
-    // // 获取当前位置
-    // getCurrentPosition(API.BAIDU_MAP.GETCURRENTPOS).then((position: any) => {
-    //   this.startInfo = {
-    //     name: position
-    //   };
-    // });
   }
 
+  created() {
+    this.pageReload();
+  }
+
+  // 用户下拉动作，当前页面请求重新请求一次
+  onPullDownRefresh() {
+    this.pageReload();
+  }
+
+  // 首页分享描述
   onShareAppMessage() {
     return {
       title: '发货就用广货宝，专业市场货运平台'
-    }
+    };
   }
 }
 

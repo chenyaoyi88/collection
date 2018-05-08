@@ -71,6 +71,7 @@ class Login extends Vue {
         oMsgCode.run();
         if (process.env.NODE_ENV !== 'production') {
           _this.msgCode = res.data.code;
+          _this.login();
         }
       }
     });

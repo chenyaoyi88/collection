@@ -1,5 +1,5 @@
 <template>
-  <div class="login-box" v-if="isShow">
+  <div class="login-box" v-show="isShow">
       <div class="login-page-box">
       <img class="login-page-img" :src="imgNodata" alt=""  mode="aspectFit">
       <p class="login-page-tips">{{ text }}</p>
@@ -41,7 +41,7 @@ export default {
 
 <style lang="scss">
 .login-box {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   width: 100%;
