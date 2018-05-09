@@ -9,18 +9,26 @@
           </div>
         </div>
       </div>
+
       <div class="me-main-box">
         <div class="main-list-box">
           <item 
           textCenter="收费标准" 
           noBorderTop="true"
-          v-on:itemClick="ghbLogisticFee"
-        ></item>
+          @itemClick="ghbLogisticFee">
+          </item>
+          <template v-if="isLogin">
+            <item 
+            textCenter="优惠券" 
+            @itemClick="gotoCoupon">
+            </item>
+          </template>
         </div>
         <div class="logout-btn-box" v-if="isLogin">
           <button class="ghb-btn logout-btn" @click="logout">退出登录</button>
         </div>
       </div>
+
       <p class="version">版本号 V1.0.1</p>
     </div>
   </div>

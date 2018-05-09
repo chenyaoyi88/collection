@@ -41,7 +41,6 @@ class Login extends Vue {
    * @memberof Login
    */
   getMsgCode(oMsgCode: any): void {
-    const _this = this;
     if (isInputEmpty(this.phone, '手机号码不能为空')) return;
     if (isPhoneNumber(this.phone, '手机号码格式有误')) return;
 
@@ -52,7 +51,7 @@ class Login extends Vue {
 
     const PARAMS_VCODE_REQUEST: Vcode_Request = {
       type: 0,
-      mobile: _this.phone
+      mobile: this.phone
     };
 
     ghbRequest({
@@ -70,8 +69,8 @@ class Login extends Vue {
         // 启用倒计时
         oMsgCode.run();
         if (process.env.NODE_ENV !== 'production') {
-          _this.msgCode = res.data.code;
-          _this.login();
+          this.msgCode = res.data.code;
+          this.login();
         }
       }
     });
@@ -80,7 +79,6 @@ class Login extends Vue {
 
   // 登录
   login(): void {
-    const _this = this;
     if (isInputEmpty(this.phone, '手机号码不能为空')) return;
     if (isInputEmpty(this.msgCode, '短信验证码不能为空')) return;
 
@@ -103,7 +101,7 @@ class Login extends Vue {
     }).then((res: GHB_Response<Login_Response>) => {
       if (res.data.token) {
         wx.setStorageSync('token', res.data.token);
-        wx.setStorageSync('mobile', _this.phone);
+        wx.setStorageSync('mobile', this.phone);
 
         // 获取 code
         wx.login({

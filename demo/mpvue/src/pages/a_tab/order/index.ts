@@ -7,6 +7,8 @@ import orderlist from './orderlist.vue';
 import item from '@/components/item/item.vue';
 import sliderSelect from '@/components/slider/slider_select.vue';
 
+import { eventBus, ghbEvent } from '../../eventbus';
+
 @Component({
   components: {
     item,
@@ -129,7 +131,7 @@ class Order extends Vue {
         duration: 0
       });
 
-      for (let j = 0; j <= oTab[listType + 'Offset'] / 10; j++) {
+      for (let j = 0; j <= pageSize; j++) {
         oTab[listType][j] = [];
       }
       oTab[listType + 'Offset'] = 0;
@@ -165,6 +167,7 @@ class Order extends Vue {
             aShowList.push(order);
           }
           oTab[listType][pageSize] = aShowList;
+          console.log(oTab[listType]);
         } else {
           if (reload) {
             oTab[listType + 'None'] = true;
@@ -300,6 +303,21 @@ class Order extends Vue {
   // 用户下拉动作，刷新当前列表
   onPullDownRefresh() {
     this.loadCurrentListData(true);
+  }
+
+  onLoad() {
+    eventBus.$on(ghbEvent.resetOrderList, () => {
+      const aList = this.tabTitle;
+      for (let i = 0; i < aList.length; i++) {
+        const listName = aList[i].value;
+        this[listName] = [];
+        this[`${listName}Offset`] = 0;
+        this[`${listName}Tmp`] = [];
+        this[`${listName}None`] = false;
+      }
+      const token = wx.getStorageSync('token');
+      this.isLogin = token ? true : false;
+    });
   }
 
   // 每次打开当前页面执行的事件

@@ -44,6 +44,10 @@ class Index extends Vue {
   bookingTime: string = '';
   // 已选择的额外服务列表
   aSelectedServices: Array<any> = [];
+  // 优惠券列表
+  aCouponList: Array<any> = [];
+  // 优惠券显示文字
+  sCoupon: string = '';
 
   // 车型列表
   carTypeList: Array<any> = [];
@@ -70,7 +74,6 @@ class Index extends Vue {
   fnCanCost(): void {
     if (!(this.startInfo.name && this.endInfo.name)) return;
 
-    const _this = this;
     const PARAMS_COSTS_REQUEST: CalcCost_Request = {
       senderX: this.startInfo.location.lng,
       senderY: this.startInfo.location.lat,
@@ -80,7 +83,8 @@ class Index extends Vue {
       paymentType: 1,
       isBooking: this.bookingTime ? 'Y' : 'N',
       bookingTime: this.bookingTime ? this.bookingTime : null,
-      isBuyInsurance: false
+      isBuyInsurance: false,
+      couponCodeId: null
     };
 
     ghbRequest({
@@ -89,10 +93,10 @@ class Index extends Vue {
       data: PARAMS_COSTS_REQUEST
     }).then((res: any) => {
       if (res.statusCode === 200) {
-        _this.costs = res.data;
-        _this.costs.amount = formatCurrency(_this.costs.amount);
-        _this.costs.zptFreight = formatCurrency(_this.costs.zptFreight);
-        _this.costs.nightServiceFee = formatCurrency(_this.costs.nightServiceFee);
+        this.costs = res.data;
+        this.costs.amount = formatCurrency(this.costs.amount);
+        this.costs.zptFreight = formatCurrency(this.costs.zptFreight);
+        this.costs.nightServiceFee = formatCurrency(this.costs.nightServiceFee);
       } else {
         showToastError(res.data.message);
       }
@@ -130,6 +134,13 @@ class Index extends Vue {
       return;
     }
     this.selectSlider = true;
+  }
+
+  // 点击优惠券
+  fnCouponSelect() {
+    wx.navigateTo({
+      url: '../../coupon/main?from=index'
+    });
   }
 
   // 底部滑动隐藏
@@ -221,7 +232,7 @@ class Index extends Vue {
     const sClothsAmount = `${this.clothsAmount && `${this.clothsAmount}件`}`;
     const goodsDesc = `${sGoodsRemarkDate && sGoodsRemarkDate + ' 接货'} ${
       this.goodsRemark
-    } ${sClothsAmount}`;
+      } ${sClothsAmount}`;
 
     if (!/\S/.test(this.goodsRemark)) {
       showToastError('请输入货物信息');
@@ -263,7 +274,6 @@ class Index extends Vue {
       senderY: this.startInfo.location.lat,
       startCityCode: this.startInfo.cityCode
     };
-    // console.log(PARAMS_LOGISTICSORDER_REQUEST);
     wx.navigateTo({
       url: `../../paynow/main?logisticsorder=${JSON.stringify(
         PARAMS_LOGISTICSORDER_REQUEST
@@ -276,7 +286,6 @@ class Index extends Vue {
     const token = wx.getStorageSync('token');
     this.isLogin = token ? true : false;
 
-    // TODO：页面重置在用户界面出现瞬变的情况，需要优化
     if (this.$store.state.isIndexReset) {
       // 重置所有输入
       this.fnResetAll();
@@ -284,7 +293,7 @@ class Index extends Vue {
         isIndexReset: false
       });
     } else {
-      const pages = getCurrentPages(); // eslint-disable-line
+      const pages = getCurrentPages(); 
       const currPage = pages[pages.length - 1];
 
       // 从车型选择页面返回
@@ -335,26 +344,25 @@ class Index extends Vue {
       }
     }
 
-    // console.log(goBackGetData());
   }
 
   get additionalServicesList() {
     return this.$store.state.additionalServicesList;
   }
 
+  // 请求各种页面数据
   getListData() {
-    const _this = this;
     // 获取车型列表
     ghbRequest({
       url: API.CARTYPE
     }).then((res: any) => {
       if (res.statusCode === 200) {
-        _this.carTypeList = res.data;
-        if (_this.carTypeList.length) {
-          _this.$store.commit('carTypeListChange', {
-            carTypeList: _this.carTypeList
+        this.carTypeList = res.data;
+        if (this.carTypeList.length) {
+          this.$store.commit('carTypeListChange', {
+            carTypeList: this.carTypeList
           });
-          _this.fnSetDefaultCar();
+          this.fnSetDefaultCar();
         }
       }
     });
@@ -363,7 +371,7 @@ class Index extends Vue {
     ghbRequest({
       url: API.GETADDITIONALSERVICES
     }).then((res: any) => {
-      _this.$store.commit('additionalServicesListChange', {
+      this.$store.commit('additionalServicesListChange', {
         additionalServicesList: res.data
       });
     });

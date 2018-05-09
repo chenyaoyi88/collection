@@ -7,7 +7,7 @@
           :textTop="(startInfo.userName || '') + ' ' + (startInfo.mobile || '')" 
           :textCenter="startInfo.name || '选择发货地点'" 
           :textBottom="startInfo.address || ''" 
-          v-on:itemClick="fnGetPonit('start', startInfo)"
+          @itemClick="fnGetPonit('start', startInfo)"
           noBorderTop="true"
           :textLight="startInfo.name ? false : true"
         ></item>
@@ -17,7 +17,7 @@
           :textTop="(endInfo.userName || '') + ' ' + (endInfo.mobile || '')" 
           :textCenter="endInfo.name || '选择收货地点'" 
           :textBottom="endInfo.address || ''"  
-          v-on:itemClick="fnGetPonit('end', endInfo)"
+          @itemClick="fnGetPonit('end', endInfo)"
           :textLight="endInfo.name ? false : true"
         ></item>
       </div>
@@ -28,18 +28,28 @@
           textCenter="车型" 
           :value="carSelected.name || '请选择车型'" 
           noBorderTop="true"
-          v-on:itemClick="fnCarTypeSelect"
+          @itemClick="fnCarTypeSelect"
         ></item>
 
-        <itemTimePicker v-on:getDateValue="fnGetDateValue"></itemTimePicker>
+        <itemTimePicker @getDateValue="fnGetDateValue"></itemTimePicker>
 
         <item 
           iconType="extra" 
           textCenter="额外服务" 
           :value="sSelectedServices || '装卸搬运等额外服务'" 
           :valueColor="sSelectedServices.length ? 'dark' : 'light'"
-          v-on:itemClick="fnExtraServices"
+          @itemClick="fnExtraServices"
         ></item>
+
+        <template v-if="isLogin">
+          <item 
+            iconType="coupon" 
+            textCenter="优惠券" 
+            :value="sCoupon || '请选择'" 
+            :valueColor="sCoupon.length ? 'dark' : 'light'"
+            @itemClick="fnCouponSelect"
+          ></item>
+        </template>
 
         <div class="item">
           <div class="item-l">
@@ -77,8 +87,8 @@
       :isSliderShow="selectSlider"
       name="name"
       value="remark"
-      v-on:hideSlider="fnHideSlider"
-      v-on:checkboxChange="fnCheckboxChange"
+      @hideSlider="fnHideSlider"
+      @checkboxChange="fnCheckboxChange"
     ></sliderSelect>
 
   </div>

@@ -80,6 +80,7 @@ import goods from './icon/goods.png';
 import extra from './icon/extra.png';
 import mobile from './icon/mobile.png';
 import contact from './icon/contact.png';
+import coupon from './icon/coupon.png';
 
 export default {
   props: [
@@ -169,6 +170,9 @@ export default {
           break;
         case 'contact':
           this.icon = contact;
+          break;
+        case 'coupon':
+          this.icon = coupon;
           break;
         case 'point':
           this.icon = '';
