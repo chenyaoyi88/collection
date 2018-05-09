@@ -20,13 +20,13 @@
         <div class="coupon-title" :class="{'fail': isFail}">{{ couponInfo.name || '--' }}</div>
         <div class="coupon-desc">{{ couponInfo.introduction || '--' }}</div>
         <template v-if="isFail && couponInfo.isExpire">
-          <div class="coupon-date fail">{{ couponInfo.expireDate || '--' }} 已到期</div>
+          <div class="coupon-date fail">{{ couponInfo.endDateFormat || '--' }} 已到期</div>
         </template>
         <template v-if="isFail && couponInfo.isUsed">
           <div class="coupon-date fail">{{ couponInfo.usedDateFormat || '--' }} 已使用</div>
         </template>
         <template v-if="!isFail">
-          <div class="coupon-date">{{ couponInfo.usedDateFormat || '--' }} 到期</div>
+          <div class="coupon-date">{{ couponInfo.beginDateFormat || '--' }} 到期</div>
         </template>
         
         <div class="coupon-rule" @click.stop="couponRuleClick">
@@ -79,9 +79,13 @@ export default {
   },
   created() {
     if (this.couponInfo) {
-      if (this.couponInfo.usedDate) {
-        this.couponInfo.usedDateFormat = this.formatCouponTime(this.couponInfo.usedDate);
-      }
+      Object.keys(this.couponInfo).forEach((key) => {
+        if (key.includes('Date')) {
+          this.couponInfo[`${key}Format`] = this.formatCouponTime(
+            this.couponInfo[`${key}`]
+          );
+        }
+      });
     }
   }
 };
