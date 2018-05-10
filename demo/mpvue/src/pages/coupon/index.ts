@@ -1,7 +1,8 @@
 import { Vue, Component } from 'vue-property-decorator';
 import coupon from './coupon.vue';
-
-import { isUsedList, isExpireList } from './mock';
+import { ghbRequest } from '../../utils';
+import API from '../../api';
+import { eventBus, ghbEvent } from '../eventbus';
 
 // 必须使用装饰器的方式来指定components
 @Component({
@@ -10,8 +11,17 @@ import { isUsedList, isExpireList } from './mock';
   }
 })
 class Index extends Vue {
-  isUsedList: any = [];
-  isExpireList: any = [];
+  // 已使用的优惠券
+  usedList: any = [];
+  // 过期的优惠券
+  expireList: any = [];
+  // 可使用的优惠券
+  LogisticsCoupons: any = [];
+
+  // 是否显示没有数据
+  isUsedListNone: boolean = false;
+  isExpireListNone: boolean = false;
+  isLogisticsCouponsNone: boolean = false;
 
   // 当前 tab 索引
   currentIndex: number = 0;
@@ -53,20 +63,36 @@ class Index extends Vue {
   }
 
   getCouponListFromPageMe() {
+
     wx.showLoading({
       title: '加载中'
     });
 
-    setTimeout(() => {
+    ghbRequest({
+      url: API.LISTCOUPONBYTYPE,
+      data: {
+        type: this.currentIndex + 1
+      }
+    }).then((res: any) => {
+
       switch (this.currentIndex) {
         case 0:
-          this.isUsedList = isUsedList;
+          this.LogisticsCoupons = res.data;
+          if (!this.LogisticsCoupons.length) {
+            this.isLogisticsCouponsNone = true;
+          }
           break;
         case 1:
-          this.isExpireList = isExpireList;
+          this.expireList = res.data;
+          if (!this.expireList.length) {
+            this.isExpireListNone = true;
+          }
           break;
         case 2:
-          this.isUsedList = isUsedList;
+          this.usedList = res.data;
+          if (!this.usedList.length) {
+            this.isUsedListNone = true;
+          }
           break;
         default:
       }
@@ -78,20 +104,58 @@ class Index extends Vue {
 
       wx.hideLoading();
       wx.stopPullDownRefresh();
-    }, 300);
+    });
   }
 
+  // 获取可使用优惠券列表
+  getCouponListFormIndex(data: any) {
+    ghbRequest({
+      method: 'POST',
+      url: API.LOGISTICSCOUPONS,
+      data
+    }).then((res: any) => {
+      this.LogisticsCoupons = res.data;
+      if (!this.LogisticsCoupons.length) {
+        this.isLogisticsCouponsNone = true;
+      }
+    });
+  }
+
+  // 选择优惠券之后返回首页
+  couponSelectFormIndex(item: any) {
+    eventBus.$emit(ghbEvent.getCoupon, item);
+    wx.navigateBack();
+  }
+
+  // 重置所有数据
+  resetData() {
+    this.usedList = [];
+    this.expireList = [];
+    this.LogisticsCoupons = [];
+    this.isUsedListNone = false;
+    this.isExpireListNone = false;
+    this.isLogisticsCouponsNone = false;
+    this.currentIndex = 0;
+    this.from = '';
+  }
+
+  // 获取传过来的参数
   onLoad() {
     const options = this.$root['$mp'].query || {};
     this.from = options.from || 'me';
 
     if (this.from === 'index') {
       // 来自 首页
-      console.log('来自 首页');
+      this.getCouponListFormIndex(JSON.parse(options.LogisticsCoupons));
     } else {
       // 来自 我的
       this.tabSwitch(0);
     }
+  }
+
+  // 页面退出，清空列表，避免下次进来有缓存
+  onUnload() {
+    this.resetData();
   }
 
   // 用户下拉动作，刷新当前列表

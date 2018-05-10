@@ -14,7 +14,12 @@
 
         <div class="tab" :class="{active: currentIndex === 0}">
           <div class="coupon-list-box">
-            <block v-if="isUsedList.length" v-for="(item, index) of isUsedList" :key="index">
+
+            <block v-if="isLogisticsCouponsNone">
+              <div class="coupon-list-none fixed">-- 暂无数据 --</div>
+            </block>
+
+            <block v-if="LogisticsCoupons.length" v-for="(item, index) of LogisticsCoupons" :key="index">
               <coupon :isFail="false" :couponInfo="item"></coupon>
             </block>
           </div>
@@ -22,7 +27,12 @@
 
         <div class="tab" :class="{active: currentIndex === 1}">
           <div class="coupon-list-box">
-            <block v-if="isExpireList.length" v-for="(item, index) of isExpireList" :key="index">
+
+            <block v-if="isExpireListNone">
+              <div class="coupon-list-none fixed">-- 暂无数据 --</div>
+            </block>
+
+            <block v-if="expireList.length" v-for="(item, index) of expireList" :key="index">
               <coupon :isFail="true" :couponInfo="item"></coupon>
             </block>
           </div>
@@ -30,7 +40,12 @@
 
         <div class="tab" :class="{active: currentIndex === 2}">
           <div class="coupon-list-box">
-            <block v-if="isUsedList.length" v-for="(item, index) of isUsedList" :key="index">
+
+            <block v-if="isUsedListNone">
+              <div class="coupon-list-none fixed">-- 暂无数据 --</div>
+            </block>
+
+            <block v-if="usedList.length" v-for="(item, index) of usedList" :key="index">
               <coupon :isFail="true" :couponInfo="item"></coupon>
             </block>
           </div>
@@ -40,7 +55,17 @@
     </template>
 
     <template v-if="from === 'index'">
-      <div>来自首页</div>
+      <div class="coupon-list-box">
+
+        <block v-if="isLogisticsCouponsNone">
+          <div class="coupon-list-none fixed">-- 暂无可使用优惠券 --</div>
+        </block>
+
+        <block v-if="LogisticsCoupons.length" v-for="(item, index) of LogisticsCoupons" :key="index">
+          <coupon :isFail="false" :couponInfo="item" @couponClick="couponSelectFormIndex(item)"></coupon>
+        </block>
+
+      </div>
     </template>
 
   </div>

@@ -6,27 +6,27 @@
         <img v-if="!isFail" class="coupon-content-l-bg" :src="IMG_COUPONBG" mode="aspectFit">
         <div class="coupon-amount">
           <span class="tag">￥</span>
-          <span class="amount">{{ couponInfo.priceValue || '--' }}</span>
+          <span class="amount">{{ oCoupon.priceValue || '--' }}</span>
         </div>
-        <template v-if="couponInfo.startPrice === 0">
+        <template v-if="oCoupon.startPrice === 0">
           <div class="coupon-amount-tips">无最低金额限制</div>
         </template>
         <template v-else>
-          <div class="coupon-amount-tips">满 {{ couponInfo.startPrice || '--'}} 元可用</div>
+          <div class="coupon-amount-tips">满 {{ oCoupon.startPrice || '--'}} 元可用</div>
         </template>
       </div>
 
       <div class="coupon-content-r">
-        <div class="coupon-title" :class="{'fail': isFail}">{{ couponInfo.name || '--' }}</div>
-        <div class="coupon-desc">{{ couponInfo.introduction || '--' }}</div>
-        <template v-if="isFail && couponInfo.isExpire">
-          <div class="coupon-date fail">{{ couponInfo.endDateFormat || '--' }} 已到期</div>
+        <div class="coupon-title" :class="{'fail': isFail}">{{ oCoupon.name || '--' }}</div>
+        <div class="coupon-desc">{{ oCoupon.introduction || '--' }}</div>
+        <template v-if="isFail && oCoupon.isExpire">
+          <div class="coupon-date fail">{{ oCoupon.endDateFormat || '--' }} 已到期</div>
         </template>
-        <template v-if="isFail && couponInfo.isUsed">
-          <div class="coupon-date fail">{{ couponInfo.usedDateFormat || '--' }} 已使用</div>
+        <template v-if="isFail && oCoupon.isUsed">
+          <div class="coupon-date fail">{{ oCoupon.usedDateFormat || '--' }} 已使用</div>
         </template>
         <template v-if="!isFail">
-          <div class="coupon-date">{{ couponInfo.beginDateFormat || '--' }} 到期</div>
+          <div class="coupon-date">{{ oCoupon.endDateFormat || '--' }} 到期</div>
         </template>
         
         <div class="coupon-rule" @click.stop="couponRuleClick">
@@ -63,9 +63,20 @@ export default {
       IMG_ARROW
     };
   },
+  computed: {
+    oCoupon() {
+      Object.keys(this.couponInfo).forEach((key) => {
+        if (key.includes('Date')) {
+          this.couponInfo[`${key}Format`] = this.formatCouponTime(
+            this.couponInfo[`${key}`]
+          );
+        }
+      });
+      return this.couponInfo;
+    }
+  },
   methods: {
     couponClick() {
-      console.log('点击优惠券');
       this.$emit('couponClick');
     },
     couponRuleClick() {
@@ -75,17 +86,6 @@ export default {
       return formatTime(new Date(timestamp))
         .split(' ')[0]
         .replace(/\//g, '.');
-    }
-  },
-  created() {
-    if (this.couponInfo) {
-      Object.keys(this.couponInfo).forEach((key) => {
-        if (key.includes('Date')) {
-          this.couponInfo[`${key}Format`] = this.formatCouponTime(
-            this.couponInfo[`${key}`]
-          );
-        }
-      });
     }
   }
 };

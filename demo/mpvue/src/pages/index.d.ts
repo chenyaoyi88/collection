@@ -223,3 +223,20 @@ interface WX_UserInfo {
         province?: string;
     }
 }
+
+interface LogisticsCoupons_Request {
+    // 始发地经度
+    senderX: number;
+    // 始发地纬度
+    senderY: number;
+    // 目的地经度
+    receiverX: number;
+    // 目的地纬度
+    receiverY: number;
+    // 车型Id（从车型列表获取）
+    vehicleTypeId: numberl;
+    // 订单类型：1 - 付即送, 2 - 普通物流
+    orderType: number;
+    // 中途点List(非必须)
+    halfways?: any;
+}
