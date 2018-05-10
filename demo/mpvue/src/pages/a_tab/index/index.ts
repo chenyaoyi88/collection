@@ -51,7 +51,7 @@ class Index extends Vue {
   // 优惠券显示文字
   sCoupon: string = '';
   // 优惠券ID
-  couponCodeId: any = null;
+  couponInfo: any = {};
 
   // 车型列表
   carTypeList: Array<any> = [];
@@ -88,7 +88,7 @@ class Index extends Vue {
       isBooking: this.bookingTime ? 'Y' : 'N',
       bookingTime: this.bookingTime ? this.bookingTime : null,
       isBuyInsurance: false,
-      couponCodeId: this.couponCodeId
+      couponCodeId: this.couponInfo.id
     };
 
     ghbRequest({
@@ -157,11 +157,13 @@ class Index extends Vue {
       receiverX: this.endInfo.location.lng,
       receiverY: this.endInfo.location.lat,
       vehicleTypeId: this.carSelected.id,
-      orderType: 2,
+      orderType: 2
     };
 
     wx.navigateTo({
-      url: '../../coupon/main?from=index&LogisticsCoupons=' + JSON.stringify(PARAMS_LOGISTICSORDER_REQUEST)
+      url:
+        '../../coupon/main?from=index&LogisticsCoupons=' +
+        JSON.stringify(PARAMS_LOGISTICSORDER_REQUEST)
     });
   }
 
@@ -220,7 +222,8 @@ class Index extends Vue {
     this.goodsRemark = '';
     this.bookingTime = '';
     this.costs = null;
-    this.couponCodeId = null;
+    this.couponInfo = {};
+    this.sCoupon = '';
   }
 
   // 下一步
@@ -255,7 +258,7 @@ class Index extends Vue {
     const sClothsAmount = `${this.clothsAmount && `${this.clothsAmount}件`}`;
     const goodsDesc = `${sGoodsRemarkDate && sGoodsRemarkDate + ' 接货'} ${
       this.goodsRemark
-      } ${sClothsAmount}`;
+    } ${sClothsAmount}`;
 
     if (!/\S/.test(this.goodsRemark)) {
       showToastError('请输入货物信息');
@@ -274,7 +277,7 @@ class Index extends Vue {
       bookingTime: this.bookingTime,
       isBooking: this.bookingTime ? true : false,
       clothsAmount: this.clothsAmount,
-      couponCodeId: this.couponCodeId,
+      couponCodeId: this.couponInfo.id,
       goodsDesc,
       insuranceStatus: 0,
       listOfAdditionalRequest: this.aSelectedServices,
@@ -367,7 +370,6 @@ class Index extends Vue {
         }
       }
     }
-
   }
 
   get additionalServicesList() {
@@ -417,10 +419,12 @@ class Index extends Vue {
   onLoad() {
     eventBus.$on(ghbEvent.getCoupon, (item: any) => {
       if (item && item.id) {
-        this.couponCodeId = item.id;
+        this.couponInfo = item;
+        this.sCoupon = this.couponInfo.name;
         this.fnCanCost();
       } else {
-        this.couponCodeId = null;
+        this.couponInfo = {};
+        this.sCoupon = '';
       }
     });
   }

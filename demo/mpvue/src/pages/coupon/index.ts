@@ -56,14 +56,14 @@ class Index extends Vue {
     this.tabSwitch(index);
   }
 
-  // 切换 tab
+  // 滑块滑动 + 切换 tab + 加载数据 
   tabSwitch(index: number) {
     this.titleSlider.left = 100 * (this.currentIndex = index);
-    this.getCouponListFromPageMe();
+    this.getCouponListFromPageMe(this.currentIndex);
   }
 
-  getCouponListFromPageMe() {
-
+  // 从【我的】页面进来，加载不同 tab 的数据
+  getCouponListFromPageMe(tabIndex: number = 0) {
     wx.showLoading({
       title: '加载中'
     });
@@ -71,25 +71,27 @@ class Index extends Vue {
     ghbRequest({
       url: API.LISTCOUPONBYTYPE,
       data: {
-        type: this.currentIndex + 1
+        type: tabIndex + 1
       }
     }).then((res: any) => {
-
-      switch (this.currentIndex) {
+      switch (tabIndex) {
         case 0:
           this.LogisticsCoupons = res.data;
+          this.tabTitle[tabIndex].count = this.LogisticsCoupons.length;
           if (!this.LogisticsCoupons.length) {
             this.isLogisticsCouponsNone = true;
           }
           break;
         case 1:
           this.expireList = res.data;
+          this.tabTitle[tabIndex].count = this.expireList.length;
           if (!this.expireList.length) {
             this.isExpireListNone = true;
           }
           break;
         case 2:
           this.usedList = res.data;
+          this.tabTitle[tabIndex].count = this.usedList.length;
           if (!this.usedList.length) {
             this.isUsedListNone = true;
           }
@@ -109,6 +111,9 @@ class Index extends Vue {
 
   // 获取可使用优惠券列表
   getCouponListFormIndex(data: any) {
+    wx.showLoading({
+      title: '加载中'
+    });
     ghbRequest({
       method: 'POST',
       url: API.LOGISTICSCOUPONS,
@@ -150,6 +155,8 @@ class Index extends Vue {
     } else {
       // 来自 我的
       this.tabSwitch(0);
+      this.getCouponListFromPageMe(1);
+      this.getCouponListFromPageMe(2);
     }
   }
 
@@ -163,7 +170,7 @@ class Index extends Vue {
     if (this.from === 'index') {
       wx.stopPullDownRefresh();
     } else {
-      this.getCouponListFromPageMe();
+      this.getCouponListFromPageMe(this.currentIndex);
     }
   }
 }

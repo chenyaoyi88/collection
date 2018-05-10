@@ -20,6 +20,7 @@
           <template v-if="isLogin">
             <item 
             textCenter="优惠券" 
+            :value="LogisticsCoupons.length ? LogisticsCoupons.length + '张可用' : ''"
             @itemClick="gotoCoupon">
             </item>
           </template>
@@ -29,7 +30,7 @@
         </div>
       </div>
 
-      <p class="version">版本号 V1.0.1</p>
+      <p class="version">版本号 V1.0.2</p>
     </div>
   </div>
 </template>

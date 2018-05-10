@@ -131,10 +131,10 @@ class Order extends Vue {
         duration: 0
       });
 
-      for (let j = 0; j <= pageSize; j++) {
-        oTab[listType][j] = [];
-      }
-      oTab[listType + 'Offset'] = 0;
+      // for (let j = 0; j <= pageSize; j++) {
+      //   oTab[listType][j] = [];
+      // }
+      // oTab[listType + 'Offset'] = 0;
     }
 
     switch (listType) {
@@ -166,8 +166,20 @@ class Order extends Vue {
             order.statusText = getOrderStatusText(order);
             aShowList.push(order);
           }
-          oTab[listType][pageSize] = aShowList;
-          console.log(oTab[listType]);
+          // oTab[listType][pageSize] = aShowList;
+
+          if (reload) {
+            for (let j = 0; j <= pageSize; j++) {
+              if (j > 0) {
+                oTab[listType][j] = [];
+              } else {
+                oTab[listType][j] = aShowList;
+              }
+            }
+            oTab[listType + 'Offset'] = 0;
+          } else {
+            oTab[listType][pageSize] = aShowList;
+          }
         } else {
           if (reload) {
             oTab[listType + 'None'] = true;
@@ -307,6 +319,8 @@ class Order extends Vue {
 
   onLoad() {
     eventBus.$on(ghbEvent.resetOrderList, () => {
+      const token = wx.getStorageSync('token');
+      this.isLogin = token ? true : false;
       const aList = this.tabTitle;
       for (let i = 0; i < aList.length; i++) {
         const listName = aList[i].value;
@@ -315,8 +329,6 @@ class Order extends Vue {
         this[`${listName}Tmp`] = [];
         this[`${listName}None`] = false;
       }
-      const token = wx.getStorageSync('token');
-      this.isLogin = token ? true : false;
     });
   }
 
