@@ -48,8 +48,6 @@ class Index extends Vue {
   aSelectedServices: Array<any> = [];
   // 优惠券列表
   aCouponList: Array<any> = [];
-  // 优惠券显示文字
-  sCoupon: string = '';
   // 优惠券ID
   couponInfo: any = {};
 
@@ -223,7 +221,6 @@ class Index extends Vue {
     this.bookingTime = '';
     this.costs = null;
     this.couponInfo = {};
-    this.sCoupon = '';
   }
 
   // 下一步
@@ -420,11 +417,9 @@ class Index extends Vue {
     eventBus.$on(ghbEvent.getCoupon, (item: any) => {
       if (item && item.id) {
         this.couponInfo = item;
-        this.sCoupon = this.couponInfo.name;
         this.fnCanCost();
       } else {
         this.couponInfo = {};
-        this.sCoupon = '';
       }
     });
   }

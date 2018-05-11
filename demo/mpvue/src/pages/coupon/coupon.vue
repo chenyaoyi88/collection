@@ -17,17 +17,20 @@
       </div>
 
       <div class="coupon-content-r">
-        <div class="coupon-title" :class="{'fail': isFail}">{{ oCoupon.name || '--' }}</div>
-        <div class="coupon-desc">{{ oCoupon.introduction || '--' }}</div>
-        <template v-if="isFail && oCoupon.isExpire">
-          <div class="coupon-date fail">{{ oCoupon.endDateFormat || '--' }} 已到期</div>
-        </template>
-        <template v-if="isFail && oCoupon.isUsed">
-          <div class="coupon-date fail">{{ oCoupon.usedDateFormat || '--' }} 已使用</div>
-        </template>
-        <template v-if="!isFail">
-          <div class="coupon-date">{{ oCoupon.endDateFormat || '--' }} 到期</div>
-        </template>
+
+        <div class="coupon-content-main">
+          <div class="coupon-title" :class="{'fail': isFail}">{{ oCoupon.name || '--' }}</div>
+          <div class="coupon-desc">{{ oCoupon.introduction || '--' }}</div>
+          <template v-if="isFail && oCoupon.isExpire">
+            <div class="coupon-date fail">{{ oCoupon.endDateFormat || '--' }} 已到期</div>
+          </template>
+          <template v-if="isFail && oCoupon.isUsed">
+            <div class="coupon-date fail">{{ oCoupon.usedDateFormat || '--' }} 已使用</div>
+          </template>
+          <template v-if="!isFail">
+            <div class="coupon-date">{{ oCoupon.endDateFormat || '--' }} 到期</div>
+          </template>
+        </div>
         
         <div class="coupon-rule" @click.stop="couponRuleClick">
           <span class="coupon-rule-text">适用规则</span>
@@ -65,13 +68,13 @@ export default {
   },
   computed: {
     oCoupon() {
-      Object.keys(this.couponInfo).forEach((key) => {
-        if (key.includes('Date')) {
-          this.couponInfo[`${key}Format`] = this.formatCouponTime(
-            this.couponInfo[`${key}`]
-          );
-        }
-      });
+      // Object.keys(this.couponInfo).forEach(key => {
+      //   if (key.includes('Date')) {
+      //     this.couponInfo[`${key}Format`] = this.formatCouponTime(
+      //       this.couponInfo[`${key}`]
+      //     );
+      //   }
+      // });
       return this.couponInfo;
     }
   },
@@ -81,6 +84,11 @@ export default {
     },
     couponRuleClick() {
       console.log('点击优惠券适用规则');
+      wx.showModal({
+        title: '使用说明',
+        content: this.oCoupon.termOfUse,
+        showCancel: false
+      });
     },
     formatCouponTime(timestamp) {
       return formatTime(new Date(timestamp))
@@ -143,35 +151,36 @@ export default {
       flex: 1;
       display: flex;
       flex-direction: column;
-      padding: 20px;
-      position: relative;
-      z-index: 2;
       background-color: #fff;
-      .coupon-title {
-        font-size: 15px;
-        font-weight: bold;
-        color: #0c0c0e;
-        &.fail {
-          color: #a0a0a0;
+
+      .coupon-content-main {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0 20px;
+        .coupon-title {
+          font-size: 15px;
+          font-weight: bold;
+          color: #0c0c0e;
+          &.fail {
+            color: #a0a0a0;
+          }
         }
-      }
-      .coupon-desc {
-        font-size: 12px;
-        color: #a0a0a0;
-        padding: 10px 0 4px;
-      }
-      .coupon-date {
-        font-size: 12px;
-        color: #ff8320;
-        &.fail {
+        .coupon-desc {
+          font-size: 12px;
           color: #a0a0a0;
+          padding: 8px 0 4px;
+        }
+        .coupon-date {
+          font-size: 12px;
+          color: #ff8320;
+          &.fail {
+            color: #a0a0a0;
+          }
         }
       }
       .coupon-rule {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        z-index: 3;
         width: 100%;
         height: 24px;
         border-top: 1px dashed #c4c4c4;

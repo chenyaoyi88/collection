@@ -1,8 +1,10 @@
 import { Vue, Component } from 'vue-property-decorator';
 import coupon from './coupon.vue';
-import { ghbRequest } from '../../utils';
+import { ghbRequest, setArrayGroup } from '../../utils';
 import API from '../../api';
 import { eventBus, ghbEvent } from '../eventbus';
+
+import { mockList } from './mock';
 
 // 必须使用装饰器的方式来指定components
 @Component({
@@ -18,6 +20,10 @@ class Index extends Vue {
   // 可使用的优惠券
   LogisticsCoupons: any = [];
 
+  list1SaveTmp: any = [];
+  list1Tmp: any = [];
+  list1Count: number = 0;
+
   // 是否显示没有数据
   isUsedListNone: boolean = false;
   isExpireListNone: boolean = false;
@@ -27,6 +33,8 @@ class Index extends Vue {
   currentIndex: number = 0;
   // 来自何处
   from: string = '';
+
+  pageSize: number = 10;
 
   // tab 标题
   tabTitle: Array<any> = [
@@ -64,6 +72,18 @@ class Index extends Vue {
 
   // 从【我的】页面进来，加载不同 tab 的数据
   getCouponListFromPageMe(tabIndex: number = 0) {
+
+    const mockJson = { "id": 96364, "code": "5af3e157ef2b8127c6eacd10", "beginDate": 1525932376000, "endDate": 1528646399000, "usedDate": null, "priceValue": 8.00, "startPrice": 40.00, "name": "8元优惠券8元优惠券8元优惠券8元优惠券", "isUsed": false, "isActivate": true, "isExpire": false, "introduction": "满40启用", "salesPrice": 0.00, "termOfUse": "满40启用满40启用满40启用满40启用", "isActivity": false };
+
+    let arrTmp = [];
+
+    for (let i = 0; i < 86; i++) {
+      arrTmp.push(mockJson);
+    }
+
+    this.list1Tmp = setArrayGroup(arrTmp);
+    this.LogisticsCoupons[this.list1Count] = this.list1Tmp[this.list1Count];
+
     wx.showLoading({
       title: '加载中'
     });
@@ -76,11 +96,13 @@ class Index extends Vue {
     }).then((res: any) => {
       switch (tabIndex) {
         case 0:
+
           this.LogisticsCoupons = res.data;
           this.tabTitle[tabIndex].count = this.LogisticsCoupons.length;
           if (!this.LogisticsCoupons.length) {
             this.isLogisticsCouponsNone = true;
           }
+          
           break;
         case 1:
           this.expireList = res.data;
@@ -144,6 +166,36 @@ class Index extends Vue {
     this.from = '';
   }
 
+  // 滚动条触底事件
+  onReachBottom() {
+    // 获取数据
+    console.log('滚动条触底事件');
+    wx.showLoading({
+      title: '加载中'
+    });
+    switch (this.currentIndex) {
+      case 0:
+        if (this.list1Count === this.list1Tmp.length - 1) {
+          wx.hideLoading();
+          return;
+        };
+        setTimeout(() => {
+
+          this.list1Count++;
+          this.LogisticsCoupons[this.list1Count] = this.list1Tmp[this.list1Count];
+
+          console.log(this.LogisticsCoupons);
+
+          wx.hideLoading();
+        }, 300);
+        break;
+      case 1:
+        break;
+      case 2:
+        break;
+    }
+  }
+
   // 获取传过来的参数
   onLoad() {
     const options = this.$root['$mp'].query || {};
@@ -155,8 +207,8 @@ class Index extends Vue {
     } else {
       // 来自 我的
       this.tabSwitch(0);
-      this.getCouponListFromPageMe(1);
-      this.getCouponListFromPageMe(2);
+      // this.getCouponListFromPageMe(1);
+      // this.getCouponListFromPageMe(2);
     }
   }
 

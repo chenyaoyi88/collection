@@ -122,3 +122,11 @@ export function uuid() {
 export function formatTrim(str: string) {
   return str.replace(/^\s+|\s+$/g, '').replace(/\s+/g, ' ');
 }
+
+export function setArrayGroup(arr: Array<any>, pageSize: number = 10) {
+  let newArr = [];
+  for (let i = 0; i < arr.length; i += pageSize) {
+    newArr.push(arr.slice(i, i + pageSize));
+  }
+  return newArr;
+}

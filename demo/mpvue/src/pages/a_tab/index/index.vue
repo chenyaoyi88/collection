@@ -45,8 +45,8 @@
           <item 
             iconType="coupon" 
             textCenter="优惠券" 
-            :value="sCoupon || '请选择'" 
-            :valueColor="sCoupon.length ? 'dark' : 'light'"
+            :value="couponInfo.name || '请选择'" 
+            :valueColor="couponInfo.name ? 'dark' : 'light'"
             @itemClick="fnCouponSelect"
           ></item>
         </template>
@@ -75,7 +75,11 @@
 
     <div class="idx-ft-box">
       <div class="idx-ft-price">
-        <p class="price-text">￥{{ (costs && costs.amount) || '--'}}</p>
+        <div class="price-text">
+          <span class="price">￥{{ (costs && costs.amount) || '--'}}
+            <span v-show="couponInfo.priceValue" class="coupon-text">（已优惠{{couponInfo.priceValue || '--'}}元）</span>
+          </span>
+        </div>
       </div>
       <div class="idx-ft-nextbtn">
         <button class="ghb-btn next-btn" @click="fnNextStep">下一步</button>

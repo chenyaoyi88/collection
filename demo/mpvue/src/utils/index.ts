@@ -9,7 +9,8 @@ import {
   getMinsArray,
   formatCurrency,
   uuid, 
-  formatTrim
+  formatTrim,
+  setArrayGroup
 } from './common';
 import {
   goBackSetData,
@@ -32,6 +33,7 @@ export {
   formatCurrency,
   uuid, 
   formatTrim,
+  setArrayGroup,
   zerofillBack,
   getDateList,
   getLatestDate,

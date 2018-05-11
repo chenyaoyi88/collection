@@ -9,6 +9,7 @@
   flex-direction: column;
   background-color: #f5f5f5;
   .idx-main-box {
+    overflow-y: auto;
     flex: 1;
     padding-bottom: 107px;
     .idx-site-box {
@@ -39,6 +40,20 @@
       font-size: 24px;
       color: #f13744;
       background-color: #fff;
+      .price {
+        position: relative;
+        z-index: 3;
+        .coupon-text {
+          width: 100px;
+          position: absolute;
+          left: 100%;
+          bottom: 5px;
+          z-index: 4;
+          margin: 0 5px;
+          font-size: 12px;
+          color: #b2b2b2;
+        }
+      }
     }
   }
 }

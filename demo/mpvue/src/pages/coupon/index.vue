@@ -3,7 +3,7 @@
 
     <template v-if="from === 'me'">
       <div class="title-box">
-        <div v-for="(item, index) in tabTitle" class="title-list-item" :key="index" :class="{active: currentIndex === index}" @click="tabClick(index)">{{ item.name + '（' + item.count + '）' }}</div>
+        <div v-for="(item, index) in tabTitle" class="title-list-item" :key="index" :class="{active: currentIndex === index}" @click="tabClick(index)">{{ item.name + '(' + item.count + ')' }}</div>
         <div class="title-slider" 
           :style="{width: titleSlider.width + '%',transform: 'translate3d(' + titleSlider.left + '%,0,0)'}">
           <div class="slider"></div>
@@ -20,7 +20,9 @@
             </block>
 
             <block v-if="LogisticsCoupons.length" v-for="(item, index) of LogisticsCoupons" :key="index">
-              <coupon :isFail="false" :couponInfo="item"></coupon>
+              <block v-for="(list, listIndex) of item" :key="listIndex">
+                <coupon :isFail="false" :couponInfo="list"></coupon>
+              </block>
             </block>
           </div>
         </div>

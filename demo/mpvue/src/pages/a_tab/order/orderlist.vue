@@ -5,7 +5,7 @@
         <noorder :isShow="isShowNone" :text="isShowNoneText"></noorder>
         
         <block v-if="dataList.length" v-for="(item, index) of dataList" :key="index">
-            <div class="list-box" v-for="(order, orderIndex) of item" :key="order.id+orderIndex">
+            <div class="list-box" v-for="(order, orderIndex) of item" :key="orderIndex">
             <div class="list-tile">
                 <div class="list-tile-l">{{ order.logisticsOrderTime }}</div>
                 <div class="list-tile-r" :class="{'color-notice': order.paymentStatus == 0 || order.paymentStatus == 10}">{{ order.statusText }}</div>
