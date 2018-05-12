@@ -15,11 +15,11 @@
         <div class="tab" :class="{active: currentIndex === 0}">
           <div class="coupon-list-box">
 
-            <block v-if="isLogisticsCouponsNone">
-              <div class="coupon-list-none fixed">-- 暂无数据 --</div>
+            <block v-if="canUse.listNone">
+              <div class="coupon-list-none fixed">-- 暂无可使用优惠券 --</div>
             </block>
 
-            <block v-if="LogisticsCoupons.length" v-for="(item, index) of LogisticsCoupons" :key="index">
+            <block v-if="canUse.list.length" v-for="(item, index) of canUse.list" :key="index">
               <block v-for="(list, listIndex) of item" :key="listIndex">
                 <coupon :isFail="false" :couponInfo="list"></coupon>
               </block>
@@ -30,25 +30,30 @@
         <div class="tab" :class="{active: currentIndex === 1}">
           <div class="coupon-list-box">
 
-            <block v-if="isExpireListNone">
+            <block v-if="expire.listNone">
               <div class="coupon-list-none fixed">-- 暂无数据 --</div>
             </block>
 
-            <block v-if="expireList.length" v-for="(item, index) of expireList" :key="index">
-              <coupon :isFail="true" :couponInfo="item"></coupon>
+            <block v-if="expire.list.length" v-for="(item, index) of expire.list" :key="index">
+              <block v-for="(list, listIndex) of item" :key="listIndex">
+                <coupon :isFail="true" :couponInfo="list"></coupon>
+              </block>
             </block>
+
           </div>
         </div>
 
         <div class="tab" :class="{active: currentIndex === 2}">
           <div class="coupon-list-box">
 
-            <block v-if="isUsedListNone">
+            <block v-if="used.listNone">
               <div class="coupon-list-none fixed">-- 暂无数据 --</div>
             </block>
 
-            <block v-if="usedList.length" v-for="(item, index) of usedList" :key="index">
-              <coupon :isFail="true" :couponInfo="item"></coupon>
+            <block v-if="used.list.length" v-for="(item, index) of used.list" :key="index">
+              <block v-for="(list, listIndex) of item" :key="listIndex">
+                <coupon :isFail="true" :couponInfo="list"></coupon>
+              </block>
             </block>
           </div>
         </div>
@@ -59,11 +64,11 @@
     <template v-if="from === 'index'">
       <div class="coupon-list-box">
 
-        <block v-if="isLogisticsCouponsNone">
+        <block v-if="canUse.listNone">
           <div class="coupon-list-none fixed">-- 暂无可使用优惠券 --</div>
         </block>
 
-        <block v-if="LogisticsCoupons.length" v-for="(item, index) of LogisticsCoupons" :key="index">
+        <block v-if="canUse.list.length" v-for="(item, index) of canUse.list" :key="index">
           <coupon :isFail="false" :couponInfo="item" @couponClick="couponSelectFormIndex(item)"></coupon>
         </block>
 

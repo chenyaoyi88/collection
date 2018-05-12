@@ -1,10 +1,14 @@
 import { Vue, Component } from 'vue-property-decorator';
 import coupon from './coupon.vue';
-import { ghbRequest, setArrayGroup } from '../../utils';
+import { ghbRequest, setArrayGroup, showToastError } from '../../utils';
 import API from '../../api';
 import { eventBus, ghbEvent } from '../eventbus';
 
-import { mockList } from './mock';
+interface CouponList {
+  list: Array<any>;
+  listNone: boolean;
+  listTmp: Array<any>;
+};
 
 // 必须使用装饰器的方式来指定components
 @Component({
@@ -13,28 +17,31 @@ import { mockList } from './mock';
   }
 })
 class Index extends Vue {
-  // 已使用的优惠券
-  usedList: any = [];
-  // 过期的优惠券
-  expireList: any = [];
-  // 可使用的优惠券
-  LogisticsCoupons: any = [];
 
-  list1SaveTmp: any = [];
-  list1Tmp: any = [];
-  list1Count: number = 0;
+  listCount: number = 0;
 
-  // 是否显示没有数据
-  isUsedListNone: boolean = false;
-  isExpireListNone: boolean = false;
-  isLogisticsCouponsNone: boolean = false;
+  canUse: CouponList = {
+    list: [],
+    listNone: false,
+    listTmp: [],
+  };
+
+  expire: CouponList = {
+    list: [],
+    listNone: false,
+    listTmp: [],
+  };
+
+  used: CouponList = {
+    list: [],
+    listNone: false,
+    listTmp: [],
+  };
 
   // 当前 tab 索引
   currentIndex: number = 0;
   // 来自何处
   from: string = '';
-
-  pageSize: number = 10;
 
   // tab 标题
   tabTitle: Array<any> = [
@@ -67,22 +74,11 @@ class Index extends Vue {
   // 滑块滑动 + 切换 tab + 加载数据 
   tabSwitch(index: number) {
     this.titleSlider.left = 100 * (this.currentIndex = index);
-    this.getCouponListFromPageMe(this.currentIndex);
+    this.getCouponListFromPageMe(this.currentIndex, true);
   }
 
   // 从【我的】页面进来，加载不同 tab 的数据
-  getCouponListFromPageMe(tabIndex: number = 0) {
-
-    const mockJson = { "id": 96364, "code": "5af3e157ef2b8127c6eacd10", "beginDate": 1525932376000, "endDate": 1528646399000, "usedDate": null, "priceValue": 8.00, "startPrice": 40.00, "name": "8元优惠券8元优惠券8元优惠券8元优惠券", "isUsed": false, "isActivate": true, "isExpire": false, "introduction": "满40启用", "salesPrice": 0.00, "termOfUse": "满40启用满40启用满40启用满40启用", "isActivity": false };
-
-    let arrTmp = [];
-
-    for (let i = 0; i < 86; i++) {
-      arrTmp.push(mockJson);
-    }
-
-    this.list1Tmp = setArrayGroup(arrTmp);
-    this.LogisticsCoupons[this.list1Count] = this.list1Tmp[this.list1Count];
+  getCouponListFromPageMe(tabIndex: number = 0, isReload: boolean = false) {
 
     wx.showLoading({
       title: '加载中'
@@ -96,27 +92,13 @@ class Index extends Vue {
     }).then((res: any) => {
       switch (tabIndex) {
         case 0:
-
-          this.LogisticsCoupons = res.data;
-          this.tabTitle[tabIndex].count = this.LogisticsCoupons.length;
-          if (!this.LogisticsCoupons.length) {
-            this.isLogisticsCouponsNone = true;
-          }
-          
+          this.listRender('canUse', tabIndex, res, isReload);
           break;
         case 1:
-          this.expireList = res.data;
-          this.tabTitle[tabIndex].count = this.expireList.length;
-          if (!this.expireList.length) {
-            this.isExpireListNone = true;
-          }
+          this.listRender('expire', tabIndex, res, isReload);
           break;
         case 2:
-          this.usedList = res.data;
-          this.tabTitle[tabIndex].count = this.usedList.length;
-          if (!this.usedList.length) {
-            this.isUsedListNone = true;
-          }
+          this.listRender('used', tabIndex, res, isReload);
           break;
         default:
       }
@@ -131,6 +113,42 @@ class Index extends Vue {
     });
   }
 
+  // 列表渲染
+  listRender(listName: string, tabIndex: number, res: any, isReload: boolean) {
+    this[listName].listTmp = setArrayGroup(res.data);
+    if (isReload) {
+      for (let i = 0; i <= this[listName].listTmp.length; i++) {
+        if (i > 0) {
+          this[listName].list[i] = [];
+        }
+      }
+      this.listCount = 0;
+    }
+    this[listName].list[this.listCount] = this[listName].listTmp[this.listCount];
+    this.tabTitle[tabIndex].count = res.data.length;
+    if (!this.tabTitle[tabIndex].count) {
+      this[listName].listNone = true;
+    }
+  }
+
+  // 列表滚动加载
+  listRenderLoad(listName: string) {
+    if (this.listCount === this[listName].listTmp.length - 1) {
+      showToastError('没有更多数据了');
+      return;
+    };
+    wx.showLoading({
+      title: '加载中'
+    });
+    setTimeout(() => {
+      this.listCount++;
+      this[listName].list[this.listCount] = this[listName].listTmp[this.listCount];
+      console.log(this.listCount);
+      console.log(this[listName].list);
+      wx.hideLoading();
+    }, 300);
+  }
+
   // 获取可使用优惠券列表
   getCouponListFormIndex(data: any) {
     wx.showLoading({
@@ -141,9 +159,9 @@ class Index extends Vue {
       url: API.LOGISTICSCOUPONS,
       data
     }).then((res: any) => {
-      this.LogisticsCoupons = res.data;
-      if (!this.LogisticsCoupons.length) {
-        this.isLogisticsCouponsNone = true;
+      this.canUse.list = res.data;
+      if (!this.canUse.list.length) {
+        this.canUse.listNone = true;
       }
     });
   }
@@ -156,12 +174,26 @@ class Index extends Vue {
 
   // 重置所有数据
   resetData() {
-    this.usedList = [];
-    this.expireList = [];
-    this.LogisticsCoupons = [];
-    this.isUsedListNone = false;
-    this.isExpireListNone = false;
-    this.isLogisticsCouponsNone = false;
+    this.canUse = {
+      list: [],
+      listNone: false,
+      listTmp: [],
+    };
+
+    this.expire = {
+      list: [],
+      listNone: false,
+      listTmp: [],
+    };
+
+    this.used = {
+      list: [],
+      listNone: false,
+      listTmp: [],
+    };
+
+    this.listCount = 0;
+
     this.currentIndex = 0;
     this.from = '';
   }
@@ -169,29 +201,15 @@ class Index extends Vue {
   // 滚动条触底事件
   onReachBottom() {
     // 获取数据
-    console.log('滚动条触底事件');
-    wx.showLoading({
-      title: '加载中'
-    });
     switch (this.currentIndex) {
       case 0:
-        if (this.list1Count === this.list1Tmp.length - 1) {
-          wx.hideLoading();
-          return;
-        };
-        setTimeout(() => {
-
-          this.list1Count++;
-          this.LogisticsCoupons[this.list1Count] = this.list1Tmp[this.list1Count];
-
-          console.log(this.LogisticsCoupons);
-
-          wx.hideLoading();
-        }, 300);
+        this.listRenderLoad('canUse');
         break;
       case 1:
+        this.listRenderLoad('expire');
         break;
       case 2:
+        this.listRenderLoad('used');
         break;
     }
   }
@@ -203,12 +221,12 @@ class Index extends Vue {
 
     if (this.from === 'index') {
       // 来自 首页
-      this.getCouponListFormIndex(JSON.parse(options.LogisticsCoupons));
+      this.getCouponListFormIndex(JSON.parse(options.canUse.list));
     } else {
       // 来自 我的
       this.tabSwitch(0);
-      // this.getCouponListFromPageMe(1);
-      // this.getCouponListFromPageMe(2);
+      this.getCouponListFromPageMe(1, true);
+      this.getCouponListFromPageMe(2, true);
     }
   }
 
@@ -222,7 +240,7 @@ class Index extends Vue {
     if (this.from === 'index') {
       wx.stopPullDownRefresh();
     } else {
-      this.getCouponListFromPageMe(this.currentIndex);
+      this.getCouponListFromPageMe(this.currentIndex, true);
     }
   }
 }

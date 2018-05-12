@@ -68,13 +68,12 @@ export default {
   },
   computed: {
     oCoupon() {
-      // Object.keys(this.couponInfo).forEach(key => {
-      //   if (key.includes('Date')) {
-      //     this.couponInfo[`${key}Format`] = this.formatCouponTime(
-      //       this.couponInfo[`${key}`]
-      //     );
-      //   }
-      // });
+      this.couponInfo.beginDateFormat = this.formatCouponTime(
+            this.couponInfo.beginDate);
+      this.couponInfo.endDateFormat = this.formatCouponTime(
+            this.couponInfo.endDate);
+      this.couponInfo.usedDateFormat = this.formatCouponTime(
+            this.couponInfo.usedDate);
       return this.couponInfo;
     }
   },
@@ -83,7 +82,6 @@ export default {
       this.$emit('couponClick');
     },
     couponRuleClick() {
-      console.log('点击优惠券适用规则');
       wx.showModal({
         title: '使用说明',
         content: this.oCoupon.termOfUse,
