@@ -4,7 +4,7 @@
 
         <noorder :isShow="isShowNone" :text="isShowNoneText"></noorder>
         
-        <block v-if="dataList.length" v-for="(item, index) of dataList" :key="index">
+        <block v-if="orderList.length" v-for="(item, index) of orderList" :key="index">
             <div class="list-box" v-for="(order, orderIndex) of item" :key="orderIndex">
             <div class="list-tile">
                 <div class="list-tile-l">{{ order.logisticsOrderTime }}</div>
@@ -109,6 +109,11 @@ export default {
     return {
       text: ''
     };
+  },
+  computed: {
+    orderList() {
+      return this.dataList;
+    }
   },
   methods: {
     orderCancel(orderId) {

@@ -119,7 +119,7 @@ class Order extends Vue {
     let searchType: number = 2;
 
     wx.showLoading({
-      title: '加载中',
+      title: '加载中'
       // mask: true
     });
 
@@ -130,11 +130,6 @@ class Order extends Vue {
         scrollTop: 0,
         duration: 0
       });
-
-      // for (let j = 0; j <= pageSize; j++) {
-      //   oTab[listType][j] = [];
-      // }
-      // oTab[listType + 'Offset'] = 0;
     }
 
     switch (listType) {
@@ -156,46 +151,47 @@ class Order extends Vue {
         offset: reload ? 0 : oTab[listType + 'Offset'],
         limit: this.pageLimit
       }
-    }).then((res: any) => {
-      if (res.statusCode === 200) {
-        oTab[listType + 'Tmp'] = res.data;
-        let aShowList = [];
-        if (res.data && res.data.length) {
-          for (let i = 0; i < res.data.length; i++) {
-            const order = res.data[i];
-            order.statusText = getOrderStatusText(order);
-            aShowList.push(order);
-          }
-          // oTab[listType][pageSize] = aShowList;
+    })
+      .then((res: any) => {
+        if (res.statusCode === 200) {
+          oTab[listType + 'Tmp'] = res.data;
+          let aShowList = [];
+          if (res.data && res.data.length) {
+            for (let i = 0; i < res.data.length; i++) {
+              const order = res.data[i];
+              order.statusText = getOrderStatusText(order);
+              aShowList.push(order);
+            }
 
-          if (reload) {
-            for (let j = 0; j <= pageSize; j++) {
-              if (j > 0) {
-                oTab[listType][j] = [];
+            if (reload) {
+              for (let j = 0; j <= pageSize; j++) {
+                if (j > 0) {
+                  oTab[listType][j] = [];
+                } else {
+                  oTab[listType][j] = aShowList;
+                }
+              }
+              oTab[listType + 'Offset'] = 0;
+            } else {
+              oTab[listType][pageSize] = aShowList;
+            }
+          } else {
+            if (reload) {
+              oTab[listType + 'None'] = true;
+            } else {
+              if (oTab[listType].length) {
+                showToastError('没有更多数据了');
               } else {
-                oTab[listType][j] = aShowList;
+                oTab[listType + 'None'] = true;
               }
             }
-            oTab[listType + 'Offset'] = 0;
-          } else {
-            oTab[listType][pageSize] = aShowList;
           }
-        } else {
-          if (reload) {
-            oTab[listType + 'None'] = true;
-          } else {
-            if (oTab[listType].length) {
-              showToastError('没有更多数据了');
-            } else {
-              oTab[listType + 'None'] = true;
-            }
-          }
+          wx.stopPullDownRefresh();
         }
-        wx.stopPullDownRefresh();
-      }
-    }).catch(() => {
-      // TODO：接口出问题的时候列表展示处理
-    });
+      })
+      .catch(() => {
+        // TODO：接口出问题的时候列表展示处理
+      });
   }
 
   // 向上滚动获取更多数据
@@ -254,11 +250,18 @@ class Order extends Vue {
       content: '是否确定取消该订单？',
       success: function(res: { confirm: boolean; cancel: boolean }) {
         if (res.confirm) {
+          wx.showLoading({
+            title: '加载中'
+          });
+
           _this.cancelReasonWLId = id;
           // 请求取消原因列表 -> 请求取消订单接口
-          ghbRequest({
-            url: API.CANCELREASONS
-          }).then((res: any) => {
+          ghbRequest(
+            {
+              url: API.CANCELREASONS
+            },
+            true
+          ).then((res: any) => {
             if (res.statusCode === 200) {
               if (res.data && res.data.length) {
                 _this.cancelReasonList = res.data;
@@ -268,6 +271,7 @@ class Order extends Vue {
             } else {
               showToastError(res.data.message);
             }
+            wx.hideLoading();
           });
         }
       }
@@ -308,6 +312,23 @@ class Order extends Vue {
     });
   }
 
+  // 页面重置
+  resetPage() {
+    const token = wx.getStorageSync('token');
+    this.isLogin = token ? true : false;
+    if (this.isLogin) {
+      this.tabSwitch(0);
+      const aList = this.tabTitle;
+      for (let i = 0; i < aList.length; i++) {
+        const listName = aList[i].value;
+        this[listName] = [];
+        this[`${listName}Offset`] = 0;
+        this[`${listName}Tmp`] = [];
+        this[`${listName}None`] = false;
+      }
+    } 
+  }
+
   // 滚动条触底事件
   onReachBottom() {
     // 获取数据
@@ -321,26 +342,13 @@ class Order extends Vue {
 
   onLoad() {
     eventBus.$on(ghbEvent.resetOrderList, () => {
-      const token = wx.getStorageSync('token');
-      this.isLogin = token ? true : false;
-      const aList = this.tabTitle;
-      for (let i = 0; i < aList.length; i++) {
-        const listName = aList[i].value;
-        this[listName] = [];
-        this[`${listName}Offset`] = 0;
-        this[`${listName}Tmp`] = [];
-        this[`${listName}None`] = false;
-      }
+      this.resetPage();
     });
   }
 
   // 每次打开当前页面执行的事件
   onShow() {
-    const token = wx.getStorageSync('token');
-    this.isLogin = token ? true : false;
-    if (this.isLogin) {
-      this.tabSwitch(0);
-    }
+    this.resetPage();
   }
 }
 

@@ -3,6 +3,7 @@ import btnVcode from '@/components/button/vcode.vue'; // mpvue目前只支持的
 import API from '../../api';
 import { isInputEmpty, isPhoneNumber, showToastError, ghbRequest } from '../../utils';
 import { trim } from '../../utils/validate';
+import { eventBus, ghbEvent } from '../eventbus';
 
 // 必须使用装饰器的方式来指定components
 @Component({
@@ -102,6 +103,8 @@ class Login extends Vue {
       if (res.data.token) {
         wx.setStorageSync('token', res.data.token);
         wx.setStorageSync('mobile', this.phone);
+
+        eventBus.$emit(ghbEvent.resetOrderList);
 
         // 获取 code
         wx.login({

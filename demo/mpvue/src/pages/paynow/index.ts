@@ -31,6 +31,12 @@ class Index extends Vue {
     }, true).then((res: any) => {
       // 下单成功
       if (res.statusCode === 200) {
+
+        // 下单成功之后，清空首页填写的信息
+        this.$store.commit('isIndexResetChange', {
+          isIndexReset: true
+        });
+        
         // 获取订单号
         if (res.data.id) {
           ghbRequest({
@@ -46,11 +52,6 @@ class Index extends Vue {
           }).then((res: any) => {
             // 获取微信支付所需参数
             if (res.statusCode === 200) {
-
-              // 下单成功之后，清空首页填写的信息
-              this.$store.commit('isIndexResetChange', {
-                isIndexReset: true
-              });
 
               const PARAMS_PAY = JSON.parse(res.data.payData);
 
