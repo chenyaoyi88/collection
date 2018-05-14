@@ -70,6 +70,9 @@ class Me extends Vue {
   }
 
   logout() {
+    wx.showLoading({
+      title: '正在退出...'
+    });
     ghbRequest({
       url: API.LOGOUT,
       method: 'DELETE'

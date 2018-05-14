@@ -19,6 +19,7 @@
       <div class="coupon-content-r">
 
         <div class="coupon-content-main">
+
           <div class="coupon-title" :class="{'fail': isFail}">{{ oCoupon.name || '--' }}</div>
           <div class="coupon-desc">{{ oCoupon.introduction || '--' }}</div>
           <template v-if="isFail && oCoupon.isExpire">
@@ -30,6 +31,11 @@
           <template v-if="!isFail">
             <div class="coupon-date">{{ oCoupon.endDateFormat || '--' }} 到期</div>
           </template>
+
+          <div class="coupon-circle-select" v-if="isShowSlect">
+            <div v-if="!couponInfo.select" class="unselect-circle"></div>
+            <img v-else class="select-circle" :src="IMG_SELECT" alt="" mode="aspectFit">
+          </div>
         </div>
         
         <div class="coupon-rule" @click.stop="couponRuleClick">
@@ -46,6 +52,7 @@
 import IMG_COUPONBG from '../../../static/images/couponbg.png';
 import IMG_COUPONBG_FAIL from '../../../static/images/couponbg_fail.png';
 import IMG_ARROW from '../../../static/images/arrow-coupon.png';
+import IMG_SELECT from '../../../static/images/selected.png';
 import { formatTime } from '../../utils/index.ts';
 
 export default {
@@ -57,23 +64,31 @@ export default {
     isFail: {
       type: Boolean,
       default: false
+    },
+    isShowSlect: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       IMG_COUPONBG,
       IMG_COUPONBG_FAIL,
-      IMG_ARROW
+      IMG_ARROW,
+      IMG_SELECT
     };
   },
   computed: {
     oCoupon() {
       this.couponInfo.beginDateFormat = this.formatCouponTime(
-            this.couponInfo.beginDate);
+        this.couponInfo.beginDate
+      );
       this.couponInfo.endDateFormat = this.formatCouponTime(
-            this.couponInfo.endDate);
+        this.couponInfo.endDate
+      );
       this.couponInfo.usedDateFormat = this.formatCouponTime(
-            this.couponInfo.usedDate);
+        this.couponInfo.usedDate
+      );
       return this.couponInfo;
     }
   },
@@ -105,10 +120,6 @@ export default {
   z-index: 1;
   margin-bottom: 10px;
   overflow: hidden;
-  img {
-    width: 100%;
-    height: 100%;
-  }
   .coupon-content {
     position: absolute;
     left: 0;
@@ -157,6 +168,8 @@ export default {
         justify-content: center;
         flex-direction: column;
         padding: 0 20px;
+        position: relative;
+        z-index: 3;
         .coupon-title {
           font-size: 15px;
           font-weight: bold;
@@ -176,6 +189,17 @@ export default {
           &.fail {
             color: #a0a0a0;
           }
+        }
+        .coupon-circle-select {
+          position: absolute;
+          right: 0;
+          top: 0;
+          height: 100%;
+          z-index: 4;
+          padding: 0 10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
       }
       .coupon-rule {

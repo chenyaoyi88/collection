@@ -32,6 +32,7 @@
   .idx-ft-price {
     position: relative;
     z-index: 3;
+    box-shadow: 0 -1rpx 0 #eaeaea;
     .price-text {
       height: 50px;
       display: flex;
@@ -142,7 +143,7 @@
   bottom: 0;
   left: 0;
   z-index: 2000;
-  background: #fff; 
+  background: #fff;
 }
 
 .slider-content-box {

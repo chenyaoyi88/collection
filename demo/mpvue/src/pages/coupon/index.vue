@@ -3,7 +3,7 @@
 
     <template v-if="from === 'me'">
       <div class="title-box">
-        <div v-for="(item, index) in tabTitle" class="title-list-item" :key="index" :class="{active: currentIndex === index}" @click="tabClick(index)">{{ item.name + '(' + item.count + ')' }}</div>
+        <div v-for="(item, index) in tabTitle" class="title-list-item" :key="index" :class="{active: currentIndex === index}" @click="tabClick(index)">{{ item.name + '(' + (item.count || '0') + ')' }}</div>
         <div class="title-slider" 
           :style="{width: titleSlider.width + '%',transform: 'translate3d(' + titleSlider.left + '%,0,0)'}">
           <div class="slider"></div>
@@ -62,17 +62,24 @@
     </template>
 
     <template v-if="from === 'index'">
-      <div class="coupon-list-box">
 
-        <block v-if="canUse.listNone">
+        <block v-if="LogisticsCouponsNone">
           <div class="coupon-list-none fixed">-- 暂无可使用优惠券 --</div>
         </block>
 
-        <block v-if="canUse.list.length" v-for="(item, index) of canUse.list" :key="index">
-          <coupon :isFail="false" :couponInfo="item" @couponClick="couponSelectFormIndex(item)"></coupon>
-        </block>
+        <div v-else>
+          <div v-if="LogisticsCoupons.length" class="coupon-not-use" @click="couponSelectFormIndex(null)">
+            <div>不使用优惠券</div>
+            <div v-if="!isNotUseCoupon" class="unselect-circle"></div>
+            <img v-else class="select-circle" :src="IMG_SELECT" alt="" mode="aspectFit">
+          </div>
+          <div class="coupon-list-box">
+            <block v-if="LogisticsCoupons.length" v-for="(item, index) of LogisticsCoupons" :key="index">
+              <coupon :isFail="false" :isShowSlect="true" :couponInfo="item" @couponClick="couponSelectFormIndex(item)"></coupon>
+            </block>
+          </div>
+        </div>
 
-      </div>
     </template>
 
   </div>

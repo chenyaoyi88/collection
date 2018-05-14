@@ -12,15 +12,19 @@
       </div>
       <div class="info-item">
         <div class="info-item-l">里程运费</div>
-        <div class="info-item-r">￥{{ costs.zptFreight || '0.00' }}</div>
+        <div class="info-item-r">￥{{ costs.zptFreight || '0.00' }}元</div>
+      </div>
+      <div class="info-item" v-if="costs.couponInfo && costs.couponInfo.id">
+        <div class="info-item-l">{{ costs.couponInfo.name || '未知优惠券' }}</div>
+        <div class="info-item-r color-notice">-￥{{ costs.couponInfo.priceValue }}元</div>
       </div>
       <div class="info-item">
         <div class="info-item-l">夜间服务</div>
-        <div class="info-item-r">￥{{ costs.nightServiceFee || '0.00' }}</div>
+        <div class="info-item-r">￥{{ costs.nightServiceFee || '0.00' }}元</div>
       </div>
       <div class="info-item">
         <div class="info-item-l">其他费用</div>
-        <div class="info-item-r">￥0.00</div>
+        <div class="info-item-r">￥0.00元</div>
       </div>
     </div>
   </div>

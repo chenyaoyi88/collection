@@ -4,6 +4,8 @@ import { ghbRequest, setArrayGroup, showToastError } from '../../utils';
 import API from '../../api';
 import { eventBus, ghbEvent } from '../eventbus';
 
+import IMG_SELECT from '../../../static/images/selected.png';
+
 interface CouponList {
   list: Array<any>;
   listNone: boolean;
@@ -17,6 +19,14 @@ interface CouponList {
   }
 })
 class Index extends Vue {
+
+  IMG_SELECT: any = IMG_SELECT;
+  isNotUseCoupon: boolean = true;
+
+  couponInfo: any = {};
+
+  LogisticsCoupons: Array<any> = [];
+  LogisticsCouponsNone: boolean = false;
 
   listCount: number = 0;
 
@@ -143,8 +153,6 @@ class Index extends Vue {
     setTimeout(() => {
       this.listCount++;
       this[listName].list[this.listCount] = this[listName].listTmp[this.listCount];
-      console.log(this.listCount);
-      console.log(this[listName].list);
       wx.hideLoading();
     }, 300);
   }
@@ -159,15 +167,23 @@ class Index extends Vue {
       url: API.LOGISTICSCOUPONS,
       data
     }).then((res: any) => {
-      this.canUse.list = res.data;
-      if (!this.canUse.list.length) {
-        this.canUse.listNone = true;
+      if (res.data && res.data.length) {
+        for (let item of res.data) {
+          if (item.id === this.couponInfo.id) {
+            item.select = true;
+          }
+        }
+        this.LogisticsCoupons = res.data;
+      }
+      if (!this.LogisticsCoupons.length) {
+        this.LogisticsCouponsNone = true;
       }
     });
   }
 
   // 选择优惠券之后返回首页
   couponSelectFormIndex(item: any) {
+    this.isNotUseCoupon = item ? false : true;
     eventBus.$emit(ghbEvent.getCoupon, item);
     wx.navigateBack();
   }
@@ -194,34 +210,46 @@ class Index extends Vue {
 
     this.listCount = 0;
 
+    this.LogisticsCoupons = [];
+    this.LogisticsCouponsNone = false;
+
+    this.couponInfo = {};
+
     this.currentIndex = 0;
     this.from = '';
   }
 
   // 滚动条触底事件
   onReachBottom() {
-    // 获取数据
-    switch (this.currentIndex) {
-      case 0:
-        this.listRenderLoad('canUse');
-        break;
-      case 1:
-        this.listRenderLoad('expire');
-        break;
-      case 2:
-        this.listRenderLoad('used');
-        break;
+    if (this.from === 'me') {
+      // 获取数据
+      switch (this.currentIndex) {
+        case 0:
+          this.listRenderLoad('canUse');
+          break;
+        case 1:
+          this.listRenderLoad('expire');
+          break;
+        case 2:
+          this.listRenderLoad('used');
+          break;
+      }
     }
   }
 
   // 获取传过来的参数
   onLoad() {
     const options = this.$root['$mp'].query || {};
-    this.from = options.from || 'me';
+    this.from = options.from || 'index';
 
     if (this.from === 'index') {
       // 来自 首页
-      this.getCouponListFormIndex(JSON.parse(options.canUse.list));
+      this.couponInfo = JSON.parse(options.couponInfo);
+      if (this.couponInfo) {
+        this.isNotUseCoupon = this.couponInfo.id ? false : true;
+      }
+      this.getCouponListFormIndex(JSON.parse(options.LogisticsCoupons));
+
     } else {
       // 来自 我的
       this.tabSwitch(0);

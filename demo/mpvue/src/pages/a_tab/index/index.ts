@@ -6,7 +6,8 @@ import {
   formatCurrency,
   showToastError,
   formatGhbGoodsRemarkDate,
-  refreshToken
+  refreshToken,
+  zerofillBack
 } from '../../../utils';
 import API from '../../../api';
 // 组件
@@ -120,10 +121,6 @@ class Index extends Vue {
 
   // 选择车型
   fnCarTypeSelect() {
-    if (!this.carTypeList.length) {
-      showToastError('获取车型列表失败，请登录后再重试');
-      return;
-    }
     wx.navigateTo({
       url: '../../cartype/main'
     });
@@ -132,7 +129,8 @@ class Index extends Vue {
   // 点击额外服务
   fnExtraServices() {
     if (!this.additionalServicesList.length) {
-      showToastError('获取额外服务列表失败，请登录后再重试');
+      this.getAdditionListData(true);
+      // showToastError('获取额外服务列表失败，请登录后再重试');
       return;
     }
     this.selectSlider = true;
@@ -161,7 +159,7 @@ class Index extends Vue {
     wx.navigateTo({
       url:
         '../../coupon/main?from=index&LogisticsCoupons=' +
-        JSON.stringify(PARAMS_LOGISTICSORDER_REQUEST)
+        JSON.stringify(PARAMS_LOGISTICSORDER_REQUEST) + '&couponInfo=' + JSON.stringify(this.couponInfo)
     });
   }
 
@@ -255,7 +253,7 @@ class Index extends Vue {
     const sClothsAmount = `${this.clothsAmount && `${this.clothsAmount}件`}`;
     const goodsDesc = `${sGoodsRemarkDate && sGoodsRemarkDate + ' 接货'} ${
       this.goodsRemark
-    } ${sClothsAmount}`;
+      } ${sClothsAmount}`;
 
     if (!/\S/.test(this.goodsRemark)) {
       showToastError('请输入货物信息');
@@ -298,6 +296,11 @@ class Index extends Vue {
       senderY: this.startInfo.location.lat,
       startCityCode: this.startInfo.cityCode
     };
+
+    if (this.couponInfo.id) {
+      this.costs.couponInfo = this.couponInfo;
+    }
+
     wx.navigateTo({
       url: `../../paynow/main?logisticsorder=${JSON.stringify(
         PARAMS_LOGISTICSORDER_REQUEST
@@ -373,9 +376,8 @@ class Index extends Vue {
     return this.$store.state.additionalServicesList;
   }
 
-  // 请求各种页面数据
-  getListData() {
-    // 获取车型列表
+  // 获取车型列表
+  getCartypeListData() {
     ghbRequest({
       url: API.CARTYPE
     }).then((res: any) => {
@@ -389,14 +391,25 @@ class Index extends Vue {
         }
       }
     });
+  }
 
-    // 获取额外服务
+  // 获取额外服务
+  getAdditionListData(isClick: boolean = false) {
     ghbRequest({
       url: API.GETADDITIONALSERVICES
     }).then((res: any) => {
+      if (!res.data.length) {
+        if (isClick) {
+          showToastError('获取额外服务列表失败，请登录后再重试');
+        }
+        return;
+      }
       this.$store.commit('additionalServicesListChange', {
         additionalServicesList: res.data
       });
+      if (isClick) {
+        this.selectSlider = true;
+      }
     });
   }
 
@@ -405,11 +418,26 @@ class Index extends Vue {
     // 更新 token
     // 处理逻辑：本地存有 token 先更新 token
     refreshToken(API.REFRESH).then(() => {
-      this.getListData();
+      // 请求各种页面数据
+      this.getCartypeListData();
+      this.getAdditionListData();
     });
   }
 
   created() {
+    const updateManager = wx.getUpdateManager();
+    updateManager.onUpdateReady(function () {
+      wx.showModal({
+        title: '更新提示',
+        content: '新版本已经准备好，是否重启应用？',
+        success: function (res: any) {
+          if (res.confirm) {
+            // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+            updateManager.applyUpdate()
+          }
+        }
+      })
+    });
     this.pageReload();
   }
 
@@ -417,10 +445,10 @@ class Index extends Vue {
     eventBus.$on(ghbEvent.getCoupon, (item: any) => {
       if (item && item.id) {
         this.couponInfo = item;
-        this.fnCanCost();
       } else {
         this.couponInfo = {};
       }
+      this.fnCanCost();
     });
   }
 

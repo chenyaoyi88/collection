@@ -53,7 +53,8 @@ interface GhbRequest {
   header?: any;
 }
 
-export function ghbRequest(options: GhbRequest): Promise<any> {
+// TODO：加 isShowing 默认参数，临时解决 hideLoading 会搞掉 toast 的情况
+export function ghbRequest(options: GhbRequest, isShowing: boolean = false): Promise<any> {
   let isToastShowing: boolean = false;
   return new Promise((resolve: any, reject: any) => {
     wx.request({
@@ -78,13 +79,17 @@ export function ghbRequest(options: GhbRequest): Promise<any> {
         resolve(res);
       },
       fail: function (err: any) {
-        console.log(err);
+        // console.log(err);
+        // console.log('fail');
         showToastError();
         reject('fail');
       },
       complete: function () {
+        // console.log('complete');
         if (isToastShowing) return;
-        wx.hideLoading();
+        if (!isShowing) {
+          wx.hideLoading();
+        }
         reject('complete');
       }
     });

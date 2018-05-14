@@ -2703,6 +2703,11 @@ declare namespace wx {
   function setEnableDebug(options: SetEnableDebugOptions): void;
 }
 
+// 更新
+declare namespace wx {
+  function getUpdateManager(): any;
+}
+
 // Page
 declare namespace wx {
   interface Page {

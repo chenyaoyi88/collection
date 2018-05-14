@@ -120,7 +120,7 @@ class Order extends Vue {
 
     wx.showLoading({
       title: '加载中',
-      mask: true
+      // mask: true
     });
 
     const pageSize = oTab[listType + 'Offset'] / 10;
@@ -193,6 +193,8 @@ class Order extends Vue {
         }
         wx.stopPullDownRefresh();
       }
+    }).catch(() => {
+      // TODO：接口出问题的时候列表展示处理
     });
   }
 

@@ -56,6 +56,15 @@ page {
   }
 }
 
+.coupon-not-use {
+  background-color: #fff;
+  font-size: 14px;
+  padding: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .coupon-list-box {
   padding: 15px;
 }

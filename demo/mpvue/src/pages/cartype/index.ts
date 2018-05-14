@@ -12,7 +12,9 @@ import arrow from '../../../static/images/arrow.png';
 // 必须使用装饰器的方式来指定components
 @Component
 class Index extends Vue {
-  // carTypeData: Array<any> = [];
+
+  carTypeList: Array<any> = [];
+
   img: any = {
     text_forbid_red,
     text_forbid_yellow,
@@ -22,32 +24,73 @@ class Index extends Vue {
     arrow
   };
 
-  get carTypeData() {
-    return this.$store.state.carTypeList;
+  onLoad() {
+    // 如果没有车型列表
+    // if (!this.$store.state.carTypeList.length) {
+      wx.showLoading({
+        title: '加载中'
+      });
+      // 获取车型列表
+      ghbRequest({
+        url: API.CARTYPE
+      }).then((res: any) => {
+        if (res.statusCode === 200) {
+          if (res.data.length) {
+
+            this.carTypeList = res.data;
+
+            for (let item of this.carTypeList) {
+              item.startPrice = (item.startPrice && zerofillBack(item.startPrice)) || '--';
+              item.startRange = (item.startPrice && zerofillBack(item.startRange)) || '--';
+              item.nightServiceFee = (item.nightServiceFee && zerofillBack(item.nightServiceFee)) || '--';
+              if (item.carTemplate) {
+                if (item.carTemplate.carForbiddenTimeResult) {
+                  const result = item.carTemplate.carForbiddenTimeResult;
+                  item.forbiddenStatusCode = item.carTemplate.carForbiddenTimeResult.status;
+                  item.forbiddenStatusText = this.getForbiddenStatus(result).text;
+                  item.forbiddenStatusClass = this.getForbiddenStatus(result).class;
+                } else {
+                  // 没有 carForbiddenTimeResult 字段的值时的默认状态
+                  item.forbiddenStatusCode = 20;
+                  item.forbiddenStatusText = '无禁行';
+                  item.forbiddenStatusClass = 'green';
+                }
+              }
+            }
+
+          }
+        }
+      });
+    // }
   }
 
-  // 二次处理数组
-  get carTypeList() {
-    for (let item of this.carTypeData) {
-      item.startPrice = (item.startPrice && zerofillBack(item.startPrice)) || '--';
-      item.startRange = (item.startPrice && zerofillBack(item.startRange)) || '--';
-      item.nightServiceFee = (item.nightServiceFee && zerofillBack(item.nightServiceFee)) || '--';
-      if (item.carTemplate) {
-        if (item.carTemplate.carForbiddenTimeResult) {
-          const result = item.carTemplate.carForbiddenTimeResult;
-          item.forbiddenStatusCode = item.carTemplate.carForbiddenTimeResult.status;
-          item.forbiddenStatusText = this.getForbiddenStatus(result).text;
-          item.forbiddenStatusClass = this.getForbiddenStatus(result).class;
-        } else {
-          // 没有 carForbiddenTimeResult 字段的值时的默认状态
-          item.forbiddenStatusCode = 20;
-          item.forbiddenStatusText = '无禁行';
-          item.forbiddenStatusClass = 'green';
-        }
-      }
-    }
-    return this.carTypeData;
-  }
+  // get carTypeData() {
+  //   console.log(this.$store.state.carTypeList);
+  //   return this.$store.state.carTypeList;
+  // }
+
+  // // 二次处理数组
+  // get carTypeList() {
+  //   for (let item of this.carTypeData) {
+  //     item.startPrice = (item.startPrice && zerofillBack(item.startPrice)) || '--';
+  //     item.startRange = (item.startPrice && zerofillBack(item.startRange)) || '--';
+  //     item.nightServiceFee = (item.nightServiceFee && zerofillBack(item.nightServiceFee)) || '--';
+  //     if (item.carTemplate) {
+  //       if (item.carTemplate.carForbiddenTimeResult) {
+  //         const result = item.carTemplate.carForbiddenTimeResult;
+  //         item.forbiddenStatusCode = item.carTemplate.carForbiddenTimeResult.status;
+  //         item.forbiddenStatusText = this.getForbiddenStatus(result).text;
+  //         item.forbiddenStatusClass = this.getForbiddenStatus(result).class;
+  //       } else {
+  //         // 没有 carForbiddenTimeResult 字段的值时的默认状态
+  //         item.forbiddenStatusCode = 20;
+  //         item.forbiddenStatusText = '无禁行';
+  //         item.forbiddenStatusClass = 'green';
+  //       }
+  //     }
+  //   }
+  //   return this.carTypeData;
+  // }
 
   getForbiddenStatus(result: CarForbiddenTimeResult) {
     let status = {
