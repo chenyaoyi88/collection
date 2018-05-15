@@ -119,7 +119,7 @@ class Order extends Vue {
     let searchType: number = 2;
 
     wx.showLoading({
-      title: '加载中'
+      title: '加载中',
       // mask: true
     });
 
@@ -248,7 +248,7 @@ class Order extends Vue {
     wx.showModal({
       title: '取消订单',
       content: '是否确定取消该订单？',
-      success: function(res: { confirm: boolean; cancel: boolean }) {
+      success: function (res: { confirm: boolean; cancel: boolean }) {
         if (res.confirm) {
           wx.showLoading({
             title: '加载中'
@@ -298,11 +298,11 @@ class Order extends Vue {
     }).then((res: any) => {
       if (res.statusCode === 200) {
         const PARAMS_PAY = JSON.parse(res.data.payData);
-        PARAMS_PAY.success = function(res: any) {
+        PARAMS_PAY.success = function (res: any) {
           // 支付成功，刷新当前列表
           _this.tabSwitch(0);
         };
-        PARAMS_PAY.fail = function(res: any) {
+        PARAMS_PAY.fail = function (res: any) {
           // 支付失败，无操作
         };
         wx.requestPayment(PARAMS_PAY);
@@ -313,11 +313,11 @@ class Order extends Vue {
   }
 
   // 页面重置
-  resetPage() {
+  resetPage(isLoadList: boolean = true) {
     const token = wx.getStorageSync('token');
     this.isLogin = token ? true : false;
     if (this.isLogin) {
-      this.tabSwitch(0);
+      isLoadList && this.tabSwitch(0);
       const aList = this.tabTitle;
       for (let i = 0; i < aList.length; i++) {
         const listName = aList[i].value;
@@ -326,7 +326,7 @@ class Order extends Vue {
         this[`${listName}Tmp`] = [];
         this[`${listName}None`] = false;
       }
-    } 
+    }
   }
 
   // 滚动条触底事件
@@ -342,7 +342,7 @@ class Order extends Vue {
 
   onLoad() {
     eventBus.$on(ghbEvent.resetOrderList, () => {
-      this.resetPage();
+      this.resetPage(false);
     });
   }
 
