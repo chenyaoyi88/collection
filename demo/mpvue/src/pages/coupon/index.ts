@@ -26,6 +26,7 @@ class Index extends Vue {
   couponInfo: any = {};
 
   LogisticsCoupons: Array<any> = [];
+  LogisticsCouponsParams: any = {};
   LogisticsCouponsNone: boolean = false;
 
   listCount: number = 0;
@@ -211,6 +212,7 @@ class Index extends Vue {
     this.listCount = 0;
 
     this.LogisticsCoupons = [];
+    this.LogisticsCouponsParams = {};
     this.LogisticsCouponsNone = false;
 
     this.couponInfo = {};
@@ -248,8 +250,8 @@ class Index extends Vue {
       if (this.couponInfo) {
         this.isNotUseCoupon = this.couponInfo.id ? false : true;
       }
-      this.getCouponListFormIndex(JSON.parse(options.LogisticsCoupons));
-
+      this.LogisticsCouponsParams = JSON.parse(options.LogisticsCoupons);
+      this.getCouponListFormIndex(this.LogisticsCouponsParams);
     } else {
       // 来自 我的
       this.tabSwitch(0);
@@ -266,6 +268,7 @@ class Index extends Vue {
   // 用户下拉动作，刷新当前列表
   onPullDownRefresh() {
     if (this.from === 'index') {
+      this.getCouponListFormIndex(this.LogisticsCouponsParams);
       wx.stopPullDownRefresh();
     } else {
       this.getCouponListFromPageMe(this.currentIndex, true);

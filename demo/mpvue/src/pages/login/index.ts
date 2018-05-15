@@ -18,6 +18,8 @@ class Login extends Vue {
   // 短信验证码
   msgCode: string = '';
 
+  isBtnClick: boolean = false;
+
   mounted() {
     this.phone = '';
     this.msgCode = '';
@@ -71,7 +73,7 @@ class Login extends Vue {
         oMsgCode.run();
         if (process.env.NODE_ENV !== 'production') {
           this.msgCode = res.data.code;
-          this.login();
+          // this.login();
         }
       }
     });
@@ -95,11 +97,14 @@ class Login extends Vue {
       deviceType: 5
     };
 
+    if (this.isBtnClick) return;
+    this.isBtnClick = true;
+
     ghbRequest({
       url: API.LOGIN,
       method: 'POST',
       data: PARAMS_LOGIN_REQUEST
-    }).then((res: GHB_Response<Login_Response>) => {
+    }, true).then((res: GHB_Response<Login_Response>) => {
       if (res.data.token) {
         wx.setStorageSync('token', res.data.token);
         wx.setStorageSync('mobile', this.phone);
@@ -124,6 +129,9 @@ class Login extends Vue {
       } else {
         showToastError(res.data.message);
       }
+      this.isBtnClick = false;
+    }).catch(() => {
+      this.isBtnClick = false;
     });
   }
 

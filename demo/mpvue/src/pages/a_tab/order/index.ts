@@ -178,6 +178,7 @@ class Order extends Vue {
           } else {
             if (reload) {
               oTab[listType + 'None'] = true;
+              oTab[listType] = [];
             } else {
               if (oTab[listType].length) {
                 showToastError('没有更多数据了');
@@ -186,6 +187,7 @@ class Order extends Vue {
               }
             }
           }
+          
           wx.stopPullDownRefresh();
         }
       })
@@ -324,7 +326,7 @@ class Order extends Vue {
         this[listName] = [];
         this[`${listName}Offset`] = 0;
         this[`${listName}Tmp`] = [];
-        this[`${listName}None`] = false;
+        this[`${listName}None`] == false;
       }
     }
   }

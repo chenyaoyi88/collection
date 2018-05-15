@@ -16,7 +16,7 @@
     </div>
 
     <div class="login-btn-box">
-      <button class="ghb-btn login-btn" @click="login">登录</button>
+      <button :disabled="isBtnClick" class="ghb-btn login-btn" @click="login">登录</button>
     </div>
     
     <div class="login-tips-box">

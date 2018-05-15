@@ -46,7 +46,8 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 2 : 0,
     'linebreak-style': 'off',
     'comma-dangle': 'off',
-    'no-param-reassign': 'off'
+    'no-param-reassign': 'off',
+    'arrow-parens': 'off'
   },
   globals: {
     App: true,
