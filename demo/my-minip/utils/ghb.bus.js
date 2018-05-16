@@ -46,7 +46,7 @@ export function showToastError(title = '网络繁忙，请稍后再试') {
   });
 }
 
-export function ghbRequest(options) {
+export function ghbRequest(options, isShowing = false) {
   let isToastShowing = false;
   return new Promise((resolve, reject) => {
     wx.request({
@@ -57,7 +57,6 @@ export function ghbRequest(options) {
         authorization: wx.getStorageSync('token') || ''
       },
       success: function (res) {
-        // console.log(res);
         if (res.statusCode === 401) {
           wx.showToast({
             title: res.data.message,
@@ -71,13 +70,14 @@ export function ghbRequest(options) {
         resolve(res);
       },
       fail: function (err) {
-        console.log(err);
         showToastError();
         reject('fail');
       },
       complete: function () {
         if (isToastShowing) return;
-        wx.hideLoading();
+        if (!isShowing) {
+          wx.hideLoading();
+        }
         reject('complete');
       }
     });

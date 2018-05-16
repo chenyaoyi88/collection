@@ -23,7 +23,7 @@
 }
 
 .color-light {
-  color: #888888;
+  color: #888;
 }
 
 .no-boder-top {
@@ -37,7 +37,7 @@
 .ghb-btn {
   width: 100%;
   height: 94rpx;
-  background-color: #F33650;
+  background-color: #f33650;
   font-size: 36rpx;
   color: #fff;
   border-radius: 0;
@@ -55,10 +55,6 @@ button::after {
   background-color: #db343f;
 }
 
-/* .ghb-btn:after {
-  background-color: #db343f;
-} */
-
 .ghb-btn[disabled] {
   color: #1f0202 !important;
   background-color: #dfdfdf !important;
@@ -66,4 +62,21 @@ button::after {
 
 .ghb-input {
   border: 0;
+}
+
+/* 颜色 */
+.text-light {
+  color: #b2b2b2;
+}
+
+.mg20 {
+  margin: 20rpx;
+}
+
+.mg20-tb {
+  margin: 20rpx 0;
+}
+
+.mg20-lr {
+  margin: 0 20rpx;
 }

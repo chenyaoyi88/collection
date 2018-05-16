@@ -35,10 +35,10 @@ Component({
       type: String,
       value: ''
     },
-    // icon 类型（icon/start/end/custom）
+    // icon 类型（none/icon/start/end/custom）
     itemIconType: {
       type: String,
-      value: 'icon'
+      value: 'none'
     },
     // 是否隐藏 item 左边
     isHideItemLeft: {
@@ -54,6 +54,16 @@ Component({
     isHideBorderTop: {
       type: Boolean,
       value: false,
+    },
+    // 是否显示淡颜色的样式
+    isItemNameLight: {
+      type: Boolean,
+      value: false
+    },
+    // 是否显示淡颜色的样式
+    isValueLight: {
+      type: Boolean,
+      value: false
     },
     // item 左侧的值 top
     itemValueLeftTop: {

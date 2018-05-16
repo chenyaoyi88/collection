@@ -1,0 +1,7 @@
+<view>
+  <component-nodata 
+    is-show="{{ !isLogin }}"
+    is-show-btn="true"
+    text="您还未登录噢，速速去登录吧～" 
+  />
+</view>

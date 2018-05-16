@@ -1,6 +1,6 @@
 Page({
   data: {
-    logs: []
+    avantar: '../../assets/images/avantar.png'
   },
   onLoad: function () {
   }

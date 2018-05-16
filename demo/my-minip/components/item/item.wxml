@@ -1,49 +1,49 @@
 <!-- 组件模板 -->
 <view class="item {{itemClass}}" bindtap="itemClickEvent">
 
-    <view class="item-l" wx:if="{{!isHideItemLeft}}">
-        <block wx:if="{{itemIconType === 'icon'}}">
-            <image wx:if="{{itemIcon}}" class="item-icon" src="{{itemIcon}}" mode="aspectFit"></image>
-        </block>
+  <block wx:if="{{itemIconType !== 'none' }}">
+    <view class="item-l">
+      <block wx:if="{{itemIconType === 'icon'}}">
+        <image wx:if="{{itemIcon}}" class="item-icon" src="{{itemIcon}}" mode="aspectFit"></image>
+      </block>
 
-        <block wx:if="{{itemIconType === 'start' || itemIconType === 'end'}}">
-            <view class="item-point {{itemIconType}}"></view>
-            <view class="item-point-line {{itemIconType}}"></view>
-        </block>
+      <block wx:if="{{itemIconType === 'start' || itemIconType === 'end'}}">
+        <view class="item-point {{itemIconType}}"></view>
+        <view class="item-point-line {{itemIconType}}"></view>
+      </block>
 
-        <block wx:if="{{itemIconType === 'custom'}}">
-            <slot name="item-l"></slot>
-        </block>
+      <block wx:if="{{itemIconType === 'custom'}}">
+        <slot name="item-l"></slot>
+      </block>
     </view>
-    
-    <view class="item-r {{isHideBorderTop ? 'no-border-top' : ''}}">
-        <block wx:if="{{itemType === 'normal'}}">
-            <view class="item-r-title">
-                <view wx:if="{{itemValueLeftTop}}" class="item-info-t">{{itemValueLeftTop}}</view>
-                <view wx:if="{{itemValueLeftCenter}}" class="item-info-c">{{itemValueLeftCenter}}</view>
-                <view wx:if="{{itemValueLeftBottom}}" class="item-info-b">{{itemValueLeftBottom}}</view>
-            </view>
-            <view class="item-r-value" wx:if="{{itemValueRight}}">
-                <text class="">{{itemValueRight}}</text>
-            </view>
-        </block>
+  </block>
 
-        <block wx:if="{{itemType === 'input'}}">
-            <input class="item-input" 
-                type="{{itemTnputType}}" 
-                placeholder="{{itemInputPlc}}" 
-                placeholder-style="{{itemInputPlcStyle}}" 
-                value="{{itemInputValue}}" 
-                bindinput="itemInputEvent" 
-                maxlength="{{itemInputMaxlength}}"/>
-        </block>
+  <block wx:if="{{itemIconType === 'none' }}">
+    <view class='item-l-none'></view>
+  </block>
 
-        <block wx:if="{{itemType === 'custom'}}">
-            <slot name="item-r"></slot>
-        </block>
+  <view class="item-r {{isHideBorderTop ? 'no-border-top' : ''}}">
+    <block wx:if="{{itemType === 'normal'}}">
+      <view class="item-r-title">
+        <view wx:if="{{itemValueLeftTop}}" class="item-info-t">{{itemValueLeftTop}}</view>
+        <view wx:if="{{itemValueLeftCenter}}" class="item-info-c {{ isItemNameLight ? 'item-text-light' : ''}}">{{itemValueLeftCenter}}</view>
+        <view wx:if="{{itemValueLeftBottom}}" class="item-info-b">{{itemValueLeftBottom}}</view>
+      </view>
+      <view class="item-r-value" wx:if="{{itemValueRight}}">
+        <text class="{{ isValueLight ? 'item-text-light' : ''}}">{{itemValueRight}}</text>
+      </view>
+    </block>
 
-        <view class="item-r-arrow" wx:if="{{!isHideItemArrow}}">
-            <image class="img-item-arrow" src="../../assets/icons/arrow.png" mode="aspectFit"></image>
-        </view>
+    <block wx:if="{{itemType === 'input'}}">
+      <input class="item-input" type="{{itemTnputType}}" placeholder="{{itemInputPlc}}" placeholder-style="{{itemInputPlcStyle}}" value="{{itemInputValue}}" bindinput="itemInputEvent" maxlength="{{itemInputMaxlength}}" />
+    </block>
+
+    <block wx:if="{{itemType === 'custom'}}">
+      <slot name="item-r"></slot>
+    </block>
+
+    <view class="item-r-arrow" wx:if="{{!isHideItemArrow}}">
+      <image class="img-item-arrow" src="../../assets/icons/arrow.png" mode="aspectFit"></image>
     </view>
+  </view>
 </view>

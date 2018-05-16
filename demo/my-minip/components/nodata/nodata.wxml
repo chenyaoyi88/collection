@@ -1,0 +1,8 @@
+<!-- 组件模板 -->
+<view class="nodata-box" wx:if="{{ isShow }}">
+  <view class="nodata-page-box">
+    <image class="nodata-page-img" src="{{ imgNodata }}" alt="" mode="aspectFit"></image>
+    <view class="nodata-page-tips">{{ text }}</view>
+    <button wx:if="{{ isShowBtn }}" class="ghb-btn nodata-page-btn" bindtap="btnEvent">登录</button>
+  </view>
+</view>

@@ -1,98 +1,78 @@
 <!-- index.wxml -->
-<view class="-container">
-  <component-tabbar 
-    list="{{tabbarList}}" 
-    tabIndex="{{tabIndex}}"
-    class="tabbar-class" 
-    bindtabClickEvent="tabClickEvent"
-  >
+<view>
 
-    <view slot="tab0">
-      <view class="tab0-box">
-        <view class="tab0-main-box">
+  <view class='index-container'>
+    <view class="mg20-tb">
+      <component-item 
+        item-class="item-point-class" 
+        item-icon-type="start" 
+        item-value-left-top="" 
+        item-value-left-center="选择发货地点" 
+        item-value-right="" 
+        is-hide-border-top="true" 
+        is-item-name-light="true"
+      />
 
-          <view class="tab0-item-point">
-            <component-item 
-              item-class="item-point-class"
-              item-icon-type="start"
-              item-value-left-top=""
-              item-value-left-center="选择发货地点"
-              item-value-right=""
-              is-hide-border-top="true"
-            />
-
-            <component-item 
-              item-class="item-point-class"
-              item-icon-type="end"
-              item-value-left-top=""
-              item-value-left-center="选择收货地点"
-              item-value-right=""
-            ></component-item>
-          </view>
-
-          <view class="tab0-item-other">
-            <component-item 
-              item-icon-type="icon"
-              item-icon="{{iconList.carType}}"
-              item-value-left-center="车型"
-              item-value-right="请选择车型"
-              is-hide-border-top="true"
-            ></component-item>
-            
-            <component-item-picker></component-item-picker>
-
-            <component-item 
-              item-icon-type="icon"
-              item-icon="{{iconList.extra}}"
-              item-value-left-center="额外服务"
-              item-value-right="装卸搬运等额外服务"
-            ></component-item>
-            <component-item
-              item-type="custom"
-              item-icon-type="icon"
-              item-icon="{{iconList.goods}}"
-            >
-              <view class="goods-box" slot="item-r">
-                <view class="goods-title">货物信息</view>
-                <view class="goods-amount-box">
-                  <input 
-                    placeholder-style="color:#b2b2b2" 
-                    placeholder="条数" 
-                    type="number"/>
-                </view>
-                <view class="goods-info-box">{{ goodsRemark || '货物信息，备注等' }}</view>
-              </view>
-            </component-item>
-
-          </view>
-
-          <view class="idx-ft-box">
-            <view class="idx-ft-price">
-              <view class="price-text">￥{{ (costs && costs.amount) || '--'}}</view>
-            </view>
-            <view class="idx-ft-nextbtn">
-              <button class="ghb-btn next-btn" bindtap="show">下一步</button>
-            </view>
-          </view>
-
-        </view>
-      </view>
-
-      <view class="select {{show ? 'active' : ''}}">
-        <view class="select-bg" bindtap="hide"></view>
-        <view class="select-content">
-          <view class="select-title-box">
-            <view class="select-cancel-box">
-              <image class="select-cancel-img" src="{{iconList.carType}}" alt="" mode="aspectFit"></image>
-            </view>
-            <view class="select-title">额外服务</view>
-          </view>
-        </view>
-      </view>
-
+      <component-item 
+        item-class="item-point-class" 
+        item-icon-type="end" 
+        item-value-left-top="" 
+        item-value-left-center="选择收货地点" 
+        item-value-right=""
+        is-item-name-light="true"
+      />
     </view>
 
-    <view slot="tab1">1111</view>
-    <view slot="tab2">2222</view>
-  </component-tabbar>
+    <view>
+      <component-item item-icon-type="icon" item-icon="{{iconList.carType}}" item-value-left-center="车型" item-value-right="请选择车型" is-hide-border-top="true"></component-item>
+
+      <component-item-picker></component-item-picker>
+
+      <component-item 
+        item-icon-type="icon" 
+        item-icon="{{iconList.extra}}" 
+        item-value-left-center="额外服务" 
+        item-value-right="{{ sService || '装卸搬运等额外服务' }}"
+        is-value-light="{{ sService ? false : true }}"
+      />
+
+      <block wx:if="{{ isLogin }}">
+        <component-item 
+          item-icon-type="icon" 
+          item-icon="{{iconList.coupon}}" 
+          item-value-left-center="优惠券" 
+          item-value-right="{{ sCoupon || '请选择' }}"
+          is-value-light="{{ sCoupon ? false : true }}"
+        />
+      </block>
+
+      <component-item 
+        item-type="custom" 
+        item-icon-type="icon" 
+        item-icon="{{iconList.goods}}">
+        <view class="goods-box" slot="item-r">
+          <view class="goods-title">货物信息</view>
+          <view class="goods-amount-box">
+            <input placeholder-style="color:#b2b2b2" placeholder="条数" type="number" />
+          </view>
+          <view class="goods-info-box {{ goodsRemark.length ? '' : 'text-light' }}">{{ goodsRemark || '货物信息，备注等' }}</view>
+        </view>
+      </component-item>
+
+    </view>
+  </view>
+
+  <view class="idx-ft-box">
+    <view class="idx-ft-price">
+      <view class="price-text">
+        <text class="price">￥{{ (costs && costs.amount) || '--'}}
+          <text hidden="{{couponInfo.priceValue}}" class="coupon-text">（已优惠{{couponInfo.priceValue || '--'}}元）</text>
+        </text>
+      </view>
+    </view>
+    <view class="idx-ft-nextbtn">
+      <button class="ghb-btn next-btn">下一步</button>
+    </view>
+  </view>
+
 </view>

@@ -1,0 +1,36 @@
+<view class="ghb-me-box">
+  <view>
+    <view class="me-hd-box">
+      <view class="me-avantar">
+        <view class="avantar-box" bindtap="gotoLogin">
+          <image class='avantar' src="{{ avantar }}" alt=""></image>
+          <view class='avantar-mobile'>{{ mobile || '--' }}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="me-main-box">
+
+      <view class="me-list-box">
+
+        <component-item 
+          item-value-left-center="收费标准" 
+          is-hide-border-top="true" 
+        />
+
+        <block wx:if="isLogin">
+          <component-item 
+            item-value-left-center="优惠券" 
+          />
+        </block>
+
+      </view>
+
+      <view class="logout-btn-box" wx:if="isLogin">
+        <button class="ghb-btn logout-btn">退出登录</button>
+      </view>
+    </view>
+
+    <view class="version">版本号 V1.0.2</view>
+  </view>
+</view>

@@ -1,13 +1,13 @@
-@import './order.wxss';
-@import './me.wxss';
 page {
   background: #f5f5f5;
 }
 
 /**index.wxss**/
 
-.tab0-item-point {
-  margin: 20rpx 0;
+.index-container {
+  padding-bottom: 214rpx;
+  overflow-y: auto;
+  flex: 1;
 }
 
 .goods-box {
@@ -20,7 +20,7 @@ page {
 .goods-box .goods-amount-box {
   padding: 0 10px;
   width: 50px;
-  border-right: 1px solid #eeeeee;
+  border-right: 1px solid #eee;
 }
 
 .goods-box .goods-amount-box input {
@@ -35,14 +35,15 @@ page {
 .idx-ft-box {
   position: fixed;
   left: 0;
-  bottom: 50px;
-  z-index: 1;
+  bottom: 0;
+  z-index: 10;
   width: 100%;
 }
 
 .idx-ft-box .idx-ft-price {
   position: relative;
-  z-index: 2;
+  z-index: 3;
+  box-shadow: 0 -1rpx 0 #eaeaea;
 }
 
 .idx-ft-box .idx-ft-price .price-text {
@@ -53,6 +54,22 @@ page {
   font-size: 24px;
   color: #f13744;
   background-color: #fff;
+}
+
+.idx-ft-price .price-text .price {
+  position: relative;
+  z-index: 3;
+}
+
+.price-text .price .coupon-text {
+  width: 100px;
+  position: absolute;
+  left: 100%;
+  bottom: 5px;
+  z-index: 4;
+  margin: 0 5px;
+  font-size: 12px;
+  color: #b2b2b2;
 }
 
 .select {
@@ -107,6 +124,7 @@ page {
   position: relative;
   z-index: 2001;
 }
+
 .select-content .select-title-box .select-cancel-box {
   position: absolute;
   left: 0;
@@ -118,6 +136,7 @@ page {
   align-items: center;
   padding-left: 30rpx;
 }
+
 .select-content .select-title-box .select-title {
   flex: 1;
   font-size: 32rpx;
@@ -125,6 +144,7 @@ page {
   align-items: center;
   justify-content: center;
 }
+
 .select-title-box .select-cancel-box .select-cancel-img {
   padding-top: 20rpx;
   width: 30rpx;
