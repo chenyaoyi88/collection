@@ -1,0 +1,66 @@
+.input-group {
+  height: 80rpx;
+  border-bottom: 2rpx solid #eee;
+  border-radius: 6rpx;
+  margin-top: 20rpx;
+}
+
+.input-group ._input {
+  height: 100%;
+}
+
+.phcolor {
+  font-size: 28rpx;
+  color: #b2b2b2;
+}
+
+.input-group-split {
+  display: flex;
+  flex-direction: row;
+}
+
+.input-group-split .input-group-l {
+  flex: 1;
+}
+
+.input-group-split .input-group-r > ._img {
+  width: 200rpx;
+  height: 100%;
+}
+
+.input-group-split .input-group-r .input-group-vcode {
+  width: 200rpx;
+  color: #f13744;
+  background-color: transparent;
+}
+
+.input-group-split .input-group-r .input-group-vcode::after {
+  border: none;
+}
+
+.input-group-split .input-group-r .input-group-vcode[disabled] {
+  color: #ccc !important;
+}
+
+.login-tips-box {
+  font-size: 24rpx;
+  margin: 20rpx 0;
+  color: #8f8f8f;
+}
+
+.login-btn-box {
+  margin-top: 60rpx;
+}
+
+.fuck {
+  border: 2rpx solid yellow;
+}
+
+.btn-vcode {
+  font-size: 28rpx;
+  height: 100%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

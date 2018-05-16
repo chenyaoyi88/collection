@@ -1,7 +1,21 @@
 <view>
-  <component-nodata 
+   <component-nodata 
     is-show="{{ !isLogin }}"
     is-show-btn="true"
-    text="您还未登录噢，速速去登录吧～" 
-  />
+    text="您还未登录噢，速速去登录吧～">
+  </component-nodata> 
+
+  <block wx:if="{{ isLogin }}">
+    <component-tabswitch 
+      tab-list="{{ tabList }}"
+      tab-index="{{ tabIndex }}"
+      bindtabSwitchEvent="tabSwitch"
+    >
+      <view slot="tab0">
+        <button bindtap='tabChange'>切换 tab2 </button>
+      </view>
+      <view slot="tab1">456</view>
+      <view slot="tab2">789</view>
+    </component-tabswitch>
+  </block>
 </view>

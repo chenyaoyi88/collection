@@ -17,14 +17,14 @@
 
 .nodata-box .nodata-page-box .nodata-page-img {
   width: 100%;
-  height: 140px;
+  height: 280rpx;
 }
 
 .nodata-box .nodata-page-box .nodata-page-tips {
-  font-size: 12px;
+  font-size: 24rpx;
   text-align: center;
   color: #8f8f8f;
-  margin: 8px 0 15px;
+  margin: 16rpx 0 30rpx;
 }
 
 .ghb-btn {
@@ -46,8 +46,8 @@ button::after {
 }
 
 .nodata-box .nodata-page-box .nodata-page-btn {
-  width: 70px;
-  height: 35px;
-  font-size: 14px;
+  width: 140rpx;
+  height: 70rpx;
+  font-size: 28rpx;
   padding: 0;
 }

@@ -1,8 +1,10 @@
 {
   "pages": [
+    "pages/login/login",
     "pages/order/order",
     "pages/index/index",
     "pages/me/me",
+    "pages/webview/webview",
     "pages/demo/demo"
   ],
   "window": {

@@ -22,7 +22,7 @@ Component({
     }
   },
   methods: {
-    tabSwitch: function(e) {
+    tabSwitch(e) {
       // console.log(e);
 
       const listIndex = e.currentTarget.dataset.listIndex;
@@ -33,8 +33,8 @@ Component({
 
       const myEventDetail = {
         tabIndex: listIndex
-      }; 
-      
+      };
+
       const myEventOption = {};
       this.triggerEvent('tabClickEvent', myEventDetail, myEventOption);
     }

@@ -4,7 +4,31 @@ const app = getApp();
 Page({
   data: {
     isLogin: app.globalData.isLogin,
+    tabIndex: 0,
+    tabList: [
+      {
+        name: '进行中',
+        value: 'ingList'
+      },
+      {
+        name: '已完成',
+        value: 'finishList'
+      },
+      {
+        name: '已取消',
+        value: 'cancelList'
+      }
+    ]
   },
-  onLoad: function () {
+  tabSwitch(e) {
+    // console.log(e.detail.tabIndex);
+  },
+  tabChange() {
+    this.setData({
+      tabIndex: 1
+    });
+  },
+  onShow() {
+    console.log('onShow');
   }
 })

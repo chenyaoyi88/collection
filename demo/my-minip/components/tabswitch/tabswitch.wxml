@@ -1,0 +1,14 @@
+<view class="title-box">
+  <view wx:for="{{ tabList }}" data-list-index="{{index}}" wx:for-item="item" wx:for-index="index" wx:key="{{index}}" class="title-list-item {{ tabIndex === index ? 'active' : ''}}" bindtap="tabSwitch">{{ item.name }}</view>
+  <view class="title-slider" style="width: {{ width + '%' }};transform:  {{'translate3d(' + left + '%,0,0)'}}">
+    <view class="slider"></view>
+  </view>
+</view>
+
+<view class="tab-box">
+  <block wx:for="{{ tabList }}" wx:for-index="index" wx:key="{{index}}">
+    <view hidden="{{index !== tabIndex}}">
+      <slot name="{{'tab' + index}}"></slot>
+    </view>
+  </block>
+</view>
