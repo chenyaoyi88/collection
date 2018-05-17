@@ -1,0 +1,6 @@
+<!-- 组件模板 -->
+<button 
+  class="btn-vcode input-group-vcode {{ vcodeClass }}" 
+  bindtap="getMsgCode" 
+  disabled="{{ isCanClick }}"
+>{{ countdownText }}</button>

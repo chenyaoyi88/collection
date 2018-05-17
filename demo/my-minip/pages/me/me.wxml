@@ -16,21 +16,24 @@
         <component-item 
           item-value-left-center="收费标准" 
           is-hide-border-top="true" 
+          binditemClickEvent="ghbLogisticFee"
         />
 
-        <block wx:if="isLogin">
+        <block wx:if="{{ isLogin }}">
           <component-item 
             item-value-left-center="优惠券" 
+            item-value-right="{{ LogisticsCoupons.length ? LogisticsCoupons.length + '张可用' : '' }}"
+            binditemClickEvent="gotoCoupon"
           />
         </block>
 
       </view>
 
-      <view class="logout-btn-box" wx:if="isLogin">
-        <button class="ghb-btn logout-btn">退出登录</button>
+      <view class="logout-btn-box" wx:if="{{ isLogin }}">
+        <button class="ghb-btn logout-btn" bindtap='logout'>退出登录</button>
       </view>
     </view>
 
-    <view class="version">版本号 V1.0.2</view>
+    <view class="version">版本号 V{{ version }}</view>
   </view>
 </view>

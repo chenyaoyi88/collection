@@ -1,5 +1,5 @@
 // 当前环境变量
-const APP_ENV = 'dev';
+const appEnv = getApp().globalData.appEnv;
 
 // 开发环境
 const DEV_URL = {
@@ -19,7 +19,7 @@ const PROD_URL = {
 // 请求 host
 let APP_REQUEST_HOST = '';
 
-switch (APP_ENV) {
+switch (appEnv) {
   case 'prod':
     APP_REQUEST_HOST = PROD_URL.MAIN;
     break;
@@ -30,6 +30,7 @@ switch (APP_ENV) {
     APP_REQUEST_HOST = DEV_URL.MAIN;
     break;
   default:
+    APP_REQUEST_HOST = PROD_URL.MAIN;
 }
 
 const AK = 'qLnjq14R4oIEEwtqHM3hcuRMsn1q61Hq';

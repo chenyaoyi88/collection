@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "component-couponitem": "./couponitem/couponitem",
+    "component-tabswitch": "../../components/tabswitch/tabswitch"
+  }
+}

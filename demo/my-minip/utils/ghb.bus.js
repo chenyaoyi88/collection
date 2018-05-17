@@ -161,3 +161,68 @@ export function formatGhbGoodsRemarkDate(sDate) {
     return sDate;
   }
 }
+
+
+export function getCurrentPosition(url) {
+  return new Promise((resolve, reject) => {
+    // 小程序获取经纬度
+    wx.getLocation({
+      type: 'wgs84',
+      success: function (res) {
+        const latitude = res.latitude;
+        const longitude = res.longitude;
+        // 经纬度请求百度地图接口获取位置
+        wx.request({
+          url,
+          data: {
+            location: `${latitude},${longitude}`
+          },
+          success: function (res) {
+            if (res.data && res.data.result) {
+              const oResult = res.data.result;
+              // 如果有 展示POI检索结果 ，优先选择这里面的
+              if (oResult.pois && oResult.pois.length) {
+                resolve(oResult.pois);
+              } else {
+                resolve([]);
+              }
+            }
+          },
+          fail: function () {
+            reject({
+              type: 'getPosition',
+              msg: '百度获取具体位置失败'
+            });
+          }
+        });
+      },
+      fail: function () {
+        reject({
+          type: 'getLocation',
+          msg: '获取经纬度失败'
+        });
+      }
+    });
+  });
+}
+
+export function refreshToken(url) {
+  return new Promise((resolve, reject) => {
+    // 如果有 token ，先更新
+    if (wx.getStorageSync('token')) {
+      ghbRequest({
+        url,
+        data: {
+          authorization: wx.getStorageSync('token') || ''
+        }
+      }).then((res) => {
+        if (res.data && res.data.token) {
+          wx.setStorageSync('token', res.data.token);
+        }
+        resolve();
+      });
+    } else {
+      resolve();
+    }
+  });
+}

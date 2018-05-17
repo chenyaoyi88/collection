@@ -3,7 +3,7 @@ const app = getApp();
 
 Page({
   data: {
-    isLogin: app.globalData.isLogin,
+    isLogin: false,
     tabIndex: 0,
     tabList: [
       {

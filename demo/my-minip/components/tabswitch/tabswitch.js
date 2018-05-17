@@ -21,8 +21,8 @@ Component({
       type: Number,
       value: 0,
       observer: function (newVal, oldVal) {
-        if (newVal === oldVal) return;
-        this.tabSet(newVal);
+        // if (newVal === oldVal) return;
+        this.tabSet(newVal, true);
       }
     }
   },
@@ -34,16 +34,18 @@ Component({
     tabSwitch(e) {
       this.tabSet(e.currentTarget.dataset.listIndex);
     },
-    tabSet(index) {
+    tabSet(index, isClick) {
       this.setData({
         tabIndex: index,
         left: 100 * index
       });
-      const myEventDetail = {
-        tabIndex: index
-      };
-      const myEventOption = {};
-      this.triggerEvent('tabSwitchEvent', myEventDetail, myEventOption);
+
+      if (isClick) {
+        this.triggerEvent('tabSwitchEvent', {
+          tabIndex: index
+        }, {});
+      }
+
     }
   },
   attached() {

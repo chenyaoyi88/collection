@@ -1,0 +1,125 @@
+.coupon-item {
+  width: 690rpx;
+  height: 240rpx;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 20rpx;
+  overflow: hidden;
+}
+
+.coupon-item .coupon-content {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  display: flex;
+}
+
+.coupon-item .coupon-content .coupon-content-l {
+  width: 240rpx;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.coupon-item .coupon-content .coupon-content-l .coupon-content-l-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.coupon-item .coupon-content .coupon-content-l .coupon-amount {
+  font-size: 56rpx;
+  padding: 10rpx 0 6rpx;
+}
+
+.coupon-item .coupon-content .coupon-content-l .coupon-amount .tag {
+  margin-right: -6rpx;
+}
+
+.coupon-item .coupon-content .coupon-content-l .coupon-amount-tips {
+  font-size: 24rpx;
+}
+
+.coupon-item .coupon-content .coupon-content-r {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}
+
+.coupon-item .coupon-content .coupon-content-r .coupon-content-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 40rpx;
+  position: relative;
+  z-index: 3;
+}
+
+.coupon-item .coupon-content .coupon-content-r .coupon-content-main .coupon-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #0c0c0e;
+}
+
+.coupon-item .coupon-content .coupon-content-r .coupon-content-main .coupon-title.fail {
+  color: #a0a0a0;
+}
+
+.coupon-item .coupon-content .coupon-content-r .coupon-content-main .coupon-desc {
+  font-size: 24rpx;
+  color: #a0a0a0;
+  padding: 16rpx 0 8rpx;
+}
+
+.coupon-item .coupon-content .coupon-content-r .coupon-content-main .coupon-date {
+  font-size: 24rpx;
+  color: #ff8320;
+}
+
+.coupon-item .coupon-content .coupon-content-r .coupon-content-main .coupon-date.fail {
+  color: #a0a0a0;
+}
+
+.coupon-item .coupon-content .coupon-content-r .coupon-content-main .coupon-circle-select {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  z-index: 4;
+  padding: 0 20rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.coupon-item .coupon-content .coupon-content-r .coupon-rule {
+  width: 100%;
+  height: 48rpx;
+  border-top: 2rpx dashed #c4c4c4;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.coupon-item .coupon-content .coupon-content-r .coupon-rule .coupon-rule-text {
+  font-size: 24rpx;
+  color: #9e9e9e;
+}
+
+.coupon-item .coupon-content .coupon-content-r .coupon-rule .coupon-rule-arrow {
+  width: 22rpx;
+  height: 20rpx;
+  margin: 0 16rpx;
+}

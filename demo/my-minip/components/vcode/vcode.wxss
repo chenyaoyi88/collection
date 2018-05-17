@@ -1,0 +1,18 @@
+.btn-vcode {
+  font-size: 28rpx;
+  height: 100%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent !important;
+}
+
+.btn-vcode.input-group-vcode {
+  width: 200rpx;
+  color: #f13744;
+}
+
+.btn-vcode.input-group-vcode::after {
+  border: none;
+}

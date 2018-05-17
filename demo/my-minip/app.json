@@ -1,9 +1,10 @@
 {
   "pages": [
-    "pages/login/login",
-    "pages/order/order",
-    "pages/index/index",
+    "pages/coupon/coupon",
     "pages/me/me",
+    "pages/index/index",
+    "pages/order/order",
+    "pages/login/login",
     "pages/webview/webview",
     "pages/demo/demo"
   ],

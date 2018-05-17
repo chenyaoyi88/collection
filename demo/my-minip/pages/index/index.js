@@ -5,10 +5,13 @@ const app = getApp();
 Page({
   data: {
     iconList,
-    isLogin: app.globalData.isLogin,
+    isLogin: false,
     sCoupon: ''
   },
-  onLoad: function() {
+  onLoad() {
     console.log(this.data.isLogin);
+    this.setData({
+      isLogin: wx.getStorageSync('token') ? true : false
+    });
   }
 });

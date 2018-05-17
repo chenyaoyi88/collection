@@ -1,0 +1,54 @@
+<block wx:if="{{ from === 'me' }}">
+  <component-tabswitch 
+    tab-list="{{ tabTitle }}"
+    tab-index="{{ currentIndex }}"
+    bindtabSwitchEvent="tabSwitch"
+  >
+    <view slot="tab0">
+      <view class="coupon-list-box">
+        <block wx:if="{{ canUse.listNone }}">
+          <view class="coupon-list-none fixed">-- 暂无可使用优惠券 --</view>
+        </block>
+
+        <block wx:if="{{ canUse.list.length }}" wx:for="{{ canUse.list }}" wx:for-item="item" wx:for-index="index" wx:key="{{index}}">
+          <block wx:for="{{ item }}" wx:for-item="list" wx:for-index="listIndex" wx:key="{{listIndex}}">
+            <component-couponitem is-fail="{{ false }}" coupon-info="{{ list }}" ></component-couponitem>
+          </block>
+        </block>
+      </view>
+    </view>
+
+    <view slot="tab1">
+      <view class="coupon-list-box">
+        <block wx:if="{{ expire.listNone }}">
+          <view class="coupon-list-none fixed">-- 暂无数据 --</view>
+        </block>
+
+        <block wx:if="{{ expire.list.length }}" wx:for="{{ expire.list }}" wx:for-item="item" wx:for-index="index" wx:key="{{index}}">
+          <block wx:for="{{ item }}" wx:for-item="list" wx:for-index="listIndex" wx:key="{{listIndex}}">
+            <component-couponitem is-fail="{{ true }}" coupon-info="{{ list }}" ></component-couponitem>
+          </block>
+        </block>
+      </view>
+    </view>
+
+    <view slot="tab2">
+      <view class="coupon-list-box">
+        <block wx:if="{{ used.listNone }}">
+          <view class="coupon-list-none fixed">-- 暂无数据 --</view>
+        </block>
+
+        <block wx:if="{{ used.list.length }}" wx:for="{{ used.list }}" wx:for-item="item" wx:for-index="index" wx:key="{{index}}">
+          <block wx:for="{{ item }}" wx:for-item="list" wx:for-index="listIndex" wx:key="{{listIndex}}">
+            <component-couponitem is-fail="{{ true }}" coupon-info="{{ list }}" ></component-couponitem>
+          </block>
+        </block>
+      </view>
+    </view>
+
+  </component-tabswitch>
+</block>
+
+<block wx:if="{{ from === 'index' }}">
+  <view>index</view>
+</block>

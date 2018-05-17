@@ -1,4 +1,6 @@
 import {
+  formatNumber,
+  formatTime,
   zerofillBack,
   getDateList,
   getLatestDate,
@@ -7,9 +9,9 @@ import {
   getMinsArray,
   formatCurrency,
   uuid,
-  formatTrim
+  formatTrim,
+  setArrayGroup
 } from './common';
-
 import {
   goBackSetData,
   goBackGetData,
@@ -20,13 +22,18 @@ import {
   ghbRequest,
   getDesText,
   getOrderStatusText,
-  formatGhbGoodsRemarkDate
+  formatGhbGoodsRemarkDate,
+  getCurrentPosition,
+  refreshToken
 } from './ghb.bus';
 
 export {
+  formatNumber,
+  formatTime,
   formatCurrency,
   uuid,
   formatTrim,
+  setArrayGroup,
   zerofillBack,
   getDateList,
   getLatestDate,
@@ -42,5 +49,7 @@ export {
   ghbRequest,
   getDesText,
   getOrderStatusText,
-  formatGhbGoodsRemarkDate
+  formatGhbGoodsRemarkDate,
+  getCurrentPosition,
+  refreshToken
 };

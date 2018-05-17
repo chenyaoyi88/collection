@@ -5,13 +5,13 @@
   margin-top: 20rpx;
 }
 
-.input-group ._input {
+.input-group input {
   height: 100%;
 }
 
 .phcolor {
   font-size: 28rpx;
-  color: #b2b2b2;
+   color: #b2b2b2; 
 }
 
 .input-group-split {
@@ -28,20 +28,6 @@
   height: 100%;
 }
 
-.input-group-split .input-group-r .input-group-vcode {
-  width: 200rpx;
-  color: #f13744;
-  background-color: transparent;
-}
-
-.input-group-split .input-group-r .input-group-vcode::after {
-  border: none;
-}
-
-.input-group-split .input-group-r .input-group-vcode[disabled] {
-  color: #ccc !important;
-}
-
 .login-tips-box {
   font-size: 24rpx;
   margin: 20rpx 0;
@@ -50,10 +36,6 @@
 
 .login-btn-box {
   margin-top: 60rpx;
-}
-
-.fuck {
-  border: 2rpx solid yellow;
 }
 
 .btn-vcode {

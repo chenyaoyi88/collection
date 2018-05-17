@@ -1,0 +1,49 @@
+<!-- 组件模板 -->
+
+<view class="coupon-item" bindtap="couponClick">
+  <view class="coupon-content">
+    <view class="coupon-content-l">
+      <image wx:if="{{ isFail }}" class="coupon-content-l-bg" src="{{ IMG_COUPONBG_FAIL }}" mode="aspectFit"></image>
+      <image wx:if="{{ !isFail }}" class="coupon-content-l-bg" src="{{ IMG_COUPONBG }}" mode="aspectFit"></image>
+      <view class="coupon-amount">
+        <text class="tag">￥</text>
+        <text class="amount">{{ couponInfo.priceValue || '--' }}</text>
+      </view>
+      <block wx:if="{{ couponInfo.startPrice === 0 }}">
+        <view class="coupon-amount-tips">无最低金额限制</view>
+      </block>
+      <block wx:if="{{ couponInfo.startPrice !== 0 }}">
+        <view class="coupon-amount-tips">满 {{ couponInfo.startPrice || '--'}} 元可用</view>
+      </block>
+    </view>
+
+    <view class="coupon-content-r">
+
+      <view class="coupon-content-main">
+
+        <view class="coupon-title {{ isFail ? 'fail' : '' }}">{{ couponInfo.name || '--' }}</view>
+        <view class="coupon-desc">{{ couponInfo.introduction || '--' }}</view>
+        <block wx:if="{{ isFail && couponInfo.isExpire }}">
+          <view class="coupon-date fail">{{ couponInfo.endDateFormat || '--' }} 已到期</view>
+        </block>
+        <block wx:if="{{ isFail && couponInfo.isUsed }}">
+          <view class="coupon-date fail">{{ couponInfo.usedDateFormat || '--' }} 已使用</view>
+        </block>
+        <block wx:if="{{ !isFail }}">
+          <view class="coupon-date">{{ couponInfo.endDateFormat || '--' }} 到期</view>
+        </block>
+
+        <view class="coupon-circle-select" wx:if="{{ isShowSlect }}">
+          <view wx:if="{{ !couponInfo.select }}" class="unselect-circle"></view>
+          <image wx:if="{{ couponInfo.select }}" class="select-circle" src="{{ IMG_SELECT }}" alt="" mode="aspectFit"></image>
+        </view>
+      </view>
+
+      <view class="coupon-rule" bindtap="couponRuleClick">
+        <text class="coupon-rule-text">适用规则</text>
+        <image class="coupon-rule-arrow" src="{{ IMG_ARROW }}" alt="" mode="aspectFit"></image>
+      </view>
+    </view>
+
+  </view>
+</view>
