@@ -1,0 +1,53 @@
+<block wx:if="{{ isCartypeNone }}">
+  <component-nodata 
+    is-show="{{ true }}"
+    text="暂无车型列表数据～">
+  </component-nodata> 
+</block>
+
+<block wx:if="{{ carTypeList.length }}">
+  <view class="cartype-list">
+    <view class="list-item" wx:for="{{ carTypeList }}" wx:for-item="item" wx:for-index="index" data-item="{{ item }}" bindtap="cartypeSelect" wx:key="{{index}}">
+
+      <view class="list-item-title">
+        <view class="title-box">
+          <view class="title">{{ item.name }}
+            <image class='title-img' class="arrow" src="{{ img.arrow }}" mode="aspectFit"></image>
+          </view>
+        </view>
+      </view>
+
+      <view class="list-item-main">
+        <view class="list-item-l">
+          <image class="title-img" src="{{ item.icon || img.cartype_default }}" mode="aspectFit"></image>
+        </view>
+        <view class="list-item-r">
+
+          <view class="size-info-box">
+            <view class="info-text">
+              <view class="size-info size-info-l">
+                <image class="size-img" src="{{ img.text_size }}" mode="aspectFit"></image>
+                <view class='_p'>{{ item.volume }}</view>
+              </view>
+              <view class="size-info size-info-r">
+                <image class="weight-img" src="{{ img.text_load }}" mode="aspectFit"></image>
+                <view class='_p'>{{ item.load + item.loadUnit }}</view>
+              </view>
+            </view>
+            <view class="info-desc">(起步{{ item.startPrice + '元' + item.startRange + (item.mileageUnit || '--') + ',后续' + (item.chargeStandard || '--')}})</view>
+          </view>
+
+          <view class="run-info-box">
+            <view class="icon_forbid {{ item.forbiddenStatusClass }}">禁</view>
+            <text class="_span {{ item.forbiddenStatusClass }}">{{ item.forbiddenStatusText }}</text>
+          </view>
+          <view class="run-info-box">
+            <view class="icon_forbid black">夜</view>
+            <text class="_span color-light">夜间服务：{{ item.nightServiceFee }}元/次</text>
+          </view>
+
+        </view>
+      </view>
+    </view>
+  </view>
+</block>

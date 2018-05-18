@@ -1,3 +1,4 @@
+$mainColor: #f13744;
 .idx-box {
   position: relative;
   left: 0;
@@ -11,35 +12,34 @@
   .idx-main-box {
     overflow-y: auto;
     flex: 1;
-    padding-bottom: 107px;
+    margin-bottom: 10px; // padding-bottom: 107px;
     .idx-site-box {
       margin: 10px 0;
       .item-r {
-        min-height: 67px;
+        min-height: 34px;
       }
     }
   }
   .idx-ft-box {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    z-index: 10;
-    width: 100%;
+    // position: fixed;
+    // left: 0;
+    // bottom: 0;
+    // z-index: 10;
+    // width: 100%;
   }
 }
 
 .idx-ft-box {
   .idx-ft-price {
     position: relative;
-    z-index: 3;
-    box-shadow: 0 -1rpx 0 #eaeaea;
+    z-index: 3; // box-shadow: 0 -1rpx 0 #eaeaea;
     .price-text {
       height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 24px;
-      color: #f13744;
+      color: $mainColor;
       background-color: #fff;
       .price {
         position: relative;
@@ -77,7 +77,7 @@
         background-color: #15c145;
       }
       &.end {
-        background-color: #f13744;
+        background-color: $mainColor;
       }
     }
   }
@@ -163,7 +163,7 @@
     }
     .comfirm {
       width: 100px;
-      color: #f13744;
+      color: $mainColor;
     }
   }
   .content-box {
@@ -196,5 +196,22 @@
         }
       }
     }
+  }
+}
+
+.index-halfway-box {
+  background-color: #fff;
+  font-size: 14px;
+  color: $mainColor;
+  height: 44px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 -1rpx 0 #eeeeee;
+  .index-halfway-icon {
+    width: 15px;
+    height: 15px;
+    margin: 5px;
   }
 }

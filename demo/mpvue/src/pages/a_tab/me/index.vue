@@ -30,7 +30,7 @@
         </div>
       </div>
 
-      <p class="version">版本号 V1.0.2</p>
+      <p class="version">版本号 V1.0.3</p>
     </div>
   </div>
 </template>

@@ -17,8 +17,10 @@ import sliderSelect from '@/components/slider/slider_select.vue';
 // 图片
 import imgGoods from '../../../components/item/icon/goods.png';
 import imgArrow from '../../../components/item/icon/arrow.png';
+import imgAdd from '../../../../static/images/add.png';
 
 import { eventBus, ghbEvent } from '../../eventbus';
+import { updateApp, checkNextstepParmas, getNextstepParams, getCalcCosts, resetAll } from './services';
 
 // 必须使用装饰器的方式来指定components
 @Component({
@@ -31,7 +33,8 @@ import { eventBus, ghbEvent } from '../../eventbus';
 class Index extends Vue {
   img: any = {
     imgGoods,
-    imgArrow
+    imgArrow,
+    imgAdd
   };
 
   isLogin: boolean = false;
@@ -73,43 +76,13 @@ class Index extends Vue {
   // 控制额外服务的 slider 显示隐藏
   selectSlider: boolean = false;
 
-  // 如果填写了发货和收货地址，就可以计算运费
-  fnCanCost(): void {
-    if (!(this.startInfo.name && this.endInfo.name)) return;
-
-    const PARAMS_COSTS_REQUEST: CalcCost_Request = {
-      senderX: this.startInfo.location.lng,
-      senderY: this.startInfo.location.lat,
-      receiverX: this.endInfo.location.lng,
-      receiverY: this.endInfo.location.lat,
-      vehicleTypeId: this.carSelected.id,
-      paymentType: 1,
-      isBooking: this.bookingTime ? 'Y' : 'N',
-      bookingTime: this.bookingTime ? this.bookingTime : null,
-      isBuyInsurance: false,
-      couponCodeId: this.couponInfo.id
-    };
-
-    ghbRequest({
-      url: API.COSTS,
-      method: 'POST',
-      data: PARAMS_COSTS_REQUEST
-    }).then((res: any) => {
-      if (res.statusCode === 200) {
-        this.costs = res.data;
-        this.costs.amount = formatCurrency(this.costs.amount);
-        this.costs.zptFreight = formatCurrency(this.costs.zptFreight);
-        this.costs.nightServiceFee = formatCurrency(this.costs.nightServiceFee);
-      } else {
-        showToastError(res.data.message);
-      }
-    });
-  }
+  // 中途点
+  aHalfwaysList: Array<any> = [{}];
 
   // 获取预定时间
   fnGetDateValue(value: string) {
     this.bookingTime = value;
-    this.fnCanCost();
+    getCalcCosts(this);
   }
 
   // 选择发货/收货地点
@@ -130,7 +103,6 @@ class Index extends Vue {
   fnExtraServices() {
     if (!this.additionalServicesList.length) {
       this.getAdditionListData(true);
-      // showToastError('获取额外服务列表失败，请登录后再重试');
       return;
     }
     this.selectSlider = true;
@@ -200,102 +172,24 @@ class Index extends Vue {
     }
   }
 
-  // 重置预约时间
-  fnResetComponent() {
-    for (let i = 0; i < this.$children.length; i++) {
-      const comp = this.$children[i];
-      comp['reset'] && comp['reset']();
-    }
+  fnItemDelete() {
+    if (this.aHalfwaysList.length < 2) return;
   }
 
-  // 清空/重置所有填写项目
-  fnResetAll() {
-    this.endInfo = {};
-    this.fnSetDefaultCar(true);
-    this.fnResetComponent();
-    this.fnCheckboxChange([], '');
-    this.clothsAmount = 1;
-    this.goodsRemark = '';
-    this.bookingTime = '';
-    this.costs = null;
-    this.couponInfo = {};
+  // 添加中途点
+  addHalfways() {
+    if (this.aHalfwaysList.length > 4) {
+      showToastError('途经点最多设置5个');
+      return;
+    }
+    this.aHalfwaysList.push({});
   }
 
   // 下一步
   fnNextStep() {
-    // 没有登录去登录页面
-    if (!this.isLogin) {
-      wx.navigateTo({
-        url: '../../login/main'
-      });
-      return;
-    }
+    if (!checkNextstepParmas(this)) return;
 
-    // 已登录，检查必填项，通过则前往下一步
-    if (!this.startInfo.address) {
-      showToastError('请填写发货详细地址');
-      return;
-    }
-    if (!this.endInfo.address) {
-      showToastError('请填写收货详细地址');
-      return;
-    }
-    if (!this.carSelected.id) {
-      showToastError('请选择车型');
-      return;
-    }
-    if (!this.clothsAmount) {
-      showToastError('请填写货物信息');
-      return;
-    }
-
-    const sGoodsRemarkDate = formatGhbGoodsRemarkDate(this.bookingTime);
-    const sClothsAmount = `${this.clothsAmount && `${this.clothsAmount}件`}`;
-    const goodsDesc = `${sGoodsRemarkDate && sGoodsRemarkDate + ' 接货'} ${
-      this.goodsRemark
-      } ${sClothsAmount}`;
-
-    if (!/\S/.test(this.goodsRemark)) {
-      showToastError('请输入货物信息');
-      return;
-    }
-
-    if (!(this.costs && this.costs.amount)) {
-      showToastError('运费获取中，请稍后');
-      return;
-    }
-
-    // 下单所需参数
-    const PARAMS_LOGISTICSORDER_REQUEST: Logisticsorder_Request = {
-      type: 1,
-      vehicleTypeId: this.carSelected.id,
-      bookingTime: this.bookingTime,
-      isBooking: this.bookingTime ? true : false,
-      clothsAmount: this.clothsAmount,
-      couponCodeId: this.couponInfo.id,
-      goodsDesc,
-      insuranceStatus: 0,
-      listOfAdditionalRequest: this.aSelectedServices,
-      uuid: '',
-      needLoading: false,
-      paymentType: 1,
-      receiverAddressName: this.endInfo.address,
-      receiverContact: this.endInfo.userName,
-      receiverPhone: this.endInfo.mobile,
-      receiverSiteName: this.endInfo.name,
-      receiverStreet: this.endInfo.street,
-      receiverX: this.endInfo.location.lng,
-      receiverY: this.endInfo.location.lat,
-      endCityCode: this.endInfo.cityCode,
-      senderAddressName: this.startInfo.address,
-      senderContact: this.startInfo.userName,
-      senderPhone: this.startInfo.mobile,
-      senderSiteName: this.startInfo.name,
-      senderStreet: this.startInfo.street,
-      senderX: this.startInfo.location.lng,
-      senderY: this.startInfo.location.lat,
-      startCityCode: this.startInfo.cityCode
-    };
+    const PARAMS_LOGISTICSORDER_REQUEST: Logisticsorder_Request = getNextstepParams(this);
 
     if (this.couponInfo.id) {
       this.costs.couponInfo = this.couponInfo;
@@ -309,13 +203,11 @@ class Index extends Vue {
   }
 
   onShow() {
-    const _this = this;
-    const token = wx.getStorageSync('token');
-    this.isLogin = token ? true : false;
+    this.isLogin = wx.getStorageSync('token') ? true : false;
 
     if (this.$store.state.isIndexReset) {
       // 重置所有输入
-      this.fnResetAll();
+      resetAll(this);
       this.$store.commit('isIndexResetChange', {
         isIndexReset: false
       });
@@ -332,7 +224,7 @@ class Index extends Vue {
             id: carInfo.id
           };
           currPage.data.carInfo = null;
-          this.fnCanCost();
+          getCalcCosts(this);
         }
       }
 
@@ -354,7 +246,7 @@ class Index extends Vue {
           ) {
             this.startInfo = searchInfo;
             currPage.data.searchInfo = {};
-            this.fnCanCost();
+            getCalcCosts(this);
           }
         } else if (searchInfo.from.includes('end')) {
           if (
@@ -365,7 +257,7 @@ class Index extends Vue {
           ) {
             this.endInfo = searchInfo;
             currPage.data.searchInfo = {};
-            this.fnCanCost();
+            getCalcCosts(this);
           }
         }
       }
@@ -425,19 +317,7 @@ class Index extends Vue {
   }
 
   created() {
-    const updateManager = wx.getUpdateManager();
-    updateManager.onUpdateReady(function () {
-      wx.showModal({
-        title: '更新提示',
-        content: '新版本已经准备好，是否重启应用？',
-        success: function (res: any) {
-          if (res.confirm) {
-            // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
-            updateManager.applyUpdate()
-          }
-        }
-      })
-    });
+    updateApp();
     this.pageReload();
   }
 
@@ -448,7 +328,7 @@ class Index extends Vue {
       } else {
         this.couponInfo = {};
       }
-      this.fnCanCost();
+      getCalcCosts(this);
     });
   }
 

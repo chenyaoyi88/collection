@@ -51,19 +51,18 @@ Component({
         this.data.dateArray[2][index2] &&
         this.data.dateArray[2][index2].value;
 
-        let bookingTime = '';
+      let bookingTime = '';
 
       if (sHour) {
         bookingTime = `${sDate} ${sHour}:${sMin}:00`;
       } else {
         bookingTime = '';
       }
-      const myEventOption = {};
 
       this.setData({
         bookingTime
       }, () => {
-        this.triggerEvent('getDateValue', bookingTime, myEventOption);
+        this.triggerEvent('getDateValue', { bookingTime }, {});
       });
     },
 
@@ -98,7 +97,7 @@ Component({
         case 1:
           switch (data.dateIndex[0]) {
             case 0:
-              data.dateArray[2] =  data.dateIndex[1] === 0 ? [] : getMinsArray();
+              data.dateArray[2] = data.dateIndex[1] === 0 ? [] : getMinsArray();
               break;
             default:
           }

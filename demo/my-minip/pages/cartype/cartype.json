@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "车型选择",
+  "usingComponents": {
+    "component-nodata": "../../components/nodata/nodata"
+  }
+}

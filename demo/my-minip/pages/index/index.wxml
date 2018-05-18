@@ -24,9 +24,16 @@
     </view>
 
     <view>
-      <component-item item-icon-type="icon" item-icon="{{iconList.carType}}" item-value-left-center="车型" item-value-right="请选择车型" is-hide-border-top="true"></component-item>
+      <component-item 
+        item-icon-type="icon" 
+        item-icon="{{iconList.carType}}" 
+        item-value-left-center="车型" 
+        item-value-right="{{ carSelected.name || '请选择车型' }}" 
+        is-hide-border-top="true"
+        binditemClickEvent="getCarType"
+      ></component-item>
 
-      <component-item-picker></component-item-picker>
+      <component-item-picker bindgetDateValue="getDateValue"></component-item-picker>
 
       <component-item 
         item-icon-type="icon" 
@@ -43,6 +50,7 @@
           item-value-left-center="优惠券" 
           item-value-right="{{ sCoupon || '请选择' }}"
           is-value-light="{{ sCoupon ? false : true }}"
+          binditemClickEvent="getCoupon"
         />
       </block>
 
@@ -53,9 +61,9 @@
         <view class="goods-box" slot="item-r">
           <view class="goods-title">货物信息</view>
           <view class="goods-amount-box">
-            <input placeholder-style="color:#b2b2b2" placeholder="条数" type="number" />
+            <input placeholder-style="color:#b2b2b2" placeholder="条数" type="number" bindinput="getClothsAmount" value="{{ clothsAmount }}" />
           </view>
-          <view class="goods-info-box {{ goodsRemark.length ? '' : 'text-light' }}">{{ goodsRemark || '货物信息，备注等' }}</view>
+          <view class="goods-info-box {{ goodsRemark.length ? '' : 'text-light' }}" bindtap='getGoodsRemark'>{{ goodsRemark || '货物信息，备注等' }}</view>
         </view>
       </component-item>
 
@@ -71,7 +79,7 @@
       </view>
     </view>
     <view class="idx-ft-nextbtn">
-      <button class="ghb-btn next-btn">下一步</button>
+      <button class="ghb-btn next-btn" bindtap='nextStep'>下一步</button>
     </view>
   </view>
 

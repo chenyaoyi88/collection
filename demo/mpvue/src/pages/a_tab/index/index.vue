@@ -5,21 +5,45 @@
         <item 
           iconType="point" 
           :textTop="(startInfo.userName || '') + ' ' + (startInfo.mobile || '')" 
-          :textCenter="startInfo.name || '选择发货地点'" 
+          :textCenter="startInfo.name || '请输入始发地'" 
           :textBottom="startInfo.address || ''" 
           @itemClick="fnGetPonit('start', startInfo)"
           noBorderTop="true"
           :textLight="startInfo.name ? false : true"
+          isArrowHide="true"
         ></item>
-        <item 
+
+        <block v-for="(item, index) in aHalfwaysList" :key="index">
+          <item 
+            iconType="point" 
+            :pointType="aHalfwaysList.length > 1 ? 'mid' : 'end'" 
+            :textTop="''" 
+            :textCenter="'请输入目的地'" 
+            :textBottom="''"  
+            :textLight="true"
+            isArrowHide="true"
+            :isShowClose="aHalfwaysList.length > 1 ? true : false"
+            @itemClickClose="fnItemDelete"
+          ></item>
+        </block>
+
+
+        <!-- <item 
           iconType="point" 
           pointType="end" 
           :textTop="(endInfo.userName || '') + ' ' + (endInfo.mobile || '')" 
-          :textCenter="endInfo.name || '选择收货地点'" 
+          :textCenter="endInfo.name || '请输入目的地'" 
           :textBottom="endInfo.address || ''"  
           @itemClick="fnGetPonit('end', endInfo)"
           :textLight="endInfo.name ? false : true"
-        ></item>
+          isArrowHide="true"
+          isShowClose="true"
+        ></item> -->
+
+        <view class="index-halfway-box" @click="addHalfways">
+          <img class="index-halfway-icon" :src="img.imgAdd" alt="" mode="aspectFit">
+          <view class="index-halfway-text">添加配送地址</view>
+        </view>
       </div>
 
       <div class="idx-cartype-box">

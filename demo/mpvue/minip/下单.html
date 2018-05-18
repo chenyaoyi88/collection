@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<!-- saved from url=(0101)http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-08%20%E4%B8%8B%E5%8D%95 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>海印互联系统API | 10-08%20%E4%B8%8B%E5%8D%95</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://192.168.7.90:8899/.assets/favicon.ico" rel="icon" type="image/ico">
+    
+      <link href="./下单_files/markshow.min.css" rel="stylesheet">    
+    
+    
+  <style type="text/css" abt="234"></style><script>//console.log('a')
+</script><script>//remove 17173 video ad
+doAdblock();
+function doAdblock(){
+    (function() {
+        function A() {}
+        A.prototype = {
+            rules: {
+                '17173_in':{
+                    'find':/http:\/\/f\.v\.17173cdn\.com\/(\d+\/)?flash\/PreloaderFile(Customer)?\.swf/,
+                    'replace':"http://swf.adtchrome.com/17173_in_20150522.swf"
+                },
+                '17173_out':{
+                    'find':/http:\/\/f\.v\.17173cdn\.com\/(\d+\/)?flash\/PreloaderFileFirstpage\.swf/,
+                    'replace':"http://swf.adtchrome.com/17173_out_20150522.swf"
+                },
+                '17173_live':{
+                    'find':/http:\/\/f\.v\.17173cdn\.com\/(\d+\/)?flash\/Player_stream(_firstpage)?\.swf/,
+                    'replace':"http://swf.adtchrome.com/17173_stream_20150522.swf"
+                },
+                '17173_live_out':{
+                    'find':/http:\/\/f\.v\.17173cdn\.com\/(\d+\/)?flash\/Player_stream_(custom)?Out\.swf/,
+                    'replace':"http://swf.adtchrome.com/17173.out.Live.swf"
+                }
+            },
+            _done: null,
+            get done() {
+                if(!this._done) {
+                    this._done = new Array();
+                }
+                return this._done;
+            },
+            addAnimations: function() {
+                var style = document.createElement('style');
+                style.type = 'text/css';
+                style.innerHTML = 'object,embed{\
+                -webkit-animation-duration:.001s;-webkit-animation-name:playerInserted;\
+                -ms-animation-duration:.001s;-ms-animation-name:playerInserted;\
+                -o-animation-duration:.001s;-o-animation-name:playerInserted;\
+                animation-duration:.001s;animation-name:playerInserted;}\
+                @-webkit-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}\
+                @-ms-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}\
+                @-o-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}\
+                @keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}';
+                document.getElementsByTagName('head')[0].appendChild(style);
+            },
+            animationsHandler: function(e) {
+                if(e.animationName === 'playerInserted') {
+                    this.replace(e.target);
+                }
+            },
+            replace: function(elem) {
+                if(this.done.indexOf(elem) != -1) return;
+                this.done.push(elem);
+                var player = elem.data || elem.src;
+                if(!player) return;
+                var i, find, replace = false;
+                for(i in this.rules) {
+                    find = this.rules[i]['find'];
+                    if(find.test(player)) {
+                        replace = this.rules[i]['replace'];
+                        if('function' === typeof this.rules[i]['preHandle']) {
+                            this.rules[i]['preHandle'].bind(this, elem, find, replace, player)();
+                        }else{
+                            this.reallyReplace.bind(this, elem, find, replace)();
+                        }
+                        break;
+                    }
+                }
+            },
+            reallyReplace: function(elem, find, replace) {
+                elem.data && (elem.data = elem.data.replace(find, replace)) || elem.src && ((elem.src = elem.src.replace(find, replace)) && (elem.style.display = 'block'));
+                var b = elem.querySelector("param[name='movie']");
+                this.reloadPlugin(elem);
+            },
+            reloadPlugin: function(elem) {
+                var nextSibling = elem.nextSibling;
+                var parentNode = elem.parentNode;
+                parentNode.removeChild(elem);
+                var newElem = elem.cloneNode(true);
+                this.done.push(newElem);
+                if(nextSibling) {
+                    parentNode.insertBefore(newElem, nextSibling);
+                } else {
+                    parentNode.appendChild(newElem);
+                }
+            },
+            init: function() {
+                var handler = this.animationsHandler.bind(this);
+                document.body.addEventListener('webkitAnimationStart', handler, false);
+                document.body.addEventListener('msAnimationStart', handler, false);
+                document.body.addEventListener('oAnimationStart', handler, false);
+                document.body.addEventListener('animationstart', handler, false);
+                this.addAnimations();
+            }
+        };
+        new A().init();
+    })();
+}
+//remove baidu search ad
+if(document.URL.indexOf('www.baidu.com') >= 0){
+    if(document && document.getElementsByTagName && document.getElementById && document.body){
+        var aa = function(){
+            var all = document.body.querySelectorAll("#content_left div,#content_left table");
+            for(var i = 0; i < all.length; i++){
+                if(/display:\s?(table|block)\s!important/.test(all[i].getAttribute("style"))){all[i].style.display= "none";all[i].style.visibility='hidden';}
+            }
+            all = document.body.querySelectorAll('.result.c-container[id="1"]');
+            //if(all.length == 1) return;
+            for(var i = 0; i < all.length; i++){
+                if(all[i].innerHTML && all[i].innerHTML.indexOf('广告')>-1){
+                    all[i].style.display= "none";all[i].style.visibility='hidden';
+                }
+            }
+        }
+        aa();
+        document.getElementById('wrapper_wrapper').addEventListener('DOMSubtreeModified',aa)
+    };
+}
+//remove sohu video ad
+if (document.URL.indexOf("tv.sohu.com") >= 0){
+    if (document.cookie.indexOf("fee_status=true")==-1){document.cookie='fee_status=true'};
+}
+//remove 56.com video ad
+if (document.URL.indexOf("56.com") >= 0){
+    if (document.cookie.indexOf("fee_status=true")==-1){document.cookie='fee_status=true'};
+}
+//fore iqiyi enable html5 player function
+if (document.URL.indexOf("iqiyi.com") >= 0){
+    if (document.cookie.indexOf("player_forcedType=h5_VOD")==-1){
+        document.cookie='player_forcedType=h5_VOD'
+        if(localStorage.reloadTime && Date.now() - parseInt(localStorage.reloadTime)<60000){
+            console.log('no reload')
+        }else{
+            location.reload()
+            localStorage.reloadTime = Date.now();
+        }
+    }
+}
+</script><style type="text/css">object,embed{                -webkit-animation-duration:.001s;-webkit-animation-name:playerInserted;                -ms-animation-duration:.001s;-ms-animation-name:playerInserted;                -o-animation-duration:.001s;-o-animation-name:playerInserted;                animation-duration:.001s;animation-name:playerInserted;}                @-webkit-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}                @-ms-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}                @-o-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}                @keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}</style></head>
+  <body style="">
+
+<header class="navbar navbar-default bs-docs-nav" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/" class="navbar-brand">海印互联API</a>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="list-group">
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/">..</a>
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/"><b>10 物流</b></a>
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-04%20%E8%BD%A6%E5%9E%8B%E5%88%97%E8%A1%A8">10-04 车型列表</a>
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-05%20%E8%AE%A1%E7%AE%97%E8%BF%90%E8%B4%B9">10-05 计算运费</a>
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-06%20%E8%AE%A2%E5%8D%95%E5%88%97%E8%A1%A8">10-06 订单列表</a>
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-07%20%E8%AE%A2%E5%8D%95%E8%AF%A6%E6%83%85">10-07 订单详情</a>
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-08%20%E4%B8%8B%E5%8D%95">10-08 下单</a>
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-10%20%E4%BC%98%E6%83%A0%E5%88%B8%E5%88%97%E8%A1%A8">10-10 优惠券列表</a>
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-12%20%E7%89%A9%E6%B5%81%E8%AE%A2%E5%8D%95%E8%AF%84%E4%BB%B7">10-12 物流订单评价</a>
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-13_%E8%AE%A1%E7%AE%97%E4%BF%9D%E9%99%A9%E8%B4%B9%E6%8E%A5%E5%8F%A3">10-13_计算保险费接口</a>
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-14%20%E8%8E%B7%E5%8F%96%E9%A2%9D%E5%A4%96%E6%9C%8D%E5%8A%A1">10-14 获取额外服务</a>
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-15_%E5%8F%96%E6%B6%88%E5%8F%AB%E8%BD%A6">10-15_取消叫车</a>
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-16_%E9%87%8D%E6%96%B0%E4%B8%8B%E5%8D%95">10-16_重新下单</a>
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-17%20%E8%8E%B7%E5%8F%96%E7%89%A9%E6%B5%81%E8%AE%A2%E5%8D%95%E7%8A%B6%E6%80%81">10-17 获取物流订单状态</a>
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-18%20%E8%8E%B7%E5%8F%96%E7%89%A9%E6%B5%81%E8%AE%A2%E5%8D%95%E8%AF%84%E4%BB%B7%E6%A0%87%E7%AD%BE%E5%88%97%E8%A1%A8">10-18 获取物流订单评价标签列表</a>
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-19%20%E9%B9%B0%E7%9C%BC%E8%BD%A8%E8%BF%B9">10-19 鹰眼轨迹</a>
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-20%20%E5%BE%AA%E7%8E%AF%E7%BA%BF%E8%B5%B7%E6%AD%A5%E4%BB%B7%E6%8F%90%E7%A4%BA%E4%BF%A1%E6%81%AF">10-20 循环线起步价提示信息</a>
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-21%20%E5%B7%B2%E9%80%81%E8%BE%BE%E6%9C%AA%E6%94%AF%E4%BB%98%E8%AE%A2%E5%8D%95%E6%9F%A5%E8%AF%A2%E6%8E%A5%E5%8F%A3">10-21 已送达未支付订单查询接口</a>
+        
+          
+          
+          <a class="list-group-item " href="http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-22%20%E7%89%A9%E6%B5%81%E5%8F%96%E6%B6%88%E8%AE%A2%E5%8D%95%E5%8E%9F%E5%9B%A0%E5%88%97%E8%A1%A8">10-22 物流取消订单原因列表</a>
+        
+      </div>
+    </div>
+    <div class="col-md-8">
+      <h2 id="1008-下单">10.08 下单</h2>
+<h3 id="接口调用请求说明">接口调用请求说明</h3>
+<table class="table">
+<thead>
+<tr>
+<th></th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>协议</td>
+<td>https</td>
+</tr>
+<tr>
+<td>http请求方式</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>请求Url</td>
+<td>https://[host]/api/v1/logistics/logisticsorder</td>
+</tr>
+<tr>
+<td>数据格式</td>
+<td>JSON</td>
+</tr>
+</tbody>
+</table>
+<h3 id="请求数据说明">请求数据说明</h3>
+<table class="table">
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>说明</th>
+<th>验证</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>senderSiteName</td>
+<td>String</td>
+<td>否</td>
+<td>发货方地址名称</td>
+<td></td>
+</tr>
+<tr>
+<td>senderAddressName</td>
+<td>String</td>
+<td>是</td>
+<td>发货方地址详细信息</td>
+<td></td>
+</tr>
+<tr>
+<td>senderStreet</td>
+<td>String</td>
+<td>否</td>
+<td>发货方手写地址</td>
+<td></td>
+</tr>
+<tr>
+<td>senderX</td>
+<td>BigDecimal</td>
+<td>是</td>
+<td>发货方地址经度</td>
+<td></td>
+</tr>
+<tr>
+<td>senderY</td>
+<td>BigDecimal</td>
+<td>是</td>
+<td>发货方地址纬度</td>
+<td></td>
+</tr>
+<tr>
+<td>senderPhone</td>
+<td>String</td>
+<td>是</td>
+<td>发货人手机号 非空，11位手机号格式或者8位固话</td>
+<td></td>
+</tr>
+<tr>
+<td>senderContact</td>
+<td>String</td>
+<td>是</td>
+<td>发货人姓名</td>
+<td></td>
+</tr>
+<tr>
+<td>receiverSiteName</td>
+<td>String</td>
+<td>否</td>
+<td>接收方地址名称</td>
+<td></td>
+</tr>
+<tr>
+<td>receiverAddressName</td>
+<td>String</td>
+<td>是</td>
+<td>接收方地址详细信息</td>
+<td></td>
+</tr>
+<tr>
+<td>receiverStreet</td>
+<td>String</td>
+<td>否</td>
+<td>接收方手写地址</td>
+<td></td>
+</tr>
+<tr>
+<td>receiverX</td>
+<td>BigDecimal</td>
+<td>是</td>
+<td>接收方经度</td>
+<td></td>
+</tr>
+<tr>
+<td>receiverY</td>
+<td>BigDecimal</td>
+<td>是</td>
+<td>接收方纬度</td>
+<td></td>
+</tr>
+<tr>
+<td>receiverPhone</td>
+<td>String</td>
+<td>是</td>
+<td>接受方联系电话 非空，11位手机号格式或者8位固话</td>
+<td></td>
+</tr>
+<tr>
+<td>receiverContact</td>
+<td>String</td>
+<td>是</td>
+<td>接收方联系人</td>
+<td></td>
+</tr>
+<tr>
+<td>goodsDesc</td>
+<td>String</td>
+<td>是</td>
+<td>货物信息</td>
+<td></td>
+</tr>
+<tr>
+<td>vehicleTypeId</td>
+<td>Integer</td>
+<td>是</td>
+<td>车型Id（从车型列表获取）</td>
+<td></td>
+</tr>
+<tr>
+<td>couponCodeId</td>
+<td>Integer</td>
+<td>否</td>
+<td>优惠券码的ID（从优惠券列表选择的优惠券的id）</td>
+<td></td>
+</tr>
+<tr>
+<td>paymentType</td>
+<td>Byte</td>
+<td>是</td>
+<td>支付类型（1：立即支付  2:到付）</td>
+<td></td>
+</tr>
+<tr>
+<td>isBooking</td>
+<td>true</td>
+<td>是</td>
+<td>是否预约（true：预约     false:不预约）</td>
+<td></td>
+</tr>
+<tr>
+<td>bookingTime</td>
+<td>String</td>
+<td>否</td>
+<td>预约时间，当isBooking为true时，需要填这个字段(格式：yyyy-MM-dd HH:mm:ss)</td>
+<td></td>
+</tr>
+<tr>
+<td>insuranceStatus</td>
+<td>Byte</td>
+<td>是</td>
+<td>是否购买保险（0：不购买  1:购买）</td>
+<td></td>
+</tr>
+<tr>
+<td>insuranceOrder</td>
+<td>对象</td>
+<td>否</td>
+<td>当insuranceStatus为1时，需要填该字段</td>
+<td></td>
+</tr>
+<tr>
+<td>listOfAdditionalRequest</td>
+<td>对象</td>
+<td>否</td>
+<td>额外服务列表</td>
+<td></td>
+</tr>
+<tr>
+<td>type</td>
+<td>Byte</td>
+<td>否</td>
+<td>订单类型，默认普通订单（1：普通订单  2:循环线订单）</td>
+<td></td>
+</tr>
+<tr>
+<td>clothsAmount</td>
+<td>Integer</td>
+<td>否</td>
+<td>布匹条数，默认0条</td>
+<td></td>
+</tr>
+<tr>
+<td>needLoading</td>
+<td>Boolean</td>
+<td>否</td>
+<td>是否需要装卸，默认不需要装卸（false：不需要  true:需要）</td>
+<td></td>
+</tr>
+<tr>
+<td>uuid</td>
+<td>String</td>
+<td>是</td>
+<td>客户端生成的 UUID</td>
+<td></td>
+</tr>
+<tr>
+<td>halfways</td>
+<td>List</td>
+<td>否</td>
+<td>中途点List</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="扩展：insuranceorder">扩展：insuranceOrder</h3>
+<table class="table">
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>说明</th>
+<th>验证</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>coverage</td>
+<td>BigDecimal</td>
+<td>是</td>
+<td>保额（目前只支持整型）</td>
+<td></td>
+</tr>
+<tr>
+<td>insuranceAmount</td>
+<td>BigDecimal</td>
+<td>是</td>
+<td>保费</td>
+<td></td>
+</tr>
+<tr>
+<td>applicant</td>
+<td>String</td>
+<td>是</td>
+<td>被保险人</td>
+<td></td>
+</tr>
+<tr>
+<td>content</td>
+<td>String</td>
+<td>是</td>
+<td>保险内容</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="扩展：listofadditionalrequest">扩展：listOfAdditionalRequest</h3>
+<table class="table">
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>说明</th>
+<th>验证</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Integer</td>
+<td>是</td>
+<td>额外服务id</td>
+<td></td>
+</tr>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>否</td>
+<td>额外服务名称</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="扩展：">扩展：</h3>
+<table class="table">
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>说明</th>
+<th>验证</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>startCityCode</td>
+<td>String</td>
+<td>情况</td>
+<td>发货城市code（如果选择了保险，则该字段必填）</td>
+<td></td>
+</tr>
+<tr>
+<td>endCityCode</td>
+<td>String</td>
+<td>情况</td>
+<td>收货城市code（如果选择了保险，则该字段必填）</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="扩展：中途点对象">扩展：中途点对象</h3>
+<table class="table">
+<thead>
+<tr>
+<th>参数</th>
+<th>是否必须</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x</td>
+<td>如果填中途点则为必须</td>
+<td>纬度</td>
+</tr>
+<tr>
+<td>y</td>
+<td>如果填中途点则为必须</td>
+<td>经度</td>
+</tr>
+<tr>
+<td>phone</td>
+<td>如果填中途点则为必须</td>
+<td>联系人电话</td>
+</tr>
+<tr>
+<td>siteName</td>
+<td>非必须</td>
+<td>地址名称</td>
+</tr>
+<tr>
+<td>addressName</td>
+<td>非必须</td>
+<td>地址详细信息</td>
+</tr>
+<tr>
+<td>street</td>
+<td>非必须</td>
+<td>街道</td>
+</tr>
+<tr>
+<td>contact</td>
+<td>非必须</td>
+<td>联系人姓名</td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<pre><code>{
+    "senderSiteName": "jacob",
+    "senderAddressName": "广东省广州市番禺区展贸东路",
+    "senderStreet": "北九路100号",
+    "senderX": "113.470421",
+    "senderY": "23.052377",
+    "senderPhone": "13480250856",
+    "senderContact": "jacob",
+    "receiverSiteName": "koko",
+    "receiverAddressName": "广东省广州市中大瑞康路4点下单2",
+    "receiverStreet": "北九路100号",
+    "receiverX": "113.301872",
+    "receiverY": "23.084849",
+    "receiverPhone": "13480250652",
+    "receiverContact": "koko",
+    "goodsDesc": "abc def ghi",
+    "vehicleTypeId": "274",
+    "couponCode": "",
+    "paymentType": 2,
+    "isBooking": false,
+    "bookingTime": null,
+    "insuranceStatus": 1,
+    "uuid":"5d769cc4-131b-41bb-b0dd-a71287788196"
+    "insuranceOrder": {
+        "coverage": 22000,
+        "insuranceAmount": 35,
+        "applicant": "jacob",
+        "content": "sdsdsds"
+    },
+    "listOfAdditionalRequest": [
+        {
+            "id": 7,
+            "name": "必须准时"
+        },
+        {
+            "id": 9,
+            "name": "人工搬运"
+        }
+    ],
+    "startCityCode": "257",
+    "endCityCode": "257",
+    "type": "2",
+    "clothsAmount": "10",
+    "needLoading": "true",
+    "halfways" : [
+      {
+          "x":"113.332777",
+          "y":"23.082397",
+          "siteName":"2323",
+          "addressName":"sdasd",
+          "street":"sdsd",
+          "phone":"15913126148",
+          "contact":"nimab"
+      }
+  ]
+}</code></pre>
+<h3 id="返回数据说明">返回数据说明</h3>
+<table class="table">
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Integer</td>
+<td>唯一标记</td>
+</tr>
+<tr>
+<td>logisticsOrderNum</td>
+<td>String</td>
+<td>物流订单号</td>
+</tr>
+<tr>
+<td>logisticsOrderTime</td>
+<td>String</td>
+<td>创建订单的时间</td>
+</tr>
+<tr>
+<td>mobile</td>
+<td>String</td>
+<td>创建订单的用户手机号</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>BigDecimal</td>
+<td>订单金额</td>
+</tr>
+<tr>
+<td>truckNum</td>
+<td>Integer</td>
+<td>推送的车辆数</td>
+</tr>
+<tr>
+<td>senderSiteName</td>
+<td>String</td>
+<td>发货方地址名称</td>
+</tr>
+<tr>
+<td>senderAddressName</td>
+<td>String</td>
+<td>发货方地址详细信息</td>
+</tr>
+<tr>
+<td>senderStreet</td>
+<td>String</td>
+<td>发货方手写地址</td>
+</tr>
+<tr>
+<td>senderX</td>
+<td>BigDecimal</td>
+<td>发货方地址经度</td>
+</tr>
+<tr>
+<td>senderY</td>
+<td>BigDecimal</td>
+<td>发货方地址纬度</td>
+</tr>
+<tr>
+<td>senderPhone</td>
+<td>String</td>
+<td>发货人手机号</td>
+</tr>
+<tr>
+<td>senderContact</td>
+<td>String</td>
+<td>发货人姓名</td>
+</tr>
+<tr>
+<td>receiverSiteName</td>
+<td>String</td>
+<td>接收方地址名称</td>
+</tr>
+<tr>
+<td>receiverAddressName</td>
+<td>String</td>
+<td>接收方地址详细信息</td>
+</tr>
+<tr>
+<td>receiverStreet</td>
+<td>String</td>
+<td>接收方手写地址</td>
+</tr>
+<tr>
+<td>receiverX</td>
+<td>BigDecimal</td>
+<td>接收方经度</td>
+</tr>
+<tr>
+<td>receiverY</td>
+<td>BigDecimal</td>
+<td>接收方纬度</td>
+</tr>
+<tr>
+<td>receiverPhone</td>
+<td>String</td>
+<td>接收方联系电话</td>
+</tr>
+<tr>
+<td>receiverContact</td>
+<td>String</td>
+<td>接受方联系人</td>
+</tr>
+<tr>
+<td>goodsDesc</td>
+<td>String</td>
+<td>货物信息</td>
+</tr>
+<tr>
+<td>vehicleType</td>
+<td>Integer</td>
+<td>车型Id (1-小面包，2-小型箱货，3-大型箱货).</td>
+</tr>
+<tr>
+<td>expectedMileage</td>
+<td>BigDecimal</td>
+<td>预计里程</td>
+</tr>
+<tr>
+<td>mileageUnit</td>
+<td>String</td>
+<td>里程单位</td>
+</tr>
+<tr>
+<td>actualAmount</td>
+<td>BigDecimal</td>
+<td>实际费用</td>
+</tr>
+<tr>
+<td>startAmount</td>
+<td>BigDecimal</td>
+<td>起步费用</td>
+</tr>
+<tr>
+<td>nightServiceFee</td>
+<td>BigDecimal</td>
+<td>夜间服务费用</td>
+</tr>
+<tr>
+<td>discount</td>
+<td>BigDecimal</td>
+<td>折扣费用</td>
+</tr>
+<tr>
+<td>sourceType</td>
+<td>Integer</td>
+<td>订单来源</td>
+</tr>
+<tr>
+<td>hsbStatus</td>
+<td>Byte</td>
+<td>本地APP下单用的状态:<br>  <code>-10</code>：已取消<br>  <code>-5</code>：司机取消<br>  <code>5</code>：进行中<br>  <code>60</code>：已完成<br></td>
+</tr>
+<tr>
+<td>status</td>
+<td>Byte</td>
+<td>展配通系统的订单状态:<br> <code>0</code>:已取消<br> <code>1</code>:待派单(未接单)<br> <code>2</code>:已接单<br> <code>3</code>:装货中<br>  <code>4</code>:配送中<br>  <code>5</code>:已完成</td>
+</tr>
+<tr>
+<td>paymentStatus</td>
+<td>Byte</td>
+<td>支付状态:<br>  <code>0</code>:未支付<br>  <code>10</code>:部分支付（单独支付保险费用时的状态）<br>  <code>20</code>:全额支付（全部费用支付完后的状态）<br>  <code>-10</code>:已退款</td>
+</tr>
+<tr>
+<td>paymentType</td>
+<td>Byte</td>
+<td>支付类型:<br> <code>1</code>:立刻支付<br>  <code>2</code>:货到付款</td>
+</tr>
+<tr>
+<td>insuranceStatus</td>
+<td>Byte</td>
+<td>保险状态:<br>  <code>0</code>:不投保<br>  <code>1</code>:投保</td>
+</tr>
+<tr>
+<td>amountPaid</td>
+<td>BigDecimal</td>
+<td>已经支付金额</td>
+</tr>
+<tr>
+<td>paymentAmount</td>
+<td>BigDecimal</td>
+<td>支付金额，订单实际需要支付的金额</td>
+</tr>
+<tr>
+<td>expectedAmount</td>
+<td>BigDecimal</td>
+<td>预计运费，调用展配通计算费用接口获取的运费</td>
+</tr>
+<tr>
+<td>isBooking</td>
+<td>Boolean</td>
+<td>是否预订订单：<br><code>false</code>：非预订订单<br> <code>true</code>：预订订单</td>
+</tr>
+<tr>
+<td>bookingTime</td>
+<td>Date</td>
+<td>预订时间</td>
+</tr>
+<tr>
+<td>couponCode</td>
+<td>String</td>
+<td>优惠券码</td>
+</tr>
+<tr>
+<td>type</td>
+<td>Byte</td>
+<td>订单类型，默认普通订单（1：普通订单  2:循环线订单）</td>
+</tr>
+<tr>
+<td>clothsAmount</td>
+<td>Integer</td>
+<td>布匹条数，默认0条</td>
+</tr>
+<tr>
+<td>needLoading</td>
+<td>Boolean</td>
+<td>是否需要装卸，默认不需要装卸（false：不需要  true:需要）</td>
+</tr>
+<tr>
+<td>uuid</td>
+<td>String</td>
+<td>uuid</td>
+</tr>
+</tbody>
+</table>
+<table class="table">
+<thead>
+<tr>
+<th>参数</th>
+<th>是否必须</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x</td>
+<td>如果填中途点则为必须</td>
+<td>经度</td>
+</tr>
+<tr>
+<td>y</td>
+<td>如果填中途点则为必须</td>
+<td>纬度</td>
+</tr>
+<tr>
+<td>phone</td>
+<td>如果填中途点则为必须</td>
+<td>联系人电话</td>
+</tr>
+<tr>
+<td>siteName</td>
+<td>非必须</td>
+<td>地址名称</td>
+</tr>
+<tr>
+<td>addressName</td>
+<td>非必须</td>
+<td>地址详细信息</td>
+</tr>
+<tr>
+<td>street</td>
+<td>非必须</td>
+<td>街道</td>
+</tr>
+<tr>
+<td>contact</td>
+<td>非必须</td>
+<td>联系人姓名</td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<pre><code>{
+  "id": 4529,
+  "logisticsOrderNum": "LO2017111623200",
+  "logisticsOrderTime": "2017-11-16 11:20:48",
+  "mobile": "13560427526",
+  "name": "哈哈哈",
+  "status": 10,
+  "senderSiteName": "jacob",
+  "senderAddressName": "广东省广州市番禺区展贸东路",
+  "senderX": 113.470421,
+  "senderY": 23.052377,
+  "senderPhone": "13480250856",
+  "senderContact": "jacob",
+  "receiverSiteName": "koko",
+  "receiverAddressName": "广东省广州市中大瑞康路4点下单2",
+  "receiverX": 113.301872,
+  "receiverY": 23.084849,
+  "receiverPhone": "13480250652",
+  "receiverContact": "koko",
+  "goodsDesc": "abc def ghi",
+  "vehicleTypeId": 274,
+  "expectedMileage": 22.73,
+  "actualMileage": null,
+  "mileageUnit": "km",
+  "amount": 135.73,
+  "expectedAmount": 34.73,
+  "actualAmount": 34.73,
+  "startAmount": 12,
+  "nightServiceFee": 66,
+  "discount": 0,
+  "hsbStatus": null,
+  "sourceType": 3,
+  "expireAt": 1510860052523,
+  "paymentType": 2,
+  "paymentStatus": 0,
+  "paymentAmount": 135.73,
+  "paymentMethod": null,
+  "isBooking": false,
+  "bookingTime": null,
+  "insuranceStatus": 1,
+  "insuranceAmount": 35,
+  "driverId": null,
+  "vehicleId": null,
+  "waitingCost": null,
+  "waitingTime": null,
+  "totalTime": null,
+  "couponCodeId": null,
+  "uuid":"5d769cc4-131b-41bb-b0dd-a71287788196"
+  "insuranceOrder": {
+    "id": 269,
+    "orderNummber": "IO00021200",
+    "orderTime": 1510831252573,
+    "orderStatus": 10,
+    "orderType": 1,
+    "premium": 13.2,
+    "coverage": 22000,
+    "content": "sdsdsds",
+    "paymentStatus": 0,
+    "applicant": "jacob",
+    "settleRates": 0.0006,
+    "insuranceAmount": 35,
+    "areaType": 3,
+    "expressOrderNum": null,
+    "senderAddress": null,
+    "receiverAddress": null
+  },
+  "listOfAdditionalRequest": [
+    {
+      "id": 7,
+      "name": "必须准时"
+    },
+    {
+      "id": 9,
+      "name": "人工搬运"
+    }
+  ],
+  "listOfLogisticsComment": null,
+  "type": 2,
+  "clothsAmount": 10,
+  "needLoading": true
+}</code></pre>
+    </div>
+  </div>
+  <hr style="margin-top:50px;">
+</div>
+
+<div style="text-align: center; color: grey; margin-bottom: 50px; font-size: 12px;">Copyright © 2015 Highsunbuy.com</div>
+
+  
+    <script src="./下单_files/main.min.js.下载"></script>
+  
+  
+  
+
+</body></html>

@@ -3,10 +3,11 @@
 
     <template v-if="iconType">
       <div class="item-l">
-        <template v-if="!icon && (point === 'start' || point ==='end')">
+        <template v-if="!icon && (point === 'start' || point ==='end' || point ==='mid')">
           <div v-if="!icon" class="item-point" :class="point"></div>
           <div v-if="point === 'start' && !isStartPointlineHide" class="line s"></div>
           <div v-if="point === 'end' && !isEndPointlineHide" class="line e"></div>
+          <div v-if="point === 'mid' && !isEndPointlineHide" class="line m"></div>
         </template>
         <template v-if="icon">
           <img v-if="icon" class="item-icon" :src="icon" mode="aspectFit">
@@ -65,6 +66,9 @@
           <div v-if="!isArrowHide" class="item-r-arrow">
               <img class="img-item-arrow" :src="arrow">
           </div>
+          <div v-if="isShowClose" class="item-r-arrow" @click.stop="itemClickClose">
+              <img class="img-item-close" :src="close" mode="aspectFit">
+          </div>
         </div>
     </template>
 
@@ -74,6 +78,7 @@
 
 <script>
 import arrow from './icon/arrow.png';
+import close from './icon/close.png';
 import cartype from './icon/cartype.png';
 import time from './icon/time.png';
 import goods from './icon/goods.png';
@@ -117,11 +122,13 @@ export default {
     'noBorderTop',
     // 是否隐藏右侧箭头
     'isArrowHide',
-    'textLight'
+    'textLight',
+    'isShowClose'
   ],
   data() {
     return {
       arrow,
+      close,
       cartype,
       time,
       extra,
@@ -132,6 +139,9 @@ export default {
   methods: {
     itemClick() {
       this.$emit('itemClick', this);
+    },
+    itemClickClose(e) {
+      this.$emit('itemClickClose', e);
     },
     itemInput(e) {
       this.$emit('itemInput', e);
@@ -183,6 +193,9 @@ export default {
               break;
             case 'end':
               this.point = 'end';
+              break;
+            case 'mid':
+              this.point = 'mid';
               break;
             default:
               this.point = 'start';

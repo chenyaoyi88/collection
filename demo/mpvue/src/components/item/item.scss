@@ -33,6 +33,11 @@
       &.end {
         background-color: #f13744;
       }
+      &.mid {
+        width: 5px;
+        height: 5px;
+        background-color: #ccc;
+      }
     }
     .line {
       position: absolute;
@@ -46,6 +51,10 @@
       }
       &.e {
         top: 0;
+      }
+      &.m {
+        top: 0;
+        height: 100%;
       }
     }
   }
@@ -84,8 +93,10 @@
     }
     .item-r-arrow {
       position: absolute;
-      right: 15px;
+      // right: 15px;
+      right: 5px;
       top: 0px;
+      padding: 0 10px;
       z-index: 3;
       height: 100%;
       display: flex;
@@ -94,6 +105,10 @@
       .img-item-arrow {
         width: 8px;
         height: 13px;
+      }
+      .img-item-close {
+        width: 15px;
+        height: 15px;
       }
     }
     .item-input {

@@ -35,7 +35,7 @@ Page({
   // 点击去优惠券页面
   gotoCoupon() {
     wx.navigateTo({
-      url: '../coupon/main?from=me'
+      url: '../coupon/coupon?from=me'
     });
   },
 

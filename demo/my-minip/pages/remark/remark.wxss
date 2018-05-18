@@ -1,0 +1,15 @@
+page {
+  background-color: #f5f5f5;
+}
+
+.goodsinfo-input-box ._textarea {
+  margin-top: 10px;
+  width: 100%;
+  padding: 15px;
+  background-color: #fff;
+  font-size: 14px;
+}
+
+.goodsinfo-input-box .goodsinfo-btn-box {
+    padding: 20px;
+}
