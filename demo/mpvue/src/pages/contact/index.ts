@@ -10,7 +10,7 @@ import street from '../../components/item/icon/street.png';
 // 必须使用装饰器的方式来指定components
 @Component({
   components: {
-    item,
+    item
   }
 })
 class Index extends Vue {
@@ -19,36 +19,14 @@ class Index extends Vue {
   mobile: string = '';
   street: string = '';
   isLogin: boolean = false;
+  btnName: string = '';
+  isBtnClick: boolean = false;
 
   icon: any = {
     contact,
     mobile,
     street
   };
-
-  onLoad(option: any) {
-    this.name = '';
-    this.mobile = '';
-    this.street = '';
-    this.searchInfo = JSON.parse(option.searchInfo);
-    // this.searchInfo.from = this.searchInfo.from;
-    // console.log('searchInfo', this.searchInfo.from);
-    if (this.searchInfo) {
-      this.name = this.searchInfo.userName;
-      this.mobile = this.searchInfo.mobile;
-      this.street = this.searchInfo.street;
-    }
-    // 获取地点所在城市
-
-    // 参考：http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
-    this.getCityCode();
-  }
-
-  onReady() {
-    wx.setNavigationBarTitle({
-      title: `输入${getDesText(this.searchInfo.from)}联系人`
-    });
-  }
 
   getCityCode() {
     const __this = this;
@@ -58,7 +36,7 @@ class Index extends Vue {
       data: {
         location: `${this.searchInfo.location.lat},${this.searchInfo.location.lng}`
       },
-      success: function (res: any) {
+      success: function(res: any) {
         if (res.statusCode === 200) {
           if (res.data && res.data.result && res.data.result.cityCode) {
             __this.searchInfo.cityCode = res.data.result.cityCode;
@@ -77,15 +55,13 @@ class Index extends Vue {
   }
 
   confirmGoback() {
-    const _this = this;
-    const token = wx.getStorageSync('token');
-    this.isLogin = token ? true : false;
+    this.isLogin = wx.getStorageSync('token') ? true : false;
 
-    this.searchInfo.userName = this.name;
+    this.searchInfo.name = this.name;
     this.searchInfo.mobile = this.mobile;
     this.searchInfo.street = this.street;
 
-    if (!(/\S/.test(this.searchInfo.userName)) || !(/\S/.test(this.searchInfo.mobile))) {
+    if (!/\S/.test(this.searchInfo.name) || !/\S/.test(this.searchInfo.mobile)) {
       showToastError('联系人姓名和联系方式不能为空');
       return;
     }
@@ -95,44 +71,136 @@ class Index extends Vue {
       return;
     }
 
-    // 登录状态下可保存联系人和地址
-    if (this.isLogin) {
-      const PARAMRS_CERATE_REQUEST = {
-        address: this.searchInfo.name,
-        street: this.searchInfo.street,
-        isDefault: false,
-        serviceType: 1,
-        longitude: this.searchInfo.location.lng,
-        latitude: this.searchInfo.location.lat,
-        remark: '',
-        mobile: this.searchInfo.mobile,
-        name: this.searchInfo.userName,
-        addressName: this.searchInfo.address,
-        cityCode: this.searchInfo.cityCode,
-      };
+    const from = this.searchInfo.from;
 
-      // 保存联系人和地址
-      ghbRequest({
-        url: API.CREATE,
-        method: 'POST',
-        data: PARAMRS_CERATE_REQUEST
-      }).then((res: any) => {
-        if (res.statusCode !== 200) {
-          showToastError(res.data.message);
-        } else {
-          // console.log('保存成功');
-        }
+    // 点击新增按钮进来，保存联系人和地址
+    if (from.includes('new')) {
+      this.addressAdd();
+    } else if (from.includes('edit')) {
+      this.addressEdit();
+    } else {
+      goBackSetData(
+        {
+          searchInfo: this.searchInfo
+        },
+        3
+      );
+      wx.navigateBack({
+        delta: 2
       });
     }
-
-    goBackSetData({
-      searchInfo: this.searchInfo
-    }, 3);
-    wx.navigateBack({
-      delta: 2
-    });
   }
 
+  // 新增保存地址
+  addressAdd() {
+    if (this.isBtnClick) return;
+    this.isBtnClick = true;
+    const PARAMRS_CERATE_REQUEST = {
+      address: this.searchInfo.siteName,
+      street: this.searchInfo.street,
+      isDefault: false,
+      serviceType: 1,
+      longitude: this.searchInfo.location.lng,
+      latitude: this.searchInfo.location.lat,
+      remark: '',
+      mobile: this.searchInfo.mobile,
+      name: this.searchInfo.name,
+      addressName: this.searchInfo.address,
+      cityCode: this.searchInfo.cityCode
+    };
+
+    // 保存联系人和地址
+    ghbRequest({
+      url: API.CREATE,
+      method: 'POST',
+      data: PARAMRS_CERATE_REQUEST
+    })
+      .then((res: any) => {
+        if (res.statusCode !== 200) {
+          showToastError(res.data.message);
+          this.isBtnClick = false;
+        } else {
+          showToastError('保存成功');
+          setTimeout(() => {
+            wx.navigateBack({
+              delta: 2
+            });
+            this.isBtnClick = false;
+            this.$store.commit('isSavedGoBackChange', {
+              isSavedGoBack: true
+            });
+          }, 300);
+        }
+      })
+      .catch(() => {
+        this.isBtnClick = false;
+      });
+  }
+
+  // 编辑保存地址 TODO：保存之后回去原位刷新
+  addressEdit() {
+    if (this.isBtnClick) return;
+    this.isBtnClick = true;
+    const PARAMRS_EDIT_REQUEST = {
+      id: this.searchInfo.id,
+      name: this.name,
+      mobile: this.mobile,
+      street: this.street
+    };
+    
+    showToastError('编辑成功');
+    setTimeout(() => {
+      wx.navigateBack();
+      this.isBtnClick = false;
+      this.$store.commit('isSavedGoBackChange', {
+        isSavedGoBack: true
+      });
+    }, 300);
+  }
+
+  reset() {
+    this.name = '';
+    this.mobile = '';
+    this.street = '';
+    this.btnName = '';
+    this.isBtnClick = false;
+  }
+
+  onLoad(option: any) {
+    this.searchInfo = JSON.parse(option.searchInfo || '{}');
+    console.log(this.searchInfo);
+    if (this.searchInfo) {
+      const from = this.searchInfo.from;
+      if (from.includes('start') || from.includes('edit')) {
+        this.name = this.searchInfo.name;
+        this.mobile = this.searchInfo.mobile;
+        this.street = this.searchInfo.street;
+      }
+    }
+    // 获取地点所在城市
+
+    // 参考：http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
+    this.getCityCode();
+  }
+
+  // 页面卸载之后重置页面
+  onUnload() {
+    this.reset();
+  }
+
+  onReady() {
+    const from = this.searchInfo.from;
+    if (from.includes('add')) {
+      this.btnName = '保存';
+    } else if (from.includes('edit')) {
+      this.btnName = '编辑';
+    } else {
+      this.btnName = '确定';
+    }
+    wx.setNavigationBarTitle({
+      title: `${getDesText(this.searchInfo.from)}联系人`
+    });
+  }
 }
 
 export default Index;

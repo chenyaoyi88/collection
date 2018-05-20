@@ -103,17 +103,17 @@ export function getNextstepParams(scope: any) {
         needLoading: false,
         paymentType: 1,
         receiverAddressName: scope.endInfo.address,
-        receiverContact: scope.endInfo.userName,
+        receiverContact: scope.endInfo.name,
         receiverPhone: scope.endInfo.mobile,
-        receiverSiteName: scope.endInfo.name,
+        receiverSiteName: scope.endInfo.siteName,
         receiverStreet: scope.endInfo.street,
         receiverX: scope.endInfo.location.lng,
         receiverY: scope.endInfo.location.lat,
         endCityCode: scope.endInfo.cityCode,
         senderAddressName: scope.startInfo.address,
-        senderContact: scope.startInfo.userName,
+        senderContact: scope.startInfo.name,
         senderPhone: scope.startInfo.mobile,
-        senderSiteName: scope.startInfo.name,
+        senderSiteName: scope.startInfo.siteName,
         senderStreet: scope.startInfo.street,
         senderX: scope.startInfo.location.lng,
         senderY: scope.startInfo.location.lat,
@@ -142,7 +142,8 @@ export function getCalcCosts(scope: any): void {
         isBooking: scope.bookingTime ? 'Y' : 'N',
         bookingTime: scope.bookingTime ? scope.bookingTime : null,
         isBuyInsurance: false,
-        couponCodeId: scope.couponInfo.id
+        couponCodeId: scope.couponInfo.id,
+        halfways: scope.aHalfwaysList.length > 1 ? scope.aHalfwaysList : null
     };
 
     ghbRequest({
@@ -182,6 +183,7 @@ export function resetAll(scope: any): void {
     scope.bookingTime = '';
     scope.costs = null;
     scope.couponInfo = {};
+    scope.aHalfwaysList = [{}];
 }
 
 // 获取车型列表

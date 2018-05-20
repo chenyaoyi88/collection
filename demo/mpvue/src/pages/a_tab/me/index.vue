@@ -23,6 +23,10 @@
             :value="LogisticsCoupons.length ? LogisticsCoupons.length + '张可用' : ''"
             @itemClick="gotoCoupon">
             </item>
+            <item 
+            textCenter="地址管理" 
+            @itemClick="gotoAddress">
+            </item>
           </template>
         </div>
         <div class="logout-btn-box" v-if="isLogin">

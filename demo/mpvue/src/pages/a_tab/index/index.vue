@@ -2,12 +2,13 @@
   <div class="idx-box"> 
     <div class="idx-main-box">
       <div class="idx-site-box">
+        
         <item 
           iconType="point" 
-          :textTop="(startInfo.userName || '') + ' ' + (startInfo.mobile || '')" 
-          :textCenter="startInfo.name || '请输入始发地'" 
+          :textTop="(startInfo.name || '') + ' ' + (startInfo.mobile || '')" 
+          :textCenter="startInfo.siteName || '请输入始发地'" 
           :textBottom="startInfo.address || ''" 
-          @itemClick="fnGetPonit('start', startInfo)"
+          @itemClick="fnGetPonit('start', startInfo, -1)"
           noBorderTop="true"
           :textLight="startInfo.name ? false : true"
           isArrowHide="true"
@@ -16,29 +17,17 @@
         <block v-for="(item, index) in aHalfwaysList" :key="index">
           <item 
             iconType="point" 
-            :pointType="aHalfwaysList.length > 1 ? 'mid' : 'end'" 
-            :textTop="''" 
-            :textCenter="'请输入目的地'" 
-            :textBottom="''"  
+            :pointType="(index === aHalfwaysList.length-1)? 'end' : 'mid'" 
+            :textTop="(item.contact || '') + ' ' + (item.phone || '')" 
+            :textCenter="item.siteName || '请输入目的地'" 
+            :textBottom="item.addressName || ''"  
             :textLight="true"
             isArrowHide="true"
             :isShowClose="aHalfwaysList.length > 1 ? true : false"
-            @itemClickClose="fnItemDelete"
+            @itemClick="fnGetPonit('des', item, index)"
+            @itemClickClose="fnItemDelete(index)"
           ></item>
         </block>
-
-
-        <!-- <item 
-          iconType="point" 
-          pointType="end" 
-          :textTop="(endInfo.userName || '') + ' ' + (endInfo.mobile || '')" 
-          :textCenter="endInfo.name || '请输入目的地'" 
-          :textBottom="endInfo.address || ''"  
-          @itemClick="fnGetPonit('end', endInfo)"
-          :textLight="endInfo.name ? false : true"
-          isArrowHide="true"
-          isShowClose="true"
-        ></item> -->
 
         <view class="index-halfway-box" @click="addHalfways">
           <img class="index-halfway-icon" :src="img.imgAdd" alt="" mode="aspectFit">

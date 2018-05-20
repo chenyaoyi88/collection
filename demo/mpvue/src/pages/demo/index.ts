@@ -135,9 +135,6 @@ class Index extends Vue {
   // 全局
   mounted() {
     this.selectSlider = true;
-    this.$store.commit('tabIndexChange', {
-      tabIndex: 2
-    });
     console.log(this.$store);
   }
 

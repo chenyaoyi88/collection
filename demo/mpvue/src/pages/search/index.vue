@@ -42,7 +42,7 @@
         
         <li v-if="!isGettingPosition" v-for="(item, index) of aNearbyPosition" :key="index" @click="selected(item)">
             <div class="site-list-item">
-              <p>{{ item.name }}</p>
+              <p>{{ item.siteName }}</p>
               <p class="light">{{ item.address }}</p>
             </div>
         </li>

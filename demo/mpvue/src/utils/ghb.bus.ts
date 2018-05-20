@@ -98,10 +98,14 @@ export function ghbRequest(options: GhbRequest, isShowing: boolean = false): Pro
 
 export function getDesText(des: string) {
   let retStr: string = '';
-  if (des === 'start') {
-    retStr = '发货';
-  } else if (des === 'end') {
-    retStr = '收货';
+  if (des.includes('start')) {
+    retStr = '输入发货';
+  } else if (des.includes('end')) {
+    retStr = '输入收货';
+  } else if (des.includes('address_new')) {
+    retStr = '新增';
+  } else if (des.includes('address_edit')) {
+    retStr = '编辑';
   }
   return retStr;
 }

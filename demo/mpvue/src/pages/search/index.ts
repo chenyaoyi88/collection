@@ -26,37 +26,6 @@ class Index extends Vue {
   // 是否正在定位
   isGettingPosition: boolean = false;
 
-  // 获取传过来的参数（从开始还是结束进来的）
-  onLoad(options: { from: string; searchResult: string }) {
-    this.from = options.from;
-    this.searchResult = JSON.parse(options.searchResult);
-    this.inputValue = this.searchResult.name || '';
-    this.desText = `${getDesText(this.from)}地点`;
-    // 如果首页的发货/收货地址有之前填写的信息，则显示出来
-    if (this.inputValue) {
-      this.getMapData();
-    }
-    // 如果是点击发货地址栏进来的，定位获取当前位置信息
-    if (this.from === 'start') {
-      this.getPositionAuto();
-    }
-  }
-
-  // 页面卸载之后重置页面
-  onUnload() {
-    this.clear();
-    this.sCurrentPosition = '暂无定位信息';
-    this.oCurrentPosition = null;
-    this.aNearbyPosition = [];
-  }
-
-  // 设置标题
-  onReady() {
-    wx.setNavigationBarTitle({
-      title: `输入${getDesText(this.from)}地点`
-    });
-  }
-
   // 自动获取当前位置
   getPositionAuto() {
     if (this.isGettingPosition) return;
@@ -68,14 +37,15 @@ class Index extends Vue {
       // 如果百度返回附近信息列表有数据
       if (aPosList.length) {
         for (let item of aPosList) {
+          item.siteName = item.name;
           item.address = item.addr;
           item.location = {
             lat: item.point.y,
             lng: item.point.x
-          }
+          };
         }
         this.aNearbyPosition = aPosList;
-        this.sCurrentPosition = aPosList[0].name;
+        this.sCurrentPosition = aPosList[0].siteName;
         this.oCurrentPosition = aPosList[0];
         this.isGettingPosition = false;
       } else {
@@ -108,22 +78,36 @@ class Index extends Vue {
         region: '广州',
         city_limit: true
       },
-      success: function (res: any) {
-        __this.results = res.data.results;
+      success: function(res: any) {
+        if (res.data && res.data.results && res.data.results.length) {
+          for (let item of res.data.results) {
+            item.siteName = item.name;
+          }
+          __this.results = res.data.results;
+        }
       }
     });
   }
 
   // 点击搜索结果
-  selected(searchInfo: any) {
+  selected(mapPosInfo: any) {
+    console.log(mapPosInfo);
     // 如果没有地址数据，返回
-    if (!searchInfo) return;
-    searchInfo.from = this.from;
-    searchInfo.userName = this.searchResult.userName ? this.searchResult.userName : '';
-    searchInfo.mobile = this.searchResult.mobile ? this.searchResult.mobile : '';
-    searchInfo.street = this.searchResult.street ? this.searchResult.street : '';
+    if (!mapPosInfo) return;
+
+    const searchInfo = {
+      from: this.from,
+      address: mapPosInfo.address,
+      siteName: mapPosInfo.siteName,
+      location: mapPosInfo.location,
+      uid: mapPosInfo.uid,
+      name: this.searchResult.name,
+      mobile: this.searchResult.mobile || '',
+      street: this.searchResult.street || '',
+    };
+
     wx.navigateTo({
-      url: `../contact/main?searchInfo=${JSON.stringify(searchInfo)}`
+      url: `../contact/main?from=${this.from}&searchInfo=${JSON.stringify(searchInfo)}`
     });
   }
 
@@ -136,6 +120,38 @@ class Index extends Vue {
   clear() {
     this.inputValue = '';
     this.results = [];
+  }
+
+  // 获取传过来的参数（从开始还是结束进来的）
+  onLoad(options: { from: string; searchResult: string }) {
+    this.from = options.from;
+    this.searchResult = JSON.parse(options.searchResult || '{}');
+    this.inputValue = this.searchResult.siteName || '';
+    this.desText = `${getDesText(this.from)}地点`;
+    // 如果首页的发货/收货地址有之前填写的信息，则显示出来
+    if (this.inputValue) {
+      this.getMapData();
+    }
+    // 如果是点击发货地址栏进来的，定位获取当前位置信息
+    if (this.from.includes('start')) {
+      this.getPositionAuto();
+    } else if (this.from.includes('address_new_me')) {
+    }
+  }
+
+  // 页面卸载之后重置页面
+  onUnload() {
+    this.clear();
+    this.sCurrentPosition = '暂无定位信息';
+    this.oCurrentPosition = null;
+    this.aNearbyPosition = [];
+  }
+
+  // 设置标题
+  onReady() {
+    wx.setNavigationBarTitle({
+      title: `输入${getDesText(this.from)}地点`
+    });
   }
 }
 

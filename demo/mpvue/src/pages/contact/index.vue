@@ -4,28 +4,15 @@
 
       <div class="item">
         <div class="item-l">
-          <div class="item-point" :class="searchInfo.from"></div>
-          <div v-if="searchInfo.from === 'start'"></div>
-          <div v-if="searchInfo.from === 'end'"></div>
+          <div class="item-point" :class="searchInfo.from === 'start' ? 'start' : 'end'"></div>
         </div>
         <div class="item-r no-boder-top">
           <div class="item-r-title">
-            <p v-if="searchInfo.name" class="item-info-c">{{ searchInfo.name }}</p>
+            <p v-if="searchInfo.siteName" class="item-info-c">{{ searchInfo.siteName }}</p>
             <p v-if="searchInfo.address" class="item-info-b">{{ searchInfo.address }}</p>
           </div>
         </div>
       </div>
-
-      <!-- <item 
-        iconType="point" 
-        :pointType="searchInfo.from"
-        :textCenter="searchInfo.name" 
-        :textBottom="searchInfo.address"  
-        isStartPointlineHide="true"
-        isEndPointlineHide="true"
-        isArrowHide="true"
-        noBorderTop="true"
-      ></item> -->
 
     </div>
 
@@ -83,27 +70,9 @@
         </div>
       </div>
 
-      <!-- 框架BUG：input 子组件绑定 value 会闪烁，所以暂时没法用 -->
-      <!-- <item 
-        itemType="input"
-        inputPlc="联系人姓名"
-        iconType="contact" 
-        noBorderTop="true"
-        maxlength="10"
-        v-on:itemInput="getValue($event.target.value, 'name')"
-      ></item> -->
-      <!-- <item 
-        itemType="input"
-        inputType="number"
-        inputPlc="联系方式"
-        iconType="mobile" 
-        maxlength="11"
-        v-on:itemInput="getValue($event.target.value, 'mobile')"
-      ></item> -->
-      
     </div>
     <div class="contact-btn-box">
-      <button class="ghb-btn contact-btn" @click="confirmGoback">确认</button>
+      <button class="ghb-btn contact-btn" :disabled="isBtnClick" @click="confirmGoback">{{btnName || '确认'}}</button>
     </div>
   </div>
 </template>

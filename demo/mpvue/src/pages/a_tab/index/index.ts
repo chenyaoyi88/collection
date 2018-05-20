@@ -20,7 +20,13 @@ import imgArrow from '../../../components/item/icon/arrow.png';
 import imgAdd from '../../../../static/images/add.png';
 
 import { eventBus, ghbEvent } from '../../eventbus';
-import { updateApp, checkNextstepParmas, getNextstepParams, getCalcCosts, resetAll } from './services';
+import {
+  updateApp,
+  checkNextstepParmas,
+  getNextstepParams,
+  getCalcCosts,
+  resetAll
+} from './services';
 
 // 必须使用装饰器的方式来指定components
 @Component({
@@ -77,7 +83,17 @@ class Index extends Vue {
   selectSlider: boolean = false;
 
   // 中途点
-  aHalfwaysList: Array<any> = [{}];
+  aHalfwaysList: Array<any> = [{
+    // {
+    //   x: null,
+    //   y: null,
+    //   siteName: '',
+    //   addressName: '',
+    //   street: '',
+    //   phone: '',
+    //   contact: ''
+    // }
+  }];
 
   // 获取预定时间
   fnGetDateValue(value: string) {
@@ -86,9 +102,12 @@ class Index extends Vue {
   }
 
   // 选择发货/收货地点
-  fnGetPonit(type: string, searchResult: any) {
+  fnGetPonit(from: string, searchResult: any, desIndex: number = -1) {
+    let sGoto: string = this.isLogin ? 'address' : 'search';
     wx.navigateTo({
-      url: `../../search/main?from=${type}&searchResult=${JSON.stringify(searchResult)}`
+      url: `../../${sGoto}/main?from=${from}&desIndex=${desIndex}&searchResult=${JSON.stringify(
+        searchResult
+      )}`
     });
   }
 
@@ -131,7 +150,9 @@ class Index extends Vue {
     wx.navigateTo({
       url:
         '../../coupon/main?from=index&LogisticsCoupons=' +
-        JSON.stringify(PARAMS_LOGISTICSORDER_REQUEST) + '&couponInfo=' + JSON.stringify(this.couponInfo)
+        JSON.stringify(PARAMS_LOGISTICSORDER_REQUEST) +
+        '&couponInfo=' +
+        JSON.stringify(this.couponInfo)
     });
   }
 
@@ -172,17 +193,29 @@ class Index extends Vue {
     }
   }
 
-  fnItemDelete() {
+  fnItemDelete(index: number) {
     if (this.aHalfwaysList.length < 2) return;
+    this.aHalfwaysList.splice(index, 1);
   }
 
   // 添加中途点
   addHalfways() {
-    if (this.aHalfwaysList.length > 4) {
+    if (this.aHalfwaysList.length > 5) {
       showToastError('途经点最多设置5个');
       return;
     }
-    this.aHalfwaysList.push({});
+
+    const oHalfway: Halfways = {
+      x: null,
+      y: null,
+      siteName: '',
+      addressName: '',
+      street: '',
+      phone: '',
+      contact: ''
+    };
+
+    this.aHalfwaysList.unshift(oHalfway);
   }
 
   // 下一步
@@ -234,33 +267,33 @@ class Index extends Vue {
         currPage.data.goodsRemark = '';
       }
 
-      // 从发货/收货地点返回
-      const searchInfo = currPage.data.searchInfo;
-      if (searchInfo && searchInfo.from) {
-        if (searchInfo.from.includes('start')) {
-          if (
-            this.startInfo.uid !== searchInfo.uid ||
-            this.startInfo.userName !== searchInfo.userName ||
-            this.startInfo.mobile !== searchInfo.mobile ||
-            this.startInfo.street !== searchInfo.street
-          ) {
-            this.startInfo = searchInfo;
-            currPage.data.searchInfo = {};
-            getCalcCosts(this);
-          }
-        } else if (searchInfo.from.includes('end')) {
-          if (
-            this.endInfo.uid !== searchInfo.uid ||
-            this.endInfo.userName !== searchInfo.userName ||
-            this.endInfo.mobile !== searchInfo.mobile ||
-            this.endInfo.street !== searchInfo.street
-          ) {
-            this.endInfo = searchInfo;
-            currPage.data.searchInfo = {};
-            getCalcCosts(this);
-          }
-        }
-      }
+      // // 从发货/收货地点返回
+      // const searchInfo = currPage.data.searchInfo;
+      // if (searchInfo && searchInfo.from) {
+      //   if (searchInfo.from.includes('start')) {
+      //     if (
+      //       this.startInfo.address !== searchInfo.address ||
+      //       this.startInfo.name !== searchInfo.name ||
+      //       this.startInfo.mobile !== searchInfo.mobile ||
+      //       this.startInfo.street !== searchInfo.street
+      //     ) {
+      //       this.startInfo = searchInfo;
+      //       currPage.data.searchInfo = {};
+      //       getCalcCosts(this);
+      //     }
+      //   } else if (searchInfo.from.includes('end')) {
+      //     if (
+      //       this.endInfo.address !== searchInfo.address ||
+      //       this.endInfo.name !== searchInfo.name ||
+      //       this.endInfo.mobile !== searchInfo.mobile ||
+      //       this.endInfo.street !== searchInfo.street
+      //     ) {
+      //       this.endInfo = searchInfo;
+      //       currPage.data.searchInfo = {};
+      //       getCalcCosts(this);
+      //     }
+      //   }
+      // }
     }
   }
 
@@ -329,6 +362,34 @@ class Index extends Vue {
         this.couponInfo = {};
       }
       getCalcCosts(this);
+    });
+
+    eventBus.$on(ghbEvent.getSiteInfo, (searchInfo: any) => {
+      console.log(searchInfo);
+      if (searchInfo.from.includes('start')) {
+        this.startInfo = searchInfo;
+        getCalcCosts(this);
+      } else if (searchInfo.from.includes('des')) {
+        const oHalfway = {
+          x: searchInfo.location.lat,
+          y: searchInfo.location.lng,
+          siteName: searchInfo.siteName,
+          addressName: searchInfo.address,
+          street: searchInfo.street,
+          phone: searchInfo.mobile,
+          contact: searchInfo.name
+        };
+
+        if (this.aHalfwaysList.length > 1) {
+          this.$set(this.aHalfwaysList, Number(searchInfo.desIndex), oHalfway);
+          getCalcCosts(this);
+          console.log(this.aHalfwaysList);
+        } else {
+          this.aHalfwaysList[0] = oHalfway;
+          this.endInfo = searchInfo;
+          getCalcCosts(this);
+        }
+      }
     });
   }
 

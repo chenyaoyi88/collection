@@ -8,7 +8,4 @@
 </script>
 
 <style lang="scss">
-.webview-box {
-  
-}
 </style>

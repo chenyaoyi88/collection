@@ -60,6 +60,13 @@ class Me extends Vue {
     });
   }
 
+  // 点击去地址管理页面
+  gotoAddress() {
+    wx.navigateTo({
+      url: '../../address/main?from=me'
+    });
+  }
+
   // 收费标准 webview h5页面
   ghbLogisticFee(): void {
     wx.navigateTo({

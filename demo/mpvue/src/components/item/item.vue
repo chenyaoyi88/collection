@@ -133,8 +133,27 @@ export default {
       time,
       extra,
       icon: '',
-      point: ''
+      // point: ''
     };
+  },
+  computed: {
+    point() {
+      let point = '';
+      switch (this.pointType) {
+        case 'start':
+          point = 'start';
+          break;
+        case 'end':
+          point = 'end';
+          break;
+        case 'mid':
+          point = 'mid';
+          break;
+        default:
+          point = 'start';
+      }
+      return point;
+    }
   },
   methods: {
     itemClick() {
@@ -186,23 +205,6 @@ export default {
           break;
         case 'point':
           this.icon = '';
-          // console.log('pointType', this.pointType);
-          switch (this.pointType) {
-            case 'start':
-              this.point = 'start';
-              break;
-            case 'end':
-              this.point = 'end';
-              break;
-            case 'mid':
-              this.point = 'mid';
-              break;
-            default:
-              this.point = 'start';
-          }
-          // if (!this.textTop && !this.textBottom) {
-          //   this.textLight = true;
-          // }
           break;
         default:
           this.icon = '';
