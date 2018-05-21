@@ -4,7 +4,7 @@
 
       <div class="item">
         <div class="item-l">
-          <div class="item-point" :class="searchInfo.from === 'start' ? 'start' : 'end'"></div>
+          <div class="item-point" :class="pointType"></div>
         </div>
         <div class="item-r no-boder-top">
           <div class="item-r-title">

@@ -32,7 +32,7 @@
     </div>
 
     <div class="address-add-btn">
-      <button class="ghb-btn" @click="addNewAddress">新增地址</button>
+      <button class="ghb-btn" @click="addNewAddress">+ 新增地址</button>
     </div>
 
   </div>
@@ -61,7 +61,7 @@ page {
 
 .address-box {
   background-color: #fff;
-  font-size: 15px;
+  font-size: 14px;
   margin-top: 10px;
   .address-info {
     padding: 15px;
@@ -109,6 +109,7 @@ page {
   width: 100%;
   box-shadow: 0 -1rpx 0 #eaeaea;
   .ghb-btn {
+    font-size: 16px;
     color: #f13744;
     background-color: #fff;
   }
@@ -118,6 +119,6 @@ page {
   padding: 10px 0;
   text-align: center;
   color: #ccc;
-  font-size: 16px;
+  font-size: 14px;
 }
 </style>

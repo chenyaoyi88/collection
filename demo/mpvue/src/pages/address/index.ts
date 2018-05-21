@@ -90,8 +90,10 @@ class Index extends Vue {
     //   url: `../search/main?from=${from}`
     // });
 
+    const from: string = `${this.from}_new`;
+
     wx.navigateTo({
-      url: `../search/main?from=${this.from}`
+      url: `../search/main?from=${from}`
     });
   }
 

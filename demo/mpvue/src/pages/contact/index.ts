@@ -24,6 +24,9 @@ class Index extends Vue {
   btnName: string = '';
   isBtnClick: boolean = false;
 
+  // 那点的样式名
+  pointType: string = '';
+
   icon: any = {
     contact,
     mobile,
@@ -77,7 +80,7 @@ class Index extends Vue {
     }
 
     const from = this.searchInfo.from;
-    
+
     const PARAMS_ADDRESS_REQUEST = {
       name: this.searchInfo.name,
       mobile: this.searchInfo.mobile,
@@ -93,19 +96,17 @@ class Index extends Vue {
     };
 
     // 点击新增按钮进来，保存联系人和地址
-    if (from.includes('start')) {
+    if (from.includes('new')) {
       this.addressAdd(PARAMS_ADDRESS_REQUEST);
     } else if (from.includes('edit')) {
       this.addressEdit(PARAMS_ADDRESS_REQUEST);
     } else {
-      goBackSetData(
-        {
-          searchInfo: this.searchInfo
-        },
-        3
-      );
+      // 未登录，带值返回首页
+      const searchInfo = this.searchInfo;
+      eventBus.$emit(ghbEvent.getSiteInfo, searchInfo);
       wx.navigateBack({
-        delta: 2
+        // 返回第3层，首页
+        delta: 3
       });
     }
   }
@@ -145,28 +146,28 @@ class Index extends Vue {
   addressEdit(params: any) {
     if (this.isBtnClick) return;
     this.isBtnClick = true;
-    
+
     ghbRequest({
       url: `${API.ADDRESS}/${this.searchInfo.id}/update`,
       method: 'PUT',
       data: params
     })
-    .then((res: any) => {
-      if (res.statusCode !== 200) {
-        showToastError(res.data.message);
-        this.isBtnClick = false;
-      } else {
-        showToastError('编辑成功');
-        setTimeout(() => {
-          wx.navigateBack();
+      .then((res: any) => {
+        if (res.statusCode !== 200) {
+          showToastError(res.data.message);
           this.isBtnClick = false;
-          eventBus.$emit(ghbEvent.gobackReload, false);
-        }, 50);
-      }
-    })
-    .catch(() => {
-      this.isBtnClick = false;
-    });
+        } else {
+          showToastError('编辑成功');
+          setTimeout(() => {
+            wx.navigateBack();
+            this.isBtnClick = false;
+            eventBus.$emit(ghbEvent.gobackReload, false);
+          }, 50);
+        }
+      })
+      .catch(() => {
+        this.isBtnClick = false;
+      });
   }
 
   reset() {
@@ -175,6 +176,7 @@ class Index extends Vue {
     this.street = '';
     this.btnName = '';
     this.isBtnClick = false;
+    this.pointType = '';
   }
 
   onLoad(option: any) {
@@ -182,7 +184,8 @@ class Index extends Vue {
     console.log(this.searchInfo);
     if (this.searchInfo) {
       const from = this.searchInfo.from;
-      if (from.includes('start') || from.includes('edit')) {
+      this.pointType = from.includes('des') ? 'end' : 'start';
+      if (from.includes('new') || from.includes('edit')) {
         this.name = this.searchInfo.name;
         this.mobile = this.searchInfo.mobile;
         this.street = this.searchInfo.street;

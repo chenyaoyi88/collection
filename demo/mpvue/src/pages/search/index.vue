@@ -20,35 +20,37 @@
       </div>
     </div>
 
-    <div class="site-current-pos" v-if="from === 'start'" @click="selected(oCurrentPosition)">
-      <div class="site-current-title">当前位置</div>
-      <div class="site-current-box">
-        <div class="site-current-name">{{sCurrentPosition || '--'}}</div>
-        <div class="site-current-info" @click.stop="getPositionAuto">
-          <img class="site-current-img" :src="imgTarget" mode="aspectFit" alt="">{{ isGettingPosition ? '正在定位' : '重新定位'}}
+    <block v-if="isShowPosition">
+      <div class="site-current-pos" v-if="isShowPosition" @click="selected(oCurrentPosition)">
+        <div class="site-current-title">当前位置</div>
+        <div class="site-current-box">
+          <div class="site-current-name">{{sCurrentPosition || '--'}}</div>
+          <div class="site-current-info" @click.stop="getPositionAuto">
+            <img class="site-current-img" :src="imgTarget" mode="aspectFit" alt="">{{ isGettingPosition ? '正在定位' : '重新定位'}}
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="site-current-pos" v-if="from === 'start' && oCurrentPosition">
-      <div class="site-current-title">当前位置附近</div>
-      <ul class="site-list">
-        
-        <li v-if="isGettingPosition">
-            <div class="site-list-item">
-              <p>正在获取当前位置附近信息...</p>
-            </div>
-        </li>
-        
-        <li v-if="!isGettingPosition" v-for="(item, index) of aNearbyPosition" :key="index" @click="selected(item)">
-            <div class="site-list-item">
-              <p>{{ item.siteName }}</p>
-              <p class="light">{{ item.address }}</p>
-            </div>
-        </li>
+      <div class="site-current-pos" v-if="isShowPosition && oCurrentPosition">
+        <div class="site-current-title">当前位置附近</div>
+        <ul class="site-list">
+          
+          <li v-if="isGettingPosition">
+              <div class="site-list-item">
+                <p>正在获取当前位置附近信息...</p>
+              </div>
+          </li>
+          
+          <li v-if="!isGettingPosition" v-for="(item, index) of aNearbyPosition" :key="index" @click="selected(item)">
+              <div class="site-list-item">
+                <p>{{ item.siteName }}</p>
+                <p class="light">{{ item.address }}</p>
+              </div>
+          </li>
 
-      </ul>
-    </div>
+        </ul>
+      </div>
+    </block>
 
     <div class="site-list-box" v-show="results.length">
       <ul class="site-list">

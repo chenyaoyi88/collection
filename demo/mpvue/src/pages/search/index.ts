@@ -7,6 +7,8 @@ import IMG_TARGET from './target.svg';
 @Component
 class Index extends Vue {
   from: string = '';
+  // 是否显示定位模块
+  isShowPosition: boolean = false;
   // 输入的搜索地址
   inputValue: string = '';
   // 输入的搜索地址之后百度接口返回来的地址信息列表
@@ -78,7 +80,7 @@ class Index extends Vue {
         region: '广州',
         city_limit: true
       },
-      success: function(res: any) {
+      success: function (res: any) {
         if (res.data && res.data.results && res.data.results.length) {
           for (let item of res.data.results) {
             item.siteName = item.name;
@@ -104,6 +106,7 @@ class Index extends Vue {
       name: this.searchResult.name,
       mobile: this.searchResult.mobile || '',
       street: this.searchResult.street || '',
+      desIndex: this.searchResult.desIndex || -1
     };
 
     wx.navigateTo({
@@ -123,9 +126,10 @@ class Index extends Vue {
   }
 
   // 获取传过来的参数（从开始还是结束进来的）
-  onLoad(options: { from: string; searchResult: string }) {
+  onLoad(options: { from: string; desIndex: any; searchResult: string }) {
     this.from = options.from;
     this.searchResult = JSON.parse(options.searchResult || '{}');
+    this.searchResult.desIndex = options.desIndex;
     this.inputValue = this.searchResult.siteName || '';
     this.desText = `${getDesText(this.from)}地点`;
     // 如果首页的发货/收货地址有之前填写的信息，则显示出来
@@ -134,6 +138,7 @@ class Index extends Vue {
     }
     // 如果是点击发货地址栏进来的，定位获取当前位置信息
     if (this.from.includes('start')) {
+      this.isShowPosition = true;
       this.getPositionAuto();
     }
   }
@@ -144,6 +149,7 @@ class Index extends Vue {
     this.sCurrentPosition = '暂无定位信息';
     this.oCurrentPosition = null;
     this.aNearbyPosition = [];
+    this.isShowPosition = false;
   }
 
   // 设置标题
