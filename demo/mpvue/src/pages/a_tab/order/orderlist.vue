@@ -20,6 +20,22 @@
                 isArrowHide="true"
                 itemClass="order"
                 ></item>
+
+                <block v-if="order.listOfHalfwayAddress.length" v-for="(halfway, halfwayIndex) of order.listOfHalfwayAddress" :key="halfwayIndex">
+                  <div class="item-halfway">
+                    <item 
+                    iconType="point" 
+                    pointType="mid" 
+                    textTop="" 
+                    :textCenter="halfway.siteName" 
+                    :textBottom="halfway.addressName"  
+                    noBorderTop="true"
+                    isArrowHide="true"
+                    itemClass="order"
+                    ></item>
+                  </div>
+                </block>
+
                 <item 
                 iconType="point" 
                 pointType="end" 
@@ -172,6 +188,12 @@ export default {
         }
       }
     }
+  }
+}
+
+.item-halfway {
+  .mid {
+    background-color: #f5a623 !important;
   }
 }
 </style>

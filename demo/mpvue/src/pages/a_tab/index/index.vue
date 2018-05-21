@@ -21,11 +21,11 @@
             :textTop="(item.contact || '') + ' ' + (item.phone || '')" 
             :textCenter="item.siteName || '请输入目的地'" 
             :textBottom="item.addressName || ''"  
-            :textLight="true"
+            :textLight="item.contact ? false : true"
             isArrowHide="true"
             :isShowClose="aHalfwaysList.length > 1 ? true : false"
             @itemClick="fnGetPonit('des', item, index)"
-            @itemClickClose="fnItemDelete(index)"
+            @itemClickClose="delHalfway(index)"
           ></item>
         </block>
 

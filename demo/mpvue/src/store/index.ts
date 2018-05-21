@@ -8,7 +8,7 @@ const store = new Vuex.Store({
     carTypeList: [],
     additionalServicesList: [],
     isIndexReset: false,
-    isSavedGoBack: false
+    isGoBackReload: false
   },
   mutations: {
     carTypeListChange: (state, newState) => {
@@ -23,9 +23,9 @@ const store = new Vuex.Store({
       state.isIndexReset = newState.isIndexReset;
       return state.isIndexReset;
     },
-    isSavedGoBackChange: (state, newState) => {
-      state.isSavedGoBack = newState.isSavedGoBack;
-      return state.isSavedGoBack;
+    isGoBackReloadChange: (state, newState) => {
+      state.isGoBackReload = newState.isGoBackReload;
+      return state.isGoBackReload;
     }
   }
 });

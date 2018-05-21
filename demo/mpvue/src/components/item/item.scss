@@ -92,8 +92,7 @@
       }
     }
     .item-r-arrow {
-      position: absolute;
-      // right: 15px;
+      position: absolute; // right: 15px;
       right: 5px;
       top: 0px;
       padding: 0 10px;
@@ -137,7 +136,7 @@
   }
   .goods-info-box {
     width: 150px;
-    word-break:keep-all;
+    word-break: keep-all;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

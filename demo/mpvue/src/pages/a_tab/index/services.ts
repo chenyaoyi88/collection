@@ -50,11 +50,11 @@ export function checkNextstepParmas(scope: any): boolean {
 
     // 已登录，检查必填项，通过则前往下一步
     if (!scope.startInfo.address) {
-        showToastError('请填写发货详细地址');
+        showToastError('请输入始发地');
         return false;
     }
     if (!scope.endInfo.address) {
-        showToastError('请填写收货详细地址');
+        showToastError('请输入目的地');
         return false;
     }
     if (!scope.carSelected.id) {
@@ -67,11 +67,31 @@ export function checkNextstepParmas(scope: any): boolean {
     }
 
     if (!/\S/.test(scope.goodsRemark)) {
-        showToastError('请输入货物信息');
+        showToastError('请输入货物信息备注');
         return false;
     }
 
     return true;
+}
+
+/**
+ * 设置中途点参数
+ * 
+ * @param {*} scope index 首页的作用域 this
+ */
+function setHalfwaysParams(scope: any): Array<any> {
+    let halfways = [];
+    // 如果中途点数组长度大于1，则将所有中途点（除了最后一个点，因为最后一个点默认为终点）信息丢进新数组作为参数去计算运费
+    if (scope.aHalfwaysList && scope.aHalfwaysList.length > 1) {
+        for (let i = 0; i < scope.aHalfwaysList.length; i++) {
+            const oHalfList = scope.aHalfwaysList[i];
+            // 除了最后一个点是终点，其他都是中途点
+            if (i < scope.aHalfwaysList.length - 1) {
+                halfways.push(oHalfList);
+            }
+        }
+    }
+    return halfways;
 }
 
 /**
@@ -95,7 +115,7 @@ export function getNextstepParams(scope: any) {
         bookingTime: scope.bookingTime,
         isBooking: scope.bookingTime ? true : false,
         clothsAmount: scope.clothsAmount,
-        couponCodeId: scope.couponInfo.id,
+        couponCodeId: scope.couponInfo.id || '',
         goodsDesc,
         insuranceStatus: 0,
         listOfAdditionalRequest: scope.aSelectedServices,
@@ -117,7 +137,8 @@ export function getNextstepParams(scope: any) {
         senderStreet: scope.startInfo.street,
         senderX: scope.startInfo.location.lng,
         senderY: scope.startInfo.location.lat,
-        startCityCode: scope.startInfo.cityCode
+        startCityCode: scope.startInfo.cityCode,
+        halfways: setHalfwaysParams(scope)
     };
     return PARAMS_LOGISTICSORDER_REQUEST;
 }
@@ -130,7 +151,10 @@ export function getNextstepParams(scope: any) {
  * @returns {void} 
  */
 export function getCalcCosts(scope: any): void {
-    if (!(scope.startInfo.name && scope.endInfo.name)) return;
+    if (!(scope.startInfo.name && scope.endInfo.name)) {
+        scope.costs = null;
+        return;
+    };
 
     const PARAMS_COSTS_REQUEST: CalcCost_Request = {
         senderX: scope.startInfo.location.lng,
@@ -142,8 +166,10 @@ export function getCalcCosts(scope: any): void {
         isBooking: scope.bookingTime ? 'Y' : 'N',
         bookingTime: scope.bookingTime ? scope.bookingTime : null,
         isBuyInsurance: false,
+        needLoading: false,
         couponCodeId: scope.couponInfo.id,
-        halfways: scope.aHalfwaysList.length > 1 ? scope.aHalfwaysList : null
+        halfways: setHalfwaysParams(scope),
+        type: 1,
     };
 
     ghbRequest({

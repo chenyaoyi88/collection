@@ -135,7 +135,6 @@ class Index extends Vue {
     // 如果是点击发货地址栏进来的，定位获取当前位置信息
     if (this.from.includes('start')) {
       this.getPositionAuto();
-    } else if (this.from.includes('address_new_me')) {
     }
   }
 

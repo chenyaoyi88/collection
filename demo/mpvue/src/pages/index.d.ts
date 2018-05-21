@@ -242,13 +242,41 @@ interface LogisticsCoupons_Request {
 }
 
 interface Halfways {
-  // 纬度 lat
-  x: any;
   // 经度
+  x: any;
+  // 纬度 lat
   y: any;
   phone: string;
   siteName?: string;
   addressName?: string;
   street?: string;
   contact?: string;
+}
+
+interface SearchInfo {
+  // 详细地址
+  address: string;
+  // 目的地索引
+  desIndex?: any;
+  // 来自
+  from: string;
+  // 经纬度
+  location: {
+    // 纬度
+    lat: number;
+    // 经度
+    lng: number;
+  };
+  // 联系方式
+  mobile: string;
+  // 名字
+  name: string;
+  // 地址名
+  siteName: string;
+  // 街道、门牌号
+  street?: string;
+  // 地址唯一标识号
+  uid?: string;
+  // 城市码
+  cityCode: any;
 }

@@ -7,6 +7,8 @@ import contact from '../../components/item/icon/contact.png';
 import mobile from '../../components/item/icon/mobile.png';
 import street from '../../components/item/icon/street.png';
 
+import { eventBus, ghbEvent } from '../eventbus';
+
 // 必须使用装饰器的方式来指定components
 @Component({
   components: {
@@ -28,6 +30,7 @@ class Index extends Vue {
     street
   };
 
+  // 获取城市码
   getCityCode() {
     const __this = this;
     // 参考：http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
@@ -36,7 +39,7 @@ class Index extends Vue {
       data: {
         location: `${this.searchInfo.location.lat},${this.searchInfo.location.lng}`
       },
-      success: function(res: any) {
+      success: function (res: any) {
         if (res.statusCode === 200) {
           if (res.data && res.data.result && res.data.result.cityCode) {
             __this.searchInfo.cityCode = res.data.result.cityCode;
@@ -50,10 +53,12 @@ class Index extends Vue {
     });
   }
 
+  // 获取值
   getValue(value: any, type: string) {
     this[type] = value;
   }
 
+  // 确认返回
   confirmGoback() {
     this.isLogin = wx.getStorageSync('token') ? true : false;
 
@@ -72,12 +77,26 @@ class Index extends Vue {
     }
 
     const from = this.searchInfo.from;
+    
+    const PARAMS_ADDRESS_REQUEST = {
+      name: this.searchInfo.name,
+      mobile: this.searchInfo.mobile,
+      street: this.searchInfo.street,
+      address: this.searchInfo.siteName,
+      addressName: this.searchInfo.address,
+      isDefault: false,
+      serviceType: 1,
+      cityCode: this.searchInfo.cityCode,
+      longitude: this.searchInfo.location.lng,
+      latitude: this.searchInfo.location.lat,
+      remark: ''
+    };
 
     // 点击新增按钮进来，保存联系人和地址
-    if (from.includes('new')) {
-      this.addressAdd();
+    if (from.includes('start')) {
+      this.addressAdd(PARAMS_ADDRESS_REQUEST);
     } else if (from.includes('edit')) {
-      this.addressEdit();
+      this.addressEdit(PARAMS_ADDRESS_REQUEST);
     } else {
       goBackSetData(
         {
@@ -92,28 +111,15 @@ class Index extends Vue {
   }
 
   // 新增保存地址
-  addressAdd() {
+  addressAdd(params: any) {
     if (this.isBtnClick) return;
     this.isBtnClick = true;
-    const PARAMRS_CERATE_REQUEST = {
-      address: this.searchInfo.siteName,
-      street: this.searchInfo.street,
-      isDefault: false,
-      serviceType: 1,
-      longitude: this.searchInfo.location.lng,
-      latitude: this.searchInfo.location.lat,
-      remark: '',
-      mobile: this.searchInfo.mobile,
-      name: this.searchInfo.name,
-      addressName: this.searchInfo.address,
-      cityCode: this.searchInfo.cityCode
-    };
 
     // 保存联系人和地址
     ghbRequest({
-      url: API.CREATE,
+      url: `${API.ADDRESS}/create`,
       method: 'POST',
-      data: PARAMRS_CERATE_REQUEST
+      data: params
     })
       .then((res: any) => {
         if (res.statusCode !== 200) {
@@ -126,9 +132,7 @@ class Index extends Vue {
               delta: 2
             });
             this.isBtnClick = false;
-            this.$store.commit('isSavedGoBackChange', {
-              isSavedGoBack: true
-            });
+            eventBus.$emit(ghbEvent.gobackReload, true);
           }, 300);
         }
       })
@@ -138,24 +142,31 @@ class Index extends Vue {
   }
 
   // 编辑保存地址 TODO：保存之后回去原位刷新
-  addressEdit() {
+  addressEdit(params: any) {
     if (this.isBtnClick) return;
     this.isBtnClick = true;
-    const PARAMRS_EDIT_REQUEST = {
-      id: this.searchInfo.id,
-      name: this.name,
-      mobile: this.mobile,
-      street: this.street
-    };
     
-    showToastError('编辑成功');
-    setTimeout(() => {
-      wx.navigateBack();
+    ghbRequest({
+      url: `${API.ADDRESS}/${this.searchInfo.id}/update`,
+      method: 'PUT',
+      data: params
+    })
+    .then((res: any) => {
+      if (res.statusCode !== 200) {
+        showToastError(res.data.message);
+        this.isBtnClick = false;
+      } else {
+        showToastError('编辑成功');
+        setTimeout(() => {
+          wx.navigateBack();
+          this.isBtnClick = false;
+          eventBus.$emit(ghbEvent.gobackReload, false);
+        }, 50);
+      }
+    })
+    .catch(() => {
       this.isBtnClick = false;
-      this.$store.commit('isSavedGoBackChange', {
-        isSavedGoBack: true
-      });
-    }, 300);
+    });
   }
 
   reset() {
@@ -180,7 +191,9 @@ class Index extends Vue {
     // 获取地点所在城市
 
     // 参考：http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
-    this.getCityCode();
+    if (!this.searchInfo.cityCode) {
+      this.getCityCode();
+    }
   }
 
   // 页面卸载之后重置页面

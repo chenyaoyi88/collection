@@ -4,7 +4,8 @@ const ghbEvent = {
   resetOrderList: 'resetOrderList',
   resetMe: 'resetMe',
   getCoupon: 'getCoupon',
-  getSiteInfo: 'getSiteInfo'
+  getSiteInfo: 'getSiteInfo',
+  gobackReload: 'gobackReload'
 };
 
 const eventBus = new Vue();

@@ -10,7 +10,7 @@ class Index extends Vue {
   desIndex: number = -1;
   isShowEdit: boolean = false;
   start: number = 0;
-  limit: number = 10;
+  limit: number = 20;
   addressList: Array<any> = [];
   addressListTmp: Array<any> = [];
   addressListNone: boolean = false;
@@ -49,6 +49,7 @@ class Index extends Vue {
             this.addressList = [];
           }
           this.addressList[this.start] = res.data;
+          this.addressListNone = false;
         } else {
           if (reload) {
             this.addressListNone = true;
@@ -61,6 +62,7 @@ class Index extends Vue {
             }
           }
         }
+
 
         wx.stopPullDownRefresh();
       })
@@ -76,23 +78,28 @@ class Index extends Vue {
     this.getAddressBookRest(false);
   }
 
-  // 去搜素页面 -> 联系人页面 -> 确认 -> 回来
+  // 新增地址，去搜素页面 -> 联系人页面 -> 确认 -> 回来
   addNewAddress() {
-    let from: string = '';
-    if (this.from.includes('me')) {
-      from = 'address_new_me';
-    } else {
-      from = 'address_new_index';
-    }
+    // let from: string = '';
+    // if (this.from.includes('me')) {
+    //   from = 'address_new_me';
+    // } else {
+    //   from = 'address_new_index';
+    // }
+    // wx.navigateTo({
+    //   url: `../search/main?from=${from}`
+    // });
+
     wx.navigateTo({
-      url: `../search/main?from=${from}`
+      url: `../search/main?from=${this.from}`
     });
   }
 
-  // 选择
+  // 选择当前地址
   select(mapPosInfo: any) {
     console.log('mapPosInfo', mapPosInfo);
 
+    // 只有从 首页的出发点（start）和 目的地（des）进来才能点击选择
     if (this.from === 'start' || this.from === 'des') {
 
       const searchInfo = {
@@ -107,7 +114,8 @@ class Index extends Vue {
         uid: mapPosInfo.uid || '',
         name: mapPosInfo.name,
         mobile: mapPosInfo.mobile || '',
-        street: mapPosInfo.street || ''
+        street: mapPosInfo.street || '',
+        cityCode: mapPosInfo.cityCode || ''
       };
 
       eventBus.$emit(ghbEvent.getSiteInfo, searchInfo);
@@ -118,6 +126,7 @@ class Index extends Vue {
 
   // 编辑
   edit(item: any) {
+    // console.log(item);
     const searchInfo = {
       id: item.id,
       name: item.name,
@@ -125,12 +134,12 @@ class Index extends Vue {
       siteName: item.address,
       address: item.addressName,
       location: {
-        longitude: item.longitude,
-        latitude: item.latitude
+        lng: item.longitude,
+        lat: item.latitude
       },
       cityCode: item.cityCode,
       street: item.street,
-      from: 'address_edit_me'
+      from: 'edit'
     };
     wx.navigateTo({
       url: `../contact/main?searchInfo=${JSON.stringify(searchInfo)}`
@@ -147,8 +156,8 @@ class Index extends Vue {
       content: '是否确定取消该删除地址？',
       success(res: { confirm: boolean; cancel: boolean }) {
         if (res.confirm) {
-          _this.addressList[group].splice(groupIndex, 1);
-          // _this.delItem(list, group, groupIndex);
+          // _this.addressList[group].splice(groupIndex, 1);
+          _this.delItem(list, group, groupIndex);
         }
       }
     });
@@ -161,13 +170,19 @@ class Index extends Vue {
     });
 
     ghbRequest({
-      url: API.CANCEL,
-      data: { id: list.id }
+      method: 'DELETE',
+      url: `${API.ADDRESS}/${list.id}/delete`,
     })
       .then((res: any) => {
         if (res.statusCode === 200) {
           // 删除成功
           this.addressList[group].splice(groupIndex, 1);
+          for (let item of this.addressList) {
+            if (!(item && item.length)) {
+              this.addressListNone = true;
+              this.isShowNomore = false;
+            }
+          }
         } else {
           showToastError(res.data.message);
         }
@@ -205,16 +220,14 @@ class Index extends Vue {
       this.isShowEdit = true;
     }
     this.getAddressBookRest(true);
-  }
 
-  onShow() {
     // 如果是保存回来此页面，刷新一下
-    if (this.$store.state.isSavedGoBack) {
-      this.getAddressBookRest(true);
-      this.$store.commit('isSavedGoBackChange', {
-        isSavedGoBack: false
-      });
-    }
+    eventBus.$on(ghbEvent.gobackReload, (isReload: boolean) => {
+      // NOTE：没有定时器新创建完返回刷新的时候会回不到顶部，而且会请求2次
+      setTimeout(() => {
+        this.getAddressBookRest(isReload);
+      }, 300);
+    });
   }
 
   onUnload() {

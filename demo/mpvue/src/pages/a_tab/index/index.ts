@@ -82,18 +82,8 @@ class Index extends Vue {
   // 控制额外服务的 slider 显示隐藏
   selectSlider: boolean = false;
 
-  // 中途点
-  aHalfwaysList: Array<any> = [{
-    // {
-    //   x: null,
-    //   y: null,
-    //   siteName: '',
-    //   addressName: '',
-    //   street: '',
-    //   phone: '',
-    //   contact: ''
-    // }
-  }];
+  // 中途点（默认为一个，如果只有一个的时候，作为终点）
+  aHalfwaysList: Array<any> = [{}];
 
   // 获取预定时间
   fnGetDateValue(value: string) {
@@ -147,6 +137,7 @@ class Index extends Vue {
       orderType: 2
     };
 
+    // 去优惠券页面，带去优惠券所需参数
     wx.navigateTo({
       url:
         '../../coupon/main?from=index&LogisticsCoupons=' +
@@ -161,12 +152,12 @@ class Index extends Vue {
     this.selectSlider = isSliderShow;
   }
 
-  // 获取条数
+  // 获取货物信息条数（默认为1）
   fnGetClothsAmount(value: any) {
     this.clothsAmount = value;
   }
 
-  // 货物信息
+  // 去货物信息页面填写信息、备注（默认为空）
   fnGetGoodsInfo() {
     wx.navigateTo({
       url: '../../goodsinfo/main?goodsRemark=' + this.goodsRemark
@@ -193,9 +184,12 @@ class Index extends Vue {
     }
   }
 
-  fnItemDelete(index: number) {
+  // 删除中途点
+  delHalfway(index: number) {
     if (this.aHalfwaysList.length < 2) return;
     this.aHalfwaysList.splice(index, 1);
+    console.log('删除中途点', this.aHalfwaysList);
+    this.getHalfwaysCost();
   }
 
   // 添加中途点
@@ -205,6 +199,14 @@ class Index extends Vue {
       return;
     }
 
+    // 一个填写完再填写下一个
+    const oNewHalfway = this.aHalfwaysList[this.aHalfwaysList.length - 1];
+    if (!oNewHalfway.x || !oNewHalfway.y) {
+      showToastError('请输入目的地');
+      return;
+    }
+
+    // 添加新的目的地
     const oHalfway: Halfways = {
       x: null,
       y: null,
@@ -215,7 +217,28 @@ class Index extends Vue {
       contact: ''
     };
 
-    this.aHalfwaysList.unshift(oHalfway);
+    this.aHalfwaysList.push(oHalfway);
+    this.endInfo = {};
+  }
+
+  // 获取价格（包括中途点）
+  getHalfwaysCost() {
+    const oEndInfo = this.aHalfwaysList[this.aHalfwaysList.length - 1];
+
+    this.endInfo = {
+      address: oEndInfo.addressName,
+      location: {
+        lat: oEndInfo.y,
+        lng: oEndInfo.x
+      },
+      mobile: oEndInfo.phone,
+      name: oEndInfo.contact,
+      siteName: oEndInfo.siteName,
+      street: oEndInfo.street,
+      cityCode: oEndInfo.cityCode
+    };
+
+    getCalcCosts(this);
   }
 
   // 下一步
@@ -233,68 +256,6 @@ class Index extends Vue {
         PARAMS_LOGISTICSORDER_REQUEST
       )}&costs=${JSON.stringify(this.costs)}`
     });
-  }
-
-  onShow() {
-    this.isLogin = wx.getStorageSync('token') ? true : false;
-
-    if (this.$store.state.isIndexReset) {
-      // 重置所有输入
-      resetAll(this);
-      this.$store.commit('isIndexResetChange', {
-        isIndexReset: false
-      });
-    } else {
-      const pages = getCurrentPages();
-      const currPage = pages[pages.length - 1];
-
-      // 从车型选择页面返回
-      const carInfo = currPage.data.carInfo;
-      if (carInfo) {
-        if (this.carSelected.id !== carInfo.id) {
-          this.carSelected = {
-            name: carInfo.name,
-            id: carInfo.id
-          };
-          currPage.data.carInfo = null;
-          getCalcCosts(this);
-        }
-      }
-
-      // 从货物信息页面返回
-      if (currPage.data.goodsRemark) {
-        this.goodsRemark = currPage.data.goodsRemark || '';
-        currPage.data.goodsRemark = '';
-      }
-
-      // // 从发货/收货地点返回
-      // const searchInfo = currPage.data.searchInfo;
-      // if (searchInfo && searchInfo.from) {
-      //   if (searchInfo.from.includes('start')) {
-      //     if (
-      //       this.startInfo.address !== searchInfo.address ||
-      //       this.startInfo.name !== searchInfo.name ||
-      //       this.startInfo.mobile !== searchInfo.mobile ||
-      //       this.startInfo.street !== searchInfo.street
-      //     ) {
-      //       this.startInfo = searchInfo;
-      //       currPage.data.searchInfo = {};
-      //       getCalcCosts(this);
-      //     }
-      //   } else if (searchInfo.from.includes('end')) {
-      //     if (
-      //       this.endInfo.address !== searchInfo.address ||
-      //       this.endInfo.name !== searchInfo.name ||
-      //       this.endInfo.mobile !== searchInfo.mobile ||
-      //       this.endInfo.street !== searchInfo.street
-      //     ) {
-      //       this.endInfo = searchInfo;
-      //       currPage.data.searchInfo = {};
-      //       getCalcCosts(this);
-      //     }
-      //   }
-      // }
-    }
   }
 
   get additionalServicesList() {
@@ -338,10 +299,8 @@ class Index extends Vue {
     });
   }
 
-  // 页面刷新
+  // 页面刷新（更新 token，然后获取车型列表和额外服务列表）
   pageReload() {
-    // 更新 token
-    // 处理逻辑：本地存有 token 先更新 token
     refreshToken(API.REFRESH).then(() => {
       // 请求各种页面数据
       this.getCartypeListData();
@@ -349,12 +308,50 @@ class Index extends Vue {
     });
   }
 
+  // 每次回到当前页面需要处理的逻辑
+  onShow() {
+    this.isLogin = wx.getStorageSync('token') ? true : false;
+
+    // 收到重置消息
+    if (this.$store.state.isIndexReset) {
+      // 重置所有输入
+      resetAll(this);
+      this.$store.commit('isIndexResetChange', {
+        isIndexReset: false
+      });
+    } else {
+      const pages = getCurrentPages();
+      const currPage = pages[pages.length - 1];
+
+      // 从车型选择页面返回
+      const carInfo = currPage.data.carInfo;
+      if (carInfo) {
+        if (this.carSelected.id !== carInfo.id) {
+          this.carSelected = {
+            name: carInfo.name,
+            id: carInfo.id
+          };
+          currPage.data.carInfo = null;
+          getCalcCosts(this);
+        }
+      }
+
+      // 从货物信息页面返回
+      if (currPage.data.goodsRemark) {
+        this.goodsRemark = currPage.data.goodsRemark || '';
+        currPage.data.goodsRemark = '';
+      }
+    }
+  }
+
   created() {
     updateApp();
     this.pageReload();
   }
 
+  // 监听跨页面事件
   onLoad() {
+    // 监听选中优惠券后，重新计算运费
     eventBus.$on(ghbEvent.getCoupon, (item: any) => {
       if (item && item.id) {
         this.couponInfo = item;
@@ -364,31 +361,33 @@ class Index extends Vue {
       getCalcCosts(this);
     });
 
-    eventBus.$on(ghbEvent.getSiteInfo, (searchInfo: any) => {
+    // 监听选中起始点、中途点（目的地）后，重新计算运费
+    eventBus.$on(ghbEvent.getSiteInfo, (searchInfo: SearchInfo) => {
       console.log(searchInfo);
       if (searchInfo.from.includes('start')) {
         this.startInfo = searchInfo;
         getCalcCosts(this);
       } else if (searchInfo.from.includes('des')) {
+
         const oHalfway = {
-          x: searchInfo.location.lat,
-          y: searchInfo.location.lng,
+          x: searchInfo.location.lng,
+          y: searchInfo.location.lat,
           siteName: searchInfo.siteName,
           addressName: searchInfo.address,
           street: searchInfo.street,
           phone: searchInfo.mobile,
-          contact: searchInfo.name
+          contact: searchInfo.name,
+          cityCode: searchInfo.cityCode
         };
 
         if (this.aHalfwaysList.length > 1) {
           this.$set(this.aHalfwaysList, Number(searchInfo.desIndex), oHalfway);
-          getCalcCosts(this);
-          console.log(this.aHalfwaysList);
         } else {
+          // 如果数组里只剩下一个，就作为终点
           this.aHalfwaysList[0] = oHalfway;
-          this.endInfo = searchInfo;
-          getCalcCosts(this);
         }
+        this.getHalfwaysCost();
+        console.log(this.aHalfwaysList);
       }
     });
   }
