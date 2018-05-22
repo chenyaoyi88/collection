@@ -37,6 +37,7 @@ page {
       p {
         margin-top: 10px;
         font-size: 14px;
+        color: #000;
       }
     }
   }
@@ -61,4 +62,13 @@ page {
   color: #8F8F8F;
   font-size: 14px;
   text-align: center;
+}
+
+.getuserinfo {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  &::after {
+    border: none;
+  }
 }

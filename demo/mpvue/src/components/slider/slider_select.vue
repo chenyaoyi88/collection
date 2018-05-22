@@ -9,12 +9,11 @@
             <img class="cancel-img" :src="img.imgClose" alt="" mode="aspectFit">
           </div>
           <div class="title">{{ title }}</div>
-          <!-- <div class="comfirm" @click="sliderComfirm">确定</div> -->
         </div>
         <div class="slider-content">
           
           <template v-if="type === 'checkbox'">
-            <div class="slider-item" v-for="(item, index) of dataList" :key="index" @click="checkboxChange(item, index)">
+            <div class="slider-item" v-for="(item, index) of dataList" :key="index" @tap="checkboxChange(item, index)">
               <div class="slider-check-item">
                 <div class="name">{{ item[name] }}</div>
                 <div class="remark">{{ item[value] }}</div>
@@ -31,7 +30,7 @@
           </template>
 
           <template v-if="type === 'radio'">
-            <div class="slider-item" v-for="(item, index) in dataList" :key="item.id" @click="radioChange(item, index)">
+            <div class="slider-item" v-for="(item, index) in dataList" :key="item.id" @tap="radioChange(item, index)">
               <div class="slider-check-item">
                 <div class="name">{{ item[name] }}</div>
                 <div class="check">

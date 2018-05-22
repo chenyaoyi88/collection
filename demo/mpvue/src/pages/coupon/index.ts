@@ -188,6 +188,7 @@ class Index extends Vue {
           }
         }
         this.LogisticsCoupons = res.data;
+        this.LogisticsCouponsNomore = true;
       }
       if (!this.LogisticsCoupons.length) {
         this.LogisticsCouponsNone = true;

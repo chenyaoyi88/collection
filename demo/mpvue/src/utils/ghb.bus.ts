@@ -102,9 +102,9 @@ export function getDesText(des: string) {
     retStr = '发货';
   } else if (des.includes('des')) {
     retStr = '收货';
-  } else if (des.includes('address_new')) {
+  } else if (des.includes('new')) {
     retStr = '新增';
-  } else if (des.includes('address_edit')) {
+  } else if (des.includes('edit')) {
     retStr = '编辑';
   }
   return retStr;
@@ -240,5 +240,34 @@ export function refreshToken(url: string) {
     } else {
       resolve();
     }
+  });
+}
+
+export function getUserInfo_GHB() {
+  return new Promise((resolve, reject) => {
+    wx.getSetting({
+      success: (auth: any) => {
+        // true 已授权，false 拒绝授权（以后每次登录都会再次出现，直到授权）
+        if (auth.authSetting['scope.userInfo']) {
+          // 已授权用户信息，直接调用 wx.getUserInfo 方法获取用户头像存在本地
+          wx.getUserInfo({
+            lang: 'zh_CN',
+            success: function (res: WX_UserInfo) {
+              wx.setStorageSync('userInfo', res.userInfo);
+              resolve({
+                msg: 'success',
+                auth,
+                userInfo: res.userInfo
+              });
+            }
+          });
+        } else {
+          reject({
+            msg: 'error',
+            auth
+          });
+        }
+      }
+    })
   });
 }

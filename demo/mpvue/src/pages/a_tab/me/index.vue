@@ -3,10 +3,10 @@
     <div>
       <div class="me-hd-box">
         <div class="me-avantar">
-          <div class="avantar-box" @click="gotoLogin">
-            <img :src="avantar" alt="">
-            <p>{{ mobile || '--' }}</p>
-          </div>
+            <div class="avantar-box" @click="gotoLogin">
+              <img :src="avantar" alt="" mode="aspectFit">
+              <p>{{ mobile || '--' }}</p>
+            </div>
         </div>
       </div>
 

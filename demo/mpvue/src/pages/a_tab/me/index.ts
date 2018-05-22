@@ -1,6 +1,6 @@
 import { Vue, Component, Provide } from 'vue-property-decorator';
 import item from '@/components/item/item.vue';
-import { ghbRequest, showToastError } from '../../../utils';
+import { ghbRequest, showToastError, getUserInfo_GHB } from '../../../utils';
 import API from '../../../api';
 import avantarImg from '../../../../static/images/avantar.png';
 import { eventBus, ghbEvent } from '../../eventbus';
@@ -17,26 +17,6 @@ class Me extends Vue {
   avantar: any = avantarImg;
   LogisticsCoupons: Array<any> = [];
 
-  onShow() {
-    const _this = this;
-    const token = wx.getStorageSync('token');
-    this.isLogin = token ? true : false;
-    if (this.isLogin) {
-      this.mobile = wx.getStorageSync('mobile');
-      wx.getUserInfo({
-        lang: 'zh_CN',
-        success: function(res: WX_UserInfo) {
-          _this.userInfo = res.userInfo;
-          _this.avantar = _this.userInfo.avatarUrl;
-        }
-      });
-      this.getCouponListFormIndex();
-    } else {
-      this.mobile = '点击登录';
-      this.avantar = avantarImg;
-    }
-  }
-
   reset() {
     this.isLogin = false;
     this.userInfo = {};
@@ -45,7 +25,7 @@ class Me extends Vue {
   }
 
   // 点击去登录页面
-  gotoLogin() {
+  gotoLogin(e: any) {
     if (!this.isLogin) {
       wx.navigateTo({
         url: '../../login/main'
@@ -94,6 +74,7 @@ class Me extends Vue {
 
         wx.removeStorageSync('token');
         wx.removeStorageSync('mobile');
+        wx.removeStorageSync('userInfo');
 
         this.reset();
       } else {
@@ -112,6 +93,28 @@ class Me extends Vue {
     }).then((res: any) => {
       this.LogisticsCoupons = res.data;
     });
+  }
+
+  onLoad() {
+    this.isLogin = wx.getStorageSync('token') ? true : false;
+  }
+
+  onShow() {
+    this.isLogin = wx.getStorageSync('token') ? true : false;
+    if (this.isLogin) {
+      this.mobile = wx.getStorageSync('mobile');
+
+      getUserInfo_GHB().then((res: any) => {
+        wx.setStorageSync('userInfo', res.userInfo);
+        this.userInfo = res.userInfo;
+        this.avantar = this.userInfo.avatarUrl;
+      });
+
+      this.getCouponListFormIndex();
+    } else {
+      this.mobile = '点击登录';
+      this.avantar = avantarImg;
+    }
   }
 }
 

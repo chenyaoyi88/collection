@@ -355,9 +355,14 @@ class Order extends Vue {
   }
 
   onLoad() {
+    this.isLogin = wx.getStorageSync('token') ? true : false;
     eventBus.$on(ghbEvent.resetOrderList, () => {
       this.resetPage(false);
     });
+  }
+
+  onUnload() {
+    // TODO：如果发现 eventBus 的事件有重复监听，可以在这里移除，目前没有发现问题所以暂时不处理
   }
 
   // 每次打开当前页面执行的事件

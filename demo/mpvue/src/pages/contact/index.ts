@@ -92,7 +92,7 @@ class Index extends Vue {
       cityCode: this.searchInfo.cityCode,
       longitude: this.searchInfo.location.lng,
       latitude: this.searchInfo.location.lat,
-      remark: ''
+      remark: this.searchInfo.remark || ''
     };
 
     // 点击新增按钮进来，保存联系人和地址
@@ -191,8 +191,8 @@ class Index extends Vue {
         this.street = this.searchInfo.street;
       }
     }
-    // 获取地点所在城市
 
+    // 获取地点所在城市
     // 参考：http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding-abroad
     if (!this.searchInfo.cityCode) {
       this.getCityCode();

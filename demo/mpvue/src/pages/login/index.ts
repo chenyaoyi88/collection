@@ -1,7 +1,7 @@
 import { Vue, Component, Provide } from 'vue-property-decorator';
 import btnVcode from '@/components/button/vcode.vue'; // mpvue目前只支持的单文件组件
 import API from '../../api';
-import { isInputEmpty, isPhoneNumber, showToastError, ghbRequest } from '../../utils';
+import { isInputEmpty, isPhoneNumber, showToastError, ghbRequest, getUserInfo_GHB } from '../../utils';
 import { trim } from '../../utils/validate';
 import { eventBus, ghbEvent } from '../eventbus';
 
@@ -82,6 +82,7 @@ class Login extends Vue {
 
   // 登录
   login(): void {
+    console.log('登录');
     if (isInputEmpty(this.phone, '手机号码不能为空')) return;
     if (isInputEmpty(this.msgCode, '短信验证码不能为空')) return;
 
@@ -132,6 +133,16 @@ class Login extends Vue {
       this.isBtnClick = false;
     }).catch(() => {
       this.isBtnClick = false;
+    });
+
+  }
+
+  // 登录逻辑 + 提示授权
+  loginAuth(e: any): void {
+    console.log('登录逻辑 + 提示授权');
+    this.login();
+    getUserInfo_GHB().then((res: any) => {
+      wx.setStorageSync('userInfo', res.userInfo);
     });
   }
 

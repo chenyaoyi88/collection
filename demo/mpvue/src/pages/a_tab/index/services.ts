@@ -188,10 +188,8 @@ export function getCalcCosts(scope: any): void {
                 content: res.data.message,
                 showCancel: false,
                 success: function (res: any) {
-                    if (res.confirm) {
-                        // 发货地点不在配送范围内，点击确定之后清空发货地信息
-                        scope.startInfo = {};
-                    }
+                    // 如果发货地点不在配送范围内，清空发货地信息
+                    scope.startInfo = {};
                 }
             });
         } else {

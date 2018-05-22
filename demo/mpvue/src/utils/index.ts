@@ -24,7 +24,8 @@ import {
   getOrderStatusText,
   formatGhbGoodsRemarkDate,
   getCurrentPosition,
-  refreshToken
+  refreshToken,
+  getUserInfo_GHB
 } from './ghb.bus';
 
 export {
@@ -51,5 +52,6 @@ export {
   getOrderStatusText,
   formatGhbGoodsRemarkDate,
   getCurrentPosition,
-  refreshToken
+  refreshToken,
+  getUserInfo_GHB
 };

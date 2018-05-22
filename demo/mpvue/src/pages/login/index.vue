@@ -14,9 +14,11 @@
         </div>
       </div>
     </div>
-
+<!-- v-show="phone.length && msgCode.length" -->
     <div class="login-btn-box">
       <button :disabled="isBtnClick" class="ghb-btn login-btn" @click="login">登录</button>
+      <!-- 输入手机号码和验证码才出现（但是是透明的） -->
+      <button v-show="phone.length && msgCode.length" class="auth-btn" open-type="getUserInfo" @click="loginAuth">登录授权</button>
     </div>
     
     <div class="login-tips-box">

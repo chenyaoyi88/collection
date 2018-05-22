@@ -5,7 +5,7 @@
 
     <div class="address-list">
 
-       <block v-if="addressList.length" v-for="(item, index) of addressList" :key="index">
+       <block v-if="addressListData.length" v-for="(item, index) of addressListData" :key="index">
          <block v-for="(list, listIndex) of item" :key="listIndex">
            <div class="address-box">
              <div class="address-info" @click="select(list)">
@@ -64,7 +64,7 @@ page {
   font-size: 14px;
   margin-top: 10px;
   .address-info {
-    padding: 15px;
+    padding: 10px;
     .user-info {
       color: #aaaaaa;
       display: flex;

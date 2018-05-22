@@ -12,9 +12,12 @@ class Index extends Vue {
   start: number = 0;
   limit: number = 20;
   addressList: Array<any> = [];
-  addressListTmp: Array<any> = [];
   addressListNone: boolean = false;
   isShowNomore: boolean = false;
+
+  get addressListData() {
+    return this.addressList;
+  }
 
   // 获取常用联系人列表
   getAddressBookRest(reload: boolean = false) {
@@ -39,7 +42,6 @@ class Index extends Vue {
       }
     })
       .then((res: any) => {
-        this.addressListTmp = res.data;
         if (res.data && res.data.length) {
           if (res.data.length < this.limit) {
             this.isShowNomore = true;
@@ -48,7 +50,8 @@ class Index extends Vue {
           if (reload) {
             this.addressList = [];
           }
-          this.addressList[this.start] = res.data;
+
+          this.$set(this.addressList, this.start, res.data);
           this.addressListNone = false;
         } else {
           if (reload) {
@@ -62,7 +65,6 @@ class Index extends Vue {
             }
           }
         }
-
 
         wx.stopPullDownRefresh();
       })
@@ -80,16 +82,6 @@ class Index extends Vue {
 
   // 新增地址，去搜素页面 -> 联系人页面 -> 确认 -> 回来
   addNewAddress() {
-    // let from: string = '';
-    // if (this.from.includes('me')) {
-    //   from = 'address_new_me';
-    // } else {
-    //   from = 'address_new_index';
-    // }
-    // wx.navigateTo({
-    //   url: `../search/main?from=${from}`
-    // });
-
     const from: string = `${this.from}_new`;
 
     wx.navigateTo({
@@ -99,7 +91,7 @@ class Index extends Vue {
 
   // 选择当前地址
   select(mapPosInfo: any) {
-    console.log('mapPosInfo', mapPosInfo);
+    // console.log('mapPosInfo', mapPosInfo);
 
     // 只有从 首页的出发点（start）和 目的地（des）进来才能点击选择
     if (this.from === 'start' || this.from === 'des') {
@@ -141,7 +133,8 @@ class Index extends Vue {
       },
       cityCode: item.cityCode,
       street: item.street,
-      from: 'edit'
+      from: 'edit',
+      remark: item.remark
     };
     wx.navigateTo({
       url: `../contact/main?searchInfo=${JSON.stringify(searchInfo)}`
@@ -150,8 +143,8 @@ class Index extends Vue {
 
   // 删除
   del(list: any, group: number, groupIndex: number) {
-    console.log('group', group);
-    console.log('groupIndex', groupIndex);
+    // console.log('group', group);
+    // console.log('groupIndex', groupIndex);
     const _this = this;
     wx.showModal({
       title: '删除地址',
@@ -199,7 +192,6 @@ class Index extends Vue {
     this.desIndex = -1;
     this.start = 0;
     this.addressList = [];
-    this.addressListTmp = [];
     this.addressListNone = false;
     this.isShowNomore = false;
   }
@@ -228,12 +220,13 @@ class Index extends Vue {
       // NOTE：没有定时器新创建完返回刷新的时候会回不到顶部，而且会请求2次
       setTimeout(() => {
         this.getAddressBookRest(isReload);
-      }, 300);
+      }, 200);
     });
   }
 
   onUnload() {
     this.reset();
+    eventBus.$off(ghbEvent.gobackReload);
   }
 }
 

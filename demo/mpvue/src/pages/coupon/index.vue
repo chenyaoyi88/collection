@@ -84,7 +84,7 @@
             <block v-if="LogisticsCoupons.length" v-for="(item, index) of LogisticsCoupons" :key="index">
               <coupon :isFail="false" :isShowSlect="true" :couponInfo="item" @couponClick="couponSelectFormIndex(item)"></coupon>
             </block>
-            <div class="list-nomore" v-show="true">-- 没有更多数据了 --</div>
+            <div class="list-nomore" v-show="LogisticsCouponsNomore">-- 没有更多数据了 --</div>
           </div>
         </div>
 

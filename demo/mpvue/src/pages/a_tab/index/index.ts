@@ -188,7 +188,7 @@ class Index extends Vue {
   delHalfway(index: number) {
     if (this.aHalfwaysList.length < 2) return;
     this.aHalfwaysList.splice(index, 1);
-    console.log('删除中途点', this.aHalfwaysList);
+    // console.log('删除中途点', this.aHalfwaysList);
     this.getHalfwaysCost();
   }
 
@@ -351,6 +351,7 @@ class Index extends Vue {
 
   // 监听跨页面事件
   onLoad() {
+    this.isLogin = wx.getStorageSync('token') ? true : false;
     // 监听选中优惠券后，重新计算运费
     eventBus.$on(ghbEvent.getCoupon, (item: any) => {
       if (item && item.id) {
@@ -363,7 +364,7 @@ class Index extends Vue {
 
     // 监听选中起始点、中途点（目的地）后，重新计算运费
     eventBus.$on(ghbEvent.getSiteInfo, (searchInfo: SearchInfo) => {
-      console.log(searchInfo);
+      // console.log(searchInfo);
       if (searchInfo.from.includes('start')) {
         this.startInfo = searchInfo;
         getCalcCosts(this);
@@ -380,17 +381,15 @@ class Index extends Vue {
           cityCode: searchInfo.cityCode
         };
 
-        // if (this.aHalfwaysList.length > 1) {
-        //   this.$set(this.aHalfwaysList, Number(searchInfo.desIndex), oHalfway);
-        // } else {
-        //   // 如果数组里只剩下一个，就作为终点
-        //   this.aHalfwaysList[0] = oHalfway;
-        // }
         this.$set(this.aHalfwaysList, Number(searchInfo.desIndex), oHalfway);
         this.getHalfwaysCost();
-        console.log(this.aHalfwaysList);
+        // console.log(this.aHalfwaysList);
       }
     });
+  }
+
+  onUnload() {
+    // TODO：如果发现 eventBus 的事件有重复监听，可以在这里移除，目前没有发现问题所以暂时不处理
   }
 
   // 用户下拉动作，当前页面请求重新请求一次

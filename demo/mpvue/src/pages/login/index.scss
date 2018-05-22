@@ -40,13 +40,30 @@
 
 .login-tips-box {
   font-size: 12px;
-  margin: 10px 0;
-  // text-align: center;
+  margin: 10px 0; // text-align: center;
   color: #8F8F8F;
 }
 
 .login-btn-box {
   margin-top: 30px;
+  position: relative;
+  z-index: 1;
+  .auth-btn {
+    opacity: 0;
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border-radius: 0px;
+    border: none;
+    outline: none;
+    &::after {
+      border: none;
+    }
+  }
 }
 
 .fuck {
