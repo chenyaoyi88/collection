@@ -27,7 +27,7 @@
          </block>
        </block>
 
-      <div class="addres-nomore" v-if="isShowNomore">没有更多数据...</div>
+      <div class="list-nomore" v-if="isShowNomore">-- 没有更多数据了 --</div>
 
     </div>
 
@@ -84,8 +84,6 @@ page {
       padding: 8px 10px;
       margin: 0 10px;
     }
-    .address-edit {
-    }
     .address-delete {
       color: #f13744;
     }
@@ -113,12 +111,5 @@ page {
     color: #f13744;
     background-color: #fff;
   }
-}
-
-.addres-nomore {
-  padding: 10px 0;
-  text-align: center;
-  color: #ccc;
-  font-size: 14px;
 }
 </style>

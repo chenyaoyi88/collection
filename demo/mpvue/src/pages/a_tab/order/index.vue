@@ -27,6 +27,7 @@
           :tabIndex="0"
           :currentIndex="currentIndex"
           :isShowNone="ingListNone"
+          :isShowNomore="ingListNomore"
           :dataList="ingList"
           @orderCancel="orderCancel"
           @orderPay="orderPay"
@@ -36,6 +37,7 @@
           :tabIndex="1"
           :currentIndex="currentIndex"
           :isShowNone="finishListNone"
+          :isShowNomore="finishListNomore"
           :dataList="finishList"
         ></orderlist>
 
@@ -43,6 +45,7 @@
           :tabIndex="2"
           :currentIndex="currentIndex"
           :isShowNone="cancelListNone"
+          :isShowNomore="cancelListNomore"
           :dataList="cancelList"
         ></orderlist>
         

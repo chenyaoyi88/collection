@@ -10,6 +10,7 @@ interface CouponList {
   list: Array<any>;
   listNone: boolean;
   listTmp: Array<any>;
+  listnomore: boolean;
 };
 
 // 必须使用装饰器的方式来指定components
@@ -28,6 +29,7 @@ class Index extends Vue {
   LogisticsCoupons: Array<any> = [];
   LogisticsCouponsParams: any = {};
   LogisticsCouponsNone: boolean = false;
+  LogisticsCouponsNomore: boolean = false;
 
   listCount: number = 0;
 
@@ -35,18 +37,21 @@ class Index extends Vue {
     list: [],
     listNone: false,
     listTmp: [],
+    listnomore: false
   };
 
   expire: CouponList = {
     list: [],
     listNone: false,
     listTmp: [],
+    listnomore: false
   };
 
   used: CouponList = {
     list: [],
     listNone: false,
     listTmp: [],
+    listnomore: false
   };
 
   // 当前 tab 索引
@@ -134,8 +139,12 @@ class Index extends Vue {
         }
       }
       this.listCount = 0;
+      this[listName].listnomore = false;
     }
     this[listName].list[this.listCount] = this[listName].listTmp[this.listCount];
+    if (this.listCount === this[listName].listTmp.length - 1) {
+      this[listName].listnomore = true;
+    };
     this.tabTitle[tabIndex].count = res.data.length;
     if (!this.tabTitle[tabIndex].count) {
       this[listName].listNone = true;
@@ -145,7 +154,7 @@ class Index extends Vue {
   // 列表滚动加载
   listRenderLoad(listName: string) {
     if (this.listCount === this[listName].listTmp.length - 1) {
-      showToastError('没有更多数据了');
+      // showToastError('没有更多数据了');
       return;
     };
     wx.showLoading({
@@ -154,8 +163,12 @@ class Index extends Vue {
     setTimeout(() => {
       this.listCount++;
       this[listName].list[this.listCount] = this[listName].listTmp[this.listCount];
+
+      if (this.listCount === this[listName].listTmp.length - 1) {
+        this[listName].listnomore = true;
+      };
       wx.hideLoading();
-    }, 300);
+    }, 150);
   }
 
   // 获取可使用优惠券列表
@@ -195,18 +208,21 @@ class Index extends Vue {
       list: [],
       listNone: false,
       listTmp: [],
+      listnomore: false
     };
 
     this.expire = {
       list: [],
       listNone: false,
       listTmp: [],
+      listnomore: false
     };
 
     this.used = {
       list: [],
       listNone: false,
       listTmp: [],
+      listnomore: false
     };
 
     this.listCount = 0;
@@ -214,6 +230,7 @@ class Index extends Vue {
     this.LogisticsCoupons = [];
     this.LogisticsCouponsParams = {};
     this.LogisticsCouponsNone = false;
+    this.LogisticsCouponsNomore = false;
 
     this.couponInfo = {};
 

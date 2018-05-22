@@ -50,16 +50,19 @@ class Order extends Vue {
   ingListTmp: Array<any> = [];
   ingListOffset: number = 0;
   ingListNone: boolean = false;
+  ingListNomore: boolean = false;
 
   finishList: Array<any> = [];
   finishListTmp: Array<any> = [];
   finishListOffset: number = 0;
   finishListNone: boolean = false;
+  finishListNomore: boolean = false;
 
   cancelListTmp: Array<any> = [];
   cancelListOffset: number = 0;
   cancelList: Array<any> = [];
   cancelListNone: boolean = false;
+  cancelListNomore: boolean = false;
 
   // 取消原因列表
   cancelReasonList: Array<any> = [];
@@ -130,6 +133,7 @@ class Order extends Vue {
         scrollTop: 0,
         duration: 0
       });
+      oTab[listType + 'Nomore'] = false;
     }
 
     switch (listType) {
@@ -157,6 +161,10 @@ class Order extends Vue {
           oTab[listType + 'Tmp'] = res.data;
           let aShowList = [];
           if (res.data && res.data.length) {
+            if (res.data.length < this.pageLimit) {
+              oTab[listType + 'Nomore'] = true;
+            }
+
             for (let i = 0; i < res.data.length; i++) {
               const order = res.data[i];
               order.statusText = getOrderStatusText(order);
@@ -181,13 +189,14 @@ class Order extends Vue {
               oTab[listType] = [];
             } else {
               if (oTab[listType].length) {
-                showToastError('没有更多数据了');
+                // showToastError('没有更多数据了');
+                oTab[listType + 'Nomore'] = true;
               } else {
                 oTab[listType + 'None'] = true;
               }
             }
           }
-          
+
           wx.stopPullDownRefresh();
         }
       })
@@ -198,8 +207,11 @@ class Order extends Vue {
 
   // 向上滚动获取更多数据
   getMoreListData(name: string) {
-    if (this[name + 'Tmp'].length < this.pageLimit) {
-      showToastError('没有更多数据了');
+    // if (this[name + 'Tmp'].length < this.pageLimit) {
+    //   showToastError('没有更多数据了');
+    //   return;
+    // }
+    if (this[name + 'Nomore']) {
       return;
     }
     this[name + 'Offset'] += 10;

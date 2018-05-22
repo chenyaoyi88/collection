@@ -29,7 +29,7 @@
                   <p>{{ item.load + item.loadUnit }}</p>
                 </div>
               </div>
-              <p class="info-desc">(起步{{ item.startPrice + '元' + item.startRange + (item.mileageUnit || '--') + ',后续' + (item.chargeStandard || '--')}})</p>
+              <p class="info-desc">(起步{{ item.startPrice + '元' + item.startRange + (item.mileageUnit || '--') + ',后续' + (item.price || '--')}}元/公里)</p>
             </div>
 
             <div class="run-info-box">

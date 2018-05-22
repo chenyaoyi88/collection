@@ -182,6 +182,18 @@ export function getCalcCosts(scope: any): void {
             scope.costs.amount = formatCurrency(scope.costs.amount);
             scope.costs.zptFreight = formatCurrency(scope.costs.zptFreight);
             scope.costs.nightServiceFee = formatCurrency(scope.costs.nightServiceFee);
+        } else if (res.statusCode === 400) {
+            wx.showModal({
+                title: '温馨提示',
+                content: res.data.message,
+                showCancel: false,
+                success: function (res: any) {
+                    if (res.confirm) {
+                        // 发货地点不在配送范围内，点击确定之后清空发货地信息
+                        scope.startInfo = {};
+                    }
+                }
+            });
         } else {
             showToastError(res.data.message);
         }

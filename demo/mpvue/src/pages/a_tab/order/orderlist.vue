@@ -72,6 +72,8 @@
             </div>
         </block>
 
+        <div class="list-nomore" v-if="isShowNomore">-- 没有更多数据了 --</div>
+
     </div>
 </template>
 
@@ -119,7 +121,11 @@ export default {
     dataList: {
       type: Array,
       default: []
-    }
+    },
+    isShowNomore: {
+      type: Boolean,
+      default: false
+    },
   },
   data() {
     return {
@@ -195,6 +201,9 @@ export default {
   .mid {
     background-color: #f5a623 !important;
   }
+}
+.list-nomore {
+  padding-top: 0;
 }
 </style>
 

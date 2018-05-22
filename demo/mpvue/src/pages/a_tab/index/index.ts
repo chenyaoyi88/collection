@@ -380,12 +380,13 @@ class Index extends Vue {
           cityCode: searchInfo.cityCode
         };
 
-        if (this.aHalfwaysList.length > 1) {
-          this.$set(this.aHalfwaysList, Number(searchInfo.desIndex), oHalfway);
-        } else {
-          // 如果数组里只剩下一个，就作为终点
-          this.aHalfwaysList[0] = oHalfway;
-        }
+        // if (this.aHalfwaysList.length > 1) {
+        //   this.$set(this.aHalfwaysList, Number(searchInfo.desIndex), oHalfway);
+        // } else {
+        //   // 如果数组里只剩下一个，就作为终点
+        //   this.aHalfwaysList[0] = oHalfway;
+        // }
+        this.$set(this.aHalfwaysList, Number(searchInfo.desIndex), oHalfway);
         this.getHalfwaysCost();
         console.log(this.aHalfwaysList);
       }

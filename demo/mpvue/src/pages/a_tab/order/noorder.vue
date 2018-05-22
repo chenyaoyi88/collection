@@ -40,6 +40,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 .login-box {
   position: fixed;
   left: 0;
@@ -50,6 +51,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #f5f5f5;
   .login-page-box {
     width: 100%;
     margin-bottom: 30%;

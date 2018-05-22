@@ -24,6 +24,8 @@
                 <coupon :isFail="false" :couponInfo="list"></coupon>
               </block>
             </block>
+
+            <div class="list-nomore" v-show="canUse.listnomore">-- 没有更多数据了 --</div>
           </div>
         </div>
 
@@ -40,6 +42,8 @@
               </block>
             </block>
 
+            <div class="list-nomore" v-show="expire.listnomore">-- 没有更多数据了 --</div>
+
           </div>
         </div>
 
@@ -55,6 +59,9 @@
                 <coupon :isFail="true" :couponInfo="list"></coupon>
               </block>
             </block>
+            
+            <div class="list-nomore" v-show="used.listnomore">-- 没有更多数据了 --</div>
+
           </div>
         </div>
 
@@ -77,6 +84,7 @@
             <block v-if="LogisticsCoupons.length" v-for="(item, index) of LogisticsCoupons" :key="index">
               <coupon :isFail="false" :isShowSlect="true" :couponInfo="item" @couponClick="couponSelectFormIndex(item)"></coupon>
             </block>
+            <div class="list-nomore" v-show="true">-- 没有更多数据了 --</div>
           </div>
         </div>
 
