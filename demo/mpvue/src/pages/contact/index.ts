@@ -116,25 +116,29 @@ class Index extends Vue {
     if (this.isBtnClick) return;
     this.isBtnClick = true;
 
+    wx.showLoading({
+      title: '保存中...'
+    });
+
     // 保存联系人和地址
     ghbRequest({
       url: `${API.ADDRESS}/create`,
       method: 'POST',
       data: params
-    })
+    }, true)
       .then((res: any) => {
         if (res.statusCode !== 200) {
           showToastError(res.data.message);
           this.isBtnClick = false;
         } else {
-          showToastError('保存成功');
-          setTimeout(() => {
+          // showToastError('保存成功');
+          // setTimeout(() => {
             wx.navigateBack({
               delta: 2
             });
             this.isBtnClick = false;
             eventBus.$emit(ghbEvent.gobackReload, true);
-          }, 300);
+          // }, 300);
         }
       })
       .catch(() => {
@@ -147,22 +151,26 @@ class Index extends Vue {
     if (this.isBtnClick) return;
     this.isBtnClick = true;
 
+    wx.showLoading({
+      title: '保存中...'
+    });
+
     ghbRequest({
       url: `${API.ADDRESS}/${this.searchInfo.id}/update`,
       method: 'PUT',
       data: params
-    })
+    }, true)
       .then((res: any) => {
         if (res.statusCode !== 200) {
           showToastError(res.data.message);
           this.isBtnClick = false;
         } else {
-          showToastError('编辑成功');
-          setTimeout(() => {
+          // showToastError('编辑成功');
+          // setTimeout(() => {
             wx.navigateBack();
             this.isBtnClick = false;
             eventBus.$emit(ghbEvent.gobackReload, false);
-          }, 50);
+          // }, 300);
         }
       })
       .catch(() => {

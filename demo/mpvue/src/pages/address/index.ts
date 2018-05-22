@@ -20,10 +20,13 @@ class Index extends Vue {
   }
 
   // 获取常用联系人列表
-  getAddressBookRest(reload: boolean = false) {
-    wx.showLoading({
-      title: '加载中'
-    });
+  getAddressBookRest(reload: boolean = false, isShowLoading: boolean = true) {
+    if (isShowLoading) {
+      wx.showLoading({
+        title: '加载中',
+        mask: true
+      });
+    }
 
     if (reload) {
       wx.pageScrollTo({
@@ -40,7 +43,7 @@ class Index extends Vue {
         limit: this.limit,
         serviceType: 1
       }
-    })
+    }, !isShowLoading)
       .then((res: any) => {
         if (res.data && res.data.length) {
           if (res.data.length < this.limit) {
@@ -178,6 +181,7 @@ class Index extends Vue {
               this.isShowNomore = false;
             }
           }
+          showToastError('删除成功');
         } else {
           showToastError(res.data.message);
         }
@@ -219,10 +223,12 @@ class Index extends Vue {
     eventBus.$on(ghbEvent.gobackReload, (isReload: boolean) => {
       // NOTE：没有定时器新创建完返回刷新的时候会回不到顶部，而且会请求2次
       setTimeout(() => {
-        this.getAddressBookRest(isReload);
-      }, 200);
+        this.getAddressBookRest(isReload, false);
+        showToastError(isReload ? '保存成功' : '编辑成功');
+      }, 150);
     });
   }
+
 
   onUnload() {
     this.reset();
