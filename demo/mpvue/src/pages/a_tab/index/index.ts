@@ -194,8 +194,13 @@ class Index extends Vue {
 
   // 添加中途点
   addHalfways() {
-    if (this.aHalfwaysList.length > 5) {
-      showToastError('途经点最多设置5个');
+    if (this.aHalfwaysList.length > 4) {
+      showToastError('目的地最多设置5个');
+      return;
+    }
+
+    if (!this.startInfo.address) {
+      showToastError('请输入始发地');
       return;
     }
 

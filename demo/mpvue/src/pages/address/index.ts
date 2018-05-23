@@ -198,6 +198,7 @@ class Index extends Vue {
     this.addressList = [];
     this.addressListNone = false;
     this.isShowNomore = false;
+    this.isShowEdit = false;
   }
 
   // 滚动条触底事件

@@ -99,9 +99,9 @@ export function ghbRequest(options: GhbRequest, isShowing: boolean = false): Pro
 export function getDesText(des: string) {
   let retStr: string = '';
   if (des.includes('start')) {
-    retStr = '发货';
+    retStr = '始发地';
   } else if (des.includes('des')) {
-    retStr = '收货';
+    retStr = '目的地';
   } else if (des.includes('new')) {
     retStr = '新增';
   } else if (des.includes('edit')) {

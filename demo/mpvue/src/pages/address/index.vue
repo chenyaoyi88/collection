@@ -17,7 +17,7 @@
                  <div class="user-info-r">{{ list.remark }}</div>
                </div>
                <div class="address-name">{{ list.address }}</div>
-               <div class="address-detail">{{ list.addressName }}</div>
+               <div class="address-detail">{{ list.addressName }} {{ list.street || '' }}</div>
              </div>
              <div class="address-ctrl" v-if="isShowEdit">
                <div class="address-ctrl-btn address-edit" @click="edit(list)">编辑</div>

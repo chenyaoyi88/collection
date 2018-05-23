@@ -1,9 +1,17 @@
 import { Vue, Component } from 'vue-property-decorator';
-import coupon from './coupon.vue';
-import { ghbRequest, setArrayGroup, showToastError } from '../../utils';
+// import coupon from './coupon.vue';
+import {
+  ghbRequest,
+  setArrayGroup,
+  showToastError,
+  formatTime
+} from '../../utils';
 import API from '../../api';
 import { eventBus, ghbEvent } from '../eventbus';
 
+import IMG_COUPONBG from '../../../static/images/couponbg.png';
+import IMG_COUPONBG_FAIL from '../../../static/images/couponbg_fail.png';
+import IMG_ARROW from '../../../static/images/arrow-coupon.png';
 import IMG_SELECT from '../../../static/images/selected.png';
 
 interface CouponList {
@@ -15,24 +23,34 @@ interface CouponList {
 
 // 必须使用装饰器的方式来指定components
 @Component({
-  components: {
-    coupon
-  }
+  // components: {
+  //   coupon
+  // }
 })
 class Index extends Vue {
 
+  // 各种模版所需图片
+  IMG_COUPONBG: any = IMG_COUPONBG;
+  IMG_COUPONBG_FAIL: any = IMG_COUPONBG_FAIL;
+  IMG_ARROW: any = IMG_ARROW;
   IMG_SELECT: any = IMG_SELECT;
+
+  // 是否显示不使用优惠券表示（那个未选中的圆圈）
   isNotUseCoupon: boolean = true;
 
+  // 首页之前选中的优惠券信息
   couponInfo: any = {};
 
+  // 首页点击优惠券进来所需变量
   LogisticsCoupons: Array<any> = [];
   LogisticsCouponsParams: any = {};
   LogisticsCouponsNone: boolean = false;
   LogisticsCouponsNomore: boolean = false;
 
+  // 用来记录翻到当前优惠券列表的第几页
   listCount: number = 0;
 
+  // 未使用
   canUse: CouponList = {
     list: [],
     listNone: false,
@@ -40,6 +58,7 @@ class Index extends Vue {
     listnomore: false
   };
 
+  // 已过期
   expire: CouponList = {
     list: [],
     listNone: false,
@@ -47,6 +66,7 @@ class Index extends Vue {
     listnomore: false
   };
 
+  // 已使用
   used: CouponList = {
     list: [],
     listNone: false,
@@ -131,7 +151,15 @@ class Index extends Vue {
 
   // 列表渲染
   listRender(listName: string, tabIndex: number, res: any, isReload: boolean) {
+
+    for (let item of res.data) {
+      item.beginDateFormat = this.formatCouponTime(item.beginDate);
+      item.endDateFormat = this.formatCouponTime(item.endDate);
+      item.usedDateFormat = this.formatCouponTime(item.usedDate);
+    }
+
     this[listName].listTmp = setArrayGroup(res.data);
+
     if (isReload) {
       for (let i = 0; i <= this[listName].listTmp.length; i++) {
         if (i > 0) {
@@ -186,6 +214,7 @@ class Index extends Vue {
           if (item.id === this.couponInfo.id) {
             item.select = true;
           }
+          item.endDateFormat = this.formatCouponTime(item.endDate);
         }
         this.LogisticsCoupons = res.data;
         this.LogisticsCouponsNomore = true;
@@ -201,6 +230,22 @@ class Index extends Vue {
     this.isNotUseCoupon = item ? false : true;
     eventBus.$emit(ghbEvent.getCoupon, item);
     wx.navigateBack();
+  }
+  
+  // 时间戳转为 xxx.xx.xx 格式
+  formatCouponTime(timestamp: Date) {
+    return formatTime(new Date(timestamp))
+      .split(' ')[0]
+      .replace(/\//g, '.');
+  }
+  
+  // 点击优惠券适用规则
+  couponRuleClick(termOfUse: any) {
+    wx.showModal({
+      title: '使用说明',
+      content: termOfUse,
+      showCancel: false
+    });
   }
 
   // 重置所有数据

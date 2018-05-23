@@ -21,7 +21,35 @@
 
             <block v-if="canUse.list.length" v-for="(item, index) of canUse.list" :key="index">
               <block v-for="(list, listIndex) of item" :key="listIndex">
-                <coupon :isFail="false" :couponInfo="list"></coupon>
+                <!-- <coupon :isFail="false" :couponInfo="list"></coupon> -->
+                <div class="coupon-item">
+                  <div class="coupon-content">
+                    <div class="coupon-content-l">
+                      <img class="coupon-content-l-bg" :src="IMG_COUPONBG" mode="aspectFit">
+                      <div class="coupon-amount">
+                        <span class="tag">￥</span>
+                        <span class="amount">{{ list.priceValue || '--' }}</span>
+                      </div>
+                      <template v-if="list.startPrice === 0">
+                        <div class="coupon-amount-tips">无最低金额限制</div>
+                      </template>
+                      <template v-else>
+                        <div class="coupon-amount-tips">满 {{ list.startPrice || '--'}} 元可用</div>
+                      </template>
+                    </div>
+                    <div class="coupon-content-r">
+                      <div class="coupon-content-main">
+                        <div class="coupon-title">{{ list.name || '--' }}</div>
+                        <div class="coupon-desc">{{ list.introduction || '--' }}</div>
+                        <div class="coupon-date">{{ list.endDateFormat || '--' }} 到期</div>
+                      </div>
+                      <div class="coupon-rule" @click.stop="couponRuleClick(list.termOfUse)">
+                        <span class="coupon-rule-text">适用规则</span>
+                        <img class="coupon-rule-arrow" :src="IMG_ARROW" alt="" mode="aspectFit">
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </block>
             </block>
 
@@ -38,7 +66,36 @@
 
             <block v-if="expire.list.length" v-for="(item, index) of expire.list" :key="index">
               <block v-for="(list, listIndex) of item" :key="listIndex">
-                <coupon :isFail="true" :couponInfo="list"></coupon>
+                <!-- <coupon :isFail="true" :couponInfo="list"></coupon> -->
+                <div class="coupon-item">
+                  <div class="coupon-content">
+                    <div class="coupon-content-l">
+                      <img class="coupon-content-l-bg" :src="IMG_COUPONBG_FAIL" mode="aspectFit">
+                      <div class="coupon-amount">
+                        <span class="tag">￥</span>
+                        <span class="amount">{{ list.priceValue || '--' }}</span>
+                      </div>
+                      <template v-if="list.startPrice === 0">
+                        <div class="coupon-amount-tips">无最低金额限制</div>
+                      </template>
+                      <template v-else>
+                        <div class="coupon-amount-tips">满 {{ list.startPrice || '--'}} 元可用</div>
+                      </template>
+                    </div>
+                    <div class="coupon-content-r">
+                      <div class="coupon-content-main">
+                        <div class="coupon-title fail">{{ list.name || '--' }}</div>
+                        <div class="coupon-desc">{{ list.introduction || '--' }}</div>
+                        <div class="coupon-date fail">{{ list.endDateFormat || '--' }} 已到期</div>
+                      </div>
+                      
+                      <div class="coupon-rule" @click.stop="couponRuleClick(list.termOfUse)">
+                        <span class="coupon-rule-text">适用规则</span>
+                        <img class="coupon-rule-arrow" :src="IMG_ARROW" alt="" mode="aspectFit">
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </block>
             </block>
 
@@ -56,7 +113,35 @@
 
             <block v-if="used.list.length" v-for="(item, index) of used.list" :key="index">
               <block v-for="(list, listIndex) of item" :key="listIndex">
-                <coupon :isFail="true" :couponInfo="list"></coupon>
+                <!-- <coupon :isFail="true" :couponInfo="list"></coupon> -->
+                <div class="coupon-item">
+                  <div class="coupon-content">
+                    <div class="coupon-content-l">
+                      <img class="coupon-content-l-bg" :src="IMG_COUPONBG_FAIL" mode="aspectFit">
+                      <div class="coupon-amount">
+                        <span class="tag">￥</span>
+                        <span class="amount">{{ list.priceValue || '--' }}</span>
+                      </div>
+                      <template v-if="list.startPrice === 0">
+                        <div class="coupon-amount-tips">无最低金额限制</div>
+                      </template>
+                      <template v-else>
+                        <div class="coupon-amount-tips">满 {{ list.startPrice || '--'}} 元可用</div>
+                      </template>
+                    </div>
+                    <div class="coupon-content-r">
+                      <div class="coupon-content-main">
+                        <div class="coupon-title fail">{{ list.name || '--' }}</div>
+                        <div class="coupon-desc">{{ list.introduction || '--' }}</div>
+                        <div class="coupon-date fail">{{ list.usedDateFormat || '--' }} 已使用</div>
+                      </div>
+                      <div class="coupon-rule" @click.stop="couponRuleClick(list.termOfUse)">
+                        <span class="coupon-rule-text">适用规则</span>
+                        <img class="coupon-rule-arrow" :src="IMG_ARROW" alt="" mode="aspectFit">
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </block>
             </block>
             
@@ -81,8 +166,40 @@
             <img v-else class="select-circle" :src="IMG_SELECT" alt="" mode="aspectFit">
           </div>
           <div class="coupon-list-box">
-            <block v-if="LogisticsCoupons.length" v-for="(item, index) of LogisticsCoupons" :key="index">
-              <coupon :isFail="false" :isShowSlect="true" :couponInfo="item" @couponClick="couponSelectFormIndex(item)"></coupon>
+            <block v-if="LogisticsCoupons.length" v-for="(list, index) of LogisticsCoupons" :key="index">
+              <!-- <coupon :isFail="false" :isShowSlect="true" :couponInfo="item" @couponClick="couponSelectFormIndex(item)"></coupon> -->
+              <div class="coupon-item" @click="couponSelectFormIndex(list)">
+                <div class="coupon-content">
+                  <div class="coupon-content-l">
+                    <img class="coupon-content-l-bg" :src="IMG_COUPONBG" mode="aspectFit">
+                    <div class="coupon-amount">
+                      <span class="tag">￥</span>
+                      <span class="amount">{{ list.priceValue || '--' }}</span>
+                    </div>
+                    <template v-if="list.startPrice === 0">
+                      <div class="coupon-amount-tips">无最低金额限制</div>
+                    </template>
+                    <template v-else>
+                      <div class="coupon-amount-tips">满 {{ list.startPrice || '--'}} 元可用</div>
+                    </template>
+                  </div>
+                  <div class="coupon-content-r">
+                    <div class="coupon-content-main">
+                      <div class="coupon-title">{{ list.name || '--' }}</div>
+                      <div class="coupon-desc">{{ list.introduction || '--' }}</div>
+                      <div class="coupon-date">{{ list.endDateFormat || '--' }} 到期</div>
+                      <div class="coupon-circle-select">
+                        <div v-if="!list.select" class="unselect-circle"></div>
+                        <img v-else class="select-circle" :src="IMG_SELECT" alt="" mode="aspectFit">
+                      </div>
+                    </div>
+                    <div class="coupon-rule" @click.stop="couponRuleClick(list.termOfUse)">
+                      <span class="coupon-rule-text">适用规则</span>
+                      <img class="coupon-rule-arrow" :src="IMG_ARROW" alt="" mode="aspectFit">
+                    </div>
+                  </div>
+                </div>
+              </div>
             </block>
             <div class="list-nomore" v-show="LogisticsCouponsNomore">-- 没有更多数据了 --</div>
           </div>
