@@ -116,7 +116,7 @@ Page({
     }
 
 
-    console.log(currPage);
+    // console.log(currPage);
 
   },
   nextStep() {

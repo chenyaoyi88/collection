@@ -22,7 +22,6 @@ Component({
   },
   methods: {
     getMsgCode() {
-      console.log(this);
       this.triggerEvent('getMsgCode', this, {});
     },
     run() {

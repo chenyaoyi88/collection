@@ -1,0 +1,13 @@
+<!-- 组件模板 -->
+
+<view class="coupon-list-box">
+  <block wx:if="{{ coupon.listNone }}">
+    <view class="coupon-list-none fixed">-- {{ couponNoneText }} --</view>
+  </block>
+  <block wx:if="{{ coupon.list.length }}" wx:for="{{ coupon.list }}" wx:for-item="item" wx:for-index="index" wx:key="{{index}}">
+    <block wx:for="{{ item }}" wx:for-item="list" wx:for-index="listIndex" wx:key="{{listIndex}}">
+      <component-item is-fail="{{ isFailColor }}" coupon-info="{{ list }}"></component-item>
+    </block>
+  </block>
+  <view class='list-no-more' wx:if="{{ isListNomore }}">-- 没有更多数据了 --</view>
+</view>

@@ -1,6 +1,7 @@
 {
   "usingComponents": {
     "component-couponitem": "./couponitem/couponitem",
+    "component-couponlist": "./couponlist/couponlist",
     "component-tabswitch": "../../components/tabswitch/tabswitch"
   }
 }

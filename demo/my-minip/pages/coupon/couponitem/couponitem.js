@@ -5,16 +5,7 @@ Component({
   properties: {
     couponInfo: {
       type: Object,
-      value: {},
-      observer: function (newVal, oldVal) {
-        const couponInfo = this.data.couponInfo;
-        couponInfo.beginDateFormat = this.formatCouponTime(couponInfo.beginDate);
-        couponInfo.endDateFormat = this.formatCouponTime(couponInfo.endDate);
-        couponInfo.usedDateFormat = this.formatCouponTime(couponInfo.usedDate);
-        this.setData({
-          couponInfo
-        });
-      }
+      value: {}
     },
     isFail: {
       type: Boolean,
@@ -41,11 +32,6 @@ Component({
         content: this.data.couponInfo.termOfUse,
         showCancel: false
       });
-    },
-    formatCouponTime(timestamp) {
-      return formatTime(new Date(timestamp))
-        .split(' ')[0]
-        .replace(/\//g, '.');
     }
   }
 });

@@ -1,5 +1,5 @@
 
-import { ghbRequest, setArrayGroup, showToastError } from '../../utils/index';
+import { ghbRequest, setArrayGroup, showToastError, formatTime } from '../../utils/index';
 import API from '../../api/api';
 import { aMockListCanUse } from './mock';
 import { tabTitleList } from './utils';
@@ -82,6 +82,12 @@ Page({
   },
   // 列表渲染
   listRender(listName, tabIndex, res, isReload) {
+
+    for (let item of res.data) {
+      item.beginDateFormat = this.formatCouponTime(item.beginDate);
+      item.endDateFormat = this.formatCouponTime(item.endDate);
+      item.usedDateFormat = this.formatCouponTime(item.usedDate);
+    }
 
     const listTmp = setArrayGroup(res.data);
     let renderList = this.data[listName];
@@ -172,6 +178,11 @@ Page({
       this.setData(data);
     });
   },
+  formatCouponTime(timestamp) {
+    return formatTime(new Date(timestamp))
+      .split(' ')[0]
+      .replace(/\//g, '.');
+  },
   // 获取传过来的参数
   onLoad(options) {
 
@@ -207,7 +218,6 @@ Page({
     this.setData(data);
 
   },
-
   // 滚动条触底事件
   onReachBottom() {
     if (this.data.from === 'me') {
@@ -225,7 +235,6 @@ Page({
       }
     }
   },
-
   // 用户下拉动作，刷新当前列表
   onPullDownRefresh() {
     if (this.data.from === 'index') {
