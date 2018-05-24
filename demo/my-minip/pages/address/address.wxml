@@ -19,8 +19,8 @@
             <view class="address-detail">{{ list.addressName }} {{ list.street || '' }}</view>
           </view>
           <view class="address-ctrl" wx:if="{{ isShowEdit }}">
-            <view class="address-ctrl-btn address-edit" bindtap="edit">编辑</view>
-            <view class="address-ctrl-btn address-delete" bindtap="del">删除</view>
+            <view class="address-ctrl-btn address-edit" data-item="{{ list }}" bindtap="edit">编辑</view>
+            <view class="address-ctrl-btn address-delete" data-list="{{ list }}" data-group="{{ index }}" data-groupIndex="{{ listIndex }}" bindtap="del">删除</view>
           </view>
         </view>
       </block>

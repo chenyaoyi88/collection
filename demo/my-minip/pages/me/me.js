@@ -1,5 +1,7 @@
 import { isInputEmpty, isPhoneNumber, showToastError, ghbRequest } from '../../utils/index';
 import API from '../../api/api';
+import { eventBusEmit, eventBusRemove } from '../event';
+
 const app = getApp();
 
 Page({
@@ -56,31 +58,50 @@ Page({
   },
 
   logout() {
-    wx.showLoading({
-      title: '正在退出...'
-    });
 
-    ghbRequest({
-      url: API.LOGOUT,
-      method: 'DELETE'
-    }).then((res) => {
-      if (res.statusCode === 200) {
+    const _this = this;
 
-        // // 退出之后重置所有数据
-        // this.$store.commit('isIndexResetChange', {
-        //   isIndexReset: true
-        // });
+    wx.showModal({
+      title: '温馨提示',
+      content: '是否退出登录？',
+      success: function (res) {
+        if (res.confirm) {
+          wx.showLoading({
+            title: '正在退出...'
+          });
 
-        // eventBus.$emit(ghbEvent.resetOrderList);
+          ghbRequest({
+            url: API.LOGOUT,
+            method: 'DELETE'
+          }).then((res) => {
+            if (res.statusCode === 200) {
 
-        wx.removeStorageSync('token');
-        wx.removeStorageSync('mobile');
-        // 重置当前页面
-        this.reset();
-      } else {
-        showToastError('操作失败，请稍后再试');
+              // // 退出之后重置所有数据
+              // this.$store.commit('isIndexResetChange', {
+              //   isIndexReset: true
+              // });
+
+              // eventBus.$emit(ghbEvent.resetOrderList);
+
+              // 退出之后重置所有数据
+              // 重置首页
+              eventBusEmit('resetIndex');
+              // 重置订单页
+              eventBusEmit('resetOrderList');
+
+              wx.removeStorageSync('token');
+              wx.removeStorageSync('mobile');
+
+              // 重置当前页面
+              _this.reset();
+            } else {
+              showToastError('操作失败，请稍后再试');
+            }
+          });
+        }
       }
     });
+
   },
 
   // 获取可使用优惠券列表

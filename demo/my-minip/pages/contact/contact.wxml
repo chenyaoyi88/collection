@@ -4,8 +4,8 @@
     <component-item 
       item-icon-type="start" 
       item-value-left-top="" 
-      item-value-left-center="{{ searchInfo.siteName || '哈哈哈' }}" 
-      item-value-left-bottom="{{ searchInfo.address || '哈哈哈' }}" 
+      item-value-left-center="{{ searchInfo.siteName || '--' }}" 
+      item-value-left-bottom="{{ searchInfo.address || '--' }}" 
       is-hide-border-top="true" 
       is-hide-pointline="true" 
       is-hide-item-arrow="true"

@@ -107,7 +107,6 @@ Page({
             item.siteName = item.name;
           }
           const results = res.data.results;
-          console.log(results);
           _this.setData({
             results
           });

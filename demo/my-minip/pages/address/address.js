@@ -1,5 +1,6 @@
 import { goBackSetData, ghbRequest, zerofillBack, showToastError } from '../../utils/index';
 import API from '../../api/api';
+import { eventBusEmit, eventBusRemove, eventBusOn } from '../event';
 
 Page({
   data: {
@@ -43,7 +44,7 @@ Page({
       }
     }, !isShowLoading)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.data && res.data.length) {
 
           if (res.data.length < this.data.limit) {
@@ -91,7 +92,7 @@ Page({
   // 加载更多
   getMoreListData() {
     if (this.data.isShowNomore) return;
-    this.data.start+=10;
+    this.data.start += 10;
     this.getAddressBookRest(false);
   },
   // 新增地址，去搜素页面 -> 联系人页面 -> 确认 -> 回来
@@ -100,6 +101,95 @@ Page({
     wx.navigateTo({
       url: `../search/search?from=${from}`
     });
+  },
+  // 编辑
+  edit(e) {
+    const dataset = e.target.dataset;
+    const item = dataset.item;
+
+    const searchInfo = {
+      id: item.id,
+      name: item.name,
+      mobile: item.mobile,
+      siteName: item.address,
+      address: item.addressName,
+      location: {
+        lng: item.longitude,
+        lat: item.latitude
+      },
+      cityCode: item.cityCode,
+      street: item.street,
+      from: 'edit',
+      remark: item.remark
+    };
+
+    wx.navigateTo({
+      url: `../contact/contact?searchInfo=${JSON.stringify(searchInfo)}`
+    });
+  },
+
+
+  // 删除
+  del(e) {
+    const dataset = e.target.dataset;
+    const list = dataset.list;
+    const group = dataset.group;
+    const groupIndex = dataset.groupIndex;
+
+    const _this = this;
+    wx.showModal({
+      title: '删除地址',
+      content: '是否确定取消该删除地址？',
+      success(res) {
+        if (res.confirm) {
+          _this.delItem(list, group, groupIndex);
+        }
+      }
+    });
+  },
+
+  // 根据ID删除对应的地址
+  delItem(list, group, groupIndex) {
+    wx.showLoading({
+      title: '删除中'
+    });
+
+    ghbRequest({
+      method: 'DELETE',
+      url: `${API.ADDRESS}/${list.id}/delete`,
+    })
+      .then((res) => {
+        if (res.statusCode === 200) {
+          // 删除成功
+          let addressList = this.data.addressList;
+          let addressListNone = this.data.addressListNone;
+          let isShowNomore = this.data.isShowNomore;
+
+          addressList[group].splice(groupIndex, 1);
+          for (let item of addressList) {
+            if (!(item && item.length)) {
+              if (!this.data.start) {
+                addressListNone = true;
+                isShowNomore = false;
+              }
+            }
+          }
+
+          this.setData({
+            addressList,
+            addressListNone,
+            isShowNomore
+          }, () => {
+            showToastError('删除成功');
+          });
+
+        } else {
+          showToastError(res.data.message);
+        }
+      })
+      .catch(() => {
+        showToastError('删除失败');
+      });
   },
   // 滚动条触底事件
   onReachBottom() {
@@ -121,12 +211,22 @@ Page({
 
     // // 如果是保存回来此页面，刷新一下
     // eventBus.$on(ghbEvent.gobackReload, (isReload: boolean) => {
-    //   // NOTE：没有定时器新创建完返回刷新的时候会回不到顶部，而且会请求2次
     //   setTimeout(() => {
     //     this.getAddressBookRest(isReload, false);
     //     showToastError(isReload ? '保存成功' : '编辑成功');
     //   }, 150);
     // });
 
+    // 如果是保存回来此页面，刷新一下
+    eventBusOn('gobackReload', this, (isReload) => {
+      setTimeout(() => {
+        this.getAddressBookRest(isReload, false);
+        showToastError(isReload ? '保存成功' : '编辑成功');
+      }, 150);
+    });
+
+  },
+  onUnload() {
+    eventBusRemove('gobackReload', this);
   }
 })

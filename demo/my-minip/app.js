@@ -5,8 +5,9 @@ App({
   },
   // 全局变量
   globalData: {
-    version: '1.0.2',
-    appEnv: 'sit',
-    value: ''
+    // 版本
+    version: '1.0.3',
+    // 环境
+    appEnv: 'sit'
   }
 })
