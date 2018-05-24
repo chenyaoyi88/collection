@@ -1,0 +1,71 @@
+<view class="contact-box">
+  <view class="contact-info-box">
+
+    <component-item 
+      item-icon-type="start" 
+      item-value-left-top="" 
+      item-value-left-center="{{ searchInfo.siteName || '哈哈哈' }}" 
+      item-value-left-bottom="{{ searchInfo.address || '哈哈哈' }}" 
+      is-hide-border-top="true" 
+      is-hide-pointline="true" 
+      is-hide-item-arrow="true"
+    />
+
+  </view>
+
+  <view class="contact-street">
+    <component-item 
+      item-type="custom"
+      item-icon-type="icon"
+      item-icon="{{ icon.street }}" 
+      is-hide-border-top="true" 
+      is-hide-item-arrow="true"
+    >
+      <textarea
+        slot="item-r"
+        auto-height
+        class="item-textarea"
+        maxlength="140"
+        placeholder="地址附加说明，如楼层、门牌、档口等" 
+        placeholder-style="color:#b2b2b2" 
+        value="{{ street }}" 
+        data-name="{{ 'street' }}"
+        bindinput="getValue" 
+      ></textarea>
+    </component-item>
+  </view>
+
+  <view class="contact-item-box">
+    
+    <component-item
+      item-type="input"
+      item-input-plc="联系人姓名"
+      item-input-maxlength="10"
+      item-icon-type="icon"
+      item-icon="{{ icon.contact }}" 
+      is-hide-item-arrow="true"
+      data-name="{{ 'name' }}"
+      item-input-value="{{ name }}"
+      binditemInputEvent="getValue"
+    >
+    </component-item>
+
+    <component-item
+      item-type="input"
+      item-input-plc="联系方式"
+      item-input-maxlength="11"
+      item-icon-type="icon"
+      item-icon="{{ icon.mobile }}" 
+      is-hide-item-arrow="true"
+      data-name="{{ 'mobile' }}"
+      item-input-value="{{ mobile }}"
+      binditemInputEvent="getValue"
+    >
+    </component-item>
+
+  </view>
+
+  <view class="contact-btn-box">
+    <button class="ghb-btn contact-btn" disabled="{{ isBtnClick }}" bindtap="confirmGoback">{{ btnName || '确认' }}</button>
+  </view>
+</view>

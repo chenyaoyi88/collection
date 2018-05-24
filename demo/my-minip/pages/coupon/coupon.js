@@ -21,17 +21,14 @@ Page({
     listCount: 0,
     canUse: {
       list: [],
-      listNone: false,
       listTmp: [],
     },
     expire: {
       list: [],
-      listNone: false,
       listTmp: [],
     },
     used: {
       list: [],
-      listNone: false,
       listTmp: [],
     },
   },
@@ -58,26 +55,30 @@ Page({
       }
     }).then(res => {
 
-      switch (tabIndex) {
-        case 0:
-          this.listRender('canUse', tabIndex, res, isReload);
-          break;
-        case 1:
-          this.listRender('expire', tabIndex, res, isReload);
-          break;
-        case 2:
-          this.listRender('used', tabIndex, res, isReload);
-          break;
-        default:
+      // res.data = aMockListCanUse;
+
+      if (res.data && res.data.length) {
+        switch (tabIndex) {
+          case 0:
+            this.listRender('canUse', tabIndex, res, isReload);
+            break;
+          case 1:
+            this.listRender('expire', tabIndex, res, isReload);
+            break;
+          case 2:
+            this.listRender('used', tabIndex, res, isReload);
+            break;
+          default:
+        }
+
+        wx.pageScrollTo({
+          scrollTop: 0,
+          duration: 0
+        });
+
+        wx.hideLoading();
+        wx.stopPullDownRefresh();
       }
-
-      wx.pageScrollTo({
-        scrollTop: 0,
-        duration: 0
-      });
-
-      wx.hideLoading();
-      wx.stopPullDownRefresh();
     });
   },
   // 列表渲染
@@ -95,11 +96,7 @@ Page({
     let tabTitle = this.data.tabTitle;
 
     if (isReload) {
-      for (let i = 0; i <= listTmp.length; i++) {
-        if (i > 0) {
-          renderList.list[i] = [];
-        }
-      }
+      renderList.list = [];
       listCount = 0;
     }
 
@@ -108,10 +105,6 @@ Page({
     tabTitle[tabIndex].count = res.data.length;
 
     tabTitle[tabIndex].name = tabTitleList[tabIndex].name + '(' + res.data.length + ')';
-
-    if (!tabTitle[tabIndex].count) {
-      renderList.listNone = true;
-    }
 
     let data = {
       [listName]: renderList,
@@ -123,8 +116,7 @@ Page({
 
   },
   listRenderLoad(listName) {
-    if (this.data.listCount === this.data[listName].listTmp.length - 1) {
-      showToastError('没有更多数据了');
+    if (this.data[listName].list.length === this.data[listName].listTmp.length) {
       return;
     };
 

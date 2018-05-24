@@ -9,7 +9,7 @@
 
       <block wx:if="{{itemIconType === 'start' || itemIconType === 'end'}}">
         <view class="item-point {{itemIconType}}"></view>
-        <view class="item-point-line {{itemIconType}}"></view>
+        <view class="item-point-line {{itemIconType}} {{isHidePointline ? 'hide' : ''}}"></view>
       </block>
 
       <block wx:if="{{itemIconType === 'custom'}}">

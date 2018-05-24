@@ -40,6 +40,10 @@ Component({
       type: String,
       value: 'none'
     },
+    isHidePointline: {
+      type: Boolean,
+      value: false
+    },
     // 是否隐藏 item 左边
     isHideItemLeft: {
       type: Boolean,

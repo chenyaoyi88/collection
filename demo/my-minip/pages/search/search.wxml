@@ -1,0 +1,65 @@
+<view class="site-box">
+
+  <view class="site-search-box">
+    <view class="search-box">
+
+      <view class="search-input-box">
+        <view class="search-icon-box">
+          <icon class="search-icon" size="12" type="search"></icon>
+        </view>
+        <input class="search-input" focus="true" type="text" placeholder="{{ '请输入' + desText }}" bindinput="search" value="{{ inputValue }}"></input>
+        <view class="clear-icon-box" bindtap="clear">
+          <icon class="clear-icon" size="15" type="clear"></icon>
+        </view>
+      </view>
+
+      <view class="search-cancel">
+        <view bindtap="goBack">取消</view>
+      </view>
+    </view>
+  </view>
+
+  <block wx:if="{{ isShowPosition }}">
+    <view class="site-current-pos" wx:if="{{ isShowPosition }}" data-info="{{ oCurrentPosition }}" bindtap="selected">
+      <view class="site-current-title">当前位置</view>
+      <view class="site-current-box">
+        <view class="site-current-name">{{ sCurrentPosition || '--' }}</view>
+        <view class="site-current-info" bindtap="getPositionAuto">
+          <image class="site-current-img" src="{{ imgTarget }}" mode="aspectFit" alt=""></image>{{ isGettingPosition ? '正在定位' : '重新定位'}}
+        </view>
+      </view>
+    </view>
+
+    <view class="site-current-pos" wx:if="{{ isShowPosition && oCurrentPosition }}">
+      <view class="site-current-title">当前位置附近</view>
+      <view class="site-list">
+
+        <view class='_list' wx:if="{{ isGettingPosition }}">
+          <view class="site-list-item">
+            <view>正在获取当前位置附近信息...</view>
+          </view>
+        </view>
+
+        <view class='_list' wx:if="{{ !isGettingPosition }}" wx:for="{{ aNearbyPosition }}" wx:for-item="item" wx:for-index="index" wx:key="index"  data-info="{{ item }}" bindtap="selected">
+          <view class="site-list-item">
+            <view class='_div'>{{ item.siteName }}</view>
+            <view class="_div light">{{ item.address }}</view>
+          </view>
+        </view>
+
+      </view>
+    </view>
+  </block>
+
+  <view class="site-list-box" wx:if="{{ results.length }}">
+    <view class="site-list">
+      <view class='_list' wx:for="{{ results }}" wx:for-item="item" wx:for-index="index" wx:key="index" data-info="{{ item }}" bindtap="selected" wx:if="{{ item.address }}">
+        <view class="site-list-item">
+          <view>{{ item.name }}</view>
+          <view class="light">{{ item.address }}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>

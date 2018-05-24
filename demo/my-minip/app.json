@@ -1,11 +1,14 @@
 {
   "pages": [
+    "pages/contact/contact",
     "pages/me/me",
     "pages/index/index",
     "pages/order/order",
     "pages/cartype/cartype",
     "pages/remark/remark",
     "pages/login/login",
+    "pages/search/search",
+    "pages/address/address",
     "pages/coupon/coupon",
     "pages/webview/webview",
     "pages/demo/demo"

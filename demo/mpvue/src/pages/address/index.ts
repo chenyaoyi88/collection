@@ -58,8 +58,8 @@ class Index extends Vue {
           this.addressListNone = false;
         } else {
           if (reload) {
-            this.addressListNone = true;
             this.addressList = [];
+            this.addressListNone = true;
           } else {
             if (this.addressList.length) {
               this.isShowNomore = true;
@@ -79,7 +79,7 @@ class Index extends Vue {
   // 加载更多
   getMoreListData() {
     if (this.isShowNomore) return;
-    this.start += 1;
+    this.start += 10;
     this.getAddressBookRest(false);
   }
 
@@ -177,8 +177,10 @@ class Index extends Vue {
           this.addressList[group].splice(groupIndex, 1);
           for (let item of this.addressList) {
             if (!(item && item.length)) {
-              this.addressListNone = true;
-              this.isShowNomore = false;
+              if (!this.start) {
+                this.addressListNone = true;
+                this.isShowNomore = false;
+              }
             }
           }
           showToastError('删除成功');

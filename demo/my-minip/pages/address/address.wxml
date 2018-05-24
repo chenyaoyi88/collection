@@ -1,0 +1,37 @@
+<view class="address-container">
+
+  <view class="address-none" wx:if="{{ addressListNone }}">暂无数据</view>
+
+  <view class="address-list">
+
+    <block wx:if="{{ addressList.length }}" wx:for="{{ addressList }}" wx:for-item="item" wx:for-index="index" wx:key="{{index}}">
+      <block wx:for="{{ item }}" wx:for-item="list" wx:for-index="listIndex" wx:key="{{listIndex}}">
+        <view class="address-box">
+          <view class="address-info" bindtap="select">
+            <view class="user-info">
+              <view class="user-info-l">
+                <text class="user-name">{{ list.name }}</text>
+                <text class="user-mobile">{{ list.mobile }}</text>
+              </view>
+              <view class="user-info-r">{{ list.remark }}</view>
+            </view>
+            <view class="address-name">{{ list.address }}</view>
+            <view class="address-detail">{{ list.addressName }} {{ list.street || '' }}</view>
+          </view>
+          <view class="address-ctrl" wx:if="{{ isShowEdit }}">
+            <view class="address-ctrl-btn address-edit" bindtap="edit">编辑</view>
+            <view class="address-ctrl-btn address-delete" bindtap="del">删除</view>
+          </view>
+        </view>
+      </block>
+    </block>
+
+    <view class="list-nomore" wx:if="{{ isShowNomore }}">-- 没有更多数据了 --</view>
+
+  </view>
+
+  <view class="address-add-btn">
+    <button class="ghb-btn" bindtap="addNewAddress">+ 新增地址</button>
+  </view>
+
+</view>

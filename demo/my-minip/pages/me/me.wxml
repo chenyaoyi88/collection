@@ -25,6 +25,10 @@
             item-value-right="{{ LogisticsCoupons.length ? LogisticsCoupons.length + '张可用' : '' }}"
             binditemClickEvent="gotoCoupon"
           />
+          <component-item 
+            item-value-left-center="地址管理" 
+            binditemClickEvent="gotoAddress"
+          />
         </block>
 
       </view>

@@ -34,7 +34,6 @@ switch (appEnv) {
 }
 
 const AK = 'qLnjq14R4oIEEwtqHM3hcuRMsn1q61Hq';
-
 const API = {
   BAIDU_MAP: {
     SEARCH: `https://api.map.baidu.com/place/v2/search?ak=${AK}&output=json`,
@@ -69,13 +68,16 @@ const API = {
   // 发起支付（http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/18%20%E6%94%AF%E4%BB%98/18-05%20%E5%8F%91%E8%B5%B7%E6%94%AF%E4%BB%98）
   PAY: `${APP_REQUEST_HOST}/api/v1/payment/pay`,
   // 保存地址（http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/26%20%20%E5%B8%B8%E7%94%A8%E5%9C%B0%E5%9D%80/26-2%20%E5%88%9B%E5%BB%BA%E5%B8%B8%E7%94%A8%E5%9C%B0%E5%9D%80）
-  CREATE: `${APP_REQUEST_HOST}/api/v1/addressBookRest/create`,
+  // 更新地址（http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/26%20%20%E5%B8%B8%E7%94%A8%E5%9C%B0%E5%9D%80/26-3%20%E6%9B%B4%E6%96%B0%E5%B8%B8%E7%94%A8%E5%9C%B0%E5%9D%80）
+  // 删除地址（http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/26%20%20%E5%B8%B8%E7%94%A8%E5%9C%B0%E5%9D%80/26-4%20%E5%88%A0%E9%99%A4%E5%B8%B8%E7%94%A8%E5%9C%B0%E5%9D%80）
+  ADDRESS: `${APP_REQUEST_HOST}/api/v1/addressBookRest`,
+  // 获取常用地址列表
+  ADDRESSBOOKREST: `${APP_REQUEST_HOST}/api/v1/addressBookRest/list`,
   // 查询优惠券列表，查询用（http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/13%20%E4%BC%98%E6%83%A0%E5%88%B8/13-05_%E6%A0%B9%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%8E%B7%E5%8F%96%E4%BC%98%E6%83%A0%E5%8A%B5%E5%88%97%E8%A1%A8）
   LISTCOUPONBYTYPE: `${APP_REQUEST_HOST}/api/v1/coupon/listCouponByType`,
   // 使用优惠券列表，下单用（http://192.168.7.90:8899/API_%E5%95%86%E5%AE%B6APP/10%20%E7%89%A9%E6%B5%81/10-10%20%E4%BC%98%E6%83%A0%E5%88%B8%E5%88%97%E8%A1%A8）
   LOGISTICSCOUPONS: `${APP_REQUEST_HOST}/api/v1/logistics/coupons`,
 };
-
 
 // 接口地址
 export default API;

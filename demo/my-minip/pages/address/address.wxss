@@ -1,0 +1,76 @@
+page {
+  background-color: #f5f5f5;
+}
+
+.address-none {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: calc(100vh - 94rpx);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ccc;
+}
+
+.address-box {
+  background-color: #fff;
+  font-size: 28rpx;
+  margin-top: 20rpx;
+}
+
+.address-box .address-info {
+  padding: 20rpx;
+}
+
+.address-box .address-info .user-info {
+  color: #aaa;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.address-box .address-info .address-name {
+  margin: 6rpx 0;
+}
+
+.address-box .address-ctrl {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  border-top: 1rpx solid #eaeaea;
+}
+
+.address-box .address-ctrl .address-ctrl-btn {
+  padding: 16rpx 20rpx;
+  margin: 0 20rpx;
+}
+
+.address-box .address-ctrl .address-delete {
+  color: #f13744;
+}
+
+.user-info-l .user-mobile {
+  margin: 0 20rpx;
+}
+
+.address-list {
+  padding-bottom: 94rpx;
+}
+
+.address-add-btn {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 100%;
+  box-shadow: 0 -1rpx 0 #eaeaea;
+}
+
+.address-add-btn .ghb-btn {
+  font-size: 32rpx;
+  color: #f13744;
+  background-color: #fff;
+}

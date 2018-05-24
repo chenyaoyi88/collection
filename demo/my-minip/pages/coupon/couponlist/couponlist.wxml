@@ -1,7 +1,7 @@
 <!-- 组件模板 -->
 
 <view class="coupon-list-box">
-  <block wx:if="{{ coupon.listNone }}">
+  <block wx:if="{{ !coupon.list.length }}">
     <view class="coupon-list-none fixed">-- {{ couponNoneText }} --</view>
   </block>
   <block wx:if="{{ coupon.list.length }}" wx:for="{{ coupon.list }}" wx:for-item="item" wx:for-index="index" wx:key="{{index}}">

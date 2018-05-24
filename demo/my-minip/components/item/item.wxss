@@ -76,6 +76,10 @@
   top: 0;
 }
 
+.item .item-l .item-point-line.hide {
+  display: none;
+}
+
 .item .item-r.no-border-top {
   border-top: none;
 }
@@ -111,6 +115,10 @@
 .item-r .item-r-arrow .img-item-arrow {
   width: 16rpx;
   height: 26rpx;
+}
+
+.item-r .item-input {
+  width: 100%;
 }
 
 /* 定制样式 */

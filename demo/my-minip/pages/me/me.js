@@ -39,6 +39,13 @@ Page({
     });
   },
 
+  // 点击去地址管理页面
+  gotoAddress() {
+    wx.navigateTo({
+      url: '../address/address?from=me'
+    });
+  },
+
   // 收费标准 webview h5页面
   ghbLogisticFee() {
     wx.navigateTo({
@@ -109,7 +116,7 @@ Page({
             });
           }
         });
-        
+
         this.getCouponListFormIndex();
       } else {
         this.setData({

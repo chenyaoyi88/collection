@@ -80,3 +80,10 @@ button::after {
 .mg20-lr {
   margin: 0 20rpx;
 }
+
+.list-nomore {
+  padding: 10px 0;
+  text-align: center;
+  color: #a0a0a0;
+  font-size: 14px;
+}
