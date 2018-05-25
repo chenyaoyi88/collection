@@ -1,26 +1,41 @@
+import { mockCheckboxList, mockRadioList } from './mock';
+
 Page({
   data: {
-    text: '',
-    list: [{
-      pagePath: '../../pages/index/index',
-      text: '叫车',
-      iconPath: '../../assets/images/callcar.png',
-      selectedIconPath: '../../assets/images/callcar_active.png'
-    },{
-      pagePath: '../../pages/demo/demo',
-      text: '叫车',
-      iconPath: '../../assets/images/order.png',
-      selectedIconPath: '../../assets/images/order_active.png'
-    },{
-      pagePath: '../../pages/logs/logs',
-      text: '叫车',
-      iconPath: '../../assets/images/me.png',
-      selectedIconPath: '../../assets/images/me_active.png'
-    }]
+    isShowSelect: false,
+    oSelect: null,
+    mockCheckboxList,
+    mockRadioList,
+    dataList: []
+  },
+  test() {
+    this.data.oSelect.show();
+  },
+  selectEvent(e) {
+    this.setData({
+      oSelect: e.detail.oSelect
+    });
+  },
+  checkboxChange(e) {
+    const aSelected = e.detail.aSelected;
+    const sSelected = e.detail.sSelected;
+    // console.log('选中的数组', aSelected);
+    // console.log('选中的数组转字符串', sSelected);
+  },
+  radioChange(e) {
+    console.log(e.detail);
+  },
+  selectComfirm(e) {
+    console.log(e.detail);
   },
   onLoad: function () {
-    this.setData({
-      text: 'demo页面内容'
-    })
+
+    setTimeout(() => {
+      this.setData({
+        // dataList: mockCheckboxList
+        dataList: mockRadioList
+      });
+    }, 300);
+
   }
 })

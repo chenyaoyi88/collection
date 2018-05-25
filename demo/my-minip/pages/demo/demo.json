@@ -1,7 +1,7 @@
 {
   "navigationBarTitleText": "demo页面标题",
   "usingComponents": {
-    "component-item": "../../components/item/item",
+    "component-select": "../../components/select/select",
     "component-tabbar": "../../components/tabbar/tabbar"
   }
 }

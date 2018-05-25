@@ -6,108 +6,190 @@ Component({
     multipleSlots: true
   },
   properties: {
-    // item 类型（input/point/custom)
-    itemType: {
+    type: {
       type: String,
-      value: 'normal'
+      value: 'checkbox'
     },
-    // item class 样式
-    itemClass: {
+    title: {
       type: String,
-      value: ''
+      value: '附加服务'
     },
-    // icon 图标地址
-    itemIcon: {
+    list: {
+      type: Array,
+      value: []
+    },
+    name: {
       type: String,
-      value: ''
+      value: 'name'
     },
-    // icon 类型（icon/start/end/custom）
-    itemIconType: {
+    value: {
       type: String,
-      value: 'icon'
-    },
-    // 是否隐藏 item 左边
-    isHideItemLeft: {
-      type: Boolean,
-      value: false,
-    },
-    // 是否隐藏 item 箭头图标
-    isHideItemArrow: {
-      type: Boolean,
-      value: false,
-    },
-    // 是否隐藏顶部边线
-    isHideBorderTop: {
-      type: Boolean,
-      value: false,
-    },
-    // item 左侧的值 top
-    itemValueLeftTop: {
-      type: String,
-      value: ''
-    },
-    // item 左侧的值 center
-    itemValueLeftCenter: {
-      type: String,
-      value: ''
-    },
-    // item 左侧的值 bottom
-    itemValueLeftBottom: {
-      type: String,
-      value: ''
-    },
-    // item 右侧的值
-    itemValueRight: {
-      type: String,
-      value: ''
-    },
-    // input 的类型
-    itemTnputType: {
-      type: String,
-      value: 'text'
-    },
-    // input 最大限制
-    itemInputMaxlength: {
-      type: Number,
-      value: 140
-    },
-    // input 值
-    itemInputValue: {
-      type: String,
-      value: ''
-    },
-    // placeholder 文字显示
-    itemInputPlc: {
-      type: String,
-      value: ''
-    },
-    // placeholder style 样式
-    itemInputPlcStyle: {
-      type: String,
-      value: 'color:#b2b2b2'
+      value: 'value'
     }
   },
   data: {
-    // 这里是一些组件内部数据
-    someData: {}
+    isShow: false,
+    isShowBg: false,
+    isShowContent: false,
+    isLock: false,
+    currentIndex: -1,
+    aSelected: [],
+    sSelected: '',
+    img: {
+      cancel: './icon/close.png',
+      selectedCheckbox: './icon/selected_checkbox.png',
+      selectedRadio: './icon/selected_radio.png',
+      unSelected: './icon/unselected.png',
+    }
   },
   methods: {
-    // 点击 item
-    itemClickEvent: function (e) {
-      const myEventDetail = {
-        e,
-        item: this
-      };
-      const myEventOption = {};
-      this.triggerEvent('itemClickEvent', myEventDetail, myEventOption);
+    reset() {
+      if (this.data.type === 'checkbox') {
+        const aSelected = [];
+        const sSelected = '';
+        let list = this.data.list;
+        for (let i = 0; i < list.length; i += 1) {
+          list[i].selected = false;
+        }
+        this.setData({
+          aSelected,
+          sSelected,
+          list
+        });
+      } else if (this.data.type === 'radio') {
+        let list = this.data.list;
+        for (let i = 0; i < list.length; i += 1) {
+          list[i].selected = false;
+        }
+        this.setData({
+          list
+        });
+      }
     },
-    // input 输入
-    itemInputEvent: function (e) {
-      const myEventDetail = {
-        e
-      };
-      const myEventOption = {};
-      this.triggerEvent('itemInputEvent', myEventDetail, myEventOption);
-    }
+    show() {
+
+      this.setData({
+        isShow: true
+      }, () => {
+        setTimeout(() => {
+          this.setData({
+            isShowBg: true,
+            isShowContent: true
+          });
+        }, 50);
+      });
+
+    },
+    hide() {
+      this.setData({
+        isShowBg: false,
+        isShowContent: false
+      }, () => {
+        setTimeout(() => {
+          this.setData({
+            isShow: false
+          });
+          this.triggerEvent('selectHideEvent', {
+            isShow: false
+          }, {});
+        }, 300);
+      });
+    },
+    cancel() {
+      this.hide();
+    },
+
+    select(index = -1) {
+
+      if (this.data.type === 'checkbox') {
+        let aSelected = [];
+        let sSelected = '';
+
+        for (let i = 0; i < this.data.list.length; i += 1) {
+          if (this.data.list[i].selected) {
+            sSelected += `${this.data.list[i].name} `;
+            aSelected.push(this.data.list[i]);
+          }
+        }
+
+        this.setData({
+          aSelected,
+          sSelected,
+        });
+
+        this.triggerEvent('checkboxChangeEvent', {
+          aSelected,
+          sSelected,
+        }, {});
+
+      } else if (this.data.type === 'radio') {
+        let list = this.data.list;
+        for (let i = 0; i < list.length; i += 1) {
+          list[i].selected = false;
+        }
+        list[index].selected = true;
+
+        this.setData({
+          list
+        });
+
+        this.triggerEvent('radioChangeEvent', {
+          oSelected: list[index]
+        }, {});
+
+      }
+    },
+
+    checkboxChange(e) {
+      const index = e.currentTarget.dataset.index;
+      const item = e.currentTarget.dataset.item;
+
+      let list = this.data.list;
+      list[index].selected = !list[index].selected;
+
+      this.setData({
+        list
+      }, () => {
+        // 处理
+        this.select();
+      });
+    },
+    radioChange(e) {
+      const index = e.currentTarget.dataset.index;
+      const item = e.currentTarget.dataset.item;
+
+      if (this.data.currentIndex === index) return;
+      let list = this.data.list;
+      list[index].selected = true;
+      const currentIndex = index;
+
+      this.setData({
+        list,
+        currentIndex
+      }, () => {
+        this.select(currentIndex);
+      });
+
+    },
+
+    // 底部确定按钮
+    selectComfirm() {
+      this.hide();
+      if (this.data.type === 'checkbox') {
+        this.triggerEvent('selectComfirmEvent', {
+          aSelected: this.data.aSelected,
+          sSelected: this.data.sSelected
+        }, {});
+      } else if (this.data.type === 'radio') {
+        this.triggerEvent('selectComfirmEvent', {
+          oSelected: this.data.list[this.data.currentIndex]
+        }, {});
+      }
+    },
+  },
+  ready() {
+    this.triggerEvent('selectEvent', {
+      oSelect: this
+    }, {});
   }
 })

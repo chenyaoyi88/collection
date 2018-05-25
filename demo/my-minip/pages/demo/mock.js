@@ -1,0 +1,3 @@
+export const mockCheckboxList = [{ "id": 8, "name": "推车", "remark": "需要司机提供推车设备" }, { "id": 9, "name": "搬运", "remark": "需要司机提供搬运服务，价格面议" }, { "id": 10, "name": "代收", "remark": "需要司机提供代收货款的服务，价格方式面议" }];
+
+export const mockRadioList = [{ "id": 1, "reason": "下错订单" }, { "id": 3, "reason": "6666666666" }, { "id": 4, "reason": "价格太高" }, { "id": 5, "reason": "车到现场发现装不下" }, { "id": 6, "reason": "等太久了都没车" }];

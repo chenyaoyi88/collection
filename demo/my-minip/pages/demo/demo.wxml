@@ -1,5 +1,25 @@
 <!--logs.wxml-->
 <view class="container">
-  <view>{{ text }}}</view>
-  <component-tabbar list="{{list}}" class="tabbar-class" tab-index="1"></component-tabbar>
+  <button class='ghb-btn' bindtap='test'>显示</button>
 </view>
+
+<!-- <component-select 
+  type="checkbox"
+  name="name"
+  value="remark"
+  list="{{ dataList }}"
+  bindselectEvent="selectEvent"
+  bindcheckboxChangeEvent="checkboxChange"
+  bindselectComfirmEvent="selectComfirm"
+></component-select> -->
+
+<component-select 
+  type="radio"
+  title="取消订单原因"
+  name="reason"
+  value="id"
+  list="{{ dataList }}"
+  bindselectEvent="selectEvent"
+  bindradioChangeEvent="radioChange"
+  bindselectComfirmEvent="selectComfirm"
+></component-select>

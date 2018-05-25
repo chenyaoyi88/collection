@@ -2,6 +2,7 @@
   "navigationBarTitleText": "订单",
   "usingComponents": {
     "component-nodata": "../../components/nodata/nodata",
-    "component-tabswitch": "../../components/tabswitch/tabswitch"
+    "component-tabswitch": "../../components/tabswitch/tabswitch",
+    "component-orderlist": "./orderlist/orderlist"
   }
 }

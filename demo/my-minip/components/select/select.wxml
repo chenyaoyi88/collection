@@ -1,56 +1,57 @@
-<!-- 组件模板 -->
+<view class="select {{ isShow ? 'show' : '' }}" hidden="{{ !isShow }}">
+  <view class="select-bg {{ isShowBg ? 'show' : '' }}" bindtap='hide'></view>
+  <view class="select-content {{ isShowContent ? 'show' : '' }}">
+    <view class='select-content-box'>
 
-  <view>
-    <view class='maskLayer' v-if="isShowMask" :animation='aniSlideMaskData' bindtap='hideSlider'></view>
-    <view class='sliderContent' v-if="isShowMask" :animation='aniSlideContentData' :style="{transform: 'translateY('+300+'px)'}">
-      <!-- <p>这里面是内容</p> -->
-      <view class="slider-content-box">
-        <view class="slider-title-box">
-          <view class="cancel" bindtap="sliderCancel">
-            <image class="cancel-img" src="./icon/close.png" alt="" mode="aspectFit"></image>
-          </view>
-          <view class="title">{{ title }}</view>
+      <view class='select-title-box'>
+        <view class='cancel'>
+          <image class='cancel-img' src="{{ img.cancel }}" mode="aspectFit"></image>
         </view>
-        <view class="slider-content">
-          
-          <block v-if="type === 'checkbox'">
-            <view class="slider-item" v-for="(item, index) of dataList" :key="index" bindtap="checkboxChange(item, index)">
-              <view class="slider-check-item">
-                <view class="name">{{ item[name] }}</view>
-                <view class="remark">{{ item[value] }}</view>
-                <view class="check">
-                  <block v-if="item.selected">
-                    <image class="selected-img" src="./icon/selected_checkbox.png" alt="" mode="aspectFit"></image>
-                  </block>
-                  <block v-else>
-                    <view class="uncheck"></view>
-                  </block>
-                </view>
-              </view>
-            </view>
-          </block>
-
-          <block v-if="type === 'radio'">
-            <view class="slider-item" v-for="(item, index) in dataList" :key="item.id" bindtap="radioChange(item, index)">
-              <view class="slider-check-item">
-                <view class="name">{{ item[name] }}</view>
-                <view class="check">
-                  <block v-if="item.selected">
-                    <image class="selected-img" src="./icon/selected_radio.png" alt="" mode="aspectFit"></image>
-                  </block>
-                  <block v-else>
-                    <view class="uncheck"></view>
-                  </block>
-                </view>
-              </view>
-            </view>
-            <view class="slider-notice">已付款项会在取消后第二天返回您的钱包</view>
-          </block>
-
-        </view>
-        <view class="slider-comfirm">
-          <button class="ghb-btn" bindtap="sliderComfirm">确定</button>
-        </view>
+        <view class='name'>{{ title }}</view>
       </view>
+
+      <view class='select-main'>
+
+        <block wx:if="{{ type === 'checkbox' }}">
+          <view class="select-item" wx:for="{{ list }}" wx:for-index="index" wx:for-item="item" wx:key="{{ index }}" data-item="{{ item }}" data-index="{{ index }}" bindtap="checkboxChange">
+            <view class="select-check-item">
+              <view class="name">{{ item[name] }}</view>
+              <view class="remark">{{ item[value] }}</view>
+              <view class="check">
+                <block wx:if="{{ item.selected }}">
+                  <image class="selected-img" src="{{ img.selectedCheckbox }}" alt="" mode="aspectFit"></image>
+                </block>
+                <block wx:else>
+                  <view class="uncheck"></view>
+                </block>
+              </view>
+            </view>
+          </view>
+        </block>
+        
+        <block wx:if="{{ type === 'radio' }}">
+          <view class="select-item" wx:for="{{ list }}" wx:for-index="index" wx:for-item="item" wx:key="{{ index }}" data-item="{{ item }}" data-index="{{ index }}" bindtap="radioChange">
+            <view class="select-check-item">
+              <view class="name">{{ item[name] }}</view>
+              <view class="check">
+                <block wx:if="{{ item.selected }}">
+                  <image class="selected-img" src="{{ img.selectedRadio }}" alt="" mode="aspectFit"></image>
+                </block>
+                <block wx:else>
+                  <view class="uncheck"></view>
+                </block>
+              </view>
+            </view>
+          </view>
+          <view class="select-notice">已付款项会在取消后第二天返回您的钱包</view>
+        </block>
+
+      </view>
+
+      <view class="select-comfirm">
+        <button class="ghb-btn" bindtap='selectComfirm'>确定</button>
+      </view>
+
     </view>
   </view>
+</view>

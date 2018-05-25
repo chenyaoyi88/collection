@@ -14,7 +14,7 @@ const app = getApp();
 Page({
   data: {
     iconList,
-    isLogin: false,
+    isLogin: wx.getStorageSync('token') ? true : false,
     // 发货信息
     startInfo: {},
     // 收货信息
@@ -120,7 +120,6 @@ Page({
 
   },
   nextStep() {
-    console.log(this.data);
 
     // 没有登录去登录页面
     if (!this.data.isLogin) {
@@ -163,9 +162,9 @@ Page({
     }
 
   },
-  onLoad() {
-    this.setData({
-      isLogin: wx.getStorageSync('token') ? true : false
-    });
-  }
+  // onLoad() {
+  //   this.setData({
+  //     isLogin: wx.getStorageSync('token') ? true : false
+  //   });
+  // }
 });

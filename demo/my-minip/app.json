@@ -1,8 +1,9 @@
 {
   "pages": [
+    "pages/demo/demo",
+    "pages/order/order",
     "pages/me/me",
     "pages/index/index",
-    "pages/order/order",
     "pages/cartype/cartype",
     "pages/remark/remark",
     "pages/login/login",
@@ -10,8 +11,7 @@
     "pages/contact/contact",
     "pages/address/address",
     "pages/coupon/coupon",
-    "pages/webview/webview",
-    "pages/demo/demo"
+    "pages/webview/webview"
   ],
   "window": {
     "backgroundTextStyle": "light",

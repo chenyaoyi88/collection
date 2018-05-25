@@ -1,5 +1,5 @@
 <!-- 组件模板 -->
-<view class="item {{itemClass}}" bindtap="itemClickEvent">
+<view class="item item-class {{itemClass}}" bindtap="itemClickEvent">
 
   <block wx:if="{{itemIconType !== 'none' }}">
     <view class="item-l">
@@ -7,7 +7,7 @@
         <image wx:if="{{itemIcon}}" class="item-icon" src="{{itemIcon}}" mode="aspectFit"></image>
       </block>
 
-      <block wx:if="{{itemIconType === 'start' || itemIconType === 'end'}}">
+      <block wx:if="{{itemIconType === 'start' || itemIconType === 'end'}} || itemIconType === 'mid'}}">
         <view class="item-point {{itemIconType}}"></view>
         <view class="item-point-line {{itemIconType}} {{isHidePointline ? 'hide' : ''}}"></view>
       </block>

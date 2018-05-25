@@ -54,10 +54,6 @@ Page({
   // 确认返回
   confirmGoback() {
 
-    this.setData({
-      isLogin: wx.getStorageSync('token') ? true : false
-    });
-
     this.data.searchInfo.name = this.data.name;
     this.data.searchInfo.mobile = this.data.mobile;
     this.data.searchInfo.street = this.data.street;

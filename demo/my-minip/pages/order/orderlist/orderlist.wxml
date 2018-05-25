@@ -1,0 +1,91 @@
+<view class="tab {{ currentIndex === tabIndex ? 'active': '' }}">
+
+  <component-nodata 
+    is-show="{{ orderList.none }}"
+    text="{{ isShowNoneText }}">
+  ></component-nodata>
+
+  <block wx:if="{{ orderList.list.length }}" wx:for="{{ orderList.list }}" wx:for-item="item" wx:for-index="index" wx:key="{{index}}">
+    <view class="list-box" wx:for="{{ item }}" wx:for-item="order" wx:for-index="orderIndex" wx:key="{{ orderIndex }}">
+      <view class="list-tile">
+        <view class="list-tile-l">{{ order.logisticsOrderTime }}</view>
+        <view class="list-tile-r {{ (order.paymentStatus == 0 || order.paymentStatus == 10) ? 'color-notice' : '' }}">{{ order.statusText }}</view>
+      </view>
+      <view class="list-content">
+
+        <component-item
+          item-class="order" 
+          item-icon-type="start" 
+          item-value-left-top="" 
+          item-value-left-center="{{ order.senderAddressName }}"
+          item-value-left-bottom="{{ order.senderSiteName + ' ' + (order.senderStreet || '') }}" 
+          is-hide-item-arrow="true"
+          is-hide-border-top="true" 
+        ></component-item>
+
+        <block wx:if="{{ order.listOfHalfwayAddress.length }}" wx:for="{{ order.listOfHalfwayAddress }}" wx:for-item="halfway" wx:for-index="halfwayIndex" wx:key="{{ halfwayIndex }}">
+          <view>
+
+            <component-item
+              item-class="order item-halfway" 
+              item-icon-type="mid" 
+              item-value-left-top="" 
+              item-value-left-center="{{ halfway.siteName }}"
+              item-value-left-bottom="{{ halfway.addressName }}" 
+              is-hide-item-arrow="true"
+              is-hide-border-top="true"
+            ></component-item>
+
+          </view>
+        </block>
+
+          <component-item
+            item-class="order" 
+            item-icon-type="end" 
+            item-value-left-top="" 
+            item-value-left-center="{{ order.receiverAddressName }}"
+            item-value-left-bottom="{{ order.receiverSiteName + ' ' + (order.receiverStreet || '') }}" 
+            is-hide-item-arrow="true"
+            is-hide-border-top="true"
+          ></component-item>
+
+        <view class="info">
+
+          <view class="info-car">
+            <text class="info-box">
+              <text class="info-title">车型：</text>
+            <text class="info-text">{{ order.carTypeName }}</text>
+            </text>
+            <text class="info-box">
+              <text class="info-title">额外服务：</text>
+              <text class="info-text">
+                <block wx:if="{{ order.additionalRequests.length }}">{{ order.additionalRequests }}</block>
+                <block wx:else>无</block>
+              </text>
+            </text>
+          </view>
+
+          <view class="info-car">
+            <text class="info-title">订单信息：</text>
+            <text class="info-text">{{ order.goodsDesc }}</text>
+          </view>
+
+        </view>
+      </view>
+      <view class="list-msg">
+        <view class="list-msg-l">订单金额:
+          <text class="color-notice">￥{{ order.paymentAmount }}</text>
+        </view>
+        <!-- 立即支付 + 未支付，显示2个按钮 -->
+        <view class="list-msg-r" wx:if="{{ (order.status === 10 && order.paymentType === 1 && (order.paymentStatus == 0 || order.paymentStatus == 10)) || (order.status === 50 && order.paymentType === 2) }}">
+          <!-- 已送达 + 未支付不可取消，隐藏取消订单按钮 -->
+          <button wx:if="{{ !(order.status === 50 && order.paymentType === 2) }}" class="_button ghb-btn cancel" data-orderid="{{ order.id }}" bindtap="orderCancel">取消订单</button>
+          <button class="_button ghb-btn" data-order="{{ order }}" bindtap="orderPay">支付订单</button>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <view class="list-nomore" wx:if="{{ orderList.nomore }}">-- 没有更多数据了 --</view>
+
+</view>

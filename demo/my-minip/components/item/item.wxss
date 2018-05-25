@@ -58,6 +58,17 @@
   background-color: #f13744;
 }
 
+.item .item-l .item-point.mid {
+  width: 5px;
+  height: 5px;
+  background-color: #ccc;
+  margin-left: -1rpx;
+}
+
+.item-halfway .item-l .item-point.mid {
+  background-color: #f5a623;
+}
+
 .item .item-l .item-point-line {
   position: absolute;
   left: 50%;
@@ -74,6 +85,11 @@
 
 .item .item-l .item-point-line.end {
   top: 0;
+}
+
+.item .item-l .item-point-line.mid {
+  top: 0;
+  height: 100%;
 }
 
 .item .item-l .item-point-line.hide {
@@ -129,4 +145,12 @@
 
 .item-text-light {
   color: #b2b2b2;
+}
+
+.order .item-r {
+  padding: 10rpx 70rpx 10rpx 0;
+}
+
+.order .item-r .item-r-title .item-info-c {
+  color: #333 !important;
 }

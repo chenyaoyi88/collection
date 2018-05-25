@@ -2,6 +2,145 @@ page {
   background-color: #f5f5f5;
 }
 
-.container {
-  color: red;
+.slider {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  /* visibility: hidden;  */
+  visibility: visible;
+}
+
+.slider .slider-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 101;
+  background-color: #000;
+  opacity: 0;
+  transition: 0.3s ease all;
+}
+
+.slider .slider-content {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 102;
+  width: 100%;
+  background: #fff;
+  transition: 0.3s ease all;
+  transform: translate3d(0, 100%, 0);
+  overflow: hidden;
+}
+
+.slider-content-box .slider-title-box {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  padding-top: 40rpx;
+  padding-bottom: 20rpx;
+  position: relative;
+  z-index: 103;
+}
+
+.slider-content-box .slider-title-box .cancel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 30rpx;
+}
+
+.slider-content-box .slider-title-box .cancel .cancel-img {
+  padding-top: 20rpx;
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.slider-content-box .slider-title-box .name {
+  flex: 1;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-content-box .slider-main {
+  min-height: 220px;
+  overflow-y: auto;
+}
+
+.slider-item {
+  padding: 15px 15px 15px 0;
+  margin-left: 15px;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.slider-radio {
+  padding: 10px;
+}
+
+.slider-notice {
+  font-size: 12px;
+  color: #b2b2b2;
+  text-align: center;
+  padding: 18px 0;
+}
+
+.slider-check-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.slider-check-item .name {
+  margin-right: 20rpx;
+  font-size: 30rpx;
+}
+
+.slider-check-item .remark {
+  flex: 1;
+  font-size: 26rpx;
+  color: #b2b2b2;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-top: 4rpx;
+}
+
+.slider-check-item .check {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slider-check-item .check .selected-img {
+  width: 36rpx;
+  height: 36rpx;
+}
+
+.slider-check-item .check .uncheck {
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 50%;
+  border: 2rpx solid #b2b2b2;
+}
+
+.slider.show {
+  visibility: visible;
+}
+
+.slider .slider-bg.show {
+  opacity: 0.4;
+}
+
+.slider .slider-content.show {
+  transform: translate3d(0, 0, 0);
 }

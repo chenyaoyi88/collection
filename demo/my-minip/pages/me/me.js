@@ -120,6 +120,7 @@ Page({
 
   onShow() {
     const _this = this;
+
     this.setData({
       isLogin: wx.getStorageSync('token') ? true : false
     }, () => {

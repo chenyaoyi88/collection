@@ -1,0 +1,7 @@
+{
+    "component": true,
+    "usingComponents": {
+      "component-item": "../../../components/item/item",
+      "component-nodata": "../../../components/nodata/nodata"
+    }
+}
