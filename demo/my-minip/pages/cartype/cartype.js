@@ -1,6 +1,15 @@
-
-import { goBackSetData, ghbRequest, zerofillBack, showToastError } from '../../utils/index';
+import {
+  goBackSetData,
+  ghbRequest,
+  zerofillBack,
+  showToastError
+} from '../../utils/index';
 import API from '../../api/api';
+import {
+  eventBusEmit,
+  eventBusRemove,
+  eventBusOn
+} from '../event';
 
 Page({
   data: {
@@ -44,8 +53,9 @@ Page({
 
   // 选择车型
   cartypeSelect(e) {
-    // console.log(e.currentTarget.dataset.item);
-    goBackSetData({ carInfo: e.currentTarget.dataset.item }, 2);
+    eventBusEmit('getSelectedCartype', {
+      carInfo: e.currentTarget.dataset.item
+    });
     wx.navigateBack();
   },
 

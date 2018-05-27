@@ -77,10 +77,10 @@
 }
 
 .list-nomore {
-  padding: 10px 0;
+  padding-bottom: 20rpx;
   text-align: center;
   color: #a0a0a0;
-  font-size: 14px;
+  font-size: 28rpx;
 }
 
 .color-notice {

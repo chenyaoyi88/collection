@@ -7,7 +7,7 @@
     <block wx:if="{{ addressList.length }}" wx:for="{{ addressList }}" wx:for-item="item" wx:for-index="index" wx:key="{{index}}">
       <block wx:for="{{ item }}" wx:for-item="list" wx:for-index="listIndex" wx:key="{{listIndex}}">
         <view class="address-box">
-          <view class="address-info" bindtap="select">
+          <view class="address-info" data-info="{{ list }}" bindtap="select">
             <view class="user-info">
               <view class="user-info-l">
                 <text class="user-name">{{ list.name }}</text>

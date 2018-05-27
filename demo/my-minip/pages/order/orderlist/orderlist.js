@@ -48,12 +48,12 @@ Component({
   methods: {
     orderCancel(e) {
       this.triggerEvent('orderCancel', {
-        tabIndex: e.target.dataset.orderid
+        id: e.target.dataset.orderid
       }, {});
     },
     orderPay(e) {
       this.triggerEvent('orderPay', {
-        tabIndex: e.target.dataset.order
+        order: e.target.dataset.order
       }, {});
     },
     attached() {

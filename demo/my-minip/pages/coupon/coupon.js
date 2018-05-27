@@ -1,8 +1,21 @@
-
-import { ghbRequest, setArrayGroup, showToastError, formatTime } from '../../utils/index';
+import {
+  ghbRequest,
+  setArrayGroup,
+  showToastError,
+  formatTime
+} from '../../utils/index';
 import API from '../../api/api';
-import { aMockListCanUse } from './mock';
-import { tabTitleList } from './utils';
+import {
+  aMockList
+} from './mock';
+import {
+  tabTitleList
+} from './utils';
+import {
+  eventBusEmit,
+  eventBusRemove,
+  eventBusOn
+} from '../event';
 
 Page({
   data: {
@@ -142,6 +155,7 @@ Page({
   },
   // 获取可使用优惠券列表
   getCouponListFormIndex(data) {
+
     wx.showLoading({
       title: '加载中'
     });
@@ -151,24 +165,40 @@ Page({
       url: API.LOGISTICSCOUPONS,
       data
     }).then(res => {
-      let data = {};
+      let couponData = {
+        LogisticsCoupons: [],
+        LogisticsCouponsNone: false
+      };
+
       if (res.data && res.data.length) {
         for (let item of res.data) {
           if (item.id === this.data.couponInfo.id) {
             item.select = true;
           }
+          item.endDateFormat = this.formatCouponTime(item.endDate);
         }
-        data = {
-          LogisticsCoupons: res.data
-        };
+        couponData.LogisticsCoupons = res.data;
       }
-      if (!this.LogisticsCoupons.length) {
-        data = {
-          LogisticsCouponsNone: true
-        };
+
+      if (!couponData.LogisticsCoupons.length) {
+        couponData.LogisticsCouponsNone = true;
       }
-      this.setData(data);
+      this.setData(couponData);
     });
+  },
+  // 选择优惠券之后返回首页
+  couponSelectFormIndex(e) {
+    let isNotUseCoupon = true;
+    let item = null;
+    if (e.detail && e.detail.item) {
+      isNotUseCoupon = false;
+      item = e.detail.item;
+    }
+    this.setData({
+      isNotUseCoupon
+    });
+    eventBusEmit('getCoupon', item);
+    wx.navigateBack();
   },
   formatCouponTime(timestamp) {
     return formatTime(new Date(timestamp))
@@ -179,7 +209,7 @@ Page({
   onLoad(options) {
 
     let data = {
-      from: options.from || 'me'
+      from: options.from || 'index'
     };
 
     if (data.from === 'index') {
@@ -192,13 +222,13 @@ Page({
         isNotUseCoupon = couponInfo.id ? false : true;
       }
 
-      Object.assign({}, data, {
+      data = Object.assign({}, data, {
         couponInfo,
         isNotUseCoupon,
         LogisticsCouponsParams
       });
 
-      // this.getCouponListFormIndex(LogisticsCouponsParams);
+      this.getCouponListFormIndex(LogisticsCouponsParams);
     } else {
       // 来自 我的
 

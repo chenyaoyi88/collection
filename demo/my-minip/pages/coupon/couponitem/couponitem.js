@@ -11,7 +11,7 @@ Component({
       type: Boolean,
       value: false
     },
-    isShowSlect: {
+    isShowSelect: {
       type: Boolean,
       value: false
     }
@@ -23,8 +23,10 @@ Component({
     IMG_SELECT: '../../../assets/images/selected.png'
   },
   methods: {
-    couponClick() {
-      this.triggerEvent('couponClick', {}, {});
+    couponClick(e) {
+      this.triggerEvent('couponClickEvent', {
+        item: this.data.couponInfo
+      }, {});
     },
     couponRuleClick() {
       wx.showModal({

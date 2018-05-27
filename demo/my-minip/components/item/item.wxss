@@ -119,8 +119,10 @@
 
 .item-r .item-r-arrow {
   position: absolute;
-  right: 30rpx;
+  right: 10rpx;
+  top: 0;
   top: 0px;
+  padding: 0 20rpx;
   z-index: 3;
   height: 100%;
   display: flex;
@@ -133,6 +135,11 @@
   height: 26rpx;
 }
 
+.item-r .item-r-arrow .img-item-close {
+  width: 30rpx;
+  height: 30rpx;
+}
+
 .item-r .item-input {
   width: 100%;
 }
@@ -140,7 +147,7 @@
 /* 定制样式 */
 
 .item-point-class .item-r {
-  min-height: 134rpx;
+  min-height: 68rpx;
 }
 
 .item-text-light {

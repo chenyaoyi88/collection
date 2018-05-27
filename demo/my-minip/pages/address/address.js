@@ -1,6 +1,15 @@
-import { goBackSetData, ghbRequest, zerofillBack, showToastError } from '../../utils/index';
+import {
+  goBackSetData,
+  ghbRequest,
+  zerofillBack,
+  showToastError
+} from '../../utils/index';
 import API from '../../api/api';
-import { eventBusEmit, eventBusRemove, eventBusOn } from '../event';
+import {
+  eventBusEmit,
+  eventBusRemove,
+  eventBusOn
+} from '../event';
 
 Page({
   data: {
@@ -36,13 +45,13 @@ Page({
     }
 
     ghbRequest({
-      url: API.ADDRESSBOOKREST,
-      data: {
-        start: this.data.start,
-        limit: this.data.limit,
-        serviceType: 1
-      }
-    }, !isShowLoading)
+        url: API.ADDRESSBOOKREST,
+        data: {
+          start: this.data.start,
+          limit: this.data.limit,
+          serviceType: 1
+        }
+      }, !isShowLoading)
       .then((res) => {
         // console.log(res);
         if (res.data && res.data.length) {
@@ -128,6 +137,33 @@ Page({
     });
   },
 
+  // 选择当前地址
+  select(e) {
+    const mapPosInfo = e.currentTarget.dataset.info;
+    // 只有从 首页的出发点（start）和 目的地（des）进来才能点击选择
+    if (this.data.from === 'start' || this.data.from === 'des') {
+
+      const searchInfo = {
+        desIndex: this.data.desIndex,
+        from: this.data.from,
+        address: mapPosInfo.addressName,
+        siteName: mapPosInfo.address,
+        location: {
+          lat: mapPosInfo.latitude,
+          lng: mapPosInfo.longitude
+        },
+        uid: mapPosInfo.uid || '',
+        name: mapPosInfo.name,
+        mobile: mapPosInfo.mobile || '',
+        street: mapPosInfo.street || '',
+        cityCode: mapPosInfo.cityCode || ''
+      };
+
+      eventBusEmit('getSiteInfo', searchInfo);
+      wx.navigateBack();
+    }
+  },
+
 
   // 删除
   del(e) {
@@ -155,9 +191,9 @@ Page({
     });
 
     ghbRequest({
-      method: 'DELETE',
-      url: `${API.ADDRESS}/${list.id}/delete`,
-    })
+        method: 'DELETE',
+        url: `${API.ADDRESS}/${list.id}/delete`,
+      })
       .then((res) => {
         if (res.statusCode === 200) {
           // 删除成功

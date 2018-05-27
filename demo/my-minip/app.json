@@ -1,17 +1,18 @@
 {
   "pages": [
-    "pages/demo/demo",
+    "pages/index/index",
     "pages/order/order",
     "pages/me/me",
-    "pages/index/index",
-    "pages/cartype/cartype",
-    "pages/remark/remark",
     "pages/login/login",
-    "pages/search/search",
-    "pages/contact/contact",
-    "pages/address/address",
+    "pages/cartype/cartype",
     "pages/coupon/coupon",
-    "pages/webview/webview"
+    "pages/remark/remark",
+    "pages/search/search",
+    "pages/address/address",
+    "pages/contact/contact",
+    "pages/paynow/paynow",
+    "pages/webview/webview",
+    "pages/demo/demo"
   ],
   "window": {
     "backgroundTextStyle": "light",

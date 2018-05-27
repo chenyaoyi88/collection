@@ -1,11 +1,21 @@
-
-import { goBackSetData, ghbRequest, zerofillBack, showToastError } from '../../utils/index';
+import {
+  goBackSetData,
+  ghbRequest,
+  zerofillBack,
+  showToastError
+} from '../../utils/index';
+import {
+  eventBusEmit,
+  eventBusRemove,
+  eventBusOn
+} from '../event';
 
 Page({
   data: {
     goodsRemark: ''
   },
   onLoad(options) {
+    console.log(options);
     this.setData({
       goodsRemark: options.goodsRemark
     });
@@ -21,9 +31,9 @@ Page({
       showToastError('货物信息、备注不能为空');
       return;
     }
-    goBackSetData({
+    eventBusEmit('getGoodsRemark', {
       goodsRemark: this.data.goodsRemark
-    }, 2);
+    });
     wx.navigateBack();
   }
 })

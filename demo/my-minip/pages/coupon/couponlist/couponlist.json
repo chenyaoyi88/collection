@@ -1,6 +1,6 @@
 {
   "component": true,
   "usingComponents": {
-    "component-item": "../couponitem/couponitem"
+    "component-couponitem": "../couponitem/couponitem"
   }
 }

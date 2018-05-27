@@ -40,5 +40,16 @@
         ></component-orderlist>
       </view>
     </component-tabswitch>
+
+    <component-select 
+      type="radio"
+      title="取消订单原因"
+      name="reason"
+      value="id"
+      list="{{ cancelReasonList }}"
+      bindselectEvent="selectEvent"
+      bindselectComfirmEvent="selectComfirm"
+    ></component-select>
+
   </block>
 </view>

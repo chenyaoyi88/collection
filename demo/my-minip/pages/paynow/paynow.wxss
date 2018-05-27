@@ -1,0 +1,67 @@
+page {
+    background-color: #f5f5f5;
+    position: relative;
+    z-index: 1;
+}
+
+.paynow-box .paynow-detail-box {
+    color: #888888;
+    background-color: #fff;
+    margin-top: 20rpx;
+}
+
+.paynow-box .paynow-detail-box .amount-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 40rpx;
+    padding: 20rpx 0;
+    border-bottom: 2rpx solid #e5e5e5;
+}
+
+.paynow-box .paynow-detail-box .amount-box .amount-title {
+    font-size: 30rpx;
+}
+
+.paynow-box .paynow-detail-box .amount-box .amount {
+    font-size: 48rpx;
+    color: #f13744;
+    margin-right: 40rpx;
+}
+
+.paynow-box .paynow-detail-box .amount-info-box {
+    padding: 16rpx 40rpx;
+    font-size: 28rpx;
+}
+
+.paynow-box .paynow-detail-box .amount-info-box .info-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10rpx 0;
+}
+
+.paynow-box .paynow-detail-box .amount-info-box .info-item .info-item-l {
+    min-width: 110rpx;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.paynow-box .paynow-tips {
+    text-align: center;
+    font-size: 24rpx;
+    color: #8f8f8f;
+    margin: 20rpx 0;
+}
+
+.paynow-box .paynow-btn {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 2;
+}

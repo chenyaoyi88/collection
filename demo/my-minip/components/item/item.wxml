@@ -7,7 +7,7 @@
         <image wx:if="{{itemIcon}}" class="item-icon" src="{{itemIcon}}" mode="aspectFit"></image>
       </block>
 
-      <block wx:if="{{itemIconType === 'start' || itemIconType === 'end'}} || itemIconType === 'mid'}}">
+      <block wx:if="{{itemIconType === 'start' || itemIconType === 'end' || itemIconType === 'mid'}}">
         <view class="item-point {{itemIconType}}"></view>
         <view class="item-point-line {{itemIconType}} {{isHidePointline ? 'hide' : ''}}"></view>
       </block>
@@ -45,5 +45,10 @@
     <view class="item-r-arrow" wx:if="{{!isHideItemArrow}}">
       <image class="img-item-arrow" src="../../assets/icons/arrow.png" mode="aspectFit"></image>
     </view>
+
+    <view class="item-r-arrow" wx:if="{{ isShowItemClose }}" catchtap="itemClickCloseEvent">
+      <image class="img-item-close" src="../../assets/icons/close.png" mode="aspectFit"></image>
+    </view>
+
   </view>
 </view>

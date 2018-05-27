@@ -123,3 +123,15 @@
   height: 20rpx;
   margin: 0 16rpx;
 }
+
+.unselect-circle {
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 50%;
+  border: 2rpx solid #b2b2b2;
+}
+
+.select-circle {
+  width: 36rpx;
+  height: 36rpx;
+}

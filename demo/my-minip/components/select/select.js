@@ -56,15 +56,28 @@ Component({
           sSelected,
           list
         });
+
+        this.triggerEvent('checkboxChangeEvent', {
+          aSelected,
+          sSelected
+        }, {});
+
       } else if (this.data.type === 'radio') {
         let list = this.data.list;
+        const currentIndex = -1;
         for (let i = 0; i < list.length; i += 1) {
           list[i].selected = false;
         }
         this.setData({
-          list
+          list,
+          currentIndex
         });
+
+        this.triggerEvent('radioChangeEvent', {
+          oSelected: null
+        }, {});
       }
+
     },
     show() {
 
@@ -72,6 +85,11 @@ Component({
         isShow: true
       }, () => {
         setTimeout(() => {
+
+          wx.hideTabBar({
+            duration: true
+          });
+
           this.setData({
             isShowBg: true,
             isShowContent: true
@@ -86,6 +104,9 @@ Component({
         isShowContent: false
       }, () => {
         setTimeout(() => {
+          wx.showTabBar({
+            duration: true
+          });
           this.setData({
             isShow: false
           });
@@ -154,6 +175,7 @@ Component({
         this.select();
       });
     },
+
     radioChange(e) {
       const index = e.currentTarget.dataset.index;
       const item = e.currentTarget.dataset.item;

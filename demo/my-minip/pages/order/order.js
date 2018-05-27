@@ -9,6 +9,7 @@ const app = getApp();
 Page({
   data: {
     isLogin: wx.getStorageSync('token') ? true : false,
+    oSelect: null,
     tabTitle: tabList,
     // 当前 tab 索引
     currentIndex: 0,
@@ -180,7 +181,7 @@ Page({
   getMoreListData(listType) {
     const dataList = this.data[listType];
     if (dataList.nomore) return;
-    dataList.offset = 10;
+    dataList.offset += 10;
     this.setData(dataList, () => {
       this.getList(listType, false);
     });
@@ -246,6 +247,111 @@ Page({
   gotoLogin() {
     wx.navigateTo({
       url: '../login/login'
+    });
+  },
+
+  // 实例化底部滑出的选择组件
+  selectEvent(e) {
+    this.setData({
+      oSelect: e.detail.oSelect
+    });
+  },
+
+  // 取消订单选项点击确定
+  selectComfirm(e) {
+    const item = e.detail.oSelected;
+    if (item && item.id) {
+      this.data.cancelReasonId = item.id;
+      ghbRequest({
+        url: API.CANCEL,
+        method: 'POST',
+        data: {
+          id: this.data.cancelReasonWLId,
+          canelReasonId: this.data.cancelReasonId
+        }
+      }).then((res) => {
+        if (res.statusCode === 200) {
+          // 请求取消订单之后，切换到取消订单列表
+          this.tabClick(2);
+        } else {
+          showToastError(res.data.message);
+        }
+      });
+    }
+  },
+
+  // 取消订单
+  orderCancel(e) {
+    const id = e.detail.id;
+    const _this = this;
+
+    wx.showModal({
+      title: '取消订单',
+      content: '是否确定取消该订单？',
+      success: function (res) {
+        if (res.confirm) {
+          wx.showLoading({
+            title: '加载中'
+          });
+          _this.data.cancelReasonWLId = id;
+          // 请求取消原因列表 -> 请求取消订单接口
+          ghbRequest(
+            {
+              url: API.CANCELREASONS
+            },
+            true
+          ).then((res) => {
+            if (res.statusCode === 200) {
+              if (res.data && res.data.length) {
+                _this.setData({
+                  cancelReasonList: res.data
+                }, () => {
+                  _this.data.cancelReasonId = null;
+                  // 弹出底部滑动选项
+                  _this.data.oSelect.show();
+                });
+              }
+            } else {
+              showToastError(res.data.message);
+            }
+            wx.hideLoading();
+          });
+        }
+      }
+    });
+  },
+
+  // 支付订单
+  orderPay(e) {
+    const order = e.detail.order;
+    wx.showLoading({
+      title: '支付请求中',
+      mask: true
+    });
+    ghbRequest({
+      url: API.PAY,
+      method: 'POST',
+      data: {
+        orderId: order.id,
+        method: 'WX_SMALL_PROGRAM',
+        paymentType: 'ZPT',
+        productName: '物流运费',
+        productDesc: `物流运费 ¥${order.paymentAmount}`
+      }
+    }).then((res) => {
+      if (res.statusCode === 200) {
+        const PARAMS_PAY = JSON.parse(res.data.payData);
+        PARAMS_PAY.success = function (res) {
+          // 支付成功，刷新当前列表
+          this.tabSwitch(0);
+        };
+        PARAMS_PAY.fail = function (res) {
+          // 支付失败，无操作
+        };
+        wx.requestPayment(PARAMS_PAY);
+      } else {
+        showToastError(res.data.message);
+      }
     });
   },
 

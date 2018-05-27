@@ -1,26 +1,43 @@
-<!-- index.wxml -->
 <view>
 
   <view class='index-container'>
+
     <view class="mg20-tb">
-      <component-item 
-        item-class="item-point-class" 
-        item-icon-type="start" 
-        item-value-left-top="" 
-        item-value-left-center="选择发货地点" 
-        item-value-right="" 
-        is-hide-border-top="true" 
-        is-item-name-light="true"
-      />
 
       <component-item 
         item-class="item-point-class" 
-        item-icon-type="end" 
-        item-value-left-top="" 
-        item-value-left-center="选择收货地点" 
-        item-value-right=""
-        is-item-name-light="true"
+        item-icon-type="start" 
+        item-value-left-top="{{ (startInfo.name || '') + ' ' + (startInfo.mobile || '') }}" 
+        item-value-left-center="{{ startInfo.siteName || '请输入始发地' }}" 
+        item-value-left-bottom="{{ ((startInfo.address || '') + ' ' + (startInfo.street || '')) }}"
+        item-value-right="" 
+        is-hide-item-arrow="true"
+        is-hide-border-top="true" 
+        is-item-name-light="{{ startInfo.siteName ? false: true }}"
+        item-params="{{ {from: 'start', searchResult: startInfo, desIndex: -1} }}"
+        binditemClickEvent="getPonit"
       />
+
+      <block wx:for="{{ aHalfwaysList }}" wx:for-index="index" wx:for-item="item" wx:key="{{index}}">
+        <component-item 
+          item-class="item-point-class" 
+          item-icon-type="{{ (index === aHalfwaysList.length-1)? 'end' : 'mid' }}" 
+          item-value-left-top="{{ (item.contact || '') + ' ' + (item.phone || '') }}" 
+          item-value-left-center="{{ item.siteName || '请输入目的地' }}" 
+          item-value-left-bottom="{{ (item.addressName || '') + ' ' + (item.street || '') }}"  
+          is-hide-item-arrow="true"
+          is-item-name-light="{{ item.contact ? false : true }}"
+          is-show-item-close="{{ aHalfwaysList.length > 1 ? true : false }}"
+          item-params="{{ {from: 'des', searchResult: item, desIndex: index} }}"
+          binditemClickCloseEvent="delHalfway"
+          binditemClickEvent="getPonit"
+        />
+      </block>
+
+      <view class="index-halfway-box" bindtap="addHalfways">
+        <image class="index-halfway-icon" src="{{ iconList.add }}" alt="" mode="aspectFit"></image>
+        <view class="index-halfway-text">添加配送地址</view>
+      </view>
     </view>
 
     <view>
@@ -33,14 +50,15 @@
         binditemClickEvent="getCarType"
       ></component-item>
 
-      <component-item-picker bindgetDateValue="getDateValue"></component-item-picker>
+      <component-item-picker id='my-timepicker' bindgetDateValue="getDateValue"></component-item-picker>
 
       <component-item 
         item-icon-type="icon" 
         item-icon="{{iconList.extra}}" 
         item-value-left-center="额外服务" 
-        item-value-right="{{ sService || '装卸搬运等额外服务' }}"
-        is-value-light="{{ sService ? false : true }}"
+        item-value-right="{{ sSelected || '装卸搬运等额外服务' }}"
+        is-value-light="{{ sSelected ? false : true }}"
+        binditemClickEvent="getServices"
       />
 
       <block wx:if="{{ isLogin }}">
@@ -48,8 +66,8 @@
           item-icon-type="icon" 
           item-icon="{{iconList.coupon}}" 
           item-value-left-center="优惠券" 
-          item-value-right="{{ sCoupon || '请选择' }}"
-          is-value-light="{{ sCoupon ? false : true }}"
+          item-value-right="{{ couponInfo.name || '请选择' }}"
+          is-value-light="{{ couponInfo.name ? false : true }}"
           binditemClickEvent="getCoupon"
         />
       </block>
@@ -74,7 +92,7 @@
     <view class="idx-ft-price">
       <view class="price-text">
         <text class="price">￥{{ (costs && costs.amount) || '--'}}
-          <text hidden="{{couponInfo.priceValue}}" class="coupon-text">（已优惠{{couponInfo.priceValue || '--'}}元）</text>
+          <text wx:if="{{ couponInfo.priceValue }}" class="coupon-text">（已优惠{{couponInfo.priceValue || '--'}}元）</text>
         </text>
       </view>
     </view>
@@ -82,5 +100,14 @@
       <button class="ghb-btn next-btn" bindtap='nextStep'>下一步</button>
     </view>
   </view>
+
+  <component-select 
+    id="my-select"
+    type="checkbox"
+    name="name"
+    value="remark"
+    list="{{ additionalServicesList }}"
+    bindcheckboxChangeEvent="checkboxChange"
+  ></component-select>
 
 </view>

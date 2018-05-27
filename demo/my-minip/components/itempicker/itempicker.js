@@ -5,20 +5,6 @@ import {
 } from '../../utils/index'
 
 Component({
-  relations: {
-    'item': {
-      type: 'child',
-      linked: function (target) {
-        // 每次被插入到custom-ul时执行，target是custom-ul节点实例对象，触发在attached生命周期之后
-      },
-      linkChanged: function (target) {
-        // 每次被移动后执行，target是custom-ul节点实例对象，触发在moved生命周期之后
-      },
-      unlinked: function (target) {
-        // 每次被移除时执行，target是custom-ul节点实例对象，触发在detached生命周期之后
-      }
-    }
-  },
   externalClasses: ['item-picker-class'],
   options: {
     // 在组件定义时的选项中启用多slot支持
@@ -37,6 +23,23 @@ Component({
     dateIndex: [0, 0, 0]
   },
   methods: {
+    reset() {
+      const bookingTime = '';
+      const dateArray = getDateList();
+      const dateIndex = [0, 0, 0];
+      this.setData({
+        bookingTime,
+        dateArray,
+        dateIndex
+      });
+
+      this.setData({
+        bookingTime
+      }, () => {
+        this.triggerEvent('getDateValue', { bookingTime }, {});
+      });
+    },
+
     dateChange(e) {
       const myIndex = e.detail.value;
 
@@ -68,7 +71,6 @@ Component({
 
     // 时间选择器内部逻辑（TODO：抽离出来作为独立组件逻辑）
     dateColumnchange(e) {
-      // console.log('修改的列为', e.detail.column, '，值为', e.detail.value);
 
       const data = {
         dateArray: this.data.dateArray,
@@ -109,5 +111,10 @@ Component({
 
       this.setData(data);
     }
+  },
+  ready() {
+    this.triggerEvent('pickerEvent', {
+      oPicker: this
+    }, {});
   }
 })

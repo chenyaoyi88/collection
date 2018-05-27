@@ -1,4 +1,3 @@
-
 Component({
   externalClasses: ['item-class'],
   options: {
@@ -47,6 +46,10 @@ Component({
     },
     // 是否显示淡颜色的样式
     isItemNameLight: {
+      type: Boolean,
+      value: false
+    },
+    isShowItemClose: {
       type: Boolean,
       value: false
     },
@@ -99,6 +102,10 @@ Component({
     itemInputPlcStyle: {
       type: String,
       value: 'color:#b2b2b2'
+    },
+    itemParams: {
+      type: null,
+      value: null
     }
   },
   data: {
@@ -107,7 +114,7 @@ Component({
   },
   methods: {
     // 点击 item
-    itemClickEvent: function (e) {
+    itemClickEvent(e) {
       const myEventDetail = {
         e,
         item: this
@@ -116,12 +123,20 @@ Component({
       this.triggerEvent('itemClickEvent', myEventDetail, myEventOption);
     },
     // input 输入
-    itemInputEvent: function (e) {
+    itemInputEvent(e) {
       const myEventDetail = {
         e
       };
       const myEventOption = {};
       this.triggerEvent('itemInputEvent', myEventDetail, myEventOption);
+    },
+    itemClickCloseEvent(e) {
+      const myEventDetail = {
+        e,
+        item: this
+      };
+      const myEventOption = {};
+      this.triggerEvent('itemClickCloseEvent', myEventDetail, myEventOption);
     }
   }
 })

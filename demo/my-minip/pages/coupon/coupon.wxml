@@ -32,5 +32,29 @@
 </block>
 
 <block wx:if="{{ from === 'index' }}">
-  <view>index</view>
+
+  <block wx:if="{{ LogisticsCouponsNone }}">
+    <view class="coupon-list-none fixed">-- 暂无可使用优惠券 --</view>
+  </block>
+
+  <view wx:else>
+    <view wx:if="{{ LogisticsCoupons.length }}" class="coupon-not-use" data-item="{{ null }}" bindtap="couponSelectFormIndex">
+      <view>不使用优惠券</view>
+      <view wx:if="{{ !isNotUseCoupon }}" class="unselect-circle"></view>
+      <image wx:else class="select-circle" src="{{IMG_SELECT}}" alt="" mode="aspectFit"></image>
+    </view>
+    <view class="coupon-list-box">
+      
+    <block wx:for="{{ LogisticsCoupons }}" wx:for-item="list" wx:for-index="listIndex" wx:key="{{listIndex}}">
+      <component-couponitem 
+        is-fail="{{ false }}" 
+        is-show-select="{{ true }}" 
+        coupon-info="{{ list }}"
+        bindcouponClickEvent="couponSelectFormIndex"
+      ></component-couponitem>
+    </block>
+
+      <view class="list-nomore" v-show="LogisticsCouponsNomore">-- 没有更多数据了 --</view>
+    </view>
+  </view>
 </block>
