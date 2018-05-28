@@ -4,7 +4,7 @@
       <view class="me-avantar">
         <view class="avantar-box" bindtap="gotoLogin">
           <image class='avantar' src="{{ avantar }}" alt=""></image>
-          <view class='avantar-mobile'>{{ mobile || '--' }}</view>
+          <view class='avantar-mobile'>{{ mobile || '点击登录' }}</view>
         </view>
       </view>
     </view>

@@ -89,8 +89,6 @@ Page({
         wx.setStorageSync('token', res.data.token);
         wx.setStorageSync('mobile', this.data.mobile);
 
-        // eventBus.$emit(ghbEvent.resetOrderList);
-
         // 获取 code
         wx.login({
           success: function (e) {

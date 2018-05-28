@@ -15,8 +15,9 @@ import API from '../../api/api';
 import {
   eventBusEmit,
   eventBusRemove,
-  eventBusOn
-} from '../event';
+  eventBusOn,
+  ghbEvent
+} from '../../utils/event';
 
 Page({
   data: {
@@ -276,16 +277,16 @@ Page({
       this.data.costs.couponInfo = this.data.couponInfo;
     }
 
-    // console.log('请求参数', PARAMS_LOGISTICSORDER_REQUEST);
-    // console.log('costs', this.data.costs);
-    // return;
-
     wx.navigateTo({
       url: `../paynow/paynow?logisticsorder=${JSON.stringify(
         PARAMS_LOGISTICSORDER_REQUEST
       )}&costs=${JSON.stringify(this.data.costs)}`
     });
 
+  },
+
+  pageReset() {
+    resetIndex(this);
   },
 
   // 页面刷新（更新 token，然后获取车型列表和额外服务列表）
@@ -314,7 +315,7 @@ Page({
     });
 
     // 监听选中起始点、中途点（目的地）后，重新计算运费通知
-    eventBusOn('getSiteInfo', this, (searchInfo) => {
+    eventBusOn(ghbEvent.getSiteInfo, this, (searchInfo) => {
       if (searchInfo.from.includes('start')) {
         this.setData({
           startInfo: searchInfo
@@ -345,7 +346,7 @@ Page({
     });
 
     // 监听车型选择通知
-    eventBusOn('getSelectedCartype', this, (res) => {
+    eventBusOn(ghbEvent.getSelectedCartype, this, (res) => {
       const carInfo = res.carInfo;
       if (this.data.carSelected.id !== carInfo.id) {
         const carSelected = {
@@ -361,7 +362,7 @@ Page({
     });
 
     // 监听选中优惠券后，重新计算运费通知
-    eventBusOn('getCoupon', this, (item) => {
+    eventBusOn(ghbEvent.getCoupon, this, (item) => {
       let couponInfo = {};
       if (item && item.id) {
         couponInfo = item;
@@ -374,7 +375,7 @@ Page({
     });
 
     // 监听货物通知
-    eventBusOn('getGoodsRemark', this, (res) => {
+    eventBusOn(ghbEvent.getGoodsRemark, this, (res) => {
       const goodsRemark = res.goodsRemark || '';
       this.setData({
         goodsRemark
@@ -382,7 +383,7 @@ Page({
     });
 
     // 监听重置通知
-    eventBusOn('indexReset', this, () => {
+    eventBusOn(ghbEvent.indexReset, this, () => {
       resetIndex(this);
     });
 

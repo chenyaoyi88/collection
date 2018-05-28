@@ -12,12 +12,12 @@ import {
 import API from '../../api/api';
 
 export const iconList = {
-    carType: '../../assets/icons/cartype.png',
-    time: '../../assets/icons/time.png',
-    extra: '../../assets/icons/extra.png',
-    goods: '../../assets/icons/goods.png',
-    coupon: '../../assets/icons/coupon.png',
-    add: '../../assets/icons/add.png'
+  carType: '../../assets/icons/cartype.png',
+  time: '../../assets/icons/time.png',
+  extra: '../../assets/icons/extra.png',
+  goods: '../../assets/icons/goods.png',
+  coupon: '../../assets/icons/coupon.png',
+  add: '../../assets/icons/add.png'
 };
 
 /**
@@ -220,9 +220,11 @@ export function getCalcCosts(scope) {
 // 清空/重置所有填写项目
 export function resetIndex(scope) {
 
+  const isLogin = wx.getStorageSync('token') ? true : false;
+
   scope.data.sSelected && scope.data.oSelect.reset();
   scope.data.bookingTime && scope.data.oPicker.reset();
-  
+
   const endInfo = {};
   const clothsAmount = 1;
   const goodsRemark = '';
@@ -242,6 +244,7 @@ export function resetIndex(scope) {
   }
 
   scope.setData({
+    isLogin,
     endInfo,
     clothsAmount,
     goodsRemark,

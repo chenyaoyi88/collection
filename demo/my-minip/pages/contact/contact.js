@@ -1,5 +1,15 @@
-import { goBackSetData, getDesText, showToastError, formatTrim, ghbRequest } from '../../utils/index';
-import { eventBusEmit, eventBusRemove } from '../event';
+import {
+  goBackSetData,
+  getDesText,
+  showToastError,
+  formatTrim,
+  ghbRequest
+} from '../../utils/index';
+import {
+  eventBusEmit,
+  eventBusRemove,
+  ghbEvent
+} from '../../utils/event';
 import API from '../../api/api';
 
 Page({
@@ -95,8 +105,7 @@ Page({
       // 未登录，带值返回首页
       const searchInfo = this.data.searchInfo;
 
-      // eventBus.$emit(ghbEvent.getSiteInfo, searchInfo);
-      eventBusEmit('getSiteInfo', searchInfo);
+      eventBusEmit(ghbEvent.getSiteInfo, searchInfo);
 
       wx.navigateBack({
         // 返回第3层，首页
@@ -141,10 +150,10 @@ Page({
       });
       // 保存联系人和地址
       ghbRequest({
-        url: options.url,
-        method: options.method,
-        data: options.params
-      }, true)
+          url: options.url,
+          method: options.method,
+          data: options.params
+        }, true)
         .then((res) => {
           if (res.statusCode !== 200) {
             showToastError(res.data.message);
@@ -156,8 +165,8 @@ Page({
             } else {
               wx.navigateBack();
             }
-            // eventBus.$emit(ghbEvent.gobackReload, true);
-            eventBusEmit('gobackReload', options.isReload);
+            
+            eventBusEmit(ghbEvent.gobackReload, options.isReload);
           }
           this.setData({
             isBtnClick: false

@@ -14,8 +14,9 @@ import {
 import {
   eventBusEmit,
   eventBusRemove,
-  eventBusOn
-} from '../event';
+  eventBusOn,
+  ghbEvent
+} from '../../utils/event';
 
 Page({
   data: {
@@ -197,7 +198,7 @@ Page({
     this.setData({
       isNotUseCoupon
     });
-    eventBusEmit('getCoupon', item);
+    eventBusEmit(ghbEvent.getCoupon, item);
     wx.navigateBack();
   },
   formatCouponTime(timestamp) {

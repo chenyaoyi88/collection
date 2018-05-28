@@ -8,8 +8,9 @@ import API from '../../api/api';
 import {
   eventBusEmit,
   eventBusRemove,
-  eventBusOn
-} from '../event';
+  eventBusOn,
+  ghbEvent
+} from '../../utils/event';
 
 Page({
   data: {
@@ -159,7 +160,7 @@ Page({
         cityCode: mapPosInfo.cityCode || ''
       };
 
-      eventBusEmit('getSiteInfo', searchInfo);
+      eventBusEmit(ghbEvent.getSiteInfo, searchInfo);
       wx.navigateBack();
     }
   },
@@ -245,16 +246,8 @@ Page({
       this.getAddressBookRest(true);
     });
 
-    // // 如果是保存回来此页面，刷新一下
-    // eventBus.$on(ghbEvent.gobackReload, (isReload: boolean) => {
-    //   setTimeout(() => {
-    //     this.getAddressBookRest(isReload, false);
-    //     showToastError(isReload ? '保存成功' : '编辑成功');
-    //   }, 150);
-    // });
-
     // 如果是保存回来此页面，刷新一下
-    eventBusOn('gobackReload', this, (isReload) => {
+    eventBusOn(ghbEvent.gobackReload, this, (isReload) => {
       setTimeout(() => {
         this.getAddressBookRest(isReload, false);
         showToastError(isReload ? '保存成功' : '编辑成功');
@@ -263,6 +256,6 @@ Page({
 
   },
   onUnload() {
-    eventBusRemove('gobackReload', this);
+    eventBusRemove(ghbEvent.gobackReload, this);
   }
 })

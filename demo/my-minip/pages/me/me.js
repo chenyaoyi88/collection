@@ -1,6 +1,16 @@
-import { isInputEmpty, isPhoneNumber, showToastError, ghbRequest } from '../../utils/index';
+import {
+  isInputEmpty,
+  isPhoneNumber,
+  showToastError,
+  ghbRequest
+} from '../../utils/index';
 import API from '../../api/api';
-import { eventBusEmit, eventBusRemove } from '../event';
+import {
+  eventBusEmit,
+  eventBusRemove,
+  eventBusOn,
+  ghbEvent
+} from '../../utils/event';
 
 const app = getApp();
 
@@ -51,9 +61,8 @@ Page({
   // 收费标准 webview h5页面
   ghbLogisticFee() {
     wx.navigateTo({
-      url:
-      '../webview/webview?webUrl=' +
-      'https://www.guanghuobao.com/static/app-h5/html/logisticFee.html'
+      url: '../webview/webview?webUrl=' +
+        'https://www.guanghuobao.com/static/app-h5/html/logisticFee.html'
     });
   },
 
@@ -76,18 +85,11 @@ Page({
           }).then((res) => {
             if (res.statusCode === 200) {
 
-              // // 退出之后重置所有数据
-              // this.$store.commit('isIndexResetChange', {
-              //   isIndexReset: true
-              // });
-
-              // eventBus.$emit(ghbEvent.resetOrderList);
-
               // 退出之后重置所有数据
               // 重置首页
-              eventBusEmit('resetIndex');
+              eventBusEmit(ghbEvent.resetIndex);
               // 重置订单页
-              eventBusEmit('resetOrderList');
+              eventBusEmit(ghbEvent.resetOrderList);
 
               wx.removeStorageSync('token');
               wx.removeStorageSync('mobile');
@@ -118,7 +120,7 @@ Page({
     });
   },
 
-  onShow() {
+  reload(isPullDownRefresh = false) {
     const _this = this;
 
     this.setData({
@@ -146,7 +148,27 @@ Page({
           avantar: this.data.avantarImg
         });
       }
+      isPullDownRefresh && wx.stopPullDownRefresh();
     });
+  },
+
+  // 用户下拉动作，刷新当前列表
+  onPullDownRefresh() {
+    this.reload(true);
+  },
+
+  onShow() {
+    this.reload();
+  },
+
+  onLoad() {
+    eventBusOn(ghbEvent.resetMe, this, () => {
+      this.reset();
+    });
+  },
+
+  onUnload() {
+    eventBusRemove(ghbEvent.resetMe, this);
   }
 
 })

@@ -1,7 +1,18 @@
-import { ghbRequest, getOrderStatusText, showToastError } from '../../utils/index';
+import {
+  ghbRequest,
+  getOrderStatusText,
+  showToastError
+} from '../../utils/index';
 import API from '../../api/api';
-import { eventBusEmit, eventBusRemove, eventBusOn } from '../event';
-import { tabList } from './utils';
+import {
+  eventBusEmit,
+  eventBusRemove,
+  eventBusOn,
+  ghbEvent
+} from '../../utils/event';
+import {
+  tabList
+} from './utils';
 
 // 获取应用实例
 const app = getApp();
@@ -111,13 +122,13 @@ Page({
       [listType]: curOrderList
     }, () => {
       ghbRequest({
-        url: API.LOGISTICSORDERS,
-        data: {
-          searchType,
-          offset: reload ? 0 : _this.data[listType].offset,
-          limit: this.data.pageLimit
-        }
-      })
+          url: API.LOGISTICSORDERS,
+          data: {
+            searchType,
+            offset: reload ? 0 : _this.data[listType].offset,
+            limit: this.data.pageLimit
+          }
+        })
         .then((res) => {
           if (res.statusCode === 200) {
 
@@ -185,36 +196,39 @@ Page({
     this.setData(dataList, () => {
       this.getList(listType, false);
     });
-  }
-  ,
+  },
   // 重载/加载数据
   loadCurrentListData(isReload = false) {
-    switch (this.data.currentIndex) {
-      // 进行中
-      case 0:
-        if (isReload) {
-          this.getList('ing', isReload);
-        } else {
-          this.getMoreListData('ing');
-        }
-        break;
-      // 已完成
-      case 1:
-        if (isReload) {
-          this.getList('finish', isReload);
-        } else {
-          this.getMoreListData('finish');
-        }
-        break;
-      // 已取消
-      case 2:
-        if (isReload) {
-          this.getList('cancel', isReload);
-        } else {
-          this.getMoreListData('cancel');
-        }
-        break;
-      default:
+    if (this.data.isLogin) {
+      switch (this.data.currentIndex) {
+        // 进行中
+        case 0:
+          if (isReload) {
+            this.getList('ing', isReload);
+          } else {
+            this.getMoreListData('ing');
+          }
+          break;
+          // 已完成
+        case 1:
+          if (isReload) {
+            this.getList('finish', isReload);
+          } else {
+            this.getMoreListData('finish');
+          }
+          break;
+          // 已取消
+        case 2:
+          if (isReload) {
+            this.getList('cancel', isReload);
+          } else {
+            this.getMoreListData('cancel');
+          }
+          break;
+        default:
+      }
+    } else {
+      wx.stopPullDownRefresh();
     }
   },
 
@@ -295,8 +309,7 @@ Page({
           });
           _this.data.cancelReasonWLId = id;
           // 请求取消原因列表 -> 请求取消订单接口
-          ghbRequest(
-            {
+          ghbRequest({
               url: API.CANCELREASONS
             },
             true
@@ -367,12 +380,12 @@ Page({
   },
 
   onLoad() {
-    eventBusOn('resetOrderList', this, () => {
+    eventBusOn(ghbEvent.resetOrderList, this, () => {
       this.resetPage(false);
     });
   },
   onUnload() {
-    eventBusRemove('resetOrderList', this);
+    eventBusRemove(ghbEvent.resetOrderList, this);
   },
   onShow() {
     this.resetPage();

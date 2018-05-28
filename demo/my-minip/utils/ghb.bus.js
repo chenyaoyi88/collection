@@ -1,3 +1,10 @@
+import {
+  eventBusEmit,
+  eventBusOn,
+  eventBusRemove,
+  ghbEvent
+} from './event';
+
 export function goBackSetData(opts, pageLevel) {
   const options = opts || {};
   const pages = getCurrentPages(); // eslint-disable-line
@@ -58,14 +65,25 @@ export function ghbRequest(options, isShowing = false) {
       },
       success: function (res) {
         if (res.statusCode === 401) {
-          wx.showToast({
-            title: res.data.message,
-            icon: 'none',
-            duration: 2500
-          });
-          wx.removeStorageSync('token');
-          wx.removeStorageSync('mobile');
+
+          if (!wx.getStorageSync('token')) {
+            const pages = getCurrentPages();
+            const currPage = pages[pages.length - 1];
+            // 首页重置
+            if (currPage.route.includes('pages/index/index')) {
+              currPage.pageReset(currPage);
+            }
+          } else {
+            wx.showToast({
+              title: res.data.message,
+              icon: 'none',
+              duration: 2500
+            });
+            wx.removeStorageSync('token');
+            wx.removeStorageSync('mobile');
+          }
           isToastShowing = true;
+
         }
         resolve(res);
       },

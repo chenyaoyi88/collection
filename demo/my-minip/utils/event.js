@@ -61,5 +61,6 @@ export const ghbEvent = {
     getGoodsRemark: 'getGoodsRemark',
     gobackReload: 'gobackReload',
     resetIndex: 'resetIndex',
-    resetOrderList: 'resetOrderList'
+    resetOrderList: 'resetOrderList',
+    resetMe: 'resetMe'
 };

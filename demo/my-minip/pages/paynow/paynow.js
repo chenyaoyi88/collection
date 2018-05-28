@@ -10,8 +10,9 @@ import API from '../../api/api';
 import {
   eventBusEmit,
   eventBusRemove,
-  eventBusOn
-} from '../event';
+  eventBusOn,
+  ghbEvent
+} from '../../utils/event';
 
 Page({
   data: {
@@ -37,7 +38,7 @@ Page({
       if (res.statusCode === 200) {
 
         // 下单成功之后，清空首页填写的信息
-        eventBusEmit('indexReset');
+        eventBusEmit(ghbEvent.indexReset);
 
         // 获取订单号
         if (res.data.id) {

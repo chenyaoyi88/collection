@@ -7,8 +7,9 @@ import {
 import {
   eventBusEmit,
   eventBusRemove,
-  eventBusOn
-} from '../event';
+  eventBusOn,
+  ghbEvent
+} from '../../utils/event';
 
 Page({
   data: {
@@ -31,7 +32,7 @@ Page({
       showToastError('货物信息、备注不能为空');
       return;
     }
-    eventBusEmit('getGoodsRemark', {
+    eventBusEmit(ghbEvent.getGoodsRemark, {
       goodsRemark: this.data.goodsRemark
     });
     wx.navigateBack();

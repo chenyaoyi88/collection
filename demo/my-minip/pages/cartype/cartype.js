@@ -8,8 +8,9 @@ import API from '../../api/api';
 import {
   eventBusEmit,
   eventBusRemove,
-  eventBusOn
-} from '../event';
+  eventBusOn,
+  ghbEvent
+} from '../../utils/event';
 
 Page({
   data: {
@@ -53,7 +54,7 @@ Page({
 
   // 选择车型
   cartypeSelect(e) {
-    eventBusEmit('getSelectedCartype', {
+    eventBusEmit(ghbEvent.getSelectedCartype, {
       carInfo: e.currentTarget.dataset.item
     });
     wx.navigateBack();
