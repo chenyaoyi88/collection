@@ -63,7 +63,7 @@ page {
 }
 
 .price-text .price .coupon-text {
-  width: 200rpx;
+  width: 250rpx;
   position: absolute;
   left: 100%;
   bottom: 10rpx;

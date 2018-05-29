@@ -197,6 +197,7 @@ Page({
       this.getList(listType, false);
     });
   },
+
   // 重载/加载数据
   loadCurrentListData(isReload = false) {
     if (this.data.isLogin) {
@@ -257,6 +258,7 @@ Page({
       }
     });
   },
+
   // 未登录->去登录
   gotoLogin() {
     wx.navigateTo({
@@ -384,9 +386,11 @@ Page({
       this.resetPage(false);
     });
   },
+  
   onUnload() {
     eventBusRemove(ghbEvent.resetOrderList, this);
   },
+  
   onShow() {
     this.resetPage();
   }

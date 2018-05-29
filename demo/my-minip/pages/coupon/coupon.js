@@ -30,17 +30,21 @@ Page({
     currentIndex: 0,
     // 来自何处
     from: '',
-    // tab 标题
+    // tab 数组
     tabTitle: tabTitleList,
+    // 当前页数（三个页面共用）
     listCount: 0,
+    // 未使用优惠券
     canUse: {
       list: [],
       listTmp: [],
     },
+    // 已过期优惠券
     expire: {
       list: [],
       listTmp: [],
     },
+    // 已使用优惠券
     used: {
       list: [],
       listTmp: [],

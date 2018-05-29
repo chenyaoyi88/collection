@@ -11,7 +11,7 @@
 
 .phcolor {
   font-size: 28rpx;
-   color: #b2b2b2; 
+  color: #b2b2b2;
 }
 
 .input-group-split {
@@ -36,6 +36,8 @@
 
 .login-btn-box {
   margin-top: 60rpx;
+  position: relative;
+  z-index: 1;
 }
 
 .btn-vcode {

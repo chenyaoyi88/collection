@@ -85,7 +85,7 @@ Page({
     const logisticsorderParams = JSON.parse(options.logisticsorder || '{}');
     const costs = JSON.parse(options.costs || '{}');
     if (costs.couponInfo && costs.couponInfo.priceValue) {
-      costs.couponInfo.priceValue = zerofillBack(this.costs.couponInfo.priceValue);
+      costs.couponInfo.priceValue = zerofillBack(costs.couponInfo.priceValue);
     }
     this.setData({
       logisticsorderParams,

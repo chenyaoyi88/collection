@@ -16,17 +16,17 @@ Page({
     goodsRemark: ''
   },
   onLoad(options) {
-    console.log(options);
     this.setData({
       goodsRemark: options.goodsRemark
     });
   },
-
+  
   getGoodsRemark(e) {
     this.setData({
       goodsRemark: e.detail.value
     });
   },
+
   submit() {
     if (!/\S/.test(this.data.goodsRemark)) {
       showToastError('货物信息、备注不能为空');

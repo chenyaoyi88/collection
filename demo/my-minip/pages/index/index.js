@@ -267,6 +267,7 @@ Page({
     });
   },
 
+  // 下一步
   nextStep() {
 
     if (!checkNextstepParmas(this)) return;
@@ -285,6 +286,7 @@ Page({
 
   },
 
+  // 页面重置
   pageReset() {
     resetIndex(this);
   },
@@ -391,11 +393,11 @@ Page({
 
   // 移除监听
   onUnload() {
-    eventBusRemove('getSiteInfo', this);
-    eventBusRemove('getSelectedCartype', this);
-    eventBusRemove('getCoupon', this);
-    eventBusRemove('getGoodsRemark', this);
-    eventBusRemove('indexReset', this);
+    eventBusRemove(ghbEvent.getSiteInfo, this);
+    eventBusRemove(ghbEvent.getSelectedCartype, this);
+    eventBusRemove(ghbEvent.getCoupon, this);
+    eventBusRemove(ghbEvent.getGoodsRemark, this);
+    eventBusRemove(ghbEvent.indexReset, this);
   },
 
   // 首页分享描述

@@ -150,6 +150,7 @@ Page({
       results: []
     });
   },
+  
   // 获取传过来的参数（从开始还是结束进来的）
   onLoad(options) {
     const from = options.from || 'start';

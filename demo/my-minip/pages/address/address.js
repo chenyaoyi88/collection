@@ -138,7 +138,7 @@ Page({
     });
   },
 
-  // 选择当前地址
+  // 选择当前地址，发消息通知首页，返回首页
   select(e) {
     const mapPosInfo = e.currentTarget.dataset.info;
     // 只有从 首页的出发点（start）和 目的地（des）进来才能点击选择
@@ -228,11 +228,13 @@ Page({
         showToastError('删除失败');
       });
   },
+
   // 滚动条触底事件
   onReachBottom() {
     // 获取数据
     this.getMoreListData();
   },
+  
   onLoad(options) {
     const from = options.from;
     const desIndex = options.desIndex || -1;
@@ -255,6 +257,7 @@ Page({
     });
 
   },
+
   onUnload() {
     eventBusRemove(ghbEvent.gobackReload, this);
   }

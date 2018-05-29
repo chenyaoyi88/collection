@@ -94,8 +94,6 @@ Page({
       remark: this.data.searchInfo.remark || ''
     };
 
-    console.log(PARAMS_ADDRESS_REQUEST);
-
     // 点击新增按钮进来，保存联系人和地址
     if (from.includes('new')) {
       this.addressAdd(PARAMS_ADDRESS_REQUEST);
@@ -104,16 +102,12 @@ Page({
     } else {
       // 未登录，带值返回首页
       const searchInfo = this.data.searchInfo;
-
       eventBusEmit(ghbEvent.getSiteInfo, searchInfo);
-
       wx.navigateBack({
         // 返回第3层，首页
         delta: 3
       });
-
     }
-
   },
 
   // 新增保存地址
@@ -165,7 +159,6 @@ Page({
             } else {
               wx.navigateBack();
             }
-            
             eventBusEmit(ghbEvent.gobackReload, options.isReload);
           }
           this.setData({

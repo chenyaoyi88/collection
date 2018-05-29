@@ -18,7 +18,7 @@
   </view>
 
   <view class="login-btn-box">
-    <button disabled="{{ isBtnClick }}" class="ghb-btn login-btn" bindtap='login'>登录</button>
+     <button disabled="{{ isBtnClick }}" class="ghb-btn login-btn" bindtap='login'>登录</button> 
   </view>
 
   <view class="login-tips-box">
