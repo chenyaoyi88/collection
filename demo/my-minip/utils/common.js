@@ -1,8 +1,22 @@
+/**
+ * 数字个位数补零
+ * 
+ * @export
+ * @param {any} n 数字
+ * @returns 补零之后的字符串
+ */
 export function formatNumber(n) {
   const str = n.toString();
   return str[1] ? str : `0${str}`;
 }
 
+/**
+ * 年月日
+ * 
+ * @export
+ * @param {any} date 时间对象 new Date()
+ * @returns xxxx/xx/xx
+ */
 export function formatTime(date) {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -18,6 +32,13 @@ export function formatTime(date) {
   return `${t1} ${t2}`;
 }
 
+/**
+ * 保留2位小数
+ * 
+ * @export
+ * @param {any} n 
+ * @returns 
+ */
 export function zerofillBack(n) {
   if (parseInt(n) === parseFloat(n)) {
     return n + '.00';
@@ -105,6 +126,12 @@ export function formatCurrency(num) {
   return (((sign) ? '' : '-') + num + '.' + cents);
 }
 
+/**
+ * 下单所需的唯一值
+ * 
+ * @export
+ * @returns 
+ */
 export function uuid() {
   const s = [];
   const hexDigits = '0123456789abcdef';

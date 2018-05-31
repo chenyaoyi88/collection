@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>商户钱包</title>
+    <link rel="stylesheet" href="./src/css/index.css">
+</head>
+
+<body>
+    <div class="bus-container">
+        <div class="header">
+
+            <div class="h-cell-box">
+                <div class="h-cell scan-box">
+                    <div class="cell-img">
+                        <img class="img" src="./src/assets/images/scan.png" alt="">
+                    </div>
+                    <div class="cell-text">收款</div>
+                </div>
+
+                <div class="h-cell money-box">
+                    <div class="cell-img">
+                        <img class="img" src="./src/assets/images/money.png" alt="">
+                    </div>
+                    <div class="cell-text">零钱</div>
+                    <div class="cell-text">￥1.00</div>
+                </div>
+
+                <div class="h-cell bankcard-box" id="bankcard">
+                    <div class="cell-img">
+                        <img class="img" src="./src/assets/images/bankcard.png" alt="">
+                    </div>
+                    <div class="cell-text">银行卡</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="content">
+            <div class="content-box">
+
+                <div class="content-tile">交易记录</div>
+
+                <div class="content-list">
+
+                    <div class="record-list">
+
+                        <div class="record-box">
+                            <div class="record-img">
+                                <img src="./src/assets/images/record-money.png" alt="">
+                            </div>
+                            <div class="record-content">
+                                <div class="name">交易名字</div>
+                                <div class="date">交易时间</div>
+                            </div>
+                            <div class="record-amount">
+                                -10.00
+                            </div>
+                        </div>
+
+                        <div class="record-box">
+                            <div class="record-img">
+                                <img src="./src/assets/images/record-money.png" alt="">
+                            </div>
+                            <div class="record-content">
+                                <div class="name">交易名字交易名字交易名字交易名字交易名字交易名字交易名字交易名字交易名字交易名字交易名字</div>
+                                <div class="date">交易时间</div>
+                            </div>
+                            <div class="record-amount">
+                                -10.00
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- <div class="c-cell cell" id="record">
+                        <div class="cell-img">
+                            <img class="img" src="./src/assets/images/trade.png" alt="">
+                        </div>
+                        <div class="cell-text">交易记录</div>
+                    </div> -->
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <script src="./src/js/axios.min.js"></script>
+    <script>
+        var oBankcard = document.querySelector('#bankcard');
+
+        oBankcard.addEventListener('click', function () {
+            window.location.href = './bankcard.html';
+        }, false);
+
+        getMerchantInfo();
+
+        function getMerchantInfo() {
+            axios({
+                    method: 'POST',
+                    url: 'http://testdna.payeco.com/merchant/info',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+    </script>
+</body>
+
+</html>
