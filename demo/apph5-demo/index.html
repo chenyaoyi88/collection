@@ -26,7 +26,9 @@
                         <img class="img" src="./src/assets/images/money.png" alt="">
                     </div>
                     <div class="cell-text">零钱</div>
-                    <div class="cell-text">￥1.00</div>
+                    <div class="cell-text">￥
+                        <span id="money">--</span>
+                    </div>
                 </div>
 
                 <div class="h-cell bankcard-box" id="bankcard">
@@ -41,74 +43,115 @@
 
         <div class="content">
             <div class="content-box">
-
                 <div class="content-tile">交易记录</div>
-
-                <div class="content-list">
-
-                    <div class="record-list">
-
-                        <div class="record-box">
-                            <div class="record-img">
-                                <img src="./src/assets/images/record-money.png" alt="">
-                            </div>
-                            <div class="record-content">
-                                <div class="name">交易名字</div>
-                                <div class="date">交易时间</div>
-                            </div>
-                            <div class="record-amount">
-                                -10.00
-                            </div>
-                        </div>
-
-                        <div class="record-box">
-                            <div class="record-img">
-                                <img src="./src/assets/images/record-money.png" alt="">
-                            </div>
-                            <div class="record-content">
-                                <div class="name">交易名字交易名字交易名字交易名字交易名字交易名字交易名字交易名字交易名字交易名字交易名字</div>
-                                <div class="date">交易时间</div>
-                            </div>
-                            <div class="record-amount">
-                                -10.00
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <!-- <div class="c-cell cell" id="record">
-                        <div class="cell-img">
-                            <img class="img" src="./src/assets/images/trade.png" alt="">
-                        </div>
-                        <div class="cell-text">交易记录</div>
-                    </div> -->
-
-                </div>
-
-
+                <div class="record-nomore" id="record-loading">加载中...</div>
+                <div class="record-list" id="record-list"></div>
+                <div class="record-nomore" id="record-nomore">-- 暂无更多记录 --</div>
             </div>
         </div>
     </div>
     <script src="./src/js/axios.min.js"></script>
+    <script src="./src/js/common.js"></script>
+    <script src="./src/js/mock.js"></script>
     <script>
         var oBankcard = document.querySelector('#bankcard');
+        var oRecordList = document.querySelector('#record-list');
+        var oMoney = document.querySelector('#money');
+        var oNomore = document.querySelector('#record-nomore');
+        var oLoading = document.querySelector('#record-loading');
+
+        var pageNo = 0;
+        var pageSize = 10;
 
         oBankcard.addEventListener('click', function () {
             window.location.href = './bankcard.html';
         }, false);
 
         getMerchantInfo();
+        getRecord();
 
         function getMerchantInfo() {
             axios({
-                    method: 'POST',
-                    url: 'http://testdna.payeco.com/merchant/info',
+                    method: 'post',
+                    url: 'https://testdna.payeco.com/demo-pay2-app/merchant/info',
                     headers: {
-                        'Content-type': 'application/json'
+                        'Content-Type': 'application/json;charset=UTF-8'
                     },
+                    data: {
+                        merchantNo: '123'
+                    }
                 })
                 .then(function (response) {
-                    console.log(response);
+                    return response.data;
+                })
+                .then(function (res) {
+                    console.log('getMerchantInfo', res);
+                    if (res.code === '0000') {
+                        oMoney.innerHTML = zerofillBack(res.data.accountBalance);
+                    } else {
+                        alert(res.msg);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        function getRecord() {
+            oLoading.style.display = 'block';
+            axios({
+                    method: 'post',
+                    url: 'https://testdna.payeco.com/demo-pay2-app/merchant/balanceChangeRecord',
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    },
+                    data: {
+                        "merchantNo": "123",
+                        "pageNo": pageNo,
+                        "pageSize": pageSize
+                    }
+                })
+                .then(function (response) {
+                    return response.data;
+                })
+                .then(function (res) {
+                    console.log(res);
+                    oLoading.style.display = 'none';
+                    if (res.code === '0000') {
+                        var aList = res.data.data;
+                        if (aList.length <= pageSize) {
+                            oNomore.style.display = 'block';
+                        }
+                        if (aList.length) {
+                            var listTmp = '';
+                            for (var i = 0; i < aList.length; i++) {
+                                listTmp +=
+                                    '\
+                            <div class="record-box">\
+                                <div class="record-img">\
+                                    <img src="./src/assets/images/record-money.png" alt="">\
+                                </div>\
+                                <div class="record-content">\
+                                    <div class="name">商家编号 ' +
+                                    aList[i].merchantNo +
+                                    '</div>\
+                                    <div class="date">交易时间 ' +
+                                    formatTime(new Date(aList[i].updateTime)) +
+                                    '</div>\
+                                </div>\
+                                <div class="record-amount">\
+                                    ' +
+                                    (aList[i].changeType === 1 ? '+' :
+                                        '-') + zerofillBack(aList[i].changeAmount) +
+                                    '\
+                                </div>\
+                            </div>';
+                            }
+                            oRecordList.innerHTML = oRecordList.innerHTML + listTmp;
+                        }
+                    } else {
+                        alert(res.msg);
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);

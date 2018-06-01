@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="btn">abc</button>
+    <!-- <iframe style="display: none" src="http://cyy-test.surge.sh/test.html" id="aaa"></iframe> -->
+    <script>
+        var oBtn = document.getElementById('btn');
+        // var aaa = document.getElementById('aaa');
+
+        oBtn.onclick = function () {
+            const iframe = document.createElement("iframe");
+            iframe.src = 'weixin://dl/scan';
+            iframe.style.cssText = "display:none;width:0px;height:0px;";
+            document.body.appendChild(iframe);
+            // iframe.src = 'weixin://dl/scan';
+        };
+    </script>
+</body>
+
+</html>
