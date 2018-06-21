@@ -1,0 +1,31 @@
+{
+  "name": "testapp",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "cli": "node node_modules/react-native/local-cli/cli.js",
+    "start": "npm run cli start",
+    "ios": "npm run cli run-ios",
+    "ad": "npm run cli run-android",
+    "log:ios": "npm run cli log-ios",
+    "log:ad": "npm run cli log-android",
+    "gradlew:clean": "cd android && gradlew clean",
+    "gradlew:refresh": "cd android && gradlew build --refresh-dependencies",
+    "build:dev": "cd android && gradlew assembleDebug",
+    "build:prod": "cd android && gradlew assembleRelease"
+  },
+  "dependencies": {
+    "react": "16.3.1",
+    "react-native": "0.55.4"
+  },
+  "devDependencies": {
+    "babel-jest": "23.0.1",
+    "babel-preset-react-native": "4.0.0",
+    "jest": "23.1.0",
+    "react-test-renderer": "16.3.1"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}

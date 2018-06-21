@@ -1,0 +1,4 @@
+rootProject.name = 'testapp'
+include ':react-native-baifu-pos'
+project(':react-native-baifu-pos').projectDir = new File(rootProject.projectDir, '../src/lib/react-native-baifu-pos/android')
+include ':app'
